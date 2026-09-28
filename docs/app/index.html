@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Lights App</title>
+<meta name="description" content="Pocket guide for the Marfa Lights Viewing Area: tonight's darkness, moon and planets, a light identifier, the camera sky finder, your sighting log and light bingo. Works without signal.">
+<meta name="theme-color" content="#0b0e13">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Marfa Lights">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="app.css?v=2">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icon-192.png" alt="" width="28" height="28"><span>Marfa Lights</span></div>
+  <div class="top-actions">
+    <button type="button" id="installBtn" class="pill" hidden>Install</button>
+    <button type="button" id="nightBtn" class="pill" aria-pressed="false" title="Red night-vision mode">Night</button>
+  </div>
+</header>
+
+<main id="views">
+  <!-- ============================== TONIGHT -->
+  <section class="view" id="v-tonight" aria-labelledby="t-h">
+    <div class="hero">
+      <div class="eyebrow" id="t-date">Tonight</div>
+      <h1 id="t-h">Tonight at the Viewing Area</h1>
+      <p class="dim" id="t-sum">Working out the sky for tonight…</p>
+    </div>
+    <div class="tiles" id="t-tiles"></div>
+    <div class="card" id="t-dark"></div>
+    <div class="card" id="t-planets"></div>
+    <div class="card" id="t-weather"><h2>Weather</h2><p class="dim">Loading the National Weather Service forecast…</p></div>
+    <div class="actions3">
+      <button type="button" class="big" data-go="identify"><span class="ic">◎</span>What's that light?</button>
+      <a class="big" href="../sky.html?from=app"><span class="ic">⌖</span>Camera sky finder</a>
+      <button type="button" class="big" data-go="log" data-new="1"><span class="ic">✎</span>Log a sighting</button>
+    </div>
+    <div class="card tip" id="t-tip"></div>
+    <p class="foot">Times are Central Time at the Viewing Area. Sky positions from <a href="https://github.com/cosinekitty/astronomy">Astronomy Engine</a>. <a href="../index.html">Open the full website →</a></p>
+  </section>
+
+  <!-- ============================== IDENTIFY -->
+  <section class="view" id="v-identify" hidden aria-labelledby="i-h">
+    <h1 id="i-h">What's that light?</h1>
+    <p class="dim">Enter the direction, or tap the strip below where you see it.</p>
+    <div class="card">
+      <div class="row">
+        <label class="field grow"><span>Bearing</span><input id="i-b" type="number" inputmode="decimal" min="0" max="360" step="0.5" placeholder="e.g. 227"></label>
+        <div class="seg" role="group" aria-label="North reference"><button type="button" id="i-mag" aria-pressed="true">Compass</button><button type="button" id="i-true" aria-pressed="false">True</button></div>
+      </div>
+      <div class="row">
+        <button type="button" class="pill" id="i-compass">Use phone compass</button>
+        <span class="dim small" id="i-cnote"></span>
+      </div>
+      <div class="lab">Height</div>
+      <div class="seg wide" role="group" aria-label="Height compared with the skyline" id="i-h-seg">
+        <button type="button" data-h="above" aria-pressed="false">Above skyline</button><button type="button" data-h="on" aria-pressed="false">On it</button><button type="button" data-h="below" aria-pressed="false">Below it</button><button type="button" data-h="" aria-pressed="true">Not sure</button>
+      </div>
+      <canvas id="i-pano" height="170" aria-label="Strip of the skyline around your bearing; tap to choose a spot"></canvas>
+      <p class="dim small" id="i-panonote"></p>
+    </div>
+    <div id="i-verdict" class="verdict"></div>
+    <ul class="cands" id="i-cands"></ul>
+    <div class="row gap">
+      <button type="button" class="btn" id="i-log">Log this light</button>
+      <a class="btn ghost" href="../sky.html?from=app">Measure it with the camera</a>
+    </div>
+  </section>
+
+  <!-- ============================== LOG -->
+  <section class="view" id="v-log" hidden aria-labelledby="l-h">
+    <h1 id="l-h">Your sightings</h1>
+    <p class="dim">Saved on this phone only. Write what you saw before you compare notes with anyone.</p>
+    <div class="card" id="l-new">
+      <h2>Quick log</h2>
+      <label class="field"><span>What did you see?</span><textarea id="l-note" rows="3" placeholder="Colour, movement, how long, anything odd"></textarea></label>
+      <div class="row">
+        <label class="field grow"><span>Bearing (compass)</span><input id="l-b" type="number" inputmode="decimal" min="0" max="360" step="0.5" placeholder="optional"></label>
+        <button type="button" class="btn" id="l-save">Save now</button>
+      </div>
+      <p class="dim small">The time is saved automatically. You can turn any entry into a full report later.</p>
+    </div>
+    <div class="row gap"><button type="button" class="pill" id="l-csv">Download all (CSV)</button><button type="button" class="pill" id="l-share">Share</button></div>
+    <ul class="log" id="l-list"></ul>
+  </section>
+
+  <!-- ============================== BINGO -->
+  <section class="view" id="v-bingo" hidden aria-labelledby="b-h">
+    <h1 id="b-h">Light bingo</h1>
+    <p class="dim">Most lights over the flat are ordinary. Spot each kind and tick it off. Knowing them is how you spot the one that isn't. Tap a square to learn how to recognise it.</p>
+    <div class="bingo" id="b-grid"></div>
+    <p class="score" id="b-score"></p>
+    <button type="button" class="pill" id="b-reset">Start a new night</button>
+  </section>
+
+  <!-- ============================== MORE -->
+  <section class="view" id="v-more" hidden aria-labelledby="m-h">
+    <h1 id="m-h">More</h1>
+    <div class="links">
+      <a href="../map.html"><b>Full map and identifier</b><span>Satellite map, every layer, refraction slider</span></a>
+      <a href="../sky.html?from=app"><b>Camera sky finder</b><span>Calibrated bearings with your phone camera</span></a>
+      <a href="../report.html"><b>Full sighting report</b><span>Guided form with an automatic noise check</span></a>
+      <a href="../visit.html"><b>How to observe</b><span>Timing, what to record, what to rule out</span></a>
+      <a href="../history.html"><b>History and folklore</b><span>140 years of the lights</span></a>
+      <a href="../science.html"><b>The science</b><span>What studies found and what the model shows</span></a>
+      <a href="../place.html"><b>The place</b><span>Mountains, climate and the dark sky</span></a>
+      <a href="../community.html"><b>Community and dark skies</b><span>Being a good neighbour, local knowledge</span></a>
+    </div>
+    <div class="card">
+      <h2>Works without signal</h2>
+      <p class="dim" id="m-offline">Checking…</p>
+      <p class="dim small">After you open the app once with a connection, it keeps working offline, including the identifier, the sky finder and your log. The satellite map and the weather need a connection.</p>
+    </div>
+    <div class="card"><h2>Add it to your home screen</h2><p class="dim" id="m-install"></p></div>
+  </section>
+</main>
+
+<nav class="tabs" aria-label="App sections">
+  <button type="button" data-tab="tonight" aria-current="page"><span class="ic">☾</span>Tonight</button>
+  <button type="button" data-tab="identify"><span class="ic">◎</span>Identify</button>
+  <a href="../sky.html?from=app"><span class="ic">⌖</span>Camera</a>
+  <button type="button" data-tab="log"><span class="ic">✎</span>Log</button>
+  <button type="button" data-tab="bingo"><span class="ic">▦</span>Bingo</button>
+  <button type="button" data-tab="more"><span class="ic">≡</span>More</button>
+</nav>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-h"><div class="sheet-in"><h2 id="sheet-h"></h2><div id="sheet-b"></div><div class="row gap" id="sheet-a"></div><button type="button" class="pill" id="sheet-x">Close</button></div></div>
+<div id="toast" role="status"></div>
+
+<script src="../assets/vendor/astronomy.browser.min.js"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>

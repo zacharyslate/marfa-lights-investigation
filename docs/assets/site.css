@@ -128,3 +128,23 @@ th{font:600 13px var(--f-mono);color:var(--muted);letter-spacing:.04em;text-tran
 /* night vision: photos go dim and red so they don't spoil dark adaptation */
 :root[data-theme="night"] .photo img,:root[data-theme="night"] .hero-photo img{filter:grayscale(1) sepia(1) hue-rotate(-50deg) saturate(5) brightness(.4)}
 .prose .photo:not(.plain):not(.banner) img{aspect-ratio:16/9;object-fit:cover}
+
+/* ---------- fold-away detail */
+details.more{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:0 16px}
+details.more[open]{padding-bottom:14px}
+details.more>summary{cursor:pointer;list-style:none;font:600 17px/1.3 var(--f-disp);letter-spacing:.02em;padding:13px 0;color:var(--ink);display:flex;align-items:center;gap:10px}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"+";font:700 20px/1 var(--f-mono);color:var(--accent);width:16px}
+details.more[open]>summary::before{content:"–"}
+details.more>*+*{margin-top:12px}
+
+/* app promo on the home page */
+.app-promo{display:grid;grid-template-columns:96px 1fr;gap:18px;align-items:start;background:linear-gradient(135deg,#10151d,#1b2230);color:#ece9e2;border-radius:var(--radius);padding:20px 22px}
+.app-promo img{border-radius:22px;box-shadow:0 6px 24px rgba(0,0,0,.4)}
+.app-promo h2{margin:2px 0 8px;color:#fff}
+.app-promo p{color:#c9ced6;margin:0 0 10px}
+.app-promo .app-feats{list-style:none;padding:0;margin:0 0 14px;display:flex;flex-wrap:wrap;gap:6px 8px}
+.app-promo .app-feats li{font-size:14px;border:1px solid #333d4b;border-radius:99px;padding:4px 10px;color:#dfe3e8}
+:root[data-theme="night"] .app-promo{background:#120202;color:var(--ink)}
+:root[data-theme="night"] .app-promo h2,:root[data-theme="night"] .app-promo p,:root[data-theme="night"] .app-promo li{color:var(--ink)}
+@media (max-width:560px){.app-promo{grid-template-columns:1fr}.app-promo img{width:72px;height:72px}}

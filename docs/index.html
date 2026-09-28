@@ -7,7 +7,7 @@
 <meta name="description" content="A field guide to the Marfa Lights: an interactive line-of-sight map, a light identifier for the Viewing Area, and the history, folklore and science behind the lights.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=7">
+<link rel="stylesheet" href="assets/site.css?v=8">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
@@ -24,10 +24,21 @@
     <div class="eyebrow">Mitchell Flat · Presidio County, Texas</div>
     <h1>Know what you're looking at</h1>
     <p class="lede">Since at least the 1880s, people have watched unexplained lights over the flat southeast of Marfa. Most lights seen from the Viewing Area have ordinary sources: cars, trains, towers, towns. This guide helps you rule those out. What's left, including experiences that have never been explained, deserves careful attention, not dismissal.</p>
-    <div class="row"><a class="btn" href="map.html">Open the map and identifier</a><a class="btn ghost" href="visit.html">Plan a night at the Viewing Area</a></div>
+    <div class="row"><a class="btn" href="app/">Open the pocket app</a><a class="btn ghost" href="map.html">Map and identifier</a><a class="btn ghost" href="visit.html">Plan a night</a></div>
   </section>
 
   <svg class="horizon" viewBox="0 0 1200 170" role="img" aria-label="Skyline from the Viewing Area with the visible stretch of US-67 highlighted" id="heroPano"></svg>
+
+  <section class="app-promo" aria-labelledby="app-h">
+    <img src="app/icon-192.png" alt="" width="96" height="96">
+    <div>
+      <div class="eyebrow">For your phone</div>
+      <h2 id="app-h">Take the guide to the Viewing Area</h2>
+      <p>The pocket app tells you when it gets dark tonight, where the moon and planets will be, and what a light in a given direction is likely to be. It also has the camera sky finder, a one-tap sighting log and a game of light bingo. Add it to your home screen and it works with no signal.</p>
+      <ul class="app-feats"><li>Tonight's dark hours, moon and planets</li><li>"What's that light?" in two taps</li><li>Red night-vision screen</li><li>Everything stays on your phone</li></ul>
+      <a class="btn" href="app/">Open the app</a>
+    </div>
+  </section>
 
   <section class="stats" aria-label="Key results">
     <div class="stat"><b>9.3 km</b><span>of the 64.6 km of US-67 south of Marfa is in clear view from the Viewing Area under normal conditions. Terrain hides most of the rest.</span></div>
@@ -58,7 +69,7 @@
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=8"></script>
 <script>
 (async () => {
   const S = await fetch("data/site.json?v=6").then(r => r.json());

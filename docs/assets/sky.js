@@ -327,7 +327,9 @@
     if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; st.camera = false;
     try { if (wake) wake.release(); } catch (e) {}
     document.body.classList.remove("live"); open(null);
+    if (FROM_APP) location.href = "app/#identify";
   }
+  const FROM_APP = new URLSearchParams(location.search).get("from") === "app";
   $("startCam").addEventListener("click", () => start(true));
   $("startNoCam").addEventListener("click", () => start(false));
   $("bExit").addEventListener("click", stop);

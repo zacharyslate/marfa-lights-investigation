@@ -2,7 +2,7 @@
 (function () {
   const PAGES = [
     ["map.html", "Map"], ["history.html", "History & Folklore"], ["science.html", "The Science"],
-    ["place.html", "The Place"], ["visit.html", "Visiting"], ["sky.html", "Sky finder"], ["community.html", "Community"]
+    ["place.html", "The Place"], ["visit.html", "Visiting"], ["sky.html", "Sky finder"], ["community.html", "Community"], ["app/", "Get the app"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];
   const LABEL = {auto: "Auto", light: "Light", dark: "Dark", night: "Night vision"};
@@ -32,6 +32,10 @@
       apply(theme);
       document.dispatchEvent(new CustomEvent("themechange"));
     });
+  }
+  // offline support: the service worker precaches the whole site and the app
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
   }
   const foot = document.getElementById("foot");
   if (foot) {

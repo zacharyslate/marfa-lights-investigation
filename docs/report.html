@@ -7,7 +7,7 @@
 <meta name="description" content="Report a light you saw from the Marfa Lights Viewing Area. The form checks it against every known light source and keeps your report on your device until you choose to send it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=7">
+<link rel="stylesheet" href="assets/site.css?v=8">
 <style>
 form{display:grid;gap:28px}
 fieldset{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:18px 18px 20px;margin:0;display:grid;gap:14px;min-width:0}
@@ -156,7 +156,7 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=6"></script>
+<script src="assets/site.js?v=8"></script>
 <script>
 (async function () {
   const $ = id => document.getElementById(id);
@@ -189,6 +189,9 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
       if (s.source === "camera") { $("how").value = "skyfinder"; if (s.calibration) $("equip").value = `Sky finder, calibrated on ${s.calibration.target} ${s.calibration.minutes_ago} min earlier${s.calibration.last_check_deg !== null ? `, check ${s.calibration.last_check_deg}° off` : ""}`; }
       if (s.note) $("story").value = s.note; update();
     });
+    // opened from the app with ?log=<index>: preselect that sighting
+    const want = new URLSearchParams(location.search).get("log");
+    if (want !== null && LOG[+want]) setTimeout(() => { $("fromLog").value = want; $("fromLog").dispatchEvent(new Event("change")); }, 0);
   }
 
   // ---------------- noise check (same data as the identifier)

@@ -18,6 +18,7 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | `docs/sightlines.html` | The technical sight-line report |
 | `docs/community.html` | Purpose, the dark-sky region, Marfa, good-neighbour guidance, local institutions |
 | `docs/sky.html` | Camera sky finder: live camera with skyline, roads, towers, stars and the Zone of Skepticism drawn over it; calibrate on a known light and record calibrated bearings (Astronomy Engine, MIT; d3-celestial star data, BSD) |
+| `docs/app/` | Installable pocket app (PWA): tonight's darkness, moon and planets (Astronomy Engine), NWS forecast, a quick light identifier, sighting log, light bingo, red night mode. Works offline via `docs/sw.js` |
 | `docs/report.html` | Guided sighting report with an automatic noise check; stays on the device until downloaded or posted |
 | `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
 
@@ -53,6 +54,7 @@ Update (2026‑09‑28, 120° fan):
 | `analysis/los_browser.js` | Terrain line‑of‑sight engine (USGS 3DEP DEM; curvature + constant‑k refraction; closed‑form critical k) |
 | `analysis/marfa_occlusion.py` | Map 1 (standard atmosphere) and Map 2 (refraction range) KMLs, per‑point table, site data |
 | `analysis/build_site.py` | Builds `docs/sightlines.html` from `analysis/occlusion_template.html` |
+| `analysis/build_sw.py` | Regenerates `docs/sw.js` (offline precache list and version hash). Run after any change in `docs/` |
 | `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
 | `analysis/headlight_model.py` | Headlamp photometry model: brightness of a car at every road point, by travel direction |
 | `analysis/zone_of_skepticism.py` | Zone of Skepticism polygons (`data/derived/zos.json`, `docs/data/zos.json`) |
