@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Lights Science</title>
+<meta name="description" content="What field studies of the Marfa Lights found, how atmospheric refraction works over Mitchell Flat, and what a terrain line-of-sight model shows.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header id="bar"></header>
+<main class="page">
+  <header class="prose">
+    <div class="eyebrow">The science</div>
+    <h1>What the evidence shows, and what it doesn't</h1>
+    <p class="lede">Every serious field study has found that many lights seen from the Viewing Area are vehicle headlights on US-67. Whether any lights remain once those are removed is still an open question. It can only be answered with careful, timed observation.</p>
+  </header>
+
+  <div class="two">
+    <section class="prose">
+      <h2>What observers describe</h2>
+      <p>James Bunnell, a retired aerospace engineer, ran automated camera stations on ranches around Mitchell Flat for years. He describes the lights as orbs that brighten and fade, change colour, move or hover, and split or merge. They are usually yellow-orange, sometimes green, blue or red, and usually above the brush but below the mesas. He counted about 9.5 such lights a year, spread over about five nights. He believes his cameras caught only about half of them.<sup><a href="#r1">1</a></sup></p>
+
+      <h2>The field studies</h2>
+      <p><b>Student physics team, 2004.</b> In May 2004, twelve physics students from the University of Texas at Dallas spent several nights at the Viewing Area. Their equipment included traffic counters, radios, lasers and high-speed video.<sup><a href="#r2">2</a></sup> According to their report, the lights southwest of the Viewing Area rose and fell with traffic on US-67 and moved in straight lines along the road. When team members flashed headlights from the highway, those showed up at the Viewing Area looking like a Marfa Light. They concluded that the lights they saw came from vehicles.<sup><a href="#r3">3</a></sup></p>
+      <p><b>Spectroscopy, 2008.</b> Karl Stephan and colleagues at Texas State University recorded light spectra over 20 nights in May 2008. Everything they recorded could be explained as vehicle headlights or small fires. They noted that genuine unexplained lights are rare, so a short campaign may simply miss them.<sup><a href="#r4">4</a>,<a href="#r3">3</a></sup></p>
+      <p><b>Camera stations, 2000s.</b> Bunnell aimed some cameras away from both US-67 and the Chinati Mountains, specifically to exclude headlights. He reports lights he could not explain.<sup><a href="#r1">1</a>,<a href="#r2">2</a></sup> His work is self-published and hasn't been through independent peer review, but it is the longest continuous record there is.</p>
+
+      <h2>Mirages and refraction</h2>
+      <p>The most common physical explanation is atmospheric refraction. On clear, calm nights the ground loses heat fast, and air near the surface gets colder than the air above it. Light passing through that layer bends downward, so distant lights can appear higher, stretched, or doubled. Marfa's daily temperature range, often 40–50 °F, makes such inversions common.<sup><a href="#r5">5</a></sup></p>
+      <p>Surveyors measure this bending with a refraction coefficient <i>k</i>. The textbook value is 0.13. Measured close to the ground, <i>k</i> swings from about −4 on hot afternoons to +16 around sunset.<sup><a href="#r6">6</a></sup> Humidity barely affects how visible light bends. It matters for haze and dimming, not for bending.<sup><a href="#r7">7</a></sup></p>
+
+      <h2>What our terrain model adds</h2>
+      <p>We traced a line of sight from the Viewing Area to every 60 m of US-67 between Shafter and Marfa, over USGS 3DEP elevation data, with Earth curvature and refraction included.</p>
+      <ul>
+        <li><b>Only a short stretch of road is in view.</b> At normal refraction, a headlight is clearly visible along about 9 km of the 65 km of road. That stretch lies between 229° and 238° true, 24–40 km away, just north of the road's high point. It is broken into about 23 separate pieces. A car driving through it would blink in and out.</li>
+        <li><b>Refraction adds little.</b> Even a strong night inversion (k = 1) extends the visible road by only about 2 km. The nearer road toward Marfa, between 238° and 277°, stays hidden behind a low rise under any realistic conditions.</li>
+        <li><b>Headlights appear against the mountains.</b> They sit below the Chinati Mountains skyline, not against open sky. A light seen above the skyline is not a car on US-67.</li>
+        <li><b>The railroad matters too.</b> The Texas Pacifico line to Presidio clips the southwest edge of the viewing direction about 15–17 km away, much closer than the highway on the same bearing.</li>
+      </ul>
+      <p>So a moving light between 238° and 277° true, or above the skyline, cannot be explained as a car on US-67 unless conditions are extreme. Those are the lights worth logging carefully. See the <a href="sightlines.html">full sight-line report</a> and the <a href="map.html">map</a>.</p>
+
+      <h2>What would settle it</h2>
+      <ul>
+        <li>Two observers at separate points taking simultaneous, timed bearings, which pins down each light's position by triangulation.</li>
+        <li>Traffic counts or dash cameras on US-67 and train times, logged on the same clock, to match or rule out every light.</li>
+        <li>Temperature readings at two heights, so the refraction on the night can be calculated.</li>
+        <li>Spectra of any light that survives all of the above.</li>
+      </ul>
+    </section>
+
+    <aside class="aside">
+      <h3>Limits of our model</h3>
+      <p>It treats refraction as uniform along each sight line. Near the ground that is a simplification, so a height-by-height ray trace is the next step.</p>
+      <p>The ~30 m elevation data misses road cuts, brush and buildings.</p>
+      <p>It covers where a lamp could be seen, not which way it points. Headlights are bright only straight ahead.</p>
+      <p>It has not yet been checked against field observations.</p>
+      <p>Code and data: <a href="https://github.com/zacharyslate/marfa-lights-investigation">GitHub</a>.</p>
+    </aside>
+  </div>
+
+  <section class="prose">
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li id="r1">James Bunnell, <i>Hunting Marfa Lights</i>, Lacey Publishing (2009), ISBN 978-0970924940, pp. 14–15, as summarized in <a href="https://en.wikipedia.org/wiki/Marfa_lights">Wikipedia: Marfa lights</a>.</li>
+      <li id="r2">Michael Hall, “The Truth Is Out There,” <i>Texas Monthly</i>, June 2006. <a href="https://www.texasmonthly.com/articles/the-truth-is-out-there/">texasmonthly.com</a></li>
+      <li id="r3">A. Stolyarov, J. Klenzing, P. Roddy, R. A. Heelis, “An Experimental Analysis of the Marfa Lights,” Society of Physics Students report (2004), as summarized in <a href="https://en.wikipedia.org/wiki/Marfa_lights">Wikipedia: Marfa lights</a>.</li>
+      <li id="r4">K. D. Stephan et al., “Spectroscopy applied to observations of terrestrial light sources of uncertain origin,” <i>American Journal of Physics</i> 77(8), 697 (2009). <a href="https://pubs.aip.org/aapt/ajp/article-abstract/77/8/697/310879/">pubs.aip.org</a></li>
+      <li id="r5">Brian Dunning, “The Marfa Lights: A Real American Mystery,” <i>Skeptoid</i> #38, 11 April 2007. <a href="https://skeptoid.com/episodes/4038">skeptoid.com</a></li>
+      <li id="r6">C. Hirt, S. Guillaume, A. Wisbar, B. Bürki, H. Sternberg, “Monitoring of the refraction coefficient in the lower atmosphere using a controlled setup of simultaneous reciprocal vertical angle measurements,” <i>J. Geophys. Res.</i> 115, D21102 (2010). <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD014067">doi:10.1029/2010JD014067</a></li>
+      <li id="r7">P. E. Ciddor, “Refractive index of air: new equations for the visible and near infrared,” <i>Applied Optics</i> 35(9), 1566–1573 (1996).</li>
+    </ol>
+  </section>
+</main>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+</body>
+</html>

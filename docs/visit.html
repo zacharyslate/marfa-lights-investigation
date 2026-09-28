@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Observing the Marfa Lights</title>
+<meta name="description" content="How to observe the Marfa Lights like a scientist: timing, bearings, a false-positive checklist, and staying safe and legal on public ground.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.check{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
+.check li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:6px 18px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.check b{font-family:var(--f-disp);font-size:18px;letter-spacing:.01em}
+@media (max-width:640px){.check li{grid-template-columns:1fr}}
+ol.steps{counter-reset:s;list-style:none;padding:0;margin:0;display:grid;gap:14px}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+ol.steps li::before{content:counter(s);font:700 22px/1.2 var(--f-disp);color:var(--accent);text-align:right}
+</style>
+</head>
+<body>
+<header id="bar"></header>
+<main class="page">
+  <header class="prose">
+    <div class="eyebrow">Visiting and observing</div>
+    <h1>Observe like a scientist</h1>
+    <p class="lede">Any clear night will show you lights over Mitchell Flat. Almost all have an ordinary source. A few minutes of careful notes turns "we saw something" into an observation someone can check.</p>
+    <div class="row" style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" href="map.html">Open the identifier</a><button class="btn ghost" type="button" id="nightBtn">Switch to night vision</button></div>
+  </header>
+
+  <div class="two">
+    <section class="prose">
+      <h2>Where and when</h2>
+      <p>The public place to watch is the Marfa Mystery Lights Viewing Area on US-90, about nine miles east of Marfa.<sup><a href="#r1">1</a></sup> You look south and southwest across the flat. The land beyond the viewing area, including all of Mitchell Flat, is private ranchland. Please stay at the Viewing Area and on public roads. Don't stop on highway shoulders at night.</p>
+      <p>Go after full dark and give your eyes 20–30 minutes to adapt. Moonless nights give the most contrast. Bring layers: the average low in Marfa is around 43 °F, and colder in winter.<sup><a href="#r2">2</a></sup> Set expectations too. The longest camera record counts only a handful of nights a year with lights its author could not explain.<sup><a href="#r3">3</a></sup></p>
+
+      <h2>What to record</h2>
+      <ol class="steps">
+        <li><div><b>Time, to the second.</b> Use your phone clock. With time you can match lights to traffic, trains, aircraft and satellites later.</div></li>
+        <li><div><b>Bearing.</b> Use a compass, or the phone compass in the <a href="map.html">identifier</a>. Compass bearings are magnetic. Add 6.2° for true bearing, or let the tool do it. Better still, note which skyline feature the light sits under. The panorama in the identifier lets you tap that spot.</div></li>
+        <li><div><b>Height.</b> Is the light above the mountain skyline or against the terrain? Roughly how far above or below it? A fist at arm's length covers about 10°. One finger width covers about 2°.</div></li>
+        <li><div><b>Behaviour.</b> Note colour, brightness changes, direction and speed of motion, whether it splits or merges, and how long it lasts.</div></li>
+        <li><div><b>Conditions.</b> Note wind, cloud, moon, and whether the air near the ground feels colder than a few feet up. That suggests a temperature inversion.</div></li>
+        <li><div><b>A photo, if you can.</b> Use a tripod, a long exposure, and the timestamp in the file.</div></li>
+      </ol>
+      <p>The identifier's field log saves these on your phone and exports a spreadsheet file.</p>
+
+      <h2>Rule these out first</h2>
+      <ul class="check">
+        <li><b>Car headlights on US-67</b><span>Pairs of lights moving steadily, often splitting as cars pass. They appear only on a few bearings (229–238° true, 223–232° magnetic), below the skyline.</span></li>
+        <li><b>Trains</b><span>The Union Pacific main line runs right past the Viewing Area, and the Presidio line crosses the southwest view about 15 km out. Look for a bright headlight, often with flashing ditch lights.</span></li>
+        <li><b>Towers and aircraft</b><span>Red lights blinking or steady are aviation obstruction lights. Blinking white, red or green lights moving across the sky are aircraft.</span></li>
+        <li><b>Stars and planets</b><span>A bright "light" low in the west that sinks slowly toward the mountains over half an hour is often Venus, Jupiter or a bright star setting. Scintillation near the horizon makes it flicker and change colour.</span></li>
+        <li><b>The aerostat</b><span>A tethered radar balloon operates from a site about 46 km to the west-northwest (293° true). Its lights can sit well above the terrain.</span></li>
+        <li><b>Towns and ranches</b><span>Skyglow from Presidio and Ojinaga lies around 211–213° true. Ranch yard lights and vehicles on ranch roads appear anywhere on the flat.</span></li>
+        <li><b>Other visitors</b><span>Flashlights, phone screens and car headlights at and near the Viewing Area reflect and move.</span></li>
+      </ul>
+
+      <h2>Dark-sky manners</h2>
+      <p>Use red light only. The night-vision mode on this site turns the whole page red. Turn headlights off when parked, and keep phone screens dim. Everyone around you is doing the same thing you are.</p>
+    </section>
+
+    <aside class="aside">
+      <h3>If you see something that passes the checklist</h3>
+      <p>Write down the time, bearing and height straight away, before anything else. If someone else is there, ask them to take their own bearing independently.</p>
+      <p>Two bearings from two places fix a position. That turns a story into a measurement.</p>
+      <p>You can share observations through the project's <a href="https://github.com/zacharyslate/marfa-lights-investigation/issues">GitHub issues</a>.</p>
+    </aside>
+  </div>
+
+  <section class="prose">
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li id="r1">Julia Cauble Smith, “Marfa Lights,” <i>Handbook of Texas Online</i>, Texas State Historical Association. <a href="https://www.tshaonline.org/handbook/entries/marfa-lights">tshaonline.org</a></li>
+      <li id="r2">“Marfa, Texas,” Wikipedia, citing Western Regional Climate Center normals. <a href="https://en.wikipedia.org/wiki/Marfa,_Texas">en.wikipedia.org</a></li>
+      <li id="r3">James Bunnell, <i>Hunting Marfa Lights</i> (2009), as summarized in <a href="https://en.wikipedia.org/wiki/Marfa_lights">Wikipedia: Marfa lights</a>.</li>
+      <li>Bearings, distances and visibility: this project's analysis. <a href="https://github.com/zacharyslate/marfa-lights-investigation">GitHub</a></li>
+    </ol>
+  </section>
+</main>
+<footer id="foot"></footer>
+<script src="assets/site.js"></script>
+<script>
+document.getElementById("nightBtn").addEventListener("click", () => {
+  const night = document.documentElement.getAttribute("data-theme") === "night";
+  const t = night ? "auto" : "night";
+  try { localStorage.setItem("mlfg-theme", t); } catch (e) {}
+  location.reload();
+});
+</script>
+</body>
+</html>

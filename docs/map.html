@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Lights Map</title>
+<meta name="description" content="Interactive map and light identifier for the Marfa Lights Viewing Area: US-67 line of sight, refraction, railroads, airfields, towers and towns.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/leaflet/leaflet.css">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+body{overflow:hidden}
+.mapapp{display:grid;grid-template-columns:minmax(0,1fr) 410px;height:calc(100dvh - 55px)}
+#map{height:100%;background:var(--surface-2)}
+.leaflet-tile-pane{filter:var(--map-filter)}
+.leaflet-container{font:14px/1.4 var(--f-body)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.leaflet-popup-content{margin:12px 14px;font-size:14px;line-height:1.45}
+.leaflet-popup-content b{font-family:var(--f-disp);font-size:17px;letter-spacing:.01em}
+.leaflet-container a.leaflet-popup-close-button{color:var(--muted)}
+.leaflet-control-attribution{font-size:10.5px;background:color-mix(in srgb,var(--surface) 80%,transparent)!important;color:var(--muted)}
+.leaflet-control-attribution a{color:var(--link)}
+.leaflet-bar a{background:var(--surface);color:var(--ink);border-color:var(--rule)}
+.town-label{font:700 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;color:#fff;text-shadow:0 0 3px #000,0 0 6px #000;white-space:nowrap}
+:root[data-theme="night"] .town-label{color:var(--ink);text-shadow:0 0 3px #000}
+.viewer-icon{filter:drop-shadow(0 0 3px #000)}
+.panel{overflow-y:auto;border-left:1px solid var(--rule);background:var(--bg);padding:16px 16px 40px;display:grid;gap:22px;align-content:start}
+.sec{display:grid;gap:10px}
+.sec>h2{font-size:24px}
+.sec>.hint{font-size:14px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.field{display:grid;gap:4px}
+.field label,.lab{font:600 12px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+input[type=number],select{font:600 20px/1 var(--f-mono);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:9px 10px;width:100%;font-variant-numeric:tabular-nums}
+select{font-size:15px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:4px;overflow:hidden}
+.seg button{font:600 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:0;background:var(--surface);color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.grid3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:8px}
+.sbtn{font:600 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);cursor:pointer}
+.sbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.verdict{border-left:3px solid var(--accent);padding:8px 0 8px 12px;font-size:15.5px;display:grid;gap:6px}
+.verdict b{font-family:var(--f-disp);font-size:19px;letter-spacing:.01em}
+.cands{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
+.cands li{padding:9px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:baseline;font-size:14.5px}
+.chip{font:600 11px/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.cands .d{font:600 13px var(--f-mono);color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cands .sub{grid-column:2/4;color:var(--muted);font-size:13.5px}
+.layers{display:grid;gap:6px}
+.layers label{display:flex;align-items:center;gap:10px;font-size:15px;cursor:pointer}
+.layers input{width:18px;height:18px;accent-color:var(--accent)}
+.sw{display:inline-block;width:22px;height:4px;border-radius:2px;flex:none}
+.swd{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none;margin-inline:6px}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.kout{font:600 14px/1.4 var(--f-mono);font-variant-numeric:tabular-nums}
+#pano{display:block;width:100%;height:auto;font-family:var(--f-mono);cursor:crosshair;touch-action:manipulation;border:1px solid var(--rule);border-radius:4px}
+#pano text{fill:var(--muted);font-size:10px}
+.log{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:13.5px}
+.log li{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--rule);padding:6px 0}
+.log button{background:none;border:0;color:var(--muted);cursor:pointer;font-size:13px}
+textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:8px}
+@media (max-width:900px){
+  body{overflow:auto}
+  .mapapp{grid-template-columns:1fr;height:auto}
+  #map{height:56dvh;min-height:320px}
+  .panel{border-left:0;border-top:1px solid var(--rule);overflow:visible}
+}
+</style>
+</head>
+<body>
+<header id="bar"></header>
+<main class="mapapp">
+  <div id="map" role="application" aria-label="Map of the Marfa Lights viewing direction"></div>
+  <aside class="panel" aria-label="Tools">
+
+    <section class="sec" id="identify">
+      <div class="eyebrow">What am I looking at?</div>
+      <h2>Identify a light</h2>
+      <p class="hint">Enter the compass bearing of a light you see from the Viewing Area, or tap the map or the panorama below. The tool lists every known light source on that line.</p>
+      <div class="grid3">
+        <div class="field"><label for="bearing">Bearing °</label><input id="bearing" type="number" inputmode="decimal" min="0" max="360" step="0.1" value="233.5"></div>
+        <div class="field"><label for="elev">Elevation °</label><input id="elev" type="number" inputmode="decimal" step="0.05" placeholder="opt."></div>
+        <div class="field"><label for="tol">± window</label><select id="tol"><option value="1">1°</option><option value="2" selected>2°</option><option value="5">5°</option></select></div>
+      </div>
+      <div class="row">
+        <div class="seg" role="group" aria-label="North reference">
+          <button type="button" id="refMag" aria-pressed="true">Magnetic</button><button type="button" id="refTrue" aria-pressed="false">True</button>
+        </div>
+        <button type="button" class="sbtn" id="compassBtn" aria-pressed="false">Use phone compass</button>
+      </div>
+      <p class="hint" id="declNote"></p>
+      <div id="verdict" class="verdict"></div>
+      <ul class="cands" id="cands"></ul>
+    </section>
+
+    <section class="sec" id="panorama">
+      <div class="eyebrow">View from the platform</div>
+      <h2>Panorama</h2>
+      <p class="hint">Skyline and US-67 as seen from the Viewing Area, southwest (left) to west (right). Tap where you see the light, relative to the mountains, to set both bearing and elevation.</p>
+      <svg id="pano" viewBox="0 0 640 250" role="img" aria-label="Panorama of the skyline and US-67 from the viewing area"></svg>
+    </section>
+
+    <section class="sec" id="layers">
+      <div class="eyebrow">Map layers</div>
+      <h2>Layers and refraction</h2>
+      <div class="field"><label for="base">Basemap</label><select id="base"><option value="img">USGS imagery</option><option value="topo">USGS topographic</option><option value="osm">OpenStreetMap</option></select></div>
+      <div class="layers" id="layerList"></div>
+      <div class="field">
+        <label for="k">Refraction coefficient k</label>
+        <input id="k" type="range" min="-1" max="3" step="0.01" value="0.13">
+        <span class="kout" id="kout"></span>
+        <span class="hint muted" style="font-size:13.5px">At k = 0.13 the road shows the standard classes. Move the slider to see which stretches a headlight could be seen from under other conditions. Clear, calm nights with a surface temperature inversion raise k.</span>
+      </div>
+    </section>
+
+    <section class="sec" id="logsec">
+      <div class="eyebrow">Field log</div>
+      <h2>Record a sighting</h2>
+      <p class="hint">Saves the current bearing, elevation and time on this device only. Download your log as a spreadsheet file when you're done.</p>
+      <textarea id="note" placeholder="Colour, motion, duration, splitting, anything else"></textarea>
+      <div class="row"><button type="button" class="btn" id="logBtn">Save sighting</button><button type="button" class="btn ghost" id="csvBtn">Download CSV</button></div>
+      <ul class="log" id="log"></ul>
+    </section>
+  </aside>
+</main>
+<script src="assets/leaflet/leaflet.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/map.js"></script>
+</body>
+</html>

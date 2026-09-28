@@ -9,7 +9,14 @@ The goal is to remove known sources (false positives) before studying anything a
 **Status: preliminary.** Results are not field‑validated and will change. Please do not cite
 figures from this repository without contacting the author.
 
-Site: `docs/index.html` (served by GitHub Pages from the `docs/` folder).
+Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub Pages, `docs/` folder)
+
+| Page | What it is |
+|---|---|
+| `docs/map.html` | Interactive map (USGS imagery) with every layer, a light identifier (bearing → candidate sources, true/magnetic, phone compass, panorama tap), a refraction slider, and a field log that exports CSV |
+| `docs/history.html`, `science.html`, `place.html`, `visit.html` | Background pages with numbered, linked sources |
+| `docs/sightlines.html` | The technical sight-line report |
+| `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
 
 ## Current results (2026‑09‑28)
 
@@ -27,7 +34,8 @@ for the maps, a panorama from the platform, and cross‑sections.
 | `analysis/marfa_infrastructure.py` | Airfields, railroads, grade crossings, transmission lines, cell sites, power plants — azimuth, distance, and whether each lies in front of US‑67 |
 | `analysis/los_browser.js` | Terrain line‑of‑sight engine (USGS 3DEP DEM; curvature + constant‑k refraction; closed‑form critical k) |
 | `analysis/marfa_occlusion.py` | Map 1 (standard atmosphere) and Map 2 (refraction range) KMLs, per‑point table, site data |
-| `analysis/build_site.py` | Builds `docs/index.html` from `analysis/occlusion_template.html` |
+| `analysis/build_site.py` | Builds `docs/sightlines.html` from `analysis/occlusion_template.html` |
+| `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
 | `data/inputs/` | Google Earth trace of US‑67 and reference points; infrastructure layers retrieved from public services |
 | `data/derived/` | Line‑of‑sight results exported from `los_browser.js` |
 | `outputs/` | KML layers for Google Earth and CSV tables |
@@ -40,7 +48,8 @@ pip install -r requirements.txt
 python analysis/marfa_ray_fan.py          # -> outputs/Marfa_ray_fan*.{kml,csv}
 python analysis/marfa_infrastructure.py   # downloads OurAirports CSVs on first run
 python analysis/marfa_occlusion.py        # -> outputs/Marfa_occlusion_*.kml, data/derived/occlusion_page.json
-python analysis/build_site.py             # -> docs/index.html
+python analysis/build_site.py             # -> docs/sightlines.html
+python analysis/build_site_data.py        # -> docs/data/site.json (website map layers)
 ```
 
 The DEM step (`los_browser.js`) runs in a browser console on the USGS ImageServer page, because
