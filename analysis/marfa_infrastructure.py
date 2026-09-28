@@ -27,7 +27,7 @@ from pyproj import Geod
 
 GEOD = Geod(ellps="WGS84")
 VIEWER = (-103.8827973, 30.2751108)
-FAN = (218.985, 277.276)   # Shafter end of US-67 .. user's right bound
+FAN = (157.276, 277.276)   # 120° fan: right bound from the KML, left bound 120° anticlockwise
 MAX_KM = 80.0
 DATA = "data/inputs"
 OURAIRPORTS = "https://raw.githubusercontent.com/davidmegginson/ourairports-data/main/"
@@ -56,8 +56,15 @@ def load_hwy_profile():
 HWY_AZ, HWY_D = load_hwy_profile()
 
 
+def in_front(az, d):
+    """True if a point at (az, d km) lies on a US-67 bearing and closer than the road."""
+    h = hwy_dist_at(az)
+    return h is not None and d < h
+
+
 def hwy_dist_at(az):
-    return float(np.interp(az, HWY_AZ, HWY_D)) if in_fan(az) else None
+    # only where a ray actually meets US-67 (np.interp would otherwise clamp to the end values)
+    return float(np.interp(az, HWY_AZ, HWY_D)) if HWY_AZ.min() <= az <= HWY_AZ.max() else None
 
 
 def densify(coords, step_km=0.1):
@@ -80,7 +87,7 @@ def line_fan_stats(lines):
     fan = [(a, d) for a, d in ad if in_fan(a)]
     if not fan:
         return dict(nearest_km=nearest, in_fan=False)
-    fg = [(a, d) for a, d in fan if d < hwy_dist_at(a)]
+    fg = [(a, d) for a, d in fan if in_front(a, d)]
     return dict(nearest_km=nearest, in_fan=True,
                 fan_az=(min(a for a, _ in fan), max(a for a, _ in fan)),
                 fan_km=(min(d for _, d in fan), max(d for _, d in fan)),
@@ -128,7 +135,7 @@ def load_airports(faa_ids):
         local = r["local_code"] or r["ident"]
         out.append(dict(kind=r["type"], ident=r["ident"], name=r["name"], lat=lat, lon=lon,
                         elev_ft=r["elevation_ft"], az=az, km=d, fan=in_fan(az),
-                        fg=in_fan(az) and d < hwy_dist_at(az), runways=rws,
+                        fg=in_fan(az) and in_front(az, d), runways=rws,
                         faa=(local in faa_ids or r["ident"] in faa_ids),
                         src=f"https://ourairports.com/airports/{r['ident']}/"))
     return sorted(out, key=lambda x: x["km"])
@@ -169,6 +176,8 @@ def pt_fan_text(az, km):
     if not in_fan(az):
         return "Outside fan window"
     h = hwy_dist_at(az)
+    if h is None:
+        return "<b>In fan window</b> — no US-67 on this bearing"
     rel = "IN FRONT OF US-67" if km < h else "beyond US-67"
     return f"<b>In fan window</b> — {rel} (highway at {h:.1f} km on this bearing)"
 
@@ -246,7 +255,7 @@ def main():
                                  f"<a href='https://railroads.dot.gov/safety/crossing-safety/crossing-inventory'>FRA crossing inventory</a>"))
         if in_fan(az):
             rows.append(["grade_crossing", cid, f"{rr} x {road}", pos, f"{lat:.5f}", f"{lon:.5f}", f"{az:.2f}",
-                         f"{d:.2f}", True, d < hwy_dist_at(az), f"night thru trains {night}", "FRA"])
+                         f"{d:.2f}", True, in_front(az, d), f"night thru trains {night}", "FRA"])
 
     # --- transmission lines
     tl_pms = []
@@ -275,7 +284,7 @@ def main():
                                  f"{lic}<br>{addr}<br>{asr_txt}<br>Structure height {allh or sup or '?'} m<br>"
                                  f"Az {az:.1f}°, {d:.1f} km<br>{pt_fan_text(az, d)}"))
         rows.append(["cell_site", call, f"{lic} — {addr}", st.strip(), f"{lat:.5f}", f"{lon:.5f}", f"{az:.2f}",
-                     f"{d:.2f}", in_fan(az), in_fan(az) and d < hwy_dist_at(az), f"ASR {asr}; height {allh or sup} m",
+                     f"{d:.2f}", in_fan(az), in_fan(az) and in_front(az, d), f"ASR {asr}; height {allh or sup} m",
                      "FCC ULS"])
 
     plant_pms = []
@@ -286,7 +295,7 @@ def main():
         plant_pms.append(pm_point(name, lon, lat, "plant", f"{tech}, {mw} MW ({util})<br>EIA plant {code}<br>"
                                   f"Az {az:.1f}°, {d:.1f} km<br>{pt_fan_text(az, d)}"))
         rows.append(["power_plant", code, name, tech, f"{lat:.5f}", f"{lon:.5f}", f"{az:.2f}", f"{d:.2f}",
-                     in_fan(az), in_fan(az) and d < hwy_dist_at(az), f"{mw} MW", "EIA-860"])
+                     in_fan(az), in_fan(az) and in_front(az, d), f"{mw} MW", "EIA-860"])
 
     def fan_edge(az, km=80):
         lon, lat, _ = GEOD.fwd(VIEWER[0], VIEWER[1], az, km * 1000)

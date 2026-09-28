@@ -28,6 +28,8 @@ from shapely.geometry import LineString, MultiPoint, Point
 
 STEP_DEG = 0.5          # angular spacing of the fan
 RAY_LEN_M = 90_000      # rays are cast this far, then trimmed at the highway
+FAN_SPAN_DEG = 120.0    # fan width: the left bound is set this far anticlockwise of the right bound
+NOHIT_LEN_M = 80_000    # rays that never meet US-67 are drawn to this length
 SAMPLE_M = 30.0         # profile sampling interval (~1 arc-second DEM cell)
 NS = {"k": "http://www.opengis.net/kml/2.2"}
 GEOD = Geod(ellps="WGS84")
@@ -189,11 +191,10 @@ def write_kml(path, feats, viewer, highway, rays, meta):
                     f"Highway chainage from Shafter end: {h['hwy_chainage_m']/1000:.2f} km<br>"
                     f"Highway crossings on this ray: {len(r['hits'])}")
         else:
-            _, lon, lat = ray_samples(viewer, r["az"], 5000, 5000)
-            end = (lon[-1], lat[-1])
-            desc = f"Azimuth {r['az']:.2f}° — NO highway intersection"
+            desc = (f"Azimuth {r['az']:.2f}° (true)<br>No US-67 crossing on this bearing; "
+                    f"drawn to {NOHIT_LEN_M/1000:.0f} km")
         # densify so the tessellated line follows the geodesic exactly
-        L = r["hits"][0]["dist_m"] if r["hits"] else 5000
+        L = r["hits"][0]["dist_m"] if r["hits"] else NOHIT_LEN_M
         _, lon, lat = ray_samples(viewer, r["az"], L, 1000)
         body_rays.append(kml_line(f"Ray {r['az']:.1f}°", list(zip(lon, lat)), sid, desc))
         for h in r["hits"]:
@@ -212,7 +213,8 @@ def write_kml(path, feats, viewer, highway, rays, meta):
 <name>Marfa ray fan ({STEP_DEG}° steps)</name>
 <description><![CDATA[Geodesic sight-line fan from the Marfa Lights Viewing Area to US-67.
 {n} rays, azimuth {meta['az_left']:.2f}° to {meta['az_right']:.2f}° (true), step {STEP_DEG}°.
-Generated from Investigation_Marfa.kml. Geometry only — no terrain occlusion applied yet.]]></description>
+Rays that cross US-67 stop at the first crossing; the others run {NOHIT_LEN_M/1000:.0f} km.
+Generated from Investigation_Marfa.kml. Geometry only — no terrain occlusion applied here.]]></description>
 <Style id="viewer"><IconStyle><scale>1.3</scale><color>ff007cf5</color>
 <Icon><href>http://maps.google.com/mapfiles/kml/shapes/star.png</href></Icon></IconStyle></Style>
 <Style id="hp"><IconStyle><scale>1.3</scale><color>ffa21f7b</color>
@@ -227,7 +229,7 @@ Generated from Investigation_Marfa.kml. Geometry only — no terrain occlusion a
 {kml_point('Marfa Lights Viewing Area', viewer[0], viewer[1], 'viewer', 'US-90 viewing area (from source KML)')}
 {kml_point('Highway High-Point', hp[0], hp[1], 'hp', f'Elevation in source KML: {hp[2]:.1f} m AMSL<br>Azimuth from viewer {az_hp % 360:.2f}°, distance {d_hp/1000:.3f} km', hp[2], True)}
 {kml_line('US-67 Shafter to Marfa', [(p[0], p[1]) for p in highway], 'hwy')}
-{kml_line('Left bound', [(p[0], p[1]) for p in feats['Left Line']], 'bound')}
+{kml_line('Original left bound (KML)', [(p[0], p[1]) for p in feats['Left Line']], 'bound')}
 {kml_line('Right bound', [(p[0], p[1]) for p in feats['Right Line']], 'bound')}
 </Folder>
 <Folder><name>Rays ({n})</name>
@@ -248,10 +250,14 @@ def main(src="data/inputs/Investigation_Marfa.kml", out="outputs/Marfa_ray_fan")
     feats = read_kml(src)
     viewer = [v for k, v in feats.items() if "Hwy 67/90" in k][0][0]
     highway = feats["Shafer to Marfa"]
-    # Left bound: originally the "Left Line" in the KML (the US-67 high point, 228.9°).
-    # Extended 2026-09-28 to the Shafter end of the highway trace so the fan covers all of US-67.
-    left_end = highway[0]
+    # Left bound history: originally the "Left Line" in the KML (the US-67 high point, 228.9°);
+    # then the Shafter end of the highway trace (218.985°) so the fan covered all of US-67;
+    # now (2026-09-28) FAN_SPAN_DEG anticlockwise of the right bound, a ~120° fan that also
+    # covers Mitchell Flat to the south and south-southeast, where no highway runs.
     right_end = feats["Right Line"][-1]
+    az_r = GEOD.inv(viewer[0], viewer[1], right_end[0], right_end[1])[0] % 360
+    lon_l, lat_l, _ = GEOD.fwd(viewer[0], viewer[1], (az_r - FAN_SPAN_DEG) % 360, 10_000)
+    left_end = (lon_l, lat_l)
 
     rays, meta = build_fan(viewer, highway, left_end, right_end)
     write_kml(f"{out}.kml", feats, viewer, highway, rays, meta)
@@ -273,9 +279,7 @@ def main(src="data/inputs/Investigation_Marfa.kml", out="outputs/Marfa_ray_fan")
         w = csv.writer(f)
         w.writerow(["ray_azimuth_deg", "dist_m", "lon", "lat", "ground_elev_m"])
         for r in rays:
-            L = r["hits"][-1]["dist_m"] if r["hits"] else 0
-            if not L:
-                continue
+            L = r["hits"][-1]["dist_m"] if r["hits"] else NOHIT_LEN_M
             d, lon, lat = ray_samples(viewer, r["az"], L)
             for di, lo, la in zip(d, lon, lat):
                 w.writerow([f"{r['az']:.3f}", f"{di:.1f}", f"{lo:.7f}", f"{la:.7f}", ""])

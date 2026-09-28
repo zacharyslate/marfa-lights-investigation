@@ -4,3 +4,4 @@ __pycache__/
 data/inputs/airports.csv
 data/inputs/runways.csv
 .DS_Store
+outputs/Marfa_ray_fan_profiles.csv

@@ -1,0 +1,76 @@
+# Publication materials
+
+Figures and method notes for the Marfa Lights manuscript. Everything here is generated from the code in `../analysis/` and the data in `../data/`. Please do not edit figures by hand: change the script and re-run it.
+
+**Status: preliminary.** No result here has yet been checked against field observations.
+
+## Figures (`figures/`)
+
+Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The widths are 180 mm (double column). Colours come from the Okabe–Ito colour-blind-safe palette (Okabe & Ito 2008).
+
+**Figure 1 · `fig01_study_area`: The 120° viewing fan.**
+- Rays at 0.5° from the Marfa Lights Viewing Area (star), 157.3°–277.3° true, over a USGS 3DEP hillshade with 200 m contours.
+- Rays that cross US-67 stop at the first crossing. The rest run 80 km.
+- Roads are coloured by whether a 0.7 m headlamp is in view from the platform at k = 0.13:
+  - US-67: vermilion = visible, orange = marginal.
+  - Other TxDOT state roads: purple = visible.
+  - Grey: hidden.
+- Blue lines are railroads. Diamonds are FCC-registered towers with aviation lighting: filled if the top light is in view, hollow if hidden.
+- Axes are km east and north of the viewer, in an azimuthal-equidistant projection.
+
+**Figure 2 · `fig02_panorama_zos`: The view from the platform and the Zone of Skepticism.**
+- (a) Bearings 155°–300° true; (b) the US-67 / RM 2810 sector at 224°–262°.
+- Grey layers are terrain silhouettes: the far skyline, then the maximum elevation angle within 45, 25 and 10 km. The black line is the skyline at k = 0.13.
+- Points are the apparent positions, at k = 0.13, of headlamps on roads in view and of locomotive headlamps on track in view. Diamonds are lit towers.
+- Green fill is the Zone of Skepticism, tier A: the locus of every catalogued source for 0 ≤ k ≤ 1, widened by ±0.3° in bearing and ±0.1° in elevation. The dashed green outline is tier B (±3°, ±0.25°).
+- The vertical scale is exaggerated; the factor is printed on each panel. The top axis gives magnetic bearing, using a declination of 6.2° E.
+- Definition: note 5.
+
+**Figure 3 · `fig03_headlights`: How bright a car would look.**
+- (a, b) Iso-candela maps of one production U.S. headlamp: 2016 Ford Focus S, NHTSA report 108-CAN-17-004. Crosses mark the measured test points. Shaded margins are extrapolated.
+- Coloured dots mark where the Viewing Area falls in the beam of cars on US-67 and RM 2810 heading toward Marfa.
+- (c) Predicted apparent magnitude of a car facing the platform, for low and high beams. The model uses two unresolved lamps and MOR = 100 km. Bars show ±0.5° of aim and pitch and the range of fall-off beyond the measured angles.
+- Definition: note 4.
+
+**Figure 4 · `fig04_sightlines`: Terrain cross-sections along four bearings.**
+- Ground elevation is reduced by E + d²(1−k)/2R, with k = 0.13, so every sight line from the eye is a straight line through the origin.
+- Coloured ground is in direct view. The dotted line is the steepest (skyline) ray. Triangles mark road or track crossings.
+- The bearings are:
+  - 233.6°: US-67 in view on the straight that points at the platform.
+  - 240°: US-67 hidden behind the Mitchell Flat rise.
+  - 255.6°: RM 2810 in view in the Chinati foothills.
+  - 190°: Texas Pacifico track in view 4–5 km away.
+
+**Figure 5 · `fig05_refraction`: Sensitivity to refraction.**
+- (a) Length of US-67 and of RM 2810 whose critical refraction coefficient is ≤ k, plotted against k. This includes the grazing (marginal) part: US-67 has 9.3 km clearly visible plus 1.2 km grazing at k = 0.13. The top axis converts k to the temperature gradient, using Hirt et al. (2010) at 850 hPa and 283 K.
+- (b) Rise in apparent elevation for a change Δk in refraction, plotted against distance.
+
+## Notes (`notes/`)
+
+| File | Contents |
+|---|---|
+| `01_geometry_and_rays.md` | observer, the fan, geodesics, angular size at range |
+| `02_curvature_and_refraction.md` | curvature drop, refraction coefficient, Hirt formula, why humidity doesn't bend light, limits of a constant k |
+| `03_line_of_sight.md` | DEM, visibility test, closed-form critical k, visibility classes, cross-sections, skyline |
+| `04_headlight_brightness.md` | car-frame angles, measured beam data, interpolation, lux to magnitude, results, limitations |
+| `05_zone_of_skepticism.md` | definition, construction, coverage, what it leaves out |
+| `06_geography_geology_climate.md` | setting, with sources |
+| `07_data_sources.md` | provenance table and catalogue gaps |
+
+## Regenerate everything
+
+Run from the repository root, using the project virtual environment (`ZACH-venv`):
+
+```bash
+python analysis/marfa_ray_fan.py
+python analysis/marfa_infrastructure.py
+python analysis/marfa_occlusion.py
+python analysis/headlight_model.py      # -> data/derived/headlights.json
+python analysis/build_site_data.py      # -> docs/data/site.json
+python analysis/zone_of_skepticism.py   # -> data/derived/zos.json, docs/data/zos.json
+python analysis/pub_figures.py          # -> publication/figures/*
+```
+
+## Reference
+
+- Okabe, M., Ito, K. (2008). *Color Universal Design (CUD): How to make figures and presentations that are friendly to colorblind people.* J*Fly. https://jfly.uni-koeln.de/color/

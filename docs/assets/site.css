@@ -3,7 +3,7 @@
 :root{
   --bg:#f3f4f6; --surface:#ffffff; --surface-2:#eceff3; --ink:#14181e; --ink-2:#3d4550; --muted:#687280;
   --rule:#d7dce2; --accent:#a55d00; --accent-ink:#ffffff; --link:#8a4d00;
-  --vis:#2a78d6; --marg:#d9602a; --hid:#a3abb3; --rail:#7b4fb0; --power:#b08a00; --cell:#c03a3a; --town:#14181e;
+  --vis:#2a78d6; --marg:#d9602a; --hid:#a3abb3; --rail:#7b4fb0; --road2:#d0368a; --zos:#2e9d5b; --power:#b08a00; --cell:#c03a3a; --town:#14181e;
   --shadow:0 1px 2px rgba(20,24,30,.06),0 4px 16px rgba(20,24,30,.06);
   --f-disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
   --f-body:"Source Sans 3","Segoe UI",system-ui,-apple-system,sans-serif;
@@ -15,19 +15,19 @@
   :root:not([data-theme="light"]):not([data-theme="night"]){color-scheme:dark;
     --bg:#0b0e13; --surface:#131922; --surface-2:#1a212c; --ink:#e9e7e1; --ink-2:#bcc2ca; --muted:#8b949e;
     --rule:#28313d; --accent:#f0a43a; --accent-ink:#141008; --link:#f3b561;
-    --vis:#4b95ea; --marg:#e0703a; --hid:#5c6570; --rail:#b08ae0; --power:#e0c04a; --cell:#f06060; --town:#e9e7e1;
+    --vis:#4b95ea; --marg:#e0703a; --hid:#5c6570; --rail:#b08ae0; --road2:#f06bb4; --zos:#45c07a; --power:#e0c04a; --cell:#f06060; --town:#e9e7e1;
     --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35); --map-filter:brightness(.85);}
 }
 :root[data-theme="dark"]{color-scheme:dark;
   --bg:#0b0e13; --surface:#131922; --surface-2:#1a212c; --ink:#e9e7e1; --ink-2:#bcc2ca; --muted:#8b949e;
   --rule:#28313d; --accent:#f0a43a; --accent-ink:#141008; --link:#f3b561;
-  --vis:#4b95ea; --marg:#e0703a; --hid:#5c6570; --rail:#b08ae0; --power:#e0c04a; --cell:#f06060; --town:#e9e7e1;
+  --vis:#4b95ea; --marg:#e0703a; --hid:#5c6570; --rail:#b08ae0; --road2:#f06bb4; --zos:#45c07a; --power:#e0c04a; --cell:#f06060; --town:#e9e7e1;
   --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35); --map-filter:brightness(.85);}
 /* Night vision: red only, low luminance. Everything, including the map, goes red-on-black. */
 :root[data-theme="night"]{color-scheme:dark;
   --bg:#000000; --surface:#0a0000; --surface-2:#140202; --ink:#d23a2a; --ink-2:#b0301f; --muted:#7c2216;
   --rule:#2a0805; --accent:#e5452f; --accent-ink:#000000; --link:#e5452f;
-  --vis:#ff5a3c; --marg:#a8321f; --hid:#4a130b; --rail:#8e2a18; --power:#8e2a18; --cell:#c23421; --town:#d23a2a;
+  --vis:#ff5a3c; --marg:#a8321f; --hid:#4a130b; --rail:#8e2a18; --road2:#e0482f; --zos:#7a2414; --power:#8e2a18; --cell:#c23421; --town:#d23a2a;
   --shadow:none; --map-filter:grayscale(1) brightness(.45) sepia(1) hue-rotate(-50deg) saturate(6);}
 
 *{box-sizing:border-box}

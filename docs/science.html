@@ -7,7 +7,7 @@
 <meta name="description" content="What field studies of the Marfa Lights found, how atmospheric refraction works over Mitchell Flat, and what a terrain line-of-sight model shows.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="stylesheet" href="assets/site.css?v=4">
 </head>
 <body>
 <header id="bar"></header>
@@ -33,15 +33,21 @@
       <p>Surveyors measure this bending with a refraction coefficient <i>k</i>. The textbook value is 0.13. Measured close to the ground, <i>k</i> swings from about −4 on hot afternoons to +16 around sunset.<sup><a href="#r6">6</a></sup> Humidity barely affects how visible light bends. It matters for haze and dimming, not for bending.<sup><a href="#r7">7</a></sup></p>
 
       <h2>What our terrain model adds</h2>
-      <p>We traced a line of sight from the Viewing Area to every 60 m of US-67 between Shafter and Marfa, over USGS 3DEP elevation data, with Earth curvature and refraction included.</p>
+      <p>We traced a line of sight from the Viewing Area to every 60 m of US-67 between Shafter and Marfa, and to every 120 m of the other state roads across a 120° fan (157°–277° true), over USGS 3DEP elevation data, with Earth curvature and refraction included.</p>
       <ul>
         <li><b>Only a short stretch of road is in view.</b> At normal refraction, a headlight is clearly visible along about 9 km of the 65 km of road. That stretch lies between 229° and 238° true, 24–40 km away, just north of the road's high point. It is broken into about 23 separate pieces. A car driving through it would blink in and out.</li>
         <li><b>Refraction adds little.</b> Even a strong night inversion (k = 1) extends the visible road by only about 2 km. The nearer road toward Marfa, between 238° and 277°, stays hidden behind a low rise under any realistic conditions.</li>
         <li><b>Headlights appear against the mountains.</b> They sit below the Chinati Mountains skyline, not against open sky. A light seen above the skyline is not a car on US-67.</li>
         <li><b>Two lit towers sit in the viewing direction.</b> An 89 m telephone tower stands 20 km away at 230° true, in front of the visible stretch of road. Its aviation lights appear right among the headlights. A second lit tower, on a ridge 56 km away at 259°, shows just above the skyline. A 105 m power-line tower at 256°, 17 km out, carries red lights at night and white strobes by day. (FCC Antenna Structure Registrations, checked against the terrain model.)</li>
-        <li><b>The railroad matters too.</b> The Texas Pacifico line to Presidio clips the southwest edge of the viewing direction about 15–17 km away, much closer than the highway on the same bearing.</li>
+        <li><b>A second road is in view: RM 2810.</b> Pinto Canyon Road leaves Marfa to the southwest and climbs into the Chinati foothills. About 27 km of it is in clear view at 253°–259° true, 32–53 km away, just below the skyline. We missed this in our first version, which only modelled US-67.</li>
+        <li><b>The railroad matters too.</b> The Texas Pacifico track to Presidio is in view 4–8 km south and south-southwest of the platform, between about 143° and 213° true.</li>
+        <li><b>Direction decides brightness.</b> Headlights are bright only near their axis. On one straight of US-67, at 233.5° true and 31–33 km out, northbound cars point within 3–5° of the platform. With high beams they should look about magnitude −2, brighter than Sirius. Seen 12° off its axis, the same car is already 10–20 times fainter, and it fades further beyond that. Southbound cars show only red tail lights. This is based on one measured production headlamp, so treat it as a guide, not a prediction for every car.</li>
       </ul>
-      <p>So a moving light between 238° and 277° true, or above the skyline, cannot be explained as a car on US-67 unless conditions are extreme. Those are the lights worth logging carefully. See the <a href="sightlines.html">full sight-line report</a> and the <a href="map.html">map</a>.</p>
+      <p>So a light below the skyline between about 239° and 251°, or between 261° and 274° true, has no catalogued road on its bearing. Those are the lights worth logging carefully. A light between 238° and 277° is not automatically unexplained: RM 2810 traffic and two lit towers sit in that arc. See the <a href="sightlines.html">full sight-line report</a> and the <a href="map.html">map</a>.</p>
+
+      <h2>The Zone of Skepticism</h2>
+      <p>We combine every catalogued light into one picture: roads and track in view, lit towers, towns and their skyglow, and the aerostat. For each, we mark every place in the sky it could appear, for refraction anywhere from k = 0 to k = 1, widened by the observer's measurement error. We call this the Zone of Skepticism. A light inside it has an ordinary candidate that must be ruled out first. A light outside it has none that we know of. That makes it worth attention, not proof of anything.</p>
+      <p>How much of the view the zone covers depends on how well you measure. In the band just below the skyline, where the lights are usually described, the zone covers about a third of the fan if bearings come from a photo with the skyline in frame (±0.3°). With a hand compass (±3°) it covers about three-quarters. <b>Careful measurement is what makes a sighting testable.</b> The panorama in the <a href="map.html">identifier</a> shows the zone in green.</p>
 
       <h2>What would settle it</h2>
       <ul>
@@ -56,7 +62,8 @@
       <h3>Limits of our model</h3>
       <p>It treats refraction as uniform along each sight line. Near the ground that is a simplification, so a height-by-height ray trace is the next step.</p>
       <p>The ~30 m elevation data misses road cuts, brush and buildings.</p>
-      <p>It covers where a lamp could be seen, not which way it points. Headlights are bright only straight ahead.</p>
+      <p>Brightness comes from one measured U.S. headlamp (a 2016 Ford Focus) and an assumed clear-night visibility. Real lamps, aim and haze vary.</p>
+      <p>County and private ranch roads, ranch lights and unregistered structures are not yet catalogued.</p>
       <p>It has not yet been checked against field observations.</p>
       <p>Code and data: <a href="https://github.com/zacharyslate/marfa-lights-investigation">GitHub</a>.</p>
     </aside>
@@ -72,10 +79,14 @@
       <li id="r5">Brian Dunning, “The Marfa Lights: A Real American Mystery,” <i>Skeptoid</i> #38, 11 April 2007. <a href="https://skeptoid.com/episodes/4038">skeptoid.com</a></li>
       <li id="r6">C. Hirt, S. Guillaume, A. Wisbar, B. Bürki, H. Sternberg, “Monitoring of the refraction coefficient in the lower atmosphere using a controlled setup of simultaneous reciprocal vertical angle measurements,” <i>J. Geophys. Res.</i> 115, D21102 (2010). <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD014067">doi:10.1029/2010JD014067</a></li>
       <li id="r7">P. E. Ciddor, “Refractive index of air: new equations for the visible and near infrared,” <i>Applied Optics</i> 35(9), 1566–1573 (1996).</li>
+      <li id="r8">NHTSA compliance test report 108-CAN-17-004 (FMVSS No. 108), 2016 Ford Focus S headlamps, Calcoast-ITL, 30 November 2016. <a href="https://static.nhtsa.gov/odi/ctr/2017/TRTR-644737-2017-001.pdf">static.nhtsa.gov</a></li>
+      <li id="r9">B. E. Schaefer, “Astronomy and the limits of vision,” <i>Vistas in Astronomy</i> 36, 311–361 (1993). <a href="https://doi.org/10.1016/0083-6656(93)90113-X">doi:10.1016/0083-6656(93)90113-X</a></li>
+      <li id="r10">Road geometry: TxDOT Roadways (on-system routes), Texas Department of Transportation open data, extract of 1 September 2026.</li>
+      <li>Methods, figures and notes: the <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">publication folder</a> on GitHub.</li>
     </ol>
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=3"></script>
+<script src="assets/site.js?v=4"></script>
 </body>
 </html>

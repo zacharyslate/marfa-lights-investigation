@@ -1,6 +1,7 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const S = await fetch("data/site.json?v=3").then(r => r.json());
+  const [S, ZOS] = await Promise.all([fetch("data/site.json?v=4").then(r => r.json()),
+    fetch("data/zos.json?v=4").then(r => r.json()).catch(() => null)]);
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;
@@ -25,9 +26,24 @@
   }
 
   // ------------------------------------------------------------ data prep
-  const H = S.hwy.map(p => ({lat: p[0], lon: p[1], az: p[2], d: p[3], z: p[4], kc: p[5], cls: p[6], a: p[7], ch: p[8]}));
-  const hwyDistAt = az => {           // distance to the first US-67 crossing on a bearing inside the fan
-    const r = S.rays; if (az < r[0][0] || az > r[r.length - 1][0]) return null;
+  const H = S.hwy.map(p => ({lat: p[0], lon: p[1], az: p[2], d: p[3], z: p[4], kc: p[5], cls: p[6], a: p[7], ch: p[8],
+    dir: p[9], h: p[10], mL: p[11], mLd: p[12], mLb: p[13], mH: p[14], mHd: p[15], mHb: p[16]}));
+  // other state roads (TxDOT): [lat, lon, az, d, a, kc, cls, dir, h, mL, mLd, mLb, mH, mHd, mHb]
+  const RD = S.roads.map(r => ({n: r.n, k: r.k, p: r.p.map(q => ({lat: q[0], lon: q[1], az: q[2], d: q[3], a: q[4], kc: q[5], cls: q[6],
+    dir: q[7], h: q[8], mL: q[9], mLd: q[10], mLb: q[11], mH: q[12], mHd: q[13], mHb: q[14]}))}));
+  // brightness wording for a run of road samples (the brightest facing sample in view)
+  const TOWARD = {US67: "toward Marfa (northbound)", RM2810: "toward Marfa", US0090: "toward Marfa (eastbound)", US0067: "away from Marfa (eastbound)"};
+  function brightText(run, key) {
+    const f = run.filter(p => p.mH !== null && p.mH !== undefined);
+    if (!f.length) return "";
+    const b = f.reduce((a, p) => p.mH < a.mH ? p : a);
+    const dirTxt = b.dir === 0 ? "heading toward Marfa" : "heading away from Marfa";
+    const cmp = m => m <= -1 ? "as bright as the brightest stars" : m <= 1.5 ? "like a bright star" : m <= 4 ? "like a modest star" : m <= 6 ? "faint, near the naked-eye limit" : "too faint to see";
+    return `A car ${dirTxt} here can point within ${fmt(Math.max(1, Math.abs(b.h)), 0)}° of the platform: about magnitude ${fmt(b.mH, 1)} on high beam (${cmp(b.mH)}), ${fmt(b.mL, 1)} on low beam. Cars going the other way show only red tail lights.`;
+  }
+  const HIT = S.rays.filter(r => r[4] === 1);
+  const hwyDistAt = az => {           // distance to the first US-67 crossing, only where rays meet US-67
+    const r = HIT; if (az < r[0][0] || az > r[r.length - 1][0]) return null;
     for (let i = 0; i < r.length - 1; i++) if (az >= r[i][0] && az <= r[i + 1][0]) {
       const f = (az - r[i][0]) / (r[i + 1][0] - r[i][0] || 1); return r[i][3] + f * (r[i + 1][3] - r[i][3]);
     }
@@ -54,6 +70,16 @@
     const f = (az - s[i][0]) / 0.1; return {m: s[i][1] + f * (s[i + 1][1] - s[i][1]), d: s[i][2]};
   };
 
+  // Zone of Skepticism (analysis/zone_of_skepticism.py): rings of [az, el_mrad]
+  const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+    const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+  function zosAt(az, m) {           // null = cannot say; true/false = inside/outside tier A (tier B if only a bearing)
+    if (!ZOS) return null;
+    if (m === null) return null;
+    let n = 0; ZOS.tiers.A.forEach(r => { if (inRing(az, m, r)) n++; });
+    return n % 2 === 1;
+  }
+
   // ------------------------------------------------------------ map
   const map = L.map("map", {zoomControl: true, attributionControl: true}).setView(V, 10);
   const bases = {
@@ -68,7 +94,8 @@
   const groups = {};
   const LAYERS = [
     ["hwy", "US-67 line of sight", "sw", "--vis", true],
-    ["fan", "Viewing fan, 0.5° rays", "sw", "--accent", true],
+    ["roads", "Other state roads (RM 2810, US-90…)", "sw", "--road2", true],
+    ["fan", "Viewing fan, 120°, 0.5° rays", "sw", "--accent", true],
     ["rail", "Railroads", "sw", "--rail", true],
     ["xing", "Rail grade crossings", "swd", "--rail", false],
     ["power", "Power lines ≥ 69 kV", "sw", "--power", false],
@@ -98,7 +125,7 @@
     ["fan", "rail", "xing", "power", "air", "tower", "towns"].forEach(id => groups[id].clearLayers());
     const acc = css("--accent");
     // fan wedge + rays
-    const FR = 66000, e1 = fwd(V[0], V[1], S.fan[0], FR), e2 = fwd(V[0], V[1], S.fan[1], FR);
+    const FR = 80000, e1 = fwd(V[0], V[1], S.fan[0], FR), e2 = fwd(V[0], V[1], S.fan[1], FR);
     const arc = []; for (let a = S.fan[0]; a <= S.fan[1] + 1e-6; a += 1) arc.push(fwd(V[0], V[1], a, FR));
     L.polygon([V, e1, ...arc, e2], {color: acc, weight: 1.5, opacity: .85, fillColor: acc, fillOpacity: .08, interactive: false}).addTo(groups.fan);
     S.rays.forEach((r, i) => { if (i % 2 === 0 || i === S.rays.length - 1) L.polyline([V, [r[1], r[2]]], {color: acc, weight: 1, opacity: .42, interactive: false}).addTo(groups.fan); });
@@ -142,10 +169,11 @@
   // highway, styled by current refraction mode
   let K = 0.13;
   const hwyClass = p => Math.abs(K - 0.13) < 1e-9 ? p.cls : (p.kc <= K ? "v" : "h");
+  const roadClass = p => p.kc <= K ? "v" : "h";
   function drawHwy() {
     groups.hwy.clearLayers();
     const col = {v: css("--vis"), m: css("--marg"), h: css("--hid")}, w = {v: 6, m: 5, h: 3};
-    const label = {v: "Visible from the Viewing Area", m: "Marginal: depends on detail finer than the terrain model", h: "Hidden by terrain"};
+    var label = {v: "Visible from the Viewing Area", m: "Marginal: depends on detail finer than the terrain model", h: "Hidden by terrain"};
     let run = [H[0]];
     const flush = () => {
       if (run.length < 2) return; const c = hwyClass(run[0]), a = run[0], b = run[run.length - 1];
@@ -155,6 +183,25 @@
           `Distance ${fmt(Math.min(a.d, b.d), 1)}–${fmt(Math.max(a.d, b.d), 1)} km · road ${Math.min(a.z, b.z)}–${Math.max(a.z, b.z)} m`]));
     };
     for (let i = 1; i < H.length; i++) { run.push(H[i]); if (hwyClass(H[i]) !== hwyClass(run[0]) || i === H.length - 1) { flush(); run = [H[i]]; } }
+    // other state roads: split at class changes and at gaps between separate pieces
+    groups.roads.clearLayers();
+    const rc = {v: css("--road2"), m: css("--marg"), h: css("--hid")};
+    RD.forEach(rd => {
+      let seg = [rd.p[0]];
+      const cl = p => roadClass(p);
+      const out = () => {
+        if (seg.length < 2) return; const c = cl(seg[0]);
+        cased(seg.map(p => [p.lat, p.lon]), {color: rc[c], weight: c === "h" ? 2 : 4.5, opacity: 1, lineCap: "butt"}, groups.roads)
+          .bindPopup(popup(rd.n, [`<span style="color:${rc[c]}">■</span> ${label[c]}${Math.abs(K - 0.13) < 1e-9 ? " (standard refraction)" : ` at k = ${fmt(K, 2)}`}`,
+            `Bearing ${fmt(Math.min(...seg.map(p => p.az)), 1)}–${fmt(Math.max(...seg.map(p => p.az)), 1)}° true · ${fmt(Math.min(...seg.map(p => p.d)), 1)}–${fmt(Math.max(...seg.map(p => p.d)), 1)} km`,
+            c !== "h" ? brightText(seg, rd.k) : "", "Road geometry: TxDOT Roadways"]));
+      };
+      for (let i = 1; i < rd.p.length; i++) {
+        const a = rd.p[i - 1], b = rd.p[i], gap = Math.abs(a.d - b.d) > 0.5 || Math.abs(angDiff(a.az, b.az)) > 3;
+        if (gap) { out(); seg = [b]; continue; }
+        seg.push(b); if (cl(b) !== cl(seg[0]) || i === rd.p.length - 1) { out(); seg = [b]; }
+      }
+    });
   }
   const viewer = L.marker(V, {icon: L.divIcon({className: "viewer-icon", html: `<svg width="26" height="26" viewBox="-13 -13 26 26"><path d="M0,-11 L3,-3.5 L11,-3.5 L4.6,1.6 L7,10 L0,5 L-7,10 L-4.6,1.6 L-11,-3.5 L-3,-3.5 Z" fill="#f0a43a" stroke="#000" stroke-width="1"/></svg>`, iconSize: [26, 26], iconAnchor: [13, 13]}), zIndexOffset: 1000})
     .bindPopup(popup("Marfa Lights Viewing Area", [`Ground ${fmt(S.viewer.z, 0)} m above sea level (USGS 3DEP)`, "US-90, about 9 miles east of Marfa"])).addTo(map);
@@ -207,7 +254,7 @@
     const idx = H.map((p, i) => within(p.az) ? i : -1).filter(i => i >= 0);
     const hwyRuns = []; let cur = [];
     idx.forEach((i, j) => { if (j && i !== idx[j - 1] + 1) { hwyRuns.push(cur); cur = []; } cur.push(H[i]); }); if (cur.length) hwyRuns.push(cur);
-    let anyVisible = false;
+    let anyVisible = false, anyRoad = false;
     hwyRuns.forEach(run => {
       const cls = run.map(hwyClass), nv = cls.filter(c => c === "v").length, nm = cls.filter(c => c === "m").length;
       const st = nv ? "v" : nm ? "m" : "h"; if (st === "v") anyVisible = true;
@@ -219,7 +266,21 @@
       }
       C.push({d: dmin, chip: "US-67", col: st === "v" ? "--vis" : st === "m" ? "--marg" : "--hid",
         t: st === "v" ? "Car headlights: road in view" : st === "m" ? "Car headlights: road marginally in view" : "US-67, hidden by terrain",
-        dist: `${fmt(dmin, 1)}–${fmt(dmax, 1)} km`, sub: `${fmt(run.length * 0.06, 1)} km of road on this bearing, road km ${fmt(run[0].ch, 1)}–${fmt(run[run.length - 1].ch, 1)} from Shafter${match}`});
+        dist: `${fmt(dmin, 1)}–${fmt(dmax, 1)} km`, sub: `${fmt(run.length * 0.06, 1)} km of road on this bearing, road km ${fmt(run[0].ch, 1)}–${fmt(run[run.length - 1].ch, 1)} from Shafter${match}${vis.length ? ". " + brightText(vis, "US67") : ""}`});
+    });
+    // other state roads within the window
+    RD.forEach(rd => {
+      const w = rd.p.filter(p => within(p.az)); if (!w.length) return;
+      const vis = w.filter(p => roadClass(p) === "v"); if (!vis.length) return; anyRoad = true;
+      const dmin = Math.min(...w.map(p => p.d)), dmax = Math.max(...w.map(p => p.d));
+      let match = "";
+      if (elev !== null && vis.length) {
+        const ed = vis.map(p => mrad2deg(p.a)); const lo = Math.min(...ed), hi = Math.max(...ed);
+        match = elev >= lo - 0.25 && elev <= hi + 0.25 ? " · elevation matches. " : ` · headlights here appear at ${fmt(lo, 2)}° to ${fmt(hi, 2)}°. `;
+      } else if (vis.length) match = ". ";
+      C.push({d: vis.length ? Math.min(...vis.map(p => p.d)) : dmin, chip: "Road", col: vis.length ? "--road2" : "--hid",
+        t: vis.length ? `${rd.n}: car headlights, road in view` : `${rd.n}, hidden by terrain`, dist: `${fmt(dmin, 1)}–${fmt(dmax, 1)} km`,
+        sub: vis.length ? `${fmt(vis.length * 0.12, 1)} km in view on this bearing${match}${brightText(vis, rd.k)}` : "No line of sight at this refraction"});
     });
     // railroads: nearest point per line within window
     const byLine = {};
@@ -254,7 +315,11 @@
     const inFan = b >= S.fan[0] && b <= S.fan[1];
     if (anyVisible) lines.push(`<b>US-67 is in view on this bearing.</b> A light moving steadily along it, especially a pair that splits or merges, is most likely a vehicle.`);
     else if (hwyRuns.length) lines.push(`<b>US-67 lies on this bearing but is hidden${Math.abs(K - 0.13) < 1e-9 ? " at standard refraction" : ` at k = ${fmt(K, 2)}`}.</b> Car headlights here need unusual refraction. Check the other sources below.`);
-    else lines.push(`<b>US-67 is not on this bearing.</b>${inFan ? "" : " You are pointing outside the viewing fan toward the highway."}`);
+    else lines.push(`<b>US-67 is not on this bearing.</b>${inFan ? "" : " You are pointing outside the 120° viewing fan."}`);
+    if (anyRoad) lines.push(`<b>Another road is in view on this bearing</b> (see below). Its traffic can look just like a Marfa Light.`);
+    const z = zosAt(b, elev === null ? null : Math.tan(elev * D2R) * 1000);
+    if (z !== null) lines.push(z ? `<span>Inside the <b>Zone of Skepticism</b>: a known light source can appear here. Rule it out first.</span>`
+      : `<span>Outside the <b>Zone of Skepticism</b>: no catalogued light source appears here. Note the time, bearing and height carefully.</span>`);
     if (elev !== null && skyDeg !== null) {
       lines.push(elev > skyDeg + 0.1
         ? `At ${fmt(elev, 2)}° the light is <b>above the skyline</b> (${fmt(skyDeg, 2)}° here, ridge ${fmt(sky.d, 0)} km away). A ground light can't sit there. Think aircraft, stars or planets, satellites, or the aerostat at ~${fmt(norm(293 - (refMag ? DECL : 0)), 0)}°${refMag ? " magnetic" : " true"}.`
@@ -299,44 +364,56 @@
   });
 
   // ------------------------------------------------------------ panorama
-  let panoZoom = false;
+  let panoZoom = false, showZos = true;
   const PW = 640, PH = 260, PL = 36, PR = 8, PT = 10, PB = 28;
   const svg = $("pano"), NS = "http://www.w3.org/2000/svg";
   const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
-  let view = {A0: 215, A1: 285, E0: -10.5, E1: 6};
+  let view = {A0: 155, A1: 300, E0: -10.5, E1: 6};
   const px = az => PL + (az - view.A0) / (view.A1 - view.A0) * (PW - PL - PR);
   const py = m => PT + (view.E1 - m) / (view.E1 - view.E0) * (PH - PT - PB);
   function drawPano() {
     const b = trueBearing();
-    if (panoZoom && b !== null) view.A0 = Math.max(210, Math.min(274, b - 9)), view.A1 = view.A0 + 18; else view.A0 = 215, view.A1 = 285;
+    if (panoZoom && b !== null) view.A0 = Math.max(150, Math.min(282, b - 9)), view.A1 = view.A0 + 18; else view.A0 = 155, view.A1 = 300;
     const inW = az => az >= view.A0 && az <= view.A1;
     const sky = S.sky.filter(s => inW(s[0]));
     // vertical range from what is actually in the window
-    const vals = sky.map(s => s[1]).concat(H.filter(p => inW(p.az) && hwyClass(p) !== "h").map(p => p.a), S.towers.filter(t => inW(t.az) && isLit(t) && t.a !== null).map(t => t.a));
+    const vals = sky.map(s => s[1]).concat(H.filter(p => inW(p.az) && hwyClass(p) !== "h").map(p => p.a), S.towers.filter(t => inW(t.az) && isLit(t) && t.a !== null).map(t => t.a),
+      RD.flatMap(r => r.p.filter(p => inW(p.az) && roadClass(p) === "v").map(p => p.a)), S.railpano.filter(r => inW(r[1]) && r[4] <= K).map(r => r[3]));
     const lo = Math.min(...sky.map(s => s[3]), ...vals), hi = Math.max(...vals);
     view.E0 = Math.floor(lo - 0.6); view.E1 = Math.ceil(hi + 1.2);
     svg.innerHTML = "";
     el("rect", {x: PL, y: PT, width: PW - PL - PR, height: PH - PT - PB, fill: "var(--surface-2)"}, svg);
-    const gstep = (view.E1 - view.E0) > 12 ? 2 : 1;
-    for (let e = Math.ceil(view.E0); e <= view.E1; e += gstep) {
+    const d0 = mrad2deg(view.E0), d1 = mrad2deg(view.E1), gst = d1 - d0 > 1.2 ? 0.2 : d1 - d0 > 0.5 ? 0.1 : 0.05;
+    for (let dg = Math.ceil(d0 / gst - 1e-9) * gst; dg <= d1 + 1e-9; dg += gst) {
+      const e = Math.tan(dg * D2R) * 1000;
       el("line", {x1: PL, x2: PW - PR, y1: py(e), y2: py(e), stroke: "var(--rule)", "stroke-width": .6}, svg);
-      el("text", {x: PL - 4, y: py(e) + 3, "text-anchor": "end"}, svg).textContent = fmt(mrad2deg(e), 2);
+      el("text", {x: PL - 4, y: py(e) + 3, "text-anchor": "end"}, svg).textContent = fmt(Math.abs(dg) < 1e-9 ? 0 : dg, gst < 0.1 ? 2 : 1);
     }
     // nested terrain silhouettes: far skyline, then ridges within 45, 25 and 10 km
     const layer = (col, op) => el("path", {d: `M${px(sky[0][0])},${py(view.E0)} ` + sky.map(s => `L${px(s[0])},${py(Math.max(view.E0, s[col]))}`).join(" ") + ` L${px(sky[sky.length - 1][0])},${py(view.E0)} Z`, fill: "var(--ink)", "fill-opacity": op}, svg);
     layer(1, .10); layer(5, .09); layer(4, .09); layer(3, .10);
     el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill: "none", stroke: "var(--ink-2)", "stroke-width": 1.3}, svg);
     el("line", {x1: PL, x2: PW - PR, y1: py(0), y2: py(0), stroke: "var(--muted)", "stroke-dasharray": "3 3", "stroke-width": .8}, svg);
+    // Zone of Skepticism, tier A (clipped to the plot)
+    if (ZOS && showZos) {
+      const cid = "panoclip"; const defs = el("defs", {}, svg); const cp = el("clipPath", {id: cid}, defs);
+      el("rect", {x: PL, y: PT, width: PW - PL - PR, height: PH - PT - PB}, cp);
+      const g = el("g", {"clip-path": `url(#${cid})`}, svg);
+      ZOS.tiers.A.forEach(r => { if (r.some(q => q[0] >= view.A0 - 1 && q[0] <= view.A1 + 1))
+        el("path", {d: "M" + r.map(q => `${px(q[0]).toFixed(1)},${py(q[1]).toFixed(1)}`).join("L") + "Z", fill: "var(--zos)", "fill-opacity": .28, stroke: "var(--zos)", "stroke-width": .6, "fill-rule": "evenodd"}, g); });
+    }
     S.fan.forEach(a => { if (inW(a)) el("line", {x1: px(a), x2: px(a), y1: PT, y2: PH - PB, stroke: "var(--accent)", "stroke-dasharray": "1 3", "stroke-width": .8}, svg); });
     // US-67
     const col = {v: "var(--vis)", m: "var(--marg)", h: "var(--hid)"};
     ["h", "m", "v"].forEach(c => H.forEach(p => { if (hwyClass(p) === c && inW(p.az) && p.a >= view.E0) el("circle", {cx: px(p.az), cy: py(p.a), r: c === "h" ? 1.1 : 2.3, fill: col[c], "fill-opacity": c === "h" ? .5 : 1}, svg); }));
+    // other state roads in view
+    RD.forEach(rd => rd.p.forEach(p => { if (roadClass(p) === "v" && inW(p.az) && p.a >= view.E0) el("circle", {cx: px(p.az), cy: py(p.a), r: 2, fill: "var(--road2)"}, svg); }));
     // railroad track in view
     S.railpano.forEach(r => { if (inW(r[1]) && r[4] <= K && r[3] >= view.E0) el("circle", {cx: px(r[1]), cy: py(r[3]), r: 1.8, fill: "var(--rail)"}, svg); });
     // towns
-    S.towns.forEach(t => { if (inW(t.az) && t.a !== undefined) {
-      const seen = t.kc <= K, y = Math.max(py(t.a), PT + 10);
-      el("text", {x: px(t.az), y: Math.min(y, PH - PB - 4), "text-anchor": "middle", style: `fill:var(--ink-2);opacity:${seen ? 1 : .55};font-weight:600`}, svg).textContent = t.n.replace(", Chihuahua", "") + (seen ? "" : " (glow)");
+    S.towns.forEach(t => { if (inW(t.az) && t.a !== undefined && !(!panoZoom && t.n.startsWith("Ojinaga"))) {
+      const seen = t.kc <= K, sk = skyAt(t.az), y = seen ? Math.max(py(t.a), PT + 10) : Math.max(py(sk ? sk.m : t.a) - 6, PT + 10);
+      el("text", {x: px(t.az), y: Math.min(y, PH - PB - 4), "text-anchor": "middle", style: `fill:var(--ink-2);opacity:${seen ? 1 : .55};font-weight:600`}, svg).textContent = (!panoZoom && t.n === "Presidio" ? "Presidio–Ojinaga" : t.n.replace(", Chihuahua", "")) + (seen ? "" : " (glow)");
     }});
     // aerostat: the ground site plus a marker showing it flies higher
     S.fields.filter(f => f.k === "balloon" && inW(f.az)).forEach(f => {
@@ -351,7 +428,7 @@
       if (panoZoom && lit) el("text", {x: x + 6, y: y - 5}, svg).textContent = `${fmt(t.h, 0)} m tower${seen ? "" : " (hidden)"}`;
     });
     // axis
-    const tick = panoZoom ? 2 : 10;
+    const tick = panoZoom ? 2 : 20;
     for (let a = Math.ceil(view.A0 / tick) * tick; a <= view.A1; a += tick) {
       el("line", {x1: px(a), x2: px(a), y1: PH - PB, y2: PH - PB + 4, stroke: "var(--muted)"}, svg);
       el("text", {x: px(a), y: PH - PB + 14, "text-anchor": "middle"}, svg).textContent = `${fmt(refMag ? norm(a - DECL) : a, 0)}°`;
@@ -364,7 +441,7 @@
       if (!isNaN(e)) el("circle", {cx: px(b), cy: py(Math.tan(e * D2R) * 1000), r: 5, fill: "none", stroke: "var(--accent)", "stroke-width": 2}, svg);
     }
     const hdeg = (view.A1 - view.A0) / (PW - PL - PR), vdeg = mrad2deg(view.E1 - view.E0) / (PH - PT - PB);
-    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. ◆ red = lit tower (hollow if its light is hidden), purple = railroad in view.`;
+    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. Green = Zone of Skepticism (where a known light can appear, allowing for refraction and a ±0.3° bearing error). ◆ red = lit tower (hollow if hidden), purple = railroad in view, magenta = other roads in view.`;
   }
   svg.addEventListener("click", ev => {
     const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (PW / r.width), y = (ev.clientY - r.top) * (PH / r.height);
@@ -373,6 +450,7 @@
     setTrueBearing(az, mrad2deg(m));
   });
   if ($("panoFull")) $("panoFull").onclick = () => { panoZoom = false; $("panoFull").setAttribute("aria-pressed", "true"); $("panoZoom").setAttribute("aria-pressed", "false"); drawPano(); };
+  if ($("zosBtn")) $("zosBtn").onclick = () => { showZos = !showZos; $("zosBtn").setAttribute("aria-pressed", String(showZos)); drawPano(); };
   if ($("panoZoom")) $("panoZoom").onclick = () => { panoZoom = true; $("panoZoom").setAttribute("aria-pressed", "true"); $("panoFull").setAttribute("aria-pressed", "false"); drawPano(); };
 
   // ------------------------------------------------------------ field log (this device only)

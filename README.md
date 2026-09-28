@@ -26,6 +26,17 @@ A further ~7.4 km is marginal (sub‑DEM detail decides it), and ~47.9 km is hid
 Even strong night‑time inversions (k = 1) extend the visible road to only ~12.8 km. See the site
 for the maps, a panorama from the platform, and cross‑sections.
 
+Update (2026‑09‑28, 120° fan):
+- **RM 2810 (Pinto Canyon Road) is also in view**: ~27 km at 252.9°–259.1° true, 32–53 km away,
+  just below the skyline. The earlier statement that nothing between 238° and 277° could be a car
+  was wrong; it holds only for US‑67.
+- **Headlight direction matters.** Northbound cars on the US‑67 straight at ~233.5° point within
+  3–5° of the platform. With high beams they are predicted near magnitude −2, brighter than Sirius
+  (one measured production headlamp; see `publication/notes/04_headlight_brightness.md`).
+- **Zone of Skepticism.** The zone is the region of the view where a catalogued light can appear.
+  In the 0.29° band just below the skyline it covers ~33% of the fan with instrumented bearings
+  (±0.3°) and ~74% with hand‑compass bearings (±3°).
+
 ## Repository layout
 
 | Path | Contents |
@@ -36,6 +47,10 @@ for the maps, a panorama from the platform, and cross‑sections.
 | `analysis/marfa_occlusion.py` | Map 1 (standard atmosphere) and Map 2 (refraction range) KMLs, per‑point table, site data |
 | `analysis/build_site.py` | Builds `docs/sightlines.html` from `analysis/occlusion_template.html` |
 | `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
+| `analysis/headlight_model.py` | Headlamp photometry model: brightness of a car at every road point, by travel direction |
+| `analysis/zone_of_skepticism.py` | Zone of Skepticism polygons (`data/derived/zos.json`, `docs/data/zos.json`) |
+| `analysis/pub_figures.py` | Publication figures → `publication/figures/` |
+| `publication/` | Publication‑ready figures (PDF/SVG/PNG) and method notes (maths, physics, geography, sources) |
 | `data/inputs/` | Google Earth trace of US‑67 and reference points; infrastructure layers retrieved from public services |
 | `data/derived/` | Line‑of‑sight results exported from `los_browser.js` |
 | `outputs/` | KML layers for Google Earth and CSV tables |
@@ -49,7 +64,10 @@ python analysis/marfa_ray_fan.py          # -> outputs/Marfa_ray_fan*.{kml,csv}
 python analysis/marfa_infrastructure.py   # downloads OurAirports CSVs on first run
 python analysis/marfa_occlusion.py        # -> outputs/Marfa_occlusion_*.kml, data/derived/occlusion_page.json
 python analysis/build_site.py             # -> docs/sightlines.html
+python analysis/headlight_model.py        # -> data/derived/headlights.json
 python analysis/build_site_data.py        # -> docs/data/site.json (website map layers)
+python analysis/zone_of_skepticism.py     # -> data/derived/zos.json, docs/data/zos.json
+python analysis/pub_figures.py            # -> publication/figures/*
 ```
 
 The DEM step (`los_browser.js`) runs in a browser console on the USGS ImageServer page, because
@@ -65,14 +83,19 @@ port reading a downloaded 3DEP GeoTIFF is planned.
   need ray‑tracing through a layered temperature profile. This is the main open item.
 - ~30 m DEM: road cuts, embankments, vegetation and structures are not resolved; the
   "marginal" class flags where they matter.
-- Visibility is geometric only. Headlight directionality and atmospheric extinction are not
-  yet modelled. Humidity affects extinction, not optical bending (Ciddor 1996).
+- Brightness uses one measured headlamp (NHTSA report 108‑CAN‑17‑004) and an assumed meteorological
+  optical range of 100 km; beyond ±12° (high beam) and ±20° (low beam) the beam is extrapolated.
+  Humidity affects extinction, not optical bending (Ciddor 1996).
+- County and private ranch roads, ranch lights and unregistered structures are not yet catalogued.
 - Towers: FCC Antenna Structure Registrations within 90 km (retrieved 2026-09-28), each checked
   against the terrain for whether its top light is in view. Unregistered structures are not included.
 
 ## Data sources
 
 - USGS 3D Elevation Program — 3DEPElevation ImageServer (retrieved 2026‑09‑28)
+- TxDOT Roadways (on‑system routes), extract 2026‑09‑01 (retrieved 2026‑09‑28)
+- NHTSA FMVSS 108 compliance report 108‑CAN‑17‑004 (headlamp photometry)
+- Schaefer, B. E. (1993). Astronomy and the limits of vision. *Vistas in Astronomy* 36, 311–361.
 - OurAirports open data — github.com/davidmegginson/ourairports-data
 - USDOT BTS NTAD — North American Rail Network, Aviation Facilities (FAA NASR), Railroad Grade Crossings (FRA inventory)
 - Electric Power Transmission Lines (HIFLD‑derived); FCC Antenna Structure Registration; Cellular Towers (FCC ULS); EIA‑860 Power Plants

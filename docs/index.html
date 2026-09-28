@@ -7,7 +7,7 @@
 <meta name="description" content="A field guide to the Marfa Lights: an interactive line-of-sight map, a light identifier for the Viewing Area, and the history, folklore and science behind the lights.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=3">
+<link rel="stylesheet" href="assets/site.css?v=4">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
@@ -31,7 +31,7 @@
   <section class="stats" aria-label="Key results">
     <div class="stat"><b>9.3 km</b><span>of the 64.6 km of US-67 south of Marfa is in clear view from the Viewing Area under normal conditions. Terrain hides most of the rest.</span></div>
     <div class="stat"><b>229°–238°</b><span>true bearing of that visible stretch, 24–40 km away, below the Chinati Mountains skyline</span></div>
-    <div class="stat"><b>+2.3 km</b><span>of extra road a strong night-time temperature inversion (k = 1) brings into view</span></div>
+    <div class="stat"><b>27 km</b><span>of a second road, RM 2810, is also in view at 253°–259° true, climbing into the Chinati foothills just below the skyline</span></div>
     <div class="stat"><b>6.2° E</b><span>magnetic declination at the Viewing Area. Add it to a compass reading to get true bearing.</span></div>
   </section>
 
@@ -49,10 +49,10 @@
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=3"></script>
+<script src="assets/site.js?v=4"></script>
 <script>
 (async () => {
-  const S = await fetch("data/site.json?v=3").then(r => r.json());
+  const S = await fetch("data/site.json?v=4").then(r => r.json());
   const svg = document.getElementById("heroPano"), NS = "http://www.w3.org/2000/svg";
   const W = 1200, H = 170, A0 = 218, A1 = 282, E0 = -9, E1 = 8.5;
   const px = a => (a - A0) / (A1 - A0) * W, py = e => (E1 - e) / (E1 - E0) * H;

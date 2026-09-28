@@ -1,3 +1,6 @@
 numpy
 pyproj
 shapely
+scipy
+matplotlib
+contourpy

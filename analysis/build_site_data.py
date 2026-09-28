@@ -68,13 +68,41 @@ def main():
                     round(r["zT"]), round(kc, 3), cls, round(r["alpha_mrad_k013_h07"], 2),
                     round(r["ch_m"] / 1000, 2)])
 
-    # ---------- rays
+    # ---------- brightness of a car facing the viewer (analysis/headlight_model.py)
+    hl = json.load(open("data/derived/headlights.json"))
+
+    def facing(pts):
+        """Per sample: the travel direction whose headlamps face the viewer (|h| < 90 deg), if any."""
+        out, i = [], 0
+        while i < len(pts):
+            a, b = pts[i], pts[i + 1]              # to_marfa, from_marfa rows for the same sample
+            f = a if abs(a[7]) < 90 else b if abs(b[7]) < 90 else None
+            out.append([None] * 8 if f is None else [0 if f is a else 1, f[7]] + f[9:15])
+            i += 2
+        return out
+
+    us67 = facing(hl["roads"][0]["pts"])
+    assert len(us67) == len(hwy), "headlights.json is out of step with los_results.json"
+    for p, f in zip(hwy, us67):
+        p.extend(f)
+    roads = []
+    for rd in hl["roads"][1:]:
+        pts = [q for q in rd["pts"][0::2]]
+        fc = facing(rd["pts"])
+        roads.append({"n": rd["road"], "k": rd["key"],
+                      "p": [[R5(la), R5(lo), q[0], q[1], q[2], q[3], q[4]] + f
+                            for la, lo, q, f in zip(rd["lat"], rd["lon"], pts, fc)]})
+
+    # ---------- rays (rays with no US-67 crossing are drawn to 80 km)
     rays, allaz = [], []
     for row in csv.DictReader(open("outputs/Marfa_ray_fan_hits.csv")):
-        allaz.append(float(row["ray_azimuth_deg"]))
+        az = float(row["ray_azimuth_deg"])
+        allaz.append(az)
         if row["crossing"] == "1":
-            rays.append([float(row["ray_azimuth_deg"]), R5(float(row["lat"])), R5(float(row["lon"])),
-                         float(row["dist_from_viewer_km"])])
+            rays.append([az, R5(float(row["lat"])), R5(float(row["lon"])), float(row["dist_from_viewer_km"]), 1])
+        elif row["crossing"] == "0":
+            lon, lat, _ = GEOD.fwd(VIEWER[0], VIEWER[1], az, 80_000)
+            rays.append([az, R5(lat), R5(lon), 80.0, 0])
     fan = [min(allaz), max(allaz)]
 
     # ---------- airfields
@@ -189,13 +217,20 @@ def main():
         "viewer": {"lat": VIEWER[1], "lon": VIEWER[0], "z": round(meta["z0"], 1), "eye": meta["eye"]},
         "declination": {"deg": 6.2, "model": "WMM2025", "epoch": "2026.7", "annual": -0.08},
         "fan": fan, "rays": rays,
-        "hwy_fields": ["lat", "lon", "az", "d_km", "z", "kcrit", "cls", "alpha_mrad", "ch_km"],
+        "hwy_fields": ["lat", "lon", "az", "d_km", "z", "kcrit", "cls", "alpha_mrad", "ch_km",
+                       "face_dir(0=toward Marfa,1=away)", "h_deg", "mLow", "mLow_dim", "mLow_bright",
+                       "mHigh", "mHigh_dim", "mHigh_bright"],
+        "roads_fields": ["lat", "lon", "az", "d_km", "alpha_mrad", "kcrit", "cls", "face_dir", "h_deg",
+                         "mLow", "mLow_dim", "mLow_bright", "mHigh", "mHigh_dim", "mHigh_bright"],
+        "roads": roads, "roads_src": "TxDOT Roadways (on-system routes), EXT_DATE 2026-09-01",
+        "light_model": hl["meta"],
         "hwy": hwy, "sky_fields": ["az", "skyline_mrad", "skyline_km", "ridge10_mrad", "ridge25_mrad", "ridge45_mrad"],
         "sky": pl["sky"], "towers": towers, "railpano": railpano,
         "fields": fields, "rail": rail, "xing": xing, "tl": tl, "cells": cells, "plants": plants,
         "towns": towns, "refs": refs,
     }
     json.dump(site, open("docs/data/site.json", "w"), separators=(",", ":"))
+    print("roads", [(r["n"], len(r["p"])) for r in roads])
     print("hwy", len(hwy), "rays", len(rays), "fields", len(fields), "rail", len(rail), "xing", len(xing),
           "tl", len(tl), "cells", len(cells), "plants", len(plants))
     for f in fields:
