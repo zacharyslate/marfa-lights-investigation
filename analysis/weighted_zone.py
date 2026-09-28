@@ -269,7 +269,7 @@ def run(k=K0, mor=100.0, err_az=0.3, err_el_deg=0.1, m_lim=M_LIM, p_high=P_HIGH,
             summary.append({"label": ln["label"], "dir": ln["dir"], "n": len(v), "az": [round(min(p[0] for p in v), 1), round(max(p[0] for p in v), 1)],
                             "rate_max_per_h": round(max(p[3] for p in v), 4),
                             "aadt": sorted({(p[4], p[5]) for p in v if p[4]})})
-    params = {"k": k, "mor_km": mor, "err_az_deg": err_az, "err_el_deg": err_el_deg, "m_lim": m_lim, "p_high": p_high,
+    params = {"az_domain_deg": [AZ[0], AZ[1]], "k": k, "mor_km": mor, "err_az_deg": err_az, "err_el_deg": err_el_deg, "m_lim": m_lim, "p_high": p_high,
               "hourly_share": hourly_share, "rail_trains_per_h": rr, "rail_fra": rr_detail, "speed_kmh": SPEED_KMH}
     out = {"label": label, "params": params, "stats": stats, "summary": summary,
            "levels": LEVELS,

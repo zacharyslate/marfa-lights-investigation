@@ -14,7 +14,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="app.css?v=2">
+<link rel="stylesheet" href="app.css?v=3">
 </head>
 <body>
 <header class="top">
@@ -63,7 +63,7 @@
       <div class="seg wide" role="group" aria-label="Height compared with the skyline" id="i-h-seg">
         <button type="button" data-h="above" aria-pressed="false">Above skyline</button><button type="button" data-h="on" aria-pressed="false">On it</button><button type="button" data-h="below" aria-pressed="false">Below it</button><button type="button" data-h="" aria-pressed="true">Not sure</button>
       </div>
-      <canvas id="i-pano" height="170" aria-label="Strip of the skyline around your bearing; tap to choose a spot"></canvas>
+      <canvas id="i-pano" height="170" role="img" aria-label="Strip of the skyline around your bearing; tap to choose a spot"></canvas>
       <p class="dim small" id="i-panonote"></p>
     </div>
     <div id="i-verdict" class="verdict"></div>
@@ -135,6 +135,6 @@
 <div id="toast" role="status"></div>
 
 <script src="../assets/vendor/astronomy.browser.min.js"></script>
-<script src="app.js?v=2"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

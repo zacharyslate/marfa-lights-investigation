@@ -1,14 +1,14 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=6").then(r => r.json()),
-    fetch("data/zos.json?v=6").then(r => r.json()).catch(() => null),
-    fetch("data/zos_rate.json?v=6").then(r => r.json()).catch(() => null)]);
+  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=8").then(r => r.json()),
+    fetch("data/zos.json?v=8").then(r => r.json()).catch(() => null),
+    fetch("data/zos_rate.json?v=8").then(r => r.json()).catch(() => null)]);
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;
   const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
   const $ = id => document.getElementById(id);
-  const fmt = (v, n = 1) => Number(v).toLocaleString("en-US", {minimumFractionDigits: n, maximumFractionDigits: n});
+  const fmt = (v, n = 1) => { const s = Number(v).toLocaleString("en-US", {minimumFractionDigits: n, maximumFractionDigits: n}); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
   const angDiff = (a, b) => ((a - b + 540) % 360) - 180;
   const norm = a => ((a % 360) + 360) % 360;
   const mrad2deg = m => Math.atan(m / 1000) / D2R;
@@ -85,9 +85,12 @@
     return lvl;
   }
   const RATE_TXT = ["0.01–0.1 per hour (one every 10–100 hours)", "0.1–1 per hour", "1–10 per hour", "10 or more per hour"];
+  // the traffic model covers this range of true bearings only; outside it, "no known source" means "not modelled"
+  const DOMAIN = (ZR && ZR.standard.params.az_domain_deg) || [150, 300];
+  const inDomain = az => az >= DOMAIN[0] && az <= DOMAIN[1];
   function zosAt(az, m) {           // null = cannot say; true/false = inside/outside tier A (tier B if only a bearing)
     if (!ZOS) return null;
-    if (m === null) return null;
+    if (m === null || !inDomain(az)) return null;
     let n = 0; ZOS.tiers.A.forEach(r => { if (inRing(az, m, r)) n++; });
     return n % 2 === 1;
   }
@@ -162,13 +165,13 @@
     const red = css("--cell");
     S.towers.forEach(t => {
       const lit = isLit(t), seen = inView(t);
-      L.marker([t.lat, t.lon], {icon: lit ? diamond(red, "#000", seen ? 16 : 12) : diamond("#9aa3ad", "#000", 9), zIndexOffset: lit ? 500 : 0})
+      L.marker([t.lat, t.lon], {icon: lit ? diamond(red, "#000", seen ? 16 : 12) : diamond("#9aa3ad", "#000", 9), zIndexOffset: lit ? 500 : 0, title: `${fmt(t.h, 0)} m tower, ${lit ? "lit" : "unlit"}`})
         .bindPopup(popup(`${fmt(t.h, 0)} m ${t.type === "LTOWER" ? "lattice tower" : t.type === "GTOWER" ? "guyed tower" : t.type === "MTOWER" ? "monopole" : t.type.toLowerCase()}`, [
           t.owner || "", `<b style="font-size:14px;color:${lit ? red : "inherit"}">${LIGHT[t.light]}</b>`, t.light === "lit" ? `<span class="muted">Spec: ${t.spec}</span>` : "",
           t.kc === null ? "" : seen ? `Top light <b>in view</b> from the Viewing Area at ${fmt(Math.atan(t.a / 1000) * 57.2958, 2)}° elevation` : "Top hidden by terrain from the Viewing Area",
           azLine(t.az, t.d), `FCC Antenna Structure Registration ${t.id}${t.built ? `, built ${t.built}` : ""}`])).addTo(groups.tower);
     });
-    S.cells.forEach(c => L.marker([c.lat, c.lon], {icon: diamond(red, "#000", 12)})
+    S.cells.forEach(c => L.marker([c.lat, c.lon], {icon: diamond(red, "#000", 12), title: "Cell site"})
       .bindPopup(popup("Cell site", [c.lic, c.addr, c.h ? `Structure ${fmt(c.h, 0)} m tall` : "", azLine(c.az, c.d), "Tall towers carry aviation obstruction lights"])).addTo(groups.tower));
     S.towns.forEach(t => {
       L.marker([t.lat, t.lon], {icon: L.divIcon({className: "town-label", html: t.n.replace(", Chihuahua", ""), iconSize: null, iconAnchor: t.n.startsWith("Ojinaga") ? [62, -4] : [-4, 6]}), keyboard: false})
@@ -215,7 +218,7 @@
       }
     });
   }
-  const viewer = L.marker(V, {icon: L.divIcon({className: "viewer-icon", html: `<svg width="26" height="26" viewBox="-13 -13 26 26"><path d="M0,-11 L3,-3.5 L11,-3.5 L4.6,1.6 L7,10 L0,5 L-7,10 L-4.6,1.6 L-11,-3.5 L-3,-3.5 Z" fill="#f0a43a" stroke="#000" stroke-width="1"/></svg>`, iconSize: [26, 26], iconAnchor: [13, 13]}), zIndexOffset: 1000})
+  const viewer = L.marker(V, {icon: L.divIcon({className: "viewer-icon", html: `<svg width="26" height="26" viewBox="-13 -13 26 26"><path d="M0,-11 L3,-3.5 L11,-3.5 L4.6,1.6 L7,10 L0,5 L-7,10 L-4.6,1.6 L-11,-3.5 L-3,-3.5 Z" fill="#f0a43a" stroke="#000" stroke-width="1"/></svg>`, iconSize: [26, 26], iconAnchor: [13, 13]}), zIndexOffset: 1000, title: "Marfa Lights Viewing Area"})
     .bindPopup(popup("Marfa Lights Viewing Area", [`Ground ${fmt(S.viewer.z, 0)} m above sea level (USGS 3DEP)`, "US-90, about 9 miles east of Marfa"])).addTo(map);
 
   // layer checkboxes
@@ -241,7 +244,7 @@
     refMag = mag; $("refMag").setAttribute("aria-pressed", mag); $("refTrue").setAttribute("aria-pressed", !mag); identify();
   };
   $("refMag").onclick = () => setRef(true); $("refTrue").onclick = () => setRef(false);
-  const trueBearing = () => { const b = parseFloat($("bearing").value); return isNaN(b) ? null : norm(refMag ? b + DECL : b); };
+  const trueBearing = () => { const b = parseFloat($("bearing").value); return isNaN(b) || b < 0 || b > 360 ? null : norm(refMag ? b + DECL : b); };
   function setTrueBearing(bt, elevDeg) {
     $("bearing").value = fmt(norm(refMag ? bt - DECL : bt), 1).replace(",", "");
     if (elevDeg !== undefined) $("elev").value = elevDeg === null ? "" : fmt(elevDeg, 2);
@@ -254,7 +257,7 @@
   function identify() {
     const b = trueBearing(), tol = +$("tol").value, eRaw = $("elev").value.trim(), elev = eRaw === "" ? null : parseFloat(eRaw);
     bearingGroup.clearLayers();
-    if (b === null) { $("verdict").innerHTML = ""; $("cands").innerHTML = ""; return; }
+    if (b === null) { const r = parseFloat($("bearing").value); $("verdict").innerHTML = !isNaN(r) ? `<b>Check the bearing.</b> Bearings run from 0 to 360°.` : ""; $("cands").innerHTML = ""; drawPano(); return; }
     // bearing wedge on the map
     const far = 90000, wedge = [V]; for (let a = b - tol; a <= b + tol + 1e-6; a += tol / 6) wedge.push(fwd(V[0], V[1], a, far));
     L.polygon(wedge, {color: css("--accent"), weight: 0, fillOpacity: .12, interactive: false}).addTo(bearingGroup);
@@ -325,19 +328,22 @@
     const sky = skyAt(b), skyDeg = sky ? mrad2deg(sky.m) : null;
     const lines = [];
     const inFan = b >= S.fan[0] && b <= S.fan[1];
-    if (anyVisible) lines.push(`<b>US-67 is in view on this bearing.</b> A light moving steadily along it, especially a pair that splits or merges, is most likely a vehicle.`);
+    const aboveSky = elev !== null && skyDeg !== null && elev > skyDeg + 0.1;
+    if (aboveSky) lines.push(`<b>Above the skyline.</b> Ground traffic on this bearing can't explain a light at this height.`);
+    else if (anyVisible) lines.push(`<b>US-67 is in view on this bearing.</b> A light moving steadily along it, especially a pair that splits or merges, is most likely a vehicle.`);
     else if (hwyRuns.length) lines.push(`<b>US-67 lies on this bearing but is hidden${Math.abs(K - 0.13) < 1e-9 ? " at standard refraction" : ` at k = ${fmt(K, 2)}`}.</b> Car headlights here need unusual refraction. Check the other sources below.`);
     else lines.push(`<b>US-67 is not on this bearing.</b>${inFan ? "" : " You are pointing outside the 120° viewing fan."}`);
-    if (anyRoad) lines.push(`<b>Another road is in view on this bearing</b> (see below). Its traffic can look just like a Marfa Light.`);
+    if (anyRoad && !aboveSky) lines.push(`<b>Another road is in view on this bearing</b> (see below). Its traffic can look just like a Marfa Light.`);
     const mEl = elev === null ? null : Math.tan(elev * D2R) * 1000;
     const z = zosAt(b, mEl);
     let rl = null;
-    if (RATE) {
+    if (!inDomain(b)) lines.push(`<b>Outside the modelled view.</b> Expected traffic is only worked out between ${fmt(refMag ? norm(DOMAIN[0] - DECL) : DOMAIN[0], 0)}° and ${fmt(refMag ? norm(DOMAIN[1] - DECL) : DOMAIN[1], 0)}°${refMag ? " magnetic" : " true"} (south to west-northwest). In this direction, "no known source" doesn't mean a light is unusual. US-90, the railway and the towns to the north and east are not modelled.`);
+    else if (RATE) {
       if (mEl !== null) rl = rateAt(b, mEl);
       else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const sk = skyAt(norm(a)); if (sk) for (let m = -15; m <= sk.m; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); } }
     }
     if (rl !== null && rl >= 0) lines.push(`<span>Ordinary lights expected ${mEl === null ? `somewhere below the skyline within ±${tol}°` : "at this spot"}: <b>${RATE_TXT[rl]}</b> on a clear night (normal refraction up to a strong inversion).</span>`);
-    if (z !== null) lines.push(z ? `<span>Inside the <b>Zone of Skepticism</b>: a known light source can appear here. Rule it out first.</span>`
+    if (z !== null && !aboveSky) lines.push(z ? `<span>Inside the <b>Zone of Skepticism</b>: a known light source can appear here. Rule it out first.</span>`
       : `<span>Outside the <b>Zone of Skepticism</b>: no catalogued light source appears here${rl === -1 ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
     if (elev !== null && skyDeg !== null) {
       lines.push(elev > skyDeg + 0.1
@@ -345,8 +351,8 @@
         : `At ${fmt(elev, 2)}° the light is <b>below the skyline</b> (${fmt(skyDeg, 2)}°), seen against terrain. That is consistent with a ground source.`);
     } else if (skyDeg !== null) lines.push(`<span class="muted">The skyline here is ${fmt(skyDeg, 2)}° above level, ${fmt(sky.d, 0)} km away. Add an elevation for a sharper answer.</span>`);
     lines.push(`<span class="muted mono" style="font-size:13px">${fmt(b, 1)}° true · ${fmt(norm(b - DECL), 1)}° magnetic · window ±${tol}°</span>`);
-    $("verdict").innerHTML = lines.join("");
-    $("cands").innerHTML = C.length ? C.map(c => `<li><span class="chip" style="color:var(${c.col})">${c.chip}</span><span>${c.t}</span><span class="d">${c.dist}</span><span class="sub">${c.sub || ""}</span></li>`).join("")
+    $("verdict").innerHTML = lines.map(l => `<div>${l.startsWith("<b>") ? l.replace("<b>", '<b class="h">') : l}</div>`).join("");
+    $("cands").innerHTML = C.length ? C.map(c => `<li><span class="chip" style="--c:var(${c.col})">${c.chip}</span><span>${c.t}</span><span class="d">${c.dist}</span><span class="sub">${c.sub || ""}</span></li>`).join("")
       : `<li><span></span><span>No catalogued light source on this bearing within ${MAXKM()} km.</span><span></span></li>`;
     last = {b, tol, elev, top: C[0] ? `${C[0].chip}: ${C[0].t} (${C[0].dist})` : "none", visible: anyVisible};
     drawPano();

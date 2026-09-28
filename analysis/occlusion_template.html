@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#f3f4f2; --surface:#fcfcfb; --ink:#141917; --ink-2:#4f5856; --muted:#737c79; --rule:#d7dcd9; --grid:#e6e9e7;
+  --bg:#f3f4f2; --surface:#fcfcfb; --ink:#141917; --ink-2:#4f5856; --muted:#5f6866; --rule:#d7dcd9; --grid:#e6e9e7;
   --vis:#2a78d6; --marg:#eb6834; --hid:#b3bab7; --sky:#eef3f8; --ground:#dcd6c8; --ground-line:#8a7f68;
   --k1:#0d366b; --k2:#1c5cab; --k3:#2a78d6; --k4:#5598e7; --k5:#86b6ef; --k6:#c4cac7;
   --rail:#7b4fb0; --focus:#2a78d6;
@@ -52,7 +52,8 @@ svg text{fill:var(--muted);font-size:10px}
 .tip{position:fixed;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;font:12px/1.45 var(--f-mono);box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:10;max-width:260px}
 .scroll{overflow-x:auto}
 .profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
-.pill{display:inline-block;font:500 11px/1 var(--f-mono);padding:4px 7px;border-radius:99px;border:1px solid currentColor;letter-spacing:.03em}
+.pill{display:inline-flex;align-items:center;gap:6px;font:500 11px/1 var(--f-mono);padding:4px 8px;border-radius:99px;border:1px solid var(--rule);letter-spacing:.03em;color:var(--ink-2)}
+.pill i{width:9px;height:9px;border-radius:50%;display:inline-block}
 .method{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:20px 32px}
 .method section{display:grid;gap:8px}
 .method ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2);font-size:14px}
@@ -63,11 +64,11 @@ th:first-child,td:first-child{text-align:left}
 details summary{cursor:pointer;font:600 14px var(--f-disp);letter-spacing:.02em}
 details summary:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .src{font-size:13px;color:var(--ink-2);display:grid;gap:4px}
-.src a{color:var(--vis)}
+.src a{color:var(--ink-2);text-decoration-color:var(--vis)}
 code{font-family:var(--f-mono);font-size:.92em}
 </style>
 
-<div class="wrap">
+<main class="wrap">
 <header>
   <div class="eyebrow"><a href="index.html" style="color:inherit">← Marfa Lights Field Guide</a> · digital line-of-sight study</div>
   <h1>Where US‑67 can be seen from the Viewing Area</h1>
@@ -114,7 +115,7 @@ code{font-family:var(--f-mono);font-size:.92em}
   <div class="eyebrow">Perspective</div>
   <h2>What the platform sees, looking southwest to west</h2>
   <p class="sub">Apparent elevation angle against true azimuth, at standard refraction. The shaded ground ends at the modelled skyline, which along most of this arc is the Chinati Mountains 60–70 km away. Visible road points sit below that skyline, so their headlights appear against dark mountainside rather than open sky. Hidden points are drawn faintly where they would appear if the nearer ground were not in the way. This frame is built for overlaying on calibrated photos later. 1 mrad ≈ 0.057°, about a car length at 80 m.</p>
-  <div class="scroll"><svg id="pano" viewBox="0 0 1080 360" style="min-width:720px" role="img" aria-label="Panorama of skyline and highway positions as seen from the viewing area"></svg></div>
+  <div class="scroll" tabindex="0" role="region" aria-label="Panorama, scrolls sideways"><svg id="pano" viewBox="0 0 1080 360" style="min-width:720px" role="img" aria-label="Panorama of skyline and highway positions as seen from the viewing area"></svg></div>
   <ul class="legend">
     <li><span class="sw" style="background:var(--vis);height:8px;width:8px;border-radius:50%"></span>Visible</li>
     <li><span class="sw" style="background:var(--marg);height:8px;width:8px;border-radius:50%"></span>Marginal</li>
@@ -133,7 +134,7 @@ code{font-family:var(--f-mono);font-size:.92em}
 <div class="panel">
   <details>
     <summary>Visible stretches at standard refraction, as a table</summary>
-    <div class="scroll" style="margin-top:12px"><table id="runs"><thead><tr><th>Stretch</th><th>Chainage km</th><th>Azimuth °</th><th>Distance km</th><th>Road elev m</th><th>Apparent elev mrad</th><th>Length m</th></tr></thead><tbody></tbody></table></div>
+    <div class="scroll" style="margin-top:12px" tabindex="0" role="region" aria-label="Table of visible stretches"><table id="runs"><thead><tr><th scope="col">Stretch</th><th scope="col">Chainage km</th><th scope="col">Azimuth °</th><th scope="col">Distance km</th><th scope="col">Road elev m</th><th scope="col">Apparent elev mrad</th><th scope="col">Length m</th></tr></thead><tbody></tbody></table></div>
   </details>
 </div>
 
@@ -165,7 +166,7 @@ code{font-family:var(--f-mono);font-size:.92em}
   <span>Ciddor, P. E. (1996). Refractive index of air: new equations for the visible and near infrared. <i>Applied Optics</i> 35(9), 1566–1573.</span>
   <span>Railroad: USDOT BTS North American Rail Network. Highway trace: user's Google Earth KML.</span>
 </div>
-</div>
+</main>
 <div class="tip" id="tip" hidden></div>
 
 <script>
@@ -316,7 +317,7 @@ ks.addEventListener("input", applyK); applyK();
   for (const pr of D.profs) {
     const box = document.createElement("div"); box.style.display = "grid"; box.style.gap = "6px";
     const cls = pr.std;
-    box.innerHTML = `<h3>Azimuth ${fmt(pr.az,1)}° · road at ${fmt(pr.dt_km,1)} km <span class="pill" style="color:${COL1[cls]}">${CLS[cls]}</span></h3>`;
+    box.innerHTML = `<h3>Azimuth ${fmt(pr.az,1)}° · road at ${fmt(pr.dt_km,1)} km <span class="pill"><i style="background:${COL1[cls]}"></i>${CLS[cls]}</span></h3>`;
     const W = 360, H = 220, L = 44, R = 10, T = 10, B = 30;
     const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":`Terrain profile at azimuth ${pr.az} degrees`});
     const s13 = pr.k["0.13"], s50 = pr.k["0.5"];

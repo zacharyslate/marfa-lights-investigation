@@ -7,7 +7,7 @@
 <meta name="description" content="Report a light you saw from the Marfa Lights Viewing Area. The form checks it against every known light source and keeps your report on your device until you choose to send it.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=8">
+<link rel="stylesheet" href="assets/site.css?v=9">
 <style>
 form{display:grid;gap:28px}
 fieldset{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:18px 18px 20px;margin:0;display:grid;gap:14px;min-width:0}
@@ -136,10 +136,10 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
     </form>
 
     <aside class="aside" style="position:sticky;top:70px">
-      <h3>Automatic noise check</h3>
+      <h2 class="h3">Automatic noise check</h2>
       <div id="check" class="check"><span class="muted">Enter a bearing to see which known light sources lie in that direction.</span></div>
       <p class="hint">This compares your bearing and height with the project's map of roads, rail, lit towers, towns and the aerostat. A match doesn't mean your light was ordinary, and no match doesn't mean it wasn't. It shows which ordinary causes to rule out first.</p>
-      <h3 style="margin-top:12px">Send your report</h3>
+      <h2 class="h3" style="margin-top:12px">Send your report</h2>
       <div class="actions">
         <button class="btn" type="button" id="dl">Download report</button>
         <button class="btn ghost" type="button" id="copy">Copy text</button>
@@ -156,15 +156,15 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=8"></script>
+<script src="assets/site.js?v=9"></script>
 <script>
 (async function () {
   const $ = id => document.getElementById(id);
   const DECL = 6.2, D2R = Math.PI / 180;
   const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
-  const fmt = (v, n = 1) => Number(v).toFixed(n);
-  const [S, ZR] = await Promise.all([fetch("data/site.json?v=6").then(r => r.json()).catch(() => null),
-    fetch("data/zos_rate.json?v=6").then(r => r.json()).catch(() => null)]);
+  const fmt = (v, n = 1) => { const s = Number(v).toFixed(n); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
+  const [S, ZR] = await Promise.all([fetch("data/site.json?v=8").then(r => r.json()).catch(() => null),
+    fetch("data/zos_rate.json?v=8").then(r => r.json()).catch(() => null)]);
 
   // default time: now, local
   const now = new Date(); now.setSeconds(0, 0);
@@ -181,11 +181,11 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
   let LOG = []; try { LOG = JSON.parse(localStorage.getItem("mlfg-log") || "[]"); } catch (e) {}
   if (LOG.length) {
     $("logWrap").hidden = false;
-    $("fromLog").innerHTML = `<option value="">Choose a saved sighting</option>` + LOG.map((s, i) => `<option value="${i}">${s.time.slice(0, 16).replace("T", " ")} · ${fmt(s.true_bearing)}° true${s.note ? " · " + s.note.slice(0, 30).replace(/</g, "&lt;") : ""}</option>`).reverse().join("");
+    $("fromLog").innerHTML = `<option value="">Choose a saved sighting</option>` + LOG.map((s, i) => `<option value="${i}">${new Date(s.time).toLocaleString([], {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"})} · ${s.true_bearing === "" || s.true_bearing === undefined ? "no bearing" : fmt(s.true_bearing) + "° true"}${s.note ? " · " + s.note.slice(0, 30).replace(/</g, "&lt;") : ""}</option>`).reverse().join("");
     $("fromLog").addEventListener("change", e => {
       const s = LOG[+e.target.value]; if (!s) return;
       const d = new Date(s.time); $("t0").value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-      $("ref").value = "true"; $("brg").value = s.true_bearing; if (s.elev_deg !== "") $("elv").value = s.elev_deg;
+      $("ref").value = "true"; $("brg").value = s.true_bearing ?? ""; if (s.elev_deg !== "" && s.elev_deg !== undefined && s.elev_deg !== null) $("elv").value = s.elev_deg;
       if (s.source === "camera") { $("how").value = "skyfinder"; if (s.calibration) $("equip").value = `Sky finder, calibrated on ${s.calibration.target} ${s.calibration.minutes_ago} min earlier${s.calibration.last_check_deg !== null ? `, check ${s.calibration.last_check_deg}° off` : ""}`; }
       if (s.note) $("story").value = s.note; update();
     });
@@ -223,13 +223,16 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
     S.fields.filter(f => f.k === "balloon" && within(f.az)).forEach(() => out.push("Tethered radar balloon (aerostat), can sit above the skyline"));
     const sk = skyAt(b), lines = [];
     if (e !== null && sk !== null) lines.push(e > mrad2deg(sk) + 0.1 ? `<b>Above the skyline</b> (${fmt(mrad2deg(sk), 2)}° here): aircraft, stars, planets, satellites or the aerostat are the usual candidates.` : `<b>Below the skyline</b> (${fmt(mrad2deg(sk), 2)}° here), against the land.`);
+    const DOM = (ZR && ZR.standard.params.az_domain_deg) || [150, 300], inDom = b >= DOM[0] && b <= DOM[1];
     let rl = -1;
-    if (RATES.length) {
+    if (RATES.length && inDom) {
       if (e !== null) rl = rateAt(b, Math.tan(e * D2R) * 1000);
       else for (let a = b - Math.min(tol, 2); a <= b + Math.min(tol, 2) + 1e-9; a += 0.25) { const s2 = skyAt(norm(a)); if (s2 !== null) for (let m = -15; m <= s2; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); }
     }
-    lines.push(rl >= 0 ? `Ordinary lights expected ${e === null ? "on this bearing" : "at this spot"}: <b>${RATE_TXT[rl]}</b>.` : `<b>Few ordinary lights expected here</b>: fewer than one per 100 hours from known sources.`);
-    lines.push(out.length ? `Known sources within ±${tol}°:<ul>${out.map(x => `<li>${x}</li>`).join("")}</ul>` : `No known light source within ±${tol}°.`);
+    const aboveSky = e !== null && sk !== null && e > mrad2deg(sk) + 0.1;
+    if (!inDom) lines.push(`<b>Outside the modelled view</b> (${DOM[0]}°–${DOM[1]}° true, south to west-northwest). Traffic in this direction isn't worked out, so the check can't say whether the light was unusual. US-90, the railway and the towns to the north and east are not modelled.`);
+    else if (!aboveSky) lines.push(rl >= 0 ? `Ordinary lights expected ${e === null ? "on this bearing" : "at this spot"}: <b>${RATE_TXT[rl]}</b>.` : `<b>Few ordinary lights expected here</b>: fewer than one per 100 hours from known sources.`);
+    lines.push(out.length ? `${aboveSky ? "Ground sources on this bearing (they sit below the skyline, so they are unlikely to explain a light above it)" : "Known sources"} within ±${tol}°:<ul>${out.map(x => `<li>${x}</li>`).join("")}</ul>` : `No known light source within ±${tol}°.`);
     lines.push(`<span class="muted mono" style="font-size:13px">${fmt(b)}° true · ${fmt(norm(b - DECL))}° magnetic · window ±${tol}° for this way of measuring</span>`);
     $("check").innerHTML = lines.map(l => `<div>${l}</div>`).join("");
     const plain = h => h.replace(/<li>/g, "\n- ").replace(/<[^>]+>/g, "").trim();

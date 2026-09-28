@@ -13,14 +13,14 @@
   const VIEW = {lat: 30.2751108, lon: -103.8827973, h: 1495.2};
   const DECL = 6.2;
   const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
-  const fmt = (v, n = 1) => Number(v).toFixed(n);
+  const fmt = (v, n = 1) => { const s = Number(v).toFixed(n); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
   const mrad2deg = m => Math.atan(m / 1000) * R2D;
 
   // ------------------------------------------------------------------ data
   let S = null, ZR = null, STARS = [];
   const ready = Promise.all([
-    fetch("data/site.json?v=7").then(r => r.json()).then(j => { S = j; }).catch(() => {}),
-    fetch("data/zos_rate.json?v=7").then(r => r.json()).then(j => { ZR = j; }).catch(() => {}),
+    fetch("data/site.json?v=8").then(r => r.json()).then(j => { S = j; }).catch(() => {}),
+    fetch("data/zos_rate.json?v=8").then(r => r.json()).then(j => { ZR = j; }).catch(() => {}),
     fetch("data/bright_stars.json?v=1").then(r => r.json()).then(j => { STARS = j.stars; }).catch(() => {})]);
 
   // ------------------------------------------------------------------ orientation maths
@@ -264,7 +264,8 @@
   }
   $("bRec").addEventListener("click", () => {
     const P = pointing(20); if (!P) { toast("No sensor data yet."); return; }
-    const m = Math.tan(P.el * D2R) * 1000, rl = rateAt(P.az, m);
+    const DOM = (ZR && ZR.standard.params.az_domain_deg) || [150, 300], inDom = P.az >= DOM[0] && P.az <= DOM[1];
+    const m = Math.tan(P.el * D2R) * 1000, rl = inDom ? rateAt(P.az, m) : null;
     const skyM = (() => { const s = S.sky.find(x => Math.abs(x[0] - Math.round(P.az * 10) / 10) < 0.051); return s ? s[1] : null; })();
     const err = st.check ? Math.max(st.check.err, P.sd) : null;
     const tol = st.cal ? Math.max(0.3, err || 0.3) : 5;
@@ -280,7 +281,7 @@
     $("recOut").innerHTML = `<p class="mono">${fmt(P.az, 2)}° true (${fmt(norm(P.az - DECL), 2)}° magnetic) · height ${fmt(P.el, 2)}°<br>${new Date().toLocaleTimeString()}</p>` +
       `<p>${st.cal ? `Calibrated on ${st.cal.name}${st.check ? `, last check ${fmt(st.check.err, 2)}° off` : ". Tap <b>Check</b> on the same light to measure your error"}.` : "<b>Not calibrated</b>: this bearing may be 5–10° off."}</p>` +
       `<p>${skyM === null ? "" : above ? "<b>Above the skyline</b>: aircraft, stars, planets, satellites or the aerostat are the usual candidates. " : "Below the skyline, against the land. "}` +
-      `${rl === null ? "" : rl >= 0 ? `Ordinary lights expected here: <b>${RATE_TXT[rl]}</b>.` : "<b>Few ordinary lights expected here</b> (under one per 100 hours from known sources)."}</p>` +
+      `${!inDom ? "<b>Outside the modelled view</b> (150°–300° true): traffic in this direction isn't worked out, so the app can't say whether this light is unusual. " : rl === null ? "" : rl >= 0 ? `Ordinary lights expected here: <b>${RATE_TXT[rl]}</b>.` : "<b>Few ordinary lights expected here</b> (under one per 100 hours from known sources)."}</p>` +
       `<p>${near.length ? `Known sources within ±${fmt(tol, 1)}°: ${near.join(", ")}.` : `No known light source within ±${fmt(tol, 1)}°.`}</p>` +
       `<p>Saved to your field log on this phone.</p>`;
     open("recSheet");

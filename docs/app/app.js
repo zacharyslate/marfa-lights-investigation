@@ -6,7 +6,7 @@
   const VIEW = {lat: 30.2751108, lon: -103.8827973, h: 1495};
   const DECL = 6.2, TZ = "America/Chicago";
   const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
-  const fmt = (v, n = 0) => Number(v).toFixed(n);
+  const fmt = (v, n = 0) => { const s = Number(v).toFixed(n); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
   const mrad2deg = m => Math.atan(m / 1000) * R2D;
   const tfmt = d => d ? new Intl.DateTimeFormat("en-US", {timeZone: TZ, hour: "numeric", minute: "2-digit"}).format(d instanceof Date ? d : d.date) : "–";
   const store = {get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -47,8 +47,8 @@
   // ---------------------------------------------------------------- data
   let S = null, ZR = null;
   const ready = Promise.all([
-    fetch("../data/site.json?v=7").then(r => r.json()).then(j => { S = j; }),
-    fetch("../data/zos_rate.json?v=7").then(r => r.json()).then(j => { ZR = j; }).catch(() => {})]).catch(() => toast("Couldn't load the map data. Open the app once with a connection."));
+    fetch("../data/site.json?v=8").then(r => r.json()).then(j => { S = j; }),
+    fetch("../data/zos_rate.json?v=8").then(r => r.json()).then(j => { ZR = j; }).catch(() => {})]).catch(() => toast("Couldn't load the map data. Open the app once with a connection."));
 
   // ================================================================ TONIGHT
   const A = window.Astronomy;
@@ -77,6 +77,9 @@
     const illum = A.Illumination("Moon", A.MakeTime(new Date((t0.getTime() + t1.getTime()) / 2))).phase_fraction;
     const phase = A.MoonPhase(new Date((t0.getTime() + t1.getTime()) / 2));
     const moonrise = A.SearchRiseSet("Moon", OBS, +1, t0, 1.2), moonset = A.SearchRiseSet("Moon", OBS, -1, t0, 1.2);
+    const upAtSunset = altaz("Moon", t0).alt > 0, before = x => x && x.date.getTime() < t1.getTime();
+    const moonTxt = upAtSunset ? (before(moonset) ? `up at sunset, sets ${tfmt(moonset)}` : "up all night")
+      : before(moonrise) ? `rises ${tfmt(moonrise)}${moonset && moonset.date > moonrise.date && before(moonset) ? `, sets ${tfmt(moonset)}` : ", up until dawn"}` : "down all night";
     samples.forEach(s => { s.state = s.sun > -6 ? "civil" : s.sun > -18 ? "twi" : (s.moon > 0 && illum > 0.12 ? "moon" : "dark"); });
     const darkMin = samples.filter(s => s.state === "dark").length * 10;
     // planets
@@ -90,7 +93,7 @@
       for (let i = 1; i < pts.length; i++) if (pts[i - 1].alt > 0 && pts[i].alt <= 0 && pts[i].sun < -6) { set = pts[i]; break; }
       return {b, mag, first: vis[0], last: vis[vis.length - 1], set};
     }).filter(Boolean).sort((a, b) => a.mag - b.mag);
-    TONIGHT = {start, sunset, dusk, dawn, sunrise, samples, illum, phase, moonrise, moonset, darkMin, planets};
+    TONIGHT = {start, sunset, dusk, dawn, sunrise, samples, illum, phase, moonrise, moonset, moonTxt, darkMin, planets};
     renderTonight();
   }
 
@@ -100,11 +103,10 @@
     const moonUpAtDark = T.samples.find(s => s.state === "moon");
     $("t-sum").textContent = T.darkMin >= 120 ? `About ${fmt(T.darkMin / 60, 1)} hours of truly dark sky tonight${moonUpAtDark ? ", once the moon is down" : ""}.`
       : T.darkMin > 0 ? `Only about ${T.darkMin} minutes of fully dark sky tonight. The moon is up for most of the night.` : "The moon is up for all of the dark hours tonight, so the sky never gets fully dark. Bright lights are still easy to see.";
-    const moonTxt = `${phaseName(T.phase)}, ${fmt(T.illum * 100)}% lit`;
     $("t-tiles").innerHTML = [
       ["Sunset", tfmt(T.sunset), "sun below the mountains"],
       ["Fully dark", tfmt(T.dusk), "end of twilight"],
-      ["Moon", `${fmt(T.illum * 100)}%`, `${phaseName(T.phase)} · rises ${tfmt(T.moonrise)}, sets ${tfmt(T.moonset)}`],
+      ["Moon", `${fmt(T.illum * 100)}%`, `${phaseName(T.phase)} · ${T.moonTxt}`],
       ["Dark hours", `${fmt(T.darkMin / 60, 1)} h`, `dawn twilight ${tfmt(T.dawn)}`]]
       .map(([k, b, s]) => `<div class="tile"><span class="k">${k}</span><b>${b}</b><span>${s}</span></div>`).join("");
     // timeline bar
@@ -120,7 +122,7 @@
     // planets
     $("t-planets").innerHTML = `<h2>Planets tonight</h2>` + (T.planets.length ? `<ul class="plist">${T.planets.map(p => {
       const inFan = p.set && p.set.az >= 150 && p.set.az <= 300;
-      return `<li><b>${p.b}</b><span>magnitude ${fmt(p.mag, 1)} · visible ${tfmt(p.first.d)}–${tfmt(p.last.d)}${p.set ? ` · sets ${tfmt(p.set.d)} in the ${compass(p.set.az)} (${fmt(p.set.az)}° true, ${fmt(norm(p.set.az - DECL))}° compass)` : ""}</span>
+      return `<li><b>${p.b}</b><span>magnitude ${fmt(p.mag, 1)} · ${p.first.d.getTime() === p.last.d.getTime() ? `low, briefly, around ${tfmt(p.first.d)}` : `visible ${tfmt(p.first.d)}–${tfmt(p.last.d)}`}${p.set ? ` · sets ${tfmt(p.set.d)} in the ${compass(p.set.az)} (${fmt(p.set.az)}° true, ${fmt(norm(p.set.az - DECL))}° compass)` : ""}</span>
         ${inFan ? `<span class="warn">Sets over the flat. Low down it flickers and changes colour, and is often mistaken for a Marfa Light.</span>` : ""}</li>`; }).join("")}</ul>`
       : `<p class="dim">No bright planets are up after dark tonight.</p>`);
     $("t-tip").innerHTML = `<h2>Tip</h2><p>${TIPS[Math.floor((T.sunset.date.getTime() / 864e5)) % TIPS.length]}</p>`;
@@ -150,7 +152,7 @@
   // ================================================================ IDENTIFY
   let refMag = true, heightSel = "", exactM = null, lastCands = [];
   const idB = $("i-b");
-  const trueB = () => { const b = parseFloat(idB.value); return isNaN(b) ? null : norm(refMag ? b + DECL : b); };
+  const trueB = () => { const b = parseFloat(idB.value); return isNaN(b) || b < 0 || b > 360 ? null : norm(refMag ? b + DECL : b); };
   $("i-mag").onclick = () => setRef(true); $("i-true").onclick = () => setRef(false);
   function setRef(m) { const b = trueB(); refMag = m; $("i-mag").setAttribute("aria-pressed", m); $("i-true").setAttribute("aria-pressed", !m); if (b !== null) idB.value = fmt(norm(m ? b - DECL : b), 1); identify(); }
   idB.addEventListener("input", () => { exactM = null; identify(); });
@@ -213,6 +215,8 @@
   function identify() {
     const b = trueB();
     const V = $("i-verdict"), C = $("i-cands");
+    const raw = parseFloat(idB.value);
+    if (!isNaN(raw) && (raw < 0 || raw > 360)) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Check the bearing</b><span class="dim">Bearings run from 0 to 360°.</span>`; C.innerHTML = ""; drawPano(); return; }
     if (b === null || !S) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Point me at a light</b><span class="dim">Enter a bearing, use the phone compass, or tap the strip.</span>`; C.innerHTML = ""; drawPano(); return; }
     const tol = 2, sk = skyAt(b);
     let m = exactM;
@@ -224,13 +228,15 @@
     else if (below) cands = cands.filter(c => !c.sky || c.k === "town");
     if (exactM !== null) cands = cands.filter(c => !c.m || (exactM >= c.m[0] - 1.5 && exactM <= c.m[1] + 1.5));
     // rate
+    const DOM = (ZR && ZR.standard.params.az_domain_deg) || [150, 300], outside = b < DOM[0] || b > DOM[1];
     let rl = null;
-    if (!above && ZR) {
+    if (!above && !outside && ZR) {
       if (exactM !== null) rl = rateAt(b, exactM);
       else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const s2 = skyAt(norm(a)); if (s2 !== null) for (let mm = -15; mm <= s2; mm += 0.5) rl = Math.max(rl, rateAt(norm(a), mm)); } }
     }
     const lbl = `${fmt(b, 1)}° true · ${fmt(norm(b - DECL), 1)}° compass`;
     if (above) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Above the skyline</b><span>Usually a plane, satellite, star or planet, or the radar balloon to the west-northwest. Ground lights can't appear here.</span><span class="small dim">${lbl}</span>`; }
+    else if (outside) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Outside the mapped view</b><span>This guide works out traffic only toward the Chinati Mountains, from ${fmt(refMag ? norm(DOM[0] - DECL) : DOM[0])}° to ${fmt(refMag ? norm(DOM[1] - DECL) : DOM[1])}° ${refMag ? "on a compass" : "true"} (south to west-northwest). In this direction it can't tell you whether a light is unusual. US-90, the railway and the towns of Alpine and Fort Davis lie to the north and east.</span><span class="small dim">${lbl}</span>`; }
     else if (rl !== null && rl >= 1) { V.className = "verdict busy"; V.innerHTML = `<b class="big-t">Busy spot</b><span>Ordinary lights pass here ${RATE_TXT[rl]} on a clear night. Check the list below first.</span><span class="small dim">${lbl}</span>`; }
     else if (rl === 0) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Occasional traffic</b><span>Ordinary lights pass here ${RATE_TXT[0]}. It could still be one of those, so watch how it moves.</span><span class="small dim">${lbl}</span>`; }
     else if (rl === -1) { V.className = "verdict quiet"; V.innerHTML = `<b class="big-t">Quiet spot</b><span>Fewer than one known ordinary light per 100 hours here. If you see something, note the time and log it.</span><span class="small dim">${lbl}</span>`; }
@@ -250,7 +256,8 @@
     const b = trueB(); const span = 30;
     if (b !== null) { PV.a0 = b - span / 2; PV.a1 = b + span / 2; } else { PV.a0 = 205; PV.a1 = 295; }
     const sky = S.sky.filter(s => s[0] >= PV.a0 - 0.1 && s[0] <= PV.a1 + 0.1);
-    if (!sky.length) { cx.clearRect(0, 0, W, H); return; }
+    if (!sky.length) { cx.clearRect(0, 0, W, H); cx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--ink-2"); cx.font = "15px system-ui, sans-serif"; cx.textAlign = "center";
+      cx.fillText("No skyline drawing in this direction", W / 2, H / 2); $("i-panonote").textContent = ""; return; }
     const vals = sky.map(s => s[1]).concat(S.hwy.filter(p => p[2] >= PV.a0 && p[2] <= PV.a1 && p[6] !== "h").map(p => p[7]));
     PV.e0 = Math.min(...sky.map(s => s[3]), ...vals) - 1; PV.e1 = Math.max(...vals) + 2.5;
     const X = a => (a - PV.a0) / (PV.a1 - PV.a0) * W, Y = m => (PV.e1 - m) / (PV.e1 - PV.e0) * H;
@@ -361,6 +368,8 @@
   $("m-install").innerHTML = ios ? "On iPhone: open this page in Safari, tap the <b>Share</b> button, then <b>Add to Home Screen</b>." :
     "On Android: tap <b>Install</b> at the top, or open the browser menu and choose <b>Install app</b> / <b>Add to Home screen</b>.";
   if ("serviceWorker" in navigator) {
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (hadController) toast("A new version is ready. Close and reopen the app to use it.", 6000); });
     navigator.serviceWorker.register("../sw.js", {scope: "../"}).then(() => navigator.serviceWorker.ready).then(() => {
       $("m-offline").textContent = "Ready: this app and the website are saved on your phone for offline use.";
     }).catch(() => { $("m-offline").textContent = "Offline mode isn't available in this browser."; });

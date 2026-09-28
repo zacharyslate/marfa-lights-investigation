@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
 <link rel="stylesheet" href="assets/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/site.css?v=8">
+<link rel="stylesheet" href="assets/site.css?v=9">
 <style>
 body{overflow:hidden}
 .mapapp{display:grid;grid-template-columns:minmax(0,1fr) 410px;height:calc(100dvh - 55px)}
@@ -41,10 +41,11 @@ select{font-size:15px}
 .sbtn{font:600 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);cursor:pointer}
 .sbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .verdict{border-left:3px solid var(--accent);padding:8px 0 8px 12px;font-size:15.5px;display:grid;gap:6px}
-.verdict b{font-family:var(--f-disp);font-size:19px;letter-spacing:.01em}
+.verdict b{font-weight:700}
+.verdict b.h{display:block;font-family:var(--f-disp);font-size:19px;letter-spacing:.01em}
 .cands{list-style:none;margin:0;padding:0;display:grid;gap:0;border-top:1px solid var(--rule)}
 .cands li{padding:9px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:baseline;font-size:14.5px}
-.chip{font:600 11px/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 6px;border-radius:3px;border:1px solid currentColor;white-space:nowrap}
+.chip{font:600 11px/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 6px 4px 8px;border-radius:3px;border:1px solid var(--rule);box-shadow:inset 4px 0 0 var(--c,var(--muted));color:var(--ink-2);white-space:nowrap}
 .cands .d{font:600 13px var(--f-mono);color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
 .cands .sub{grid-column:2/4;color:var(--muted);font-size:13.5px}
 .layers{display:grid;gap:6px}
@@ -71,6 +72,7 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
 <body>
 <header id="bar"></header>
 <main class="mapapp">
+  <h1 class="sr-only">Marfa Lights map and light identifier</h1>
   <div id="map" role="application" aria-label="Map of the Marfa Lights viewing direction"></div>
   <aside class="panel" aria-label="Tools">
 
@@ -135,7 +137,7 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
   </aside>
 </main>
 <script src="assets/leaflet/leaflet.js"></script>
-<script src="assets/site.js?v=8"></script>
-<script src="assets/map.js?v=6"></script>
+<script src="assets/site.js?v=9"></script>
+<script src="assets/map.js?v=9"></script>
 </body>
 </html>

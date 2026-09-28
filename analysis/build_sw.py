@@ -39,7 +39,8 @@ const RUNTIME = "mlfg-runtime";
 const TILE_MAX = 400;
 
 self.addEventListener("install", e => {{
-  e.waitUntil(caches.open(VERSION).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting()));
+  // cache: "reload" skips the browser's HTTP cache, so a new version never precaches stale copies
+  e.waitUntil(caches.open(VERSION).then(c => c.addAll(PRECACHE.map(u => new Request(u, {{cache: "reload"}})))).then(() => self.skipWaiting()));
 }});
 self.addEventListener("activate", e => {{
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== VERSION && k !== RUNTIME).map(k => caches.delete(k))))

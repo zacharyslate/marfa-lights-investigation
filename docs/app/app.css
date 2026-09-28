@@ -7,7 +7,7 @@
   --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --r:12px; color-scheme:dark;
 }
 :root[data-night="1"]{
-  --bg:#000; --surface:#0b0000; --surface-2:#150202; --ink:#e04a32; --ink-2:#c23a26; --muted:#8e2a18; --rule:#2d0905;
+  --bg:#000; --surface:#0b0000; --surface-2:#150202; --ink:#f25a3e; --ink-2:#e8452e; --muted:#e0432d; --rule:#2d0905;
   --accent:#ff5a3c; --accent-ink:#000; --good:#e04a32; --warn:#e04a32; --busy:#ff5a3c; --road:#ff5a3c; --road2:#e0482f; --rail:#b0301c; --tower:#ff5a3c;
   --r1:#3a0e06; --r2:#5e170b; --r3:#8e2414; --r4:#c2331c; --sky:#4a120a; --land:#140302;
 }
