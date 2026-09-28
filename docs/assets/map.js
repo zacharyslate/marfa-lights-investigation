@@ -1,8 +1,8 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=5").then(r => r.json()),
-    fetch("data/zos.json?v=5").then(r => r.json()).catch(() => null),
-    fetch("data/zos_rate.json?v=5").then(r => r.json()).catch(() => null)]);
+  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=6").then(r => r.json()),
+    fetch("data/zos.json?v=6").then(r => r.json()).catch(() => null),
+    fetch("data/zos_rate.json?v=6").then(r => r.json()).catch(() => null)]);
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;

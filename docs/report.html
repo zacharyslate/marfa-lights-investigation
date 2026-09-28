@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Report a Sighting</title>
+<meta name="description" content="Report a light you saw from the Marfa Lights Viewing Area. The form checks it against every known light source and keeps your report on your device until you choose to send it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=6">
+<style>
+form{display:grid;gap:28px}
+fieldset{border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface);padding:18px 18px 20px;margin:0;display:grid;gap:14px;min-width:0}
+legend{font:700 21px/1 var(--f-disp);letter-spacing:.01em;padding:0 6px}
+.f{display:grid;gap:5px;min-width:0}
+.f>label,.lab{font:600 12.5px/1.25 var(--f-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.hint{font-size:14.5px;color:var(--muted)}
+input[type=text],input[type=number],input[type=datetime-local],select,textarea{font:16px/1.3 var(--f-body);color:var(--ink);background:var(--bg);border:1px solid var(--rule);border-radius:4px;padding:10px;width:100%;min-width:0}
+input[type=number]{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+textarea{min-height:120px;resize:vertical}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--rule);border-radius:99px;padding:7px 12px;font-size:15px;cursor:pointer;background:var(--bg)}
+.chips input{accent-color:var(--accent);width:16px;height:16px}
+.check{border-left:3px solid var(--accent);padding:6px 0 6px 14px;display:grid;gap:6px;font-size:15.5px}
+.check b{font-family:var(--f-disp);font-size:19px}
+.check ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.sbtn{font:600 14px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);cursor:pointer}
+.sbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-2);border-radius:var(--radius);padding:14px;margin:0;max-height:360px;overflow:auto}
+.status{font-size:14.5px;color:var(--ink-2);min-height:1.4em}
+</style>
+</head>
+<body>
+<header id="bar"></header>
+<main class="page">
+  <header class="prose">
+    <div class="eyebrow">Share what you see</div>
+    <h1>Report a sighting</h1>
+    <p class="lede">A careful record is how an unexplained light becomes evidence. This form takes a few minutes. As you fill it in, it checks your light against every known source in the view.</p>
+    <div class="note"><b>Write your own account first.</b> If you were with others, fill this in before you compare notes. People who talk before writing tend to converge on each other's details, and then two witnesses count as one. <b>Your report stays on this device</b> until you choose to download it or send it.</div>
+  </header>
+
+  <div class="two">
+    <form id="rep" autocomplete="off" onsubmit="return false">
+      <fieldset>
+        <legend>When and where</legend>
+        <div class="g2">
+          <div class="f"><label for="t0">Date and time first seen</label><input id="t0" type="datetime-local" required><span class="hint">Your phone's local time. Marfa is on US Central Time.</span></div>
+          <div class="f"><label for="dur">About how long did you see it?</label><select id="dur"><option value="">Choose</option><option>Under 10 seconds</option><option>10–60 seconds</option><option>1–5 minutes</option><option>5–20 minutes</option><option>Over 20 minutes</option></select></div>
+        </div>
+        <div class="f"><label for="where">Where were you?</label>
+          <select id="where"><option value="va">Marfa Lights Viewing Area (US-90)</option><option value="other">Somewhere else</option></select></div>
+        <div class="f" id="elsewhere" hidden>
+          <label for="whereTxt">Describe where, and add your position if you like</label>
+          <input id="whereTxt" type="text" placeholder="e.g. US-67 pull-off 5 miles south of Marfa">
+          <div class="actions"><button class="sbtn" type="button" id="geo">Use my location</button><span class="status" id="geoOut"></span></div>
+          <span class="hint">Your position is rounded to about 100 m. The automatic check below assumes the Viewing Area, so it will not apply.</span>
+        </div>
+        <div class="f" id="logWrap" hidden><label for="fromLog">Start from a sighting you saved in the identifier</label><select id="fromLog"></select></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Direction and height</legend>
+        <div class="g2">
+          <div class="f"><label for="brg">Bearing (degrees)</label><input id="brg" type="number" inputmode="decimal" min="0" max="360" step="0.1" placeholder="e.g. 227"></div>
+          <div class="f"><label for="ref">Bearing is</label><select id="ref"><option value="mag">Magnetic (a compass or phone)</option><option value="true">True (map or GPS)</option></select></div>
+          <div class="f"><label for="elv">Height above level (degrees)</label><input id="elv" type="number" inputmode="decimal" step="0.05" placeholder="optional, e.g. -0.2"></div>
+        </div>
+        <div class="f"><label for="how">How did you measure the direction?</label>
+          <select id="how"><option value="">Choose</option><option value="photo">From a photo or video with the skyline in it</option><option value="compass">Hand compass</option><option value="phone">Phone compass</option><option value="landmark">Against a landmark (peak, tower light)</option><option value="guess">Rough estimate</option></select></div>
+        <div class="f"><span class="lab">Compared with the mountain skyline, the light was</span>
+          <div class="chips" id="sky">
+            <label><input type="radio" name="sky" value="above"> Above the skyline</label>
+            <label><input type="radio" name="sky" value="on"> Right at the skyline</label>
+            <label><input type="radio" name="sky" value="below"> Below it, against the land</label>
+            <label><input type="radio" name="sky" value="unsure"> Not sure</label>
+          </div></div>
+        <div class="f"><label for="skyTxt">Describe the height in your own words</label><input id="skyTxt" type="text" placeholder="e.g. about one finger-width below the ridge, left of the tallest peak"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>The light</legend>
+        <div class="g2">
+          <div class="f"><label for="n">How many lights?</label><select id="n"><option value="">Choose</option><option>1</option><option>2</option><option>3</option><option>4 or more</option><option>Changed during the sighting</option></select></div>
+          <div class="f"><label for="bright">Brightness</label><select id="bright"><option value="">Choose</option><option>Brighter than any star</option><option>Like the brightest stars</option><option>Like an ordinary star</option><option>Faint, hard to see</option><option>Changed a lot</option></select></div>
+        </div>
+        <div class="f"><span class="lab">Colour (tick all that apply)</span>
+          <div class="chips" data-group="colour">
+            <label><input type="checkbox" value="white"> White</label><label><input type="checkbox" value="yellow-orange"> Yellow-orange</label>
+            <label><input type="checkbox" value="red"> Red</label><label><input type="checkbox" value="green"> Green</label>
+            <label><input type="checkbox" value="blue"> Blue</label><label><input type="checkbox" value="changing"> Changing</label>
+          </div></div>
+        <div class="f"><span class="lab">Movement</span>
+          <div class="chips" data-group="motion">
+            <label><input type="checkbox" value="stationary"> Stayed in one place</label><label><input type="checkbox" value="moved left-right"> Moved sideways</label>
+            <label><input type="checkbox" value="rose"> Rose</label><label><input type="checkbox" value="fell"> Sank</label>
+            <label><input type="checkbox" value="erratic"> Darted or changed direction</label>
+          </div></div>
+        <div class="f"><span class="lab">It also…</span>
+          <div class="chips" data-group="behaviour">
+            <label><input type="checkbox" value="blinked on and off"> Blinked on and off</label><label><input type="checkbox" value="pulsed or flickered"> Pulsed or flickered</label>
+            <label><input type="checkbox" value="split"> Split in two</label><label><input type="checkbox" value="merged"> Merged</label>
+            <label><input type="checkbox" value="faded out"> Faded out</label><label><input type="checkbox" value="vanished suddenly"> Vanished suddenly</label>
+          </div></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Conditions</legend>
+        <div class="g2">
+          <div class="f"><label for="cloud">Sky</label><select id="cloud"><option value="">Choose</option><option>Clear</option><option>A few clouds</option><option>Mostly cloudy</option><option>Overcast</option></select></div>
+          <div class="f"><label for="moon">Moon</label><select id="moon"><option value="">Choose</option><option>Not up</option><option>Up, thin crescent</option><option>Up, half or more</option><option>Not sure</option></select></div>
+          <div class="f"><label for="wind">Wind</label><select id="wind"><option value="">Choose</option><option>Calm</option><option>Light breeze</option><option>Windy</option></select></div>
+          <div class="f"><label for="temp">Air temperature, if known</label><input id="temp" type="text" placeholder="e.g. 48 °F"></div>
+        </div>
+        <div class="f"><label for="cold">Did the air near the ground feel colder than a few feet up?</label><select id="cold"><option value="">Not sure</option><option>Yes</option><option>No</option></select><span class="hint">That suggests a temperature inversion, which bends distant light.</span></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Others and evidence</legend>
+        <div class="g2">
+          <div class="f"><label for="others">Did anyone else see it?</label><select id="others"><option value="">Choose</option><option>No, only me</option><option>Yes, one other person</option><option>Yes, several people</option></select></div>
+          <div class="f"><label for="talked">Did you talk it over before writing this?</label><select id="talked"><option value="">Choose</option><option>No, this is my own account</option><option>Yes, briefly</option><option>Yes, at length</option></select></div>
+        </div>
+        <div class="f"><label for="media">Photo or video?</label><select id="media"><option value="">None</option><option>Photo</option><option>Video</option><option>Both</option></select><span class="hint">Keep the original files. They carry the exact time. If you post them anywhere public, leave out anything that shows private land in detail.</span></div>
+        <div class="f"><label for="equip">Equipment, if any</label><input id="equip" type="text" placeholder="e.g. iPhone 15 on tripod, 10 s exposure; 10x50 binoculars"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Your account</legend>
+        <div class="f"><label for="story">In your own words</label><textarea id="story" placeholder="What did you see, from the first moment to the last? What made it seem unusual?"></textarea></div>
+      </fieldset>
+    </form>
+
+    <aside class="aside" style="position:sticky;top:70px">
+      <h3>Automatic noise check</h3>
+      <div id="check" class="check"><span class="muted">Enter a bearing to see which known light sources lie in that direction.</span></div>
+      <p class="hint">This compares your bearing and height with the project's map of roads, rail, lit towers, towns and the aerostat. A match doesn't mean your light was ordinary, and no match doesn't mean it wasn't. It shows which ordinary causes to rule out first.</p>
+      <h3 style="margin-top:12px">Send your report</h3>
+      <div class="actions">
+        <button class="btn" type="button" id="dl">Download report</button>
+        <button class="btn ghost" type="button" id="copy">Copy text</button>
+      </div>
+      <button class="sbtn" type="button" id="gh">Post publicly on GitHub</button>
+      <p class="hint">Downloading keeps it private: you can email it to the project later. Posting on GitHub makes it public and needs a free GitHub account. Please leave out names, phone numbers and exact locations on private land.</p>
+      <p class="status" id="status" role="status"></p>
+    </aside>
+  </div>
+
+  <section class="prose">
+    <h2>Preview</h2>
+    <pre id="preview"></pre>
+  </section>
+</main>
+<footer id="foot"></footer>
+<script src="assets/site.js?v=6"></script>
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const DECL = 6.2, D2R = Math.PI / 180;
+  const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
+  const fmt = (v, n = 1) => Number(v).toFixed(n);
+  const [S, ZR] = await Promise.all([fetch("data/site.json?v=6").then(r => r.json()).catch(() => null),
+    fetch("data/zos_rate.json?v=6").then(r => r.json()).catch(() => null)]);
+
+  // default time: now, local
+  const now = new Date(); now.setSeconds(0, 0);
+  $("t0").value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  $("where").addEventListener("change", () => { $("elsewhere").hidden = $("where").value !== "other"; update(); });
+  let pos = null;
+  $("geo").addEventListener("click", () => {
+    if (!navigator.geolocation) { $("geoOut").textContent = "Location isn't available in this browser."; return; }
+    navigator.geolocation.getCurrentPosition(p => { pos = [+p.coords.latitude.toFixed(3), +p.coords.longitude.toFixed(3)]; $("geoOut").textContent = `${pos[0]}, ${pos[1]} (rounded)`; update(); },
+      () => { $("geoOut").textContent = "Location was not shared."; });
+  });
+
+  // import from the identifier's field log (stored on this device only)
+  let LOG = []; try { LOG = JSON.parse(localStorage.getItem("mlfg-log") || "[]"); } catch (e) {}
+  if (LOG.length) {
+    $("logWrap").hidden = false;
+    $("fromLog").innerHTML = `<option value="">Choose a saved sighting</option>` + LOG.map((s, i) => `<option value="${i}">${s.time.slice(0, 16).replace("T", " ")} · ${fmt(s.true_bearing)}° true${s.note ? " · " + s.note.slice(0, 30).replace(/</g, "&lt;") : ""}</option>`).reverse().join("");
+    $("fromLog").addEventListener("change", e => {
+      const s = LOG[+e.target.value]; if (!s) return;
+      const d = new Date(s.time); $("t0").value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      $("ref").value = "true"; $("brg").value = s.true_bearing; if (s.elev_deg !== "") $("elv").value = s.elev_deg;
+      if (s.note) $("story").value = s.note; update();
+    });
+  }
+
+  // ---------------- noise check (same data as the identifier)
+  const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+    const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+  const RATES = ZR ? [ZR.standard, ZR.inversion] : [];
+  const rateAt = (az, m) => { let lvl = -1; RATES.forEach(R => R.levels.forEach((lv, i) => { let n = 0; R.rate_polys[String(lv)].forEach(r => { if (inRing(az, m, r)) n++; }); if (n % 2 && i > lvl) lvl = i; })); return lvl; };
+  const RATE_TXT = ["about one every 10–100 hours", "0.1–1 per hour", "1–10 per hour", "10 or more per hour"];
+  const skyAt = az => { if (!S) return null; const s = S.sky; if (az < s[0][0] || az > s[s.length - 1][0]) return null;
+    const i = Math.min(s.length - 2, Math.max(0, Math.floor((az - s[0][0]) / 0.1))), f = (az - s[i][0]) / 0.1; return s[i][1] + f * (s[i + 1][1] - s[i][1]); };
+  const mrad2deg = m => Math.atan(m / 1000) / D2R;
+  let checkText = "";
+
+  function trueBearing() { const b = parseFloat($("brg").value); return isNaN(b) ? null : norm($("ref").value === "mag" ? b + DECL : b); }
+  function window_() { const h = $("how").value; return h === "photo" ? 1 : h === "landmark" ? 2 : h === "compass" ? 3 : 6; }
+
+  function noiseCheck() {
+    const b = trueBearing(), eRaw = $("elv").value.trim(), e = eRaw === "" ? null : parseFloat(eRaw);
+    if (b === null || !S) { $("check").innerHTML = `<span class="muted">Enter a bearing to see which known light sources lie in that direction.</span>`; checkText = ""; return; }
+    if ($("where").value === "other") { $("check").innerHTML = `<span class="muted">The check only works for sightings from the Viewing Area.</span>`; checkText = "Not run (observer not at the Viewing Area)."; return; }
+    const tol = window_(), within = az => Math.abs(angDiff(az, b)) <= tol, out = [];
+    const hv = S.hwy.filter(p => within(p[2]) && (p[6] === "v" || p[6] === "m"));
+    if (hv.length) out.push(`US-67 traffic (in view, ${fmt(Math.min(...hv.map(p => p[3])), 0)}–${fmt(Math.max(...hv.map(p => p[3])), 0)} km)`);
+    S.roads.forEach(r => { const v = r.p.filter(q => within(q[2]) && q[6] === "v"); if (v.length) out.push(`${r.n} traffic (in view, ${fmt(Math.min(...v.map(q => q[3])), 0)}–${fmt(Math.max(...v.map(q => q[3])), 0)} km)`); });
+    const rails = [...new Set(S.railpano.filter(r => within(r[1]) && r[4] <= 0.13).map(r => r[0]))];
+    rails.forEach(o => out.push(o === "UP" ? "Union Pacific trains" : "Texas Pacifico trains (rare at night)"));
+    S.towers.filter(t => t.light !== "none" && within(t.az) && t.kc !== null && t.kc <= 1).forEach(t => out.push(`Lit tower, ${fmt(t.h, 0)} m, at ${fmt(t.az, 1)}° (steady or blinking red)`));
+    S.towns.filter(t => within(t.az)).forEach(t => out.push(`${t.n.replace(", Chihuahua", "")} (${t.kc <= 1 ? "town lights" : "skyglow"})`));
+    S.fields.filter(f => f.k === "balloon" && within(f.az)).forEach(() => out.push("Tethered radar balloon (aerostat), can sit above the skyline"));
+    const sk = skyAt(b), lines = [];
+    if (e !== null && sk !== null) lines.push(e > mrad2deg(sk) + 0.1 ? `<b>Above the skyline</b> (${fmt(mrad2deg(sk), 2)}° here): aircraft, stars, planets, satellites or the aerostat are the usual candidates.` : `<b>Below the skyline</b> (${fmt(mrad2deg(sk), 2)}° here), against the land.`);
+    let rl = -1;
+    if (RATES.length) {
+      if (e !== null) rl = rateAt(b, Math.tan(e * D2R) * 1000);
+      else for (let a = b - Math.min(tol, 2); a <= b + Math.min(tol, 2) + 1e-9; a += 0.25) { const s2 = skyAt(norm(a)); if (s2 !== null) for (let m = -15; m <= s2; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); }
+    }
+    lines.push(rl >= 0 ? `Ordinary lights expected ${e === null ? "on this bearing" : "at this spot"}: <b>${RATE_TXT[rl]}</b>.` : `<b>Few ordinary lights expected here</b>: fewer than one per 100 hours from known sources.`);
+    lines.push(out.length ? `Known sources within ±${tol}°:<ul>${out.map(x => `<li>${x}</li>`).join("")}</ul>` : `No known light source within ±${tol}°.`);
+    lines.push(`<span class="muted mono" style="font-size:13px">${fmt(b)}° true · ${fmt(norm(b - DECL))}° magnetic · window ±${tol}° for this way of measuring</span>`);
+    $("check").innerHTML = lines.map(l => `<div>${l}</div>`).join("");
+    const plain = h => h.replace(/<li>/g, "\n- ").replace(/<[^>]+>/g, "").trim();
+    checkText = lines.map(plain).join("\n");
+  }
+
+  // ---------------- report
+  const val = id => $(id).value.trim();
+  const group = g => [...document.querySelectorAll(`[data-group="${g}"] input:checked`)].map(i => i.value);
+  function report() {
+    const sky = document.querySelector('input[name="sky"]:checked'), b = trueBearing();
+    const d = val("t0") ? new Date(val("t0")) : null;
+    return {
+      schema: "marfa-lights-sighting/1", created: new Date().toISOString(),
+      seen_local: val("t0"), seen_utc: d ? d.toISOString() : "", device_utc_offset_min: d ? -d.getTimezoneOffset() : "",
+      duration: val("dur"), location: $("where").value === "va" ? "Marfa Lights Viewing Area" : val("whereTxt"), position_rounded: pos,
+      bearing_entered: val("brg"), bearing_reference: $("ref").value, bearing_true: b === null ? "" : +b.toFixed(1),
+      elevation_deg: val("elv"), measured_by: val("how") ? $("how").selectedOptions[0].text : "", vs_skyline: sky ? sky.value : "", height_description: val("skyTxt"),
+      lights: val("n"), brightness: val("bright"), colour: group("colour"), movement: group("motion"), behaviour: group("behaviour"),
+      sky: val("cloud"), moon: val("moon"), wind: val("wind"), temperature: val("temp"), colder_near_ground: val("cold"),
+      others_saw: val("others"), discussed_before_writing: val("talked"), media: val("media"), equipment: val("equip"),
+      account: val("story"), noise_check: checkText
+    };
+  }
+  function asText(r) {
+    const L = (k, v) => v === "" || v === null || (Array.isArray(v) && !v.length) ? "" : `**${k}:** ${Array.isArray(v) ? v.join(", ") : v}\n`;
+    return `## Marfa Lights sighting report\n\n` +
+      L("Seen (local)", r.seen_local.replace("T", " ")) + L("Seen (UTC)", r.seen_utc) + L("Duration", r.duration) + L("Location", r.location) +
+      L("Position (rounded)", r.position_rounded ? r.position_rounded.join(", ") : "") +
+      L("Bearing", r.bearing_entered ? `${r.bearing_entered}° ${r.bearing_reference === "mag" ? "magnetic" : "true"} (${r.bearing_true}° true)` : "") +
+      L("Elevation", r.elevation_deg ? r.elevation_deg + "°" : "") + L("Measured by", r.measured_by) + L("Against the skyline", r.vs_skyline) +
+      L("Height, in words", r.height_description) + L("Number of lights", r.lights) + L("Brightness", r.brightness) + L("Colour", r.colour) +
+      L("Movement", r.movement) + L("Behaviour", r.behaviour) + L("Sky", r.sky) + L("Moon", r.moon) + L("Wind", r.wind) +
+      L("Temperature", r.temperature) + L("Colder near the ground", r.colder_near_ground) + L("Others saw it", r.others_saw) +
+      L("Discussed before writing", r.discussed_before_writing) + L("Photo/video", r.media) + L("Equipment", r.equipment) +
+      (r.account ? `\n### Account\n\n${r.account}\n` : "") + (r.noise_check ? `\n### Automatic noise check\n\n${r.noise_check}\n` : "") +
+      `\n_Report format ${r.schema}, created ${r.created}._\n`;
+  }
+  function update() { noiseCheck(); $("preview").textContent = asText(report()); }
+  document.querySelectorAll("#rep input, #rep select, #rep textarea").forEach(el => el.addEventListener("input", update));
+  document.querySelectorAll("#rep input, #rep select").forEach(el => el.addEventListener("change", update));
+  update();
+
+  const say = t => { $("status").textContent = t; };
+  $("dl").addEventListener("click", () => {
+    const r = report(), stamp = (r.seen_local || "undated").replace(/[:T]/g, "-");
+    const blob = new Blob([JSON.stringify(r, null, 2)], {type: "application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `marfa-sighting-${stamp}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); say("Saved to your downloads.");
+  });
+  $("copy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(asText(report())); say("Copied. Paste it into an email or a note."); }
+    catch (e) { say("Couldn't copy. Select the preview below and copy it by hand."); }
+  });
+  $("gh").addEventListener("click", () => {
+    const r = report();
+    if (!confirmPublic()) return;
+    const title = `Sighting: ${r.seen_local ? r.seen_local.replace("T", " ") : "undated"}${r.bearing_true !== "" ? `, ${r.bearing_true}° true` : ""}`;
+    const url = "https://github.com/zacharyslate/marfa-lights-investigation/issues/new?labels=sighting&title=" + encodeURIComponent(title) + "&body=" + encodeURIComponent(asText(r));
+    window.open(url.slice(0, 8000), "_blank", "noopener");
+  });
+  let armed = false;
+  function confirmPublic() {
+    if (armed) { armed = false; $("gh").textContent = "Post publicly on GitHub"; return true; }
+    armed = true; $("gh").textContent = "Tap again: this will be public"; say("GitHub posts are public. Check that your account leaves out names and private locations, then tap again.");
+    setTimeout(() => { if (armed) { armed = false; $("gh").textContent = "Post publicly on GitHub"; } }, 8000);
+    return false;
+  }
+})();
+</script>
+</body>
+</html>

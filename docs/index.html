@@ -7,7 +7,7 @@
 <meta name="description" content="A field guide to the Marfa Lights: an interactive line-of-sight map, a light identifier for the Viewing Area, and the history, folklore and science behind the lights.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=5">
+<link rel="stylesheet" href="assets/site.css?v=6">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
@@ -22,7 +22,7 @@
   <section class="hero">
     <div class="eyebrow">Mitchell Flat · Presidio County, Texas</div>
     <h1>Know what you're looking at</h1>
-    <p class="lede">Since at least the 1880s, people have watched unexplained lights over the flat southeast of Marfa. Most lights seen from the Viewing Area have ordinary sources: cars, trains, towers, towns. This guide helps you rule those out, so what's left is worth your attention.</p>
+    <p class="lede">Since at least the 1880s, people have watched unexplained lights over the flat southeast of Marfa. Most lights seen from the Viewing Area have ordinary sources: cars, trains, towers, towns. This guide helps you rule those out. What's left, including experiences that have never been explained, deserves careful attention, not dismissal.</p>
     <div class="row"><a class="btn" href="map.html">Open the map and identifier</a><a class="btn ghost" href="visit.html">Plan a night at the Viewing Area</a></div>
   </section>
 
@@ -41,6 +41,8 @@
     <a class="card" href="science.html"><div class="eyebrow">Evidence</div><h3>The science</h3><p>What field studies found, what mirages can and can't do, and what our terrain model shows.</p><span class="go">Read →</span></a>
     <a class="card" href="place.html"><div class="eyebrow">Setting</div><h3>The place</h3><p>A high desert basin ringed by old volcanoes, one of the darkest night skies in North America.</p><span class="go">Read →</span></a>
     <a class="card" href="visit.html"><div class="eyebrow">Field guide</div><h3>Visiting and observing</h3><p>How to observe like a scientist: bearings, timing, notes, and staying on public ground.</p><span class="go">Read →</span></a>
+    <a class="card" href="community.html"><div class="eyebrow">Community</div><h3>Community and dark skies</h3><p>Why this project exists, the dark-sky reserve around Marfa, being a good neighbour at the Viewing Area, and how to share what you see.</p><span class="go">Read →</span></a>
+    <a class="card" href="report.html"><div class="eyebrow">Contribute</div><h3>Report a sighting</h3><p>A guided form that checks your light against every known source. It stays on your device until you choose to send it.</p><span class="go">Report →</span></a>
     <a class="card" href="sightlines.html"><div class="eyebrow">Technical</div><h3>Sight-line report</h3><p>The full occlusion analysis: two maps, refraction range, cross-sections and methods.</p><span class="go">Read →</span></a>
   </section>
 
@@ -49,10 +51,10 @@
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=5"></script>
+<script src="assets/site.js?v=6"></script>
 <script>
 (async () => {
-  const S = await fetch("data/site.json?v=5").then(r => r.json());
+  const S = await fetch("data/site.json?v=6").then(r => r.json());
   const svg = document.getElementById("heroPano"), NS = "http://www.w3.org/2000/svg";
   const W = 1200, H = 170, A0 = 218, A1 = 282, E0 = -9, E1 = 8.5;
   const px = a => (a - A0) / (A1 - A0) * W, py = e => (E1 - e) / (E1 - E0) * H;

@@ -2,7 +2,7 @@
 (function () {
   const PAGES = [
     ["map.html", "Map"], ["history.html", "History & Folklore"], ["science.html", "The Science"],
-    ["place.html", "The Place"], ["visit.html", "Visiting"]
+    ["place.html", "The Place"], ["visit.html", "Visiting"], ["community.html", "Community"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];
   const LABEL = {auto: "Auto", light: "Light", dark: "Dark", night: "Night vision"};

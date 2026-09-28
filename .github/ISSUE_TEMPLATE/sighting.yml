@@ -1,0 +1,40 @@
+name: Sighting report
+description: Report a light you saw from the Marfa Lights Viewing Area. The easiest way is the guided form at https://zacharyslate.github.io/marfa-lights-investigation/report.html
+title: "Sighting: YYYY-MM-DD HH:MM, bearing"
+labels: ["sighting"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **This report will be public.** Leave out names, phone numbers and exact locations on private land.
+        If you were with others, write your own account before comparing notes.
+        The [guided form](https://zacharyslate.github.io/marfa-lights-investigation/report.html) checks your light against known sources and fills this in for you.
+  - type: input
+    id: when
+    attributes: {label: "Date and local time first seen", placeholder: "2026-10-03 22:14 (Central Time)"}
+    validations: {required: true}
+  - type: input
+    id: where
+    attributes: {label: "Where were you?", value: "Marfa Lights Viewing Area (US-90)"}
+  - type: input
+    id: bearing
+    attributes: {label: "Bearing, and whether magnetic or true", placeholder: "227 magnetic"}
+  - type: input
+    id: height
+    attributes: {label: "Height: above, at or below the skyline, and roughly how far", placeholder: "one finger-width below the ridge"}
+  - type: dropdown
+    id: measured
+    attributes: {label: "How was the direction measured?", options: ["Photo or video with skyline", "Hand compass", "Phone compass", "Against a landmark", "Rough estimate"]}
+  - type: textarea
+    id: light
+    attributes: {label: "The light", description: "Number, colour, brightness, movement, blinking, splitting, how long it lasted"}
+  - type: textarea
+    id: conditions
+    attributes: {label: "Conditions", description: "Clouds, moon, wind, temperature, whether the ground felt colder"}
+  - type: dropdown
+    id: independent
+    attributes: {label: "Did you discuss it with others before writing?", options: ["No, this is my own account", "Yes, briefly", "Yes, at length"]}
+  - type: textarea
+    id: account
+    attributes: {label: "Your account"}
+    validations: {required: true}

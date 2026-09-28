@@ -16,6 +16,8 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | `docs/map.html` | Interactive map (USGS imagery) with every layer, a light identifier (bearing → candidate sources, true/magnetic, phone compass, panorama tap), a refraction slider, and a field log that exports CSV |
 | `docs/history.html`, `science.html`, `place.html`, `visit.html` | Background pages with numbered, linked sources |
 | `docs/sightlines.html` | The technical sight-line report |
+| `docs/community.html` | Purpose, the dark-sky region, Marfa, good-neighbour guidance, local institutions |
+| `docs/report.html` | Guided sighting report with an automatic noise check; stays on the device until downloaded or posted |
 | `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
 
 ## Current results (2026‑09‑28)
