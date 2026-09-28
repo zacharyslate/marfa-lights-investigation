@@ -1,6 +1,6 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const S = await fetch("data/site.json").then(r => r.json());
+  const S = await fetch("data/site.json?v=3").then(r => r.json());
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;
@@ -364,7 +364,7 @@
       if (!isNaN(e)) el("circle", {cx: px(b), cy: py(Math.tan(e * D2R) * 1000), r: 5, fill: "none", stroke: "var(--accent)", "stroke-width": 2}, svg);
     }
     const hdeg = (view.A1 - view.A0) / (PW - PL - PR), vdeg = mrad2deg(view.E1 - view.E0) / (PH - PT - PB);
-    $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. ◆ red = lit tower (hollow if its light is hidden), purple = railroad in view.`;
+    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. ◆ red = lit tower (hollow if its light is hidden), purple = railroad in view.`;
   }
   svg.addEventListener("click", ev => {
     const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (PW / r.width), y = (ev.clientY - r.top) * (PH / r.height);
@@ -372,8 +372,8 @@
     const az = view.A0 + (x - PL) / (PW - PL - PR) * (view.A1 - view.A0), m = view.E1 - (y - PT) / (PH - PT - PB) * (view.E1 - view.E0);
     setTrueBearing(az, mrad2deg(m));
   });
-  $("panoFull").onclick = () => { panoZoom = false; $("panoFull").setAttribute("aria-pressed", "true"); $("panoZoom").setAttribute("aria-pressed", "false"); drawPano(); };
-  $("panoZoom").onclick = () => { panoZoom = true; $("panoZoom").setAttribute("aria-pressed", "true"); $("panoFull").setAttribute("aria-pressed", "false"); drawPano(); };
+  if ($("panoFull")) $("panoFull").onclick = () => { panoZoom = false; $("panoFull").setAttribute("aria-pressed", "true"); $("panoZoom").setAttribute("aria-pressed", "false"); drawPano(); };
+  if ($("panoZoom")) $("panoZoom").onclick = () => { panoZoom = true; $("panoZoom").setAttribute("aria-pressed", "true"); $("panoFull").setAttribute("aria-pressed", "false"); drawPano(); };
 
   // ------------------------------------------------------------ field log (this device only)
   let LOG = [];

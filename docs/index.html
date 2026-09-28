@@ -7,7 +7,7 @@
 <meta name="description" content="A field guide to the Marfa Lights: an interactive line-of-sight map, a light identifier for the Viewing Area, and the history, folklore and science behind the lights.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/site.css?v=3">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
@@ -49,10 +49,10 @@
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=3"></script>
 <script>
 (async () => {
-  const S = await fetch("data/site.json").then(r => r.json());
+  const S = await fetch("data/site.json?v=3").then(r => r.json());
   const svg = document.getElementById("heroPano"), NS = "http://www.w3.org/2000/svg";
   const W = 1200, H = 170, A0 = 218, A1 = 282, E0 = -9, E1 = 8.5;
   const px = a => (a - A0) / (A1 - A0) * W, py = e => (E1 - e) / (E1 - E0) * H;
