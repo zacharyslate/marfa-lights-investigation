@@ -27,7 +27,7 @@ from pyproj import CRS, Geod, Transformer
 from shapely.geometry import LineString, MultiPoint, Point
 
 STEP_DEG = 0.5          # angular spacing of the fan
-RAY_LEN_M = 60_000      # rays are cast this far, then trimmed at the highway
+RAY_LEN_M = 90_000      # rays are cast this far, then trimmed at the highway
 SAMPLE_M = 30.0         # profile sampling interval (~1 arc-second DEM cell)
 NS = {"k": "http://www.opengis.net/kml/2.2"}
 GEOD = Geod(ellps="WGS84")
@@ -248,7 +248,9 @@ def main(src="data/inputs/Investigation_Marfa.kml", out="outputs/Marfa_ray_fan")
     feats = read_kml(src)
     viewer = [v for k, v in feats.items() if "Hwy 67/90" in k][0][0]
     highway = feats["Shafer to Marfa"]
-    left_end = feats["Left Line"][-1]
+    # Left bound: originally the "Left Line" in the KML (the US-67 high point, 228.9°).
+    # Extended 2026-09-28 to the Shafter end of the highway trace so the fan covers all of US-67.
+    left_end = highway[0]
     right_end = feats["Right Line"][-1]
 
     rays, meta = build_fan(viewer, highway, left_end, right_end)

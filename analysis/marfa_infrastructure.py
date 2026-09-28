@@ -27,7 +27,7 @@ from pyproj import Geod
 
 GEOD = Geod(ellps="WGS84")
 VIEWER = (-103.8827973, 30.2751108)
-FAN = (228.931, 277.276)
+FAN = (218.985, 277.276)   # Shafter end of US-67 .. user's right bound
 MAX_KM = 80.0
 DATA = "data/inputs"
 OURAIRPORTS = "https://raw.githubusercontent.com/davidmegginson/ourairports-data/main/"

@@ -14,7 +14,7 @@ airfield,US-8548,Alamito Ranch Airport,closed,30.03391,-104.00250,203.36,29.12,F
 airfield,US-2973,Marfa Auxiliary Army Airfield #2,closed,30.35781,-104.21775,285.97,33.49,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-2973/
 airfield,US-8527,Perdiz Airport,closed,29.97926,-103.98362,196.53,34.21,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8527/
 airfield,US-12204,Blue Mountain Airport,closed,30.54730,-104.06490,329.94,34.88,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-12204/
-airfield,US-8529,Shurley Ranch Airport,small_airport,30.00818,-104.15091,221.19,39.28,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8529/
+airfield,US-8529,Shurley Ranch Airport,small_airport,30.00818,-104.15091,221.19,39.28,True,True,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8529/
 airfield,US-3587,Altuda Ranch Airport,closed,30.31210,-103.47624,83.91,39.33,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-3587/
 airfield,US-6748,Elephant Mountain Airport,small_airport,30.03411,-103.57538,131.98,39.89,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-6748/
 airfield,US-8526,Alamito East Airport,closed,29.90813,-103.97762,192.69,41.70,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8526/
@@ -28,9 +28,9 @@ airfield,US-8530,Coffee Cup Ranch Airport,closed,29.81793,-103.88087,179.79,50.6
 airfield,US-6562,Arnold Ranch Airport,closed,30.20338,-103.36152,98.87,50.80,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-6562/
 airfield,US-6752,Carrizal Ranch Airport,small_airport,29.82383,-104.06525,199.42,53.03,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-6752/
 airfield,US-4667,Yellow Tank Airport,small_airport,30.23586,-103.31187,94.38,55.12,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-4667/
-airfield,TS15,Cibolo Creek Ranch Airport,small_airport,29.89356,-104.26121,220.87,55.85,False,False,lighted runway: no/unknown; FAA-listed: True,https://ourairports.com/airports/TS15/
+airfield,TS15,Cibolo Creek Ranch Airport,small_airport,29.89356,-104.26121,220.87,55.85,True,True,lighted runway: no/unknown; FAA-listed: True,https://ourairports.com/airports/TS15/
 airfield,US-8575,Green Valley Ranch Airport,closed,29.78459,-103.73382,165.16,56.24,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8575/
-airfield,US-6751,Elephant Rock Airport,closed,29.87917,-104.26987,220.47,57.61,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-6751/
+airfield,US-6751,Elephant Rock Airport,closed,29.87917,-104.26987,220.47,57.61,True,True,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-6751/
 airfield,US-9095,Little Suzy Ranch Airport,closed,30.50842,-103.34266,63.38,58.00,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-9095/
 airfield,US-3468,Limpia Creek Landing Strip,closed,30.80090,-103.72240,14.75,60.29,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-3468/
 airfield,US-8547,Combs Ranch Airport,closed,30.00717,-103.33233,119.11,60.79,False,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-8547/
@@ -62,8 +62,8 @@ airfield,US-8403,Frontier Roadhouse Airport,closed,29.63060,-103.58097,157.74,77
 airfield,XA95,Candelaria Airport,small_airport,30.14940,-104.68300,259.95,78.29,True,False,lighted runway: no/unknown; FAA-listed: True,https://ourairports.com/airports/XA95/
 airfield,US-4388,Mesquite Ranch Airport,closed,29.80306,-104.50417,229.03,79.56,True,False,lighted runway: no/unknown; FAA-listed: False,https://ourairports.com/airports/US-4388/
 airfield,70TT,Big Bend Valley Airport,small_airport,29.61402,-103.55303,156.44,79.90,False,False,lighted runway: no/unknown; FAA-listed: True,https://ourairports.com/airports/70TT/
-railroad,TXPF/(siding/yard),Texas Pacifico (ex-South Orient),siding/yard,,,,13.98,False,False,,(simplified
-railroad,TXPF/ALPINE,Texas Pacifico (ex-South Orient),main,,,,3.81,True,True,"fan az 228.9-230.7, 14.6-17.4 km",(simplified
+railroad,TXPF/(siding/yard),Texas Pacifico (ex-South Orient),siding/yard,,,,13.98,True,True,"fan az 227.6-228.8, 14.0-14.5 km",(simplified
+railroad,TXPF/ALPINE,Texas Pacifico (ex-South Orient),main,,,,3.81,True,True,"fan az 219.1-230.7, 10.9-20.5 km",(simplified
 railroad,TXPF/BIG LAKE,Texas Pacifico (ex-South Orient),main,,,,21.12,False,False,,(simplified
 railroad,UP/SANDERSON,Union Pacific (Sunset Route),main,,,,18.09,False,False,,(simplified
 railroad,UP/SANDERSON,Union Pacific (Sunset Route),siding/yard,,,,18.09,False,False,,(simplified
@@ -75,7 +75,7 @@ transmission_line,302090,69 kV MARFA ALAMITO CREEK-NOT AVAILABLE,IN SERVICE,,,,0
 transmission_line,302222,None kV GONZALES-NOT AVAILABLE,IN SERVICE,,,,87.24,False,False,,HIFLD-derived
 transmission_line,304711,69 kV MARFA ALAMITO CREEK-NOT AVAILABLE,IN SERVICE,,,,3.06,False,False,,HIFLD-derived
 transmission_line,305291,138 kV MARFA ALAMITO CREEK-BARILLA JUNCTION,IN SERVICE,,,,12.91,False,False,,HIFLD-derived
-transmission_line,307148,69 kV PRESIDIO-MARFA ALAMITO CREEK,IN SERVICE,,,,12.69,True,True,"fan az 229.0-277.2, 13.5-37.8 km",HIFLD-derived
+transmission_line,307148,69 kV PRESIDIO-MARFA ALAMITO CREEK,IN SERVICE,,,,12.69,True,True,"fan az 219.0-277.2, 13.5-70.5 km",HIFLD-derived
 transmission_line,308926,69 kV GONZALES-PRESIDIO,IN SERVICE,,,,87.30,False,False,,HIFLD-derived
 transmission_line,310103,69 kV NOT AVAILABLE-NOT AVAILABLE,IN SERVICE,,,,22.93,False,False,,HIFLD-derived
 transmission_line,310584,69 kV PERSIMMON GAP-TAP303636,IN SERVICE,,,,36.69,False,False,,HIFLD-derived

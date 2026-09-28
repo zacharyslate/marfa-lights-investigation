@@ -27,7 +27,7 @@ from pyproj import Geod
 
 GEOD = Geod(ellps="WGS84")
 R = 6371000.0
-FAN = (228.931, 277.276)
+FAN = (218.985, 277.276)   # Shafter end of US-67 .. user's right bound
 BINS = [(-1e9, -1.0, "k1", "Visible under every refraction state (k ≤ −1 still clears)"),
         (-1.0, 0.13, "k2", "Visible at standard refraction (k 0.13); lost under strong sub-refraction"),
         (0.13, 0.5, "k3", "Needs a mild–moderate night inversion (k 0.13–0.5)"),

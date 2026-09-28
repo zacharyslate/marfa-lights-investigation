@@ -97,8 +97,12 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
     <section class="sec" id="panorama">
       <div class="eyebrow">View from the platform</div>
       <h2>Panorama</h2>
-      <p class="hint">Skyline and US-67 as seen from the Viewing Area, southwest (left) to west (right). Tap where you see the light, relative to the mountains, to set both bearing and elevation.</p>
-      <svg id="pano" viewBox="0 0 640 250" role="img" aria-label="Panorama of the skyline and US-67 from the viewing area"></svg>
+      <p class="hint">The skyline, US-67, towers and railroad as seen from the Viewing Area, south-southwest (left) to west-northwest (right). Tap where you see the light, relative to the mountains, to set both bearing and elevation.</p>
+      <div class="seg" role="group" aria-label="Panorama width">
+        <button type="button" id="panoFull" aria-pressed="true">Full view</button><button type="button" id="panoZoom" aria-pressed="false">Zoom on bearing</button>
+      </div>
+      <svg id="pano" viewBox="0 0 640 260" role="img" aria-label="Panorama of the skyline, US-67, towers and railroad from the viewing area"></svg>
+      <p class="hint" id="panoNote" style="font-size:13px"></p>
     </section>
 
     <section class="sec" id="layers">

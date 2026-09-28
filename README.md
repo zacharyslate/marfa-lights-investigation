@@ -67,15 +67,15 @@ port reading a downloaded 3DEP GeoTIFF is planned.
   "marginal" class flags where they matter.
 - Visibility is geometric only. Headlight directionality and atmospheric extinction are not
   yet modelled. Humidity affects extinction, not optical bending (Ciddor 1996).
-- Tower inventory is incomplete (FCC cellular licences only); FCC Antenna Structure
-  Registration data is still to be added.
+- Towers: FCC Antenna Structure Registrations within 90 km (retrieved 2026-09-28), each checked
+  against the terrain for whether its top light is in view. Unregistered structures are not included.
 
 ## Data sources
 
 - USGS 3D Elevation Program — 3DEPElevation ImageServer (retrieved 2026‑09‑28)
 - OurAirports open data — github.com/davidmegginson/ourairports-data
 - USDOT BTS NTAD — North American Rail Network, Aviation Facilities (FAA NASR), Railroad Grade Crossings (FRA inventory)
-- Electric Power Transmission Lines (HIFLD‑derived); Cellular Towers (FCC ULS); EIA‑860 Power Plants
+- Electric Power Transmission Lines (HIFLD‑derived); FCC Antenna Structure Registration; Cellular Towers (FCC ULS); EIA‑860 Power Plants
 - Hirt, C., Guillaume, S., Wisbar, A., Bürki, B., Sternberg, H. (2010). *J. Geophys. Res.* 115, D21102. doi:10.1029/2010JD014067
 - Ciddor, P. E. (1996). Refractive index of air: new equations for the visible and near infrared. *Applied Optics* 35(9), 1566–1573.
 

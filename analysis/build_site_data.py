@@ -30,6 +30,23 @@ def azd(lon, lat):
     return round(az % 360, 2), round(d / 1000, 2)
 
 
+def light_class(spec):
+    """Human reading of an ASR painting/lighting spec. Chapter numbers are interpreted only for
+    FAA AC 70/7460-1L/M/N, whose chapters are: 5 red obstruction, 6 medium-intensity flashing white,
+    7 high-intensity flashing white, 8 dual red/medium white, 9 dual red/high white, 10 aircraft
+    detection lighting. Older specs are reported as 'lit' without guessing the type."""
+    import re
+    if not spec or spec.strip() == "None":
+        return "none"
+    m = re.search(r"70/7460-1([A-Z])", spec)
+    ch = [int(x) for x in re.findall(r"\d+", spec.split("(")[0])]
+    if m and m.group(1) in "LMN":
+        for c, name in ((10, "adls"), (9, "dual_high"), (8, "dual"), (7, "white_high"), (6, "white"), (5, "red")):
+            if c in ch:
+                return name
+    return "lit"
+
+
 def main():
     los = json.load(open("data/derived/los_results.json"))
     nf = json.load(open("data/derived/los_near_far.json"))
@@ -52,12 +69,13 @@ def main():
                     round(r["ch_m"] / 1000, 2)])
 
     # ---------- rays
-    rays = []
+    rays, allaz = [], []
     for row in csv.DictReader(open("outputs/Marfa_ray_fan_hits.csv")):
+        allaz.append(float(row["ray_azimuth_deg"]))
         if row["crossing"] == "1":
             rays.append([float(row["ray_azimuth_deg"]), R5(float(row["lat"])), R5(float(row["lon"])),
                          float(row["dist_from_viewer_km"])])
-    fan = [rays[0][0], rays[-1][0]]
+    fan = [min(allaz), max(allaz)]
 
     # ---------- airfields
     faa = {a[0]: a for a in web["avia"]}
@@ -138,13 +156,42 @@ def main():
         az, d = azd(lon, lat)
         refs.append({"n": name, "lat": lat, "lon": lon, "az": az, "d": d, "note": note})
 
+    # ---------- panorama line of sight (wide 3-arc-second DEM, see data/derived/panorama_los.json)
+    pl = json.load(open("data/derived/panorama_los.json"))
+    los_pt = {(p["k"], p["id"]): p for p in pl["pts"] if "az" in p}
+    for f in fields:
+        q = los_pt.get(("field", f["id"]))
+        if q: f.update(a=q["a"], kc=q["kc"])
+    for t in towns:
+        q = los_pt.get(("town", t["n"]))
+        if q: t.update(a=q["a"], kc=q["kc"])
+    los_tw = {t["id"]: t for t in pl["towers"] if "az" in t}
+    asr = json.load(open("data/inputs/fcc_asr.json"))
+    towers = []
+    for asrn, lat, lon, site_m, agl, built, stype, spec, owner in asr["towers"]:
+        az, d = azd(lon, lat)
+        if d > MAX_KM:
+            continue
+        q = los_tw.get(asrn)
+        towers.append({"id": asrn, "lat": lat, "lon": lon, "az": az, "d": d, "h": agl, "top": round(site_m + agl, 1),
+                       "built": built[-4:] if built else "", "type": stype, "spec": spec, "light": light_class(spec),
+                       "owner": owner, "a": q["a"] if q else None, "kc": q["kc"] if q else None})
+    # cell sites already registered in ASR (same position) are dropped to avoid duplicates
+    cells = [c for c in cells if all(abs(c["lat"] - t["lat"]) + abs(c["lon"] - t["lon"]) > 0.002 for t in towers)]
+    for c in cells:
+        for q in pl["pts"]:
+            if q.get("k") == "cell" and "az" in q and q["id"] == c["addr"][:20]:
+                c.update(a=q["a"], kc=q["kc"])
+    railpano = [[r[0], r[3], r[4], r[5], r[6]] for r in pl["rail"]]   # owner, az, km, apparent mrad, k_crit
+
     site = {
         "generated": "2026-09-28",
         "viewer": {"lat": VIEWER[1], "lon": VIEWER[0], "z": round(meta["z0"], 1), "eye": meta["eye"]},
         "declination": {"deg": 6.2, "model": "WMM2025", "epoch": "2026.7", "annual": -0.08},
         "fan": fan, "rays": rays,
         "hwy_fields": ["lat", "lon", "az", "d_km", "z", "kcrit", "cls", "alpha_mrad", "ch_km"],
-        "hwy": hwy, "sky": los["sky"],
+        "hwy": hwy, "sky_fields": ["az", "skyline_mrad", "skyline_km", "ridge10_mrad", "ridge25_mrad", "ridge45_mrad"],
+        "sky": pl["sky"], "towers": towers, "railpano": railpano,
         "fields": fields, "rail": rail, "xing": xing, "tl": tl, "cells": cells, "plants": plants,
         "towns": towns, "refs": refs,
     }

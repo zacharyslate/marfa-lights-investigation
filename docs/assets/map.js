@@ -73,33 +73,45 @@
     ["xing", "Rail grade crossings", "swd", "--rail", false],
     ["power", "Power lines ≥ 69 kV", "sw", "--power", false],
     ["air", "Airfields, heliports, TARS", "swd", "--accent", true],
-    ["cell", "Cell towers", "swd", "--cell", true],
+    ["tower", "Towers (FCC registered)", "swd", "--cell", true],
     ["towns", "Towns", "swd", "--town", true],
   ];
   LAYERS.forEach(([id]) => groups[id] = L.layerGroup());
   const bearingGroup = L.layerGroup().addTo(map);
 
+  const LIGHT = {none: "No obstruction lights required", lit: "Registered with aviation obstruction lighting (typically red at night)",
+    red: "Red obstruction lights", dual: "Red lights at night, flashing white by day", white: "Flashing white lights",
+    white_high: "High-intensity flashing white lights", dual_high: "Red at night, high-intensity white by day", adls: "Lights come on only when aircraft approach"};
+  const isLit = t => t.light && t.light !== "none";
+  const inView = o => o.kc !== null && o.kc !== undefined && o.kc <= K;
+  // a dark casing under each coloured line keeps it readable over desert imagery
+  function cased(coords, opt, grp) {
+    L.polyline(coords, {color: "#05070a", weight: (opt.weight || 2) + 3, opacity: .55, interactive: false, lineCap: opt.lineCap || "round"}).addTo(grp);
+    return L.polyline(coords, opt).addTo(grp);
+  }
+  const diamond = (fill, stroke, size) => L.divIcon({className: "", iconSize: [size, size], iconAnchor: [size / 2, size / 2],
+    html: `<svg width="${size}" height="${size}" viewBox="-6 -6 12 12"><path d="M0,-5 L5,0 L0,5 L-5,0 Z" fill="${fill}" stroke="${stroke}" stroke-width="1.4"/></svg>`});
   function popup(title, rows) { return `<b>${title}</b><br>${rows.filter(Boolean).join("<br>")}`; }
   const azLine = (az, d) => `Bearing ${fmt(az, 1)}° true (${fmt(norm(az - DECL), 1)}° magnetic) · ${fmt(d, 1)} km`;
 
   function drawStatic() {
-    ["fan", "rail", "xing", "power", "air", "cell", "towns"].forEach(id => groups[id].clearLayers());
+    ["fan", "rail", "xing", "power", "air", "tower", "towns"].forEach(id => groups[id].clearLayers());
     const acc = css("--accent");
     // fan wedge + rays
-    const e1 = fwd(V[0], V[1], S.fan[0], 45000), e2 = fwd(V[0], V[1], S.fan[1], 45000);
-    const arc = []; for (let a = S.fan[0]; a <= S.fan[1] + 1e-6; a += 1) arc.push(fwd(V[0], V[1], a, 45000));
-    L.polygon([V, e1, ...arc, e2], {color: acc, weight: 1, opacity: .5, fillOpacity: .05, interactive: false}).addTo(groups.fan);
-    S.rays.forEach((r, i) => { if (i % 2 === 0 || i === S.rays.length - 1) L.polyline([V, [r[1], r[2]]], {color: acc, weight: .7, opacity: .22, interactive: false}).addTo(groups.fan); });
+    const FR = 66000, e1 = fwd(V[0], V[1], S.fan[0], FR), e2 = fwd(V[0], V[1], S.fan[1], FR);
+    const arc = []; for (let a = S.fan[0]; a <= S.fan[1] + 1e-6; a += 1) arc.push(fwd(V[0], V[1], a, FR));
+    L.polygon([V, e1, ...arc, e2], {color: acc, weight: 1.5, opacity: .85, fillColor: acc, fillOpacity: .08, interactive: false}).addTo(groups.fan);
+    S.rays.forEach((r, i) => { if (i % 2 === 0 || i === S.rays.length - 1) L.polyline([V, [r[1], r[2]]], {color: acc, weight: 1, opacity: .42, interactive: false}).addTo(groups.fan); });
     // rail
     const rc = css("--rail");
-    S.rail.forEach(ln => L.polyline(ln.c, {color: rc, weight: ln.m ? 3 : 1.6, opacity: .95, dashArray: ln.o === "TXPF" ? "7 5" : null})
+    S.rail.forEach(ln => cased(ln.c, {color: rc, weight: ln.m ? 3.5 : 2, opacity: 1, dashArray: ln.o === "TXPF" ? "8 5" : null}, groups.rail)
       .bindPopup(popup(ln.o === "UP" ? "Union Pacific (Sunset Route)" : "Texas Pacifico (former South Orient)", [
         `${ln.s ? ln.s + " subdivision" : "Siding or yard track"}`, ln.o === "UP" ? "Main line through Marfa; freight and Amtrak" : "Marfa–Presidio line; light traffic",
-        "Source: USDOT BTS North American Rail Network"])).addTo(groups.rail));
+        "Source: USDOT BTS North American Rail Network"]))); 
     S.xing.forEach(x => L.circleMarker([x.lat, x.lon], {radius: 4, color: rc, weight: 1.5, fillColor: css("--surface"), fillOpacity: 1})
       .bindPopup(popup(`Grade crossing ${x.id}`, [`${x.rr} · ${x.road} · ${x.pos}`, `Reported through trains: ${x.day} by day, ${x.night} at night`, azLine(x.az, x.d), "Source: FRA crossing inventory (self-reported)"])).addTo(groups.xing));
-    S.tl.forEach(t => L.polyline(t.c, {color: css("--power"), weight: 1.6, dashArray: "2 4", opacity: .9})
-      .bindPopup(popup(`${t.kv || "?"} kV transmission line`, [`${t.a} – ${t.b}`, "Unlit structures; they appear in photos, not as lights", "Source: HIFLD-derived transmission lines"])).addTo(groups.power));
+    S.tl.forEach(t => cased(t.c, {color: css("--power"), weight: 2, dashArray: "3 4", opacity: 1}, groups.power)
+      .bindPopup(popup(`${t.kv || "?"} kV transmission line`, [`${t.a} – ${t.b}`, "Unlit structures; they appear in photos, not as lights", "Source: HIFLD-derived transmission lines"])));
     S.fields.forEach(f => {
       const col = f.k === "historic" ? css("--muted") : f.k === "balloon" ? css("--cell") : acc;
       L.circleMarker([f.lat, f.lon], {radius: f.k === "historic" ? 4 : 6, color: col, weight: 2, fillColor: col, fillOpacity: f.k === "historic" ? .2 : .6})
@@ -108,8 +120,17 @@
           f.elev ? `Elevation ${Number(f.elev).toLocaleString()} ft` : "", azLine(f.az, f.d),
           `<a href="https://ourairports.com/airports/${f.id}/" target="_blank" rel="noopener">OurAirports record</a>`])).addTo(groups.air);
     });
-    S.cells.forEach(c => L.circleMarker([c.lat, c.lon], {radius: 5, color: css("--cell"), weight: 2, fillColor: css("--cell"), fillOpacity: .5})
-      .bindPopup(popup("Cell site", [c.lic, c.addr, c.h ? `Structure ${fmt(c.h, 0)} m tall` : "", c.asr ? `FCC ASR ${c.asr}` : "", azLine(c.az, c.d), "Tall towers carry red aviation obstruction lights"])).addTo(groups.cell));
+    const red = css("--cell");
+    S.towers.forEach(t => {
+      const lit = isLit(t), seen = inView(t);
+      L.marker([t.lat, t.lon], {icon: lit ? diamond(red, "#000", seen ? 16 : 12) : diamond("#9aa3ad", "#000", 9), zIndexOffset: lit ? 500 : 0})
+        .bindPopup(popup(`${fmt(t.h, 0)} m ${t.type === "LTOWER" ? "lattice tower" : t.type === "GTOWER" ? "guyed tower" : t.type === "MTOWER" ? "monopole" : t.type.toLowerCase()}`, [
+          t.owner || "", `<b style="font-size:14px;color:${lit ? red : "inherit"}">${LIGHT[t.light]}</b>`, t.light === "lit" ? `<span class="muted">Spec: ${t.spec}</span>` : "",
+          t.kc === null ? "" : seen ? `Top light <b>in view</b> from the Viewing Area at ${fmt(Math.atan(t.a / 1000) * 57.2958, 2)}° elevation` : "Top hidden by terrain from the Viewing Area",
+          azLine(t.az, t.d), `FCC Antenna Structure Registration ${t.id}${t.built ? `, built ${t.built}` : ""}`])).addTo(groups.tower);
+    });
+    S.cells.forEach(c => L.marker([c.lat, c.lon], {icon: diamond(red, "#000", 12)})
+      .bindPopup(popup("Cell site", [c.lic, c.addr, c.h ? `Structure ${fmt(c.h, 0)} m tall` : "", azLine(c.az, c.d), "Tall towers carry aviation obstruction lights"])).addTo(groups.tower));
     S.towns.forEach(t => {
       L.marker([t.lat, t.lon], {icon: L.divIcon({className: "town-label", html: t.n.replace(", Chihuahua", ""), iconSize: null, iconAnchor: t.n.startsWith("Ojinaga") ? [62, -4] : [-4, 6]}), keyboard: false})
         .bindPopup(popup(t.n, [t.note, azLine(t.az, t.d)])).addTo(groups.towns);
@@ -123,15 +144,15 @@
   const hwyClass = p => Math.abs(K - 0.13) < 1e-9 ? p.cls : (p.kc <= K ? "v" : "h");
   function drawHwy() {
     groups.hwy.clearLayers();
-    const col = {v: css("--vis"), m: css("--marg"), h: css("--hid")}, w = {v: 5, m: 4, h: 2.2};
+    const col = {v: css("--vis"), m: css("--marg"), h: css("--hid")}, w = {v: 6, m: 5, h: 3};
     const label = {v: "Visible from the Viewing Area", m: "Marginal: depends on detail finer than the terrain model", h: "Hidden by terrain"};
     let run = [H[0]];
     const flush = () => {
       if (run.length < 2) return; const c = hwyClass(run[0]), a = run[0], b = run[run.length - 1];
-      L.polyline(run.map(p => [p.lat, p.lon]), {color: col[c], weight: w[c], opacity: .95, lineCap: "butt"})
+      cased(run.map(p => [p.lat, p.lon]), {color: col[c], weight: w[c], opacity: 1, lineCap: "butt"}, groups.hwy)
         .bindPopup(popup("US-67", [`<span style="color:${col[c]}">■</span> ${label[c]}${Math.abs(K - 0.13) < 1e-9 ? " (standard refraction)" : ` at k = ${fmt(K, 2)}`}`,
           `Road km ${fmt(a.ch, 1)}–${fmt(b.ch, 1)} from Shafter`, `Bearing ${fmt(Math.min(a.az, b.az), 1)}–${fmt(Math.max(a.az, b.az), 1)}° true`,
-          `Distance ${fmt(Math.min(a.d, b.d), 1)}–${fmt(Math.max(a.d, b.d), 1)} km · road ${Math.min(a.z, b.z)}–${Math.max(a.z, b.z)} m`])).addTo(groups.hwy);
+          `Distance ${fmt(Math.min(a.d, b.d), 1)}–${fmt(Math.max(a.d, b.d), 1)} km · road ${Math.min(a.z, b.z)}–${Math.max(a.z, b.z)} m`]));
     };
     for (let i = 1; i < H.length; i++) { run.push(H[i]); if (hwyClass(H[i]) !== hwyClass(run[0]) || i === H.length - 1) { flush(); run = [H[i]]; } }
   }
@@ -209,12 +230,16 @@
     });
     Object.values(railSeen).forEach(p => {
       const hd = hwyDistAt(p.az), front = hd && p.d < hd;
+      const rv = S.railpano.filter(r => r[0] === p.o && within(r[1]));
+      const seen = rv.some(r => r[4] <= K), known = rv.length > 0;
       C.push({d: p.d, chip: "Rail", col: "--rail", t: p.o === "UP" ? "Union Pacific trains (headlight, ditch lights)" : "Texas Pacifico trains, Marfa–Presidio line",
-        dist: `${fmt(p.d, 1)} km`, sub: `${p.m ? "Main track" : "Siding/yard"}${front ? " · in front of US-67 on this bearing" : ""}`});
+        dist: `${fmt(p.d, 1)} km`, sub: `${p.m ? "Main track" : "Siding/yard"}${known ? (seen ? " · track in view" : " · track hidden by terrain") : ""}${front ? " · in front of US-67 on this bearing" : ""}`});
     });
     const pts = [
       ...S.fields.map(f => ({...f, chip: f.k === "balloon" ? "Aerostat" : f.k === "historic" ? "Historic" : "Air", col: f.k === "balloon" ? "--cell" : "--accent",
         t: f.n, sub: f.k === "balloon" ? "Radar balloon and tether lights can sit high above the skyline" : f.k === "historic" ? "WWII field, closed: no lights expected" : "Runway, beacon or aircraft lights"})),
+      ...S.towers.filter(isLit).map(t => ({...t, chip: "Tower", col: "--cell", t: `${fmt(t.h, 0)} m tower: ${LIGHT[t.light].toLowerCase()}`,
+        sub: `${t.owner ? t.owner + " · " : ""}${t.kc === null ? "" : inView(t) ? "top light in view" : "hidden by terrain"}`})),
       ...S.cells.map(c => ({...c, chip: "Tower", col: "--cell", t: "Cell tower with aviation lights", sub: c.addr})),
       ...S.towns.map(t => ({...t, chip: "Town", col: "--ink-2", t: t.n, sub: t.note + " (skyglow or direct lights)"})),
       ...S.xing.filter(x => x.night > 0).map(x => ({...x, chip: "Crossing", col: "--rail", t: `Grade crossing ${x.id}`, sub: `${x.rr}; ${x.night} reported night trains`})),
@@ -274,43 +299,81 @@
   });
 
   // ------------------------------------------------------------ panorama
-  const P = {W: 640, H: 250, L: 34, R: 8, T: 10, B: 26, A0: 218, A1: 282, E0: -10.5, E1: 9};
-  const px = a => P.L + (a - P.A0) / (P.A1 - P.A0) * (P.W - P.L - P.R), py = e => P.T + (P.E1 - e) / (P.E1 - P.E0) * (P.H - P.T - P.B);
+  let panoZoom = false;
+  const PW = 640, PH = 260, PL = 36, PR = 8, PT = 10, PB = 28;
   const svg = $("pano"), NS = "http://www.w3.org/2000/svg";
   const el = (t, a, p) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); p.appendChild(e); return e; };
+  let view = {A0: 215, A1: 285, E0: -10.5, E1: 6};
+  const px = az => PL + (az - view.A0) / (view.A1 - view.A0) * (PW - PL - PR);
+  const py = m => PT + (view.E1 - m) / (view.E1 - view.E0) * (PH - PT - PB);
   function drawPano() {
-    svg.innerHTML = "";
-    el("rect", {x: P.L, y: P.T, width: P.W - P.L - P.R, height: P.H - P.T - P.B, fill: "var(--surface-2)"}, svg);
-    for (let e = -10; e <= 8; e += 2) {
-      el("line", {x1: P.L, x2: P.W - P.R, y1: py(e), y2: py(e), stroke: "var(--rule)", "stroke-width": .6}, svg);
-      el("text", {x: P.L - 4, y: py(e) + 3, "text-anchor": "end"}, svg).textContent = fmt(mrad2deg(e), 1);
-    }
-    const sky = S.sky.filter(s => s[0] >= P.A0 && s[0] <= P.A1);
-    el("path", {d: `M${px(sky[0][0])},${py(P.E0)} ` + sky.map(s => `L${px(s[0])},${py(Math.max(P.E0, s[1]))}`).join(" ") + ` L${px(sky[sky.length - 1][0])},${py(P.E0)} Z`, fill: "var(--rule)"}, svg);
-    el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill: "none", stroke: "var(--ink-2)", "stroke-width": 1.2}, svg);
-    el("line", {x1: P.L, x2: P.W - P.R, y1: py(0), y2: py(0), stroke: "var(--muted)", "stroke-dasharray": "3 3", "stroke-width": .8}, svg);
-    S.fan.forEach(a => el("line", {x1: px(a), x2: px(a), y1: P.T, y2: P.H - P.B, stroke: "var(--accent)", "stroke-dasharray": "1 3", "stroke-width": .8}, svg));
-    const col = {v: "var(--vis)", m: "var(--marg)", h: "var(--hid)"};
-    ["h", "m", "v"].forEach(c => H.forEach(p => { if (hwyClass(p) === c && p.a >= P.E0 && p.az >= P.A0 && p.az <= P.A1) el("circle", {cx: px(p.az), cy: py(p.a), r: c === "h" ? 1.2 : 2.2, fill: col[c]}, svg); }));
-    for (let a = 220; a <= 280; a += 10) {
-      const lab = refMag ? norm(a - DECL) : a;
-      el("text", {x: px(a), y: P.H - 12, "text-anchor": "middle"}, svg).textContent = `${fmt(lab, 0)}°`;
-    }
-    el("text", {x: P.W - P.R, y: P.H - 1, "text-anchor": "end"}, svg).textContent = refMag ? "magnetic bearing" : "true bearing";
-    el("text", {x: 2, y: P.T + 8}, svg).textContent = "deg";
     const b = trueBearing();
-    if (b !== null && b >= P.A0 && b <= P.A1) {
-      el("line", {x1: px(b), x2: px(b), y1: P.T, y2: P.H - P.B, stroke: "var(--accent)", "stroke-width": 1.6}, svg);
+    if (panoZoom && b !== null) view.A0 = Math.max(210, Math.min(274, b - 9)), view.A1 = view.A0 + 18; else view.A0 = 215, view.A1 = 285;
+    const inW = az => az >= view.A0 && az <= view.A1;
+    const sky = S.sky.filter(s => inW(s[0]));
+    // vertical range from what is actually in the window
+    const vals = sky.map(s => s[1]).concat(H.filter(p => inW(p.az) && hwyClass(p) !== "h").map(p => p.a), S.towers.filter(t => inW(t.az) && isLit(t) && t.a !== null).map(t => t.a));
+    const lo = Math.min(...sky.map(s => s[3]), ...vals), hi = Math.max(...vals);
+    view.E0 = Math.floor(lo - 0.6); view.E1 = Math.ceil(hi + 1.2);
+    svg.innerHTML = "";
+    el("rect", {x: PL, y: PT, width: PW - PL - PR, height: PH - PT - PB, fill: "var(--surface-2)"}, svg);
+    const gstep = (view.E1 - view.E0) > 12 ? 2 : 1;
+    for (let e = Math.ceil(view.E0); e <= view.E1; e += gstep) {
+      el("line", {x1: PL, x2: PW - PR, y1: py(e), y2: py(e), stroke: "var(--rule)", "stroke-width": .6}, svg);
+      el("text", {x: PL - 4, y: py(e) + 3, "text-anchor": "end"}, svg).textContent = fmt(mrad2deg(e), 2);
+    }
+    // nested terrain silhouettes: far skyline, then ridges within 45, 25 and 10 km
+    const layer = (col, op) => el("path", {d: `M${px(sky[0][0])},${py(view.E0)} ` + sky.map(s => `L${px(s[0])},${py(Math.max(view.E0, s[col]))}`).join(" ") + ` L${px(sky[sky.length - 1][0])},${py(view.E0)} Z`, fill: "var(--ink)", "fill-opacity": op}, svg);
+    layer(1, .10); layer(5, .09); layer(4, .09); layer(3, .10);
+    el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill: "none", stroke: "var(--ink-2)", "stroke-width": 1.3}, svg);
+    el("line", {x1: PL, x2: PW - PR, y1: py(0), y2: py(0), stroke: "var(--muted)", "stroke-dasharray": "3 3", "stroke-width": .8}, svg);
+    S.fan.forEach(a => { if (inW(a)) el("line", {x1: px(a), x2: px(a), y1: PT, y2: PH - PB, stroke: "var(--accent)", "stroke-dasharray": "1 3", "stroke-width": .8}, svg); });
+    // US-67
+    const col = {v: "var(--vis)", m: "var(--marg)", h: "var(--hid)"};
+    ["h", "m", "v"].forEach(c => H.forEach(p => { if (hwyClass(p) === c && inW(p.az) && p.a >= view.E0) el("circle", {cx: px(p.az), cy: py(p.a), r: c === "h" ? 1.1 : 2.3, fill: col[c], "fill-opacity": c === "h" ? .5 : 1}, svg); }));
+    // railroad track in view
+    S.railpano.forEach(r => { if (inW(r[1]) && r[4] <= K && r[3] >= view.E0) el("circle", {cx: px(r[1]), cy: py(r[3]), r: 1.8, fill: "var(--rail)"}, svg); });
+    // towns
+    S.towns.forEach(t => { if (inW(t.az) && t.a !== undefined) {
+      const seen = t.kc <= K, y = Math.max(py(t.a), PT + 10);
+      el("text", {x: px(t.az), y: Math.min(y, PH - PB - 4), "text-anchor": "middle", style: `fill:var(--ink-2);opacity:${seen ? 1 : .55};font-weight:600`}, svg).textContent = t.n.replace(", Chihuahua", "") + (seen ? "" : " (glow)");
+    }});
+    // aerostat: the ground site plus a marker showing it flies higher
+    S.fields.filter(f => f.k === "balloon" && inW(f.az)).forEach(f => {
+      el("line", {x1: px(f.az), x2: px(f.az), y1: py(view.E1), y2: py(f.a ?? 0), stroke: "var(--cell)", "stroke-dasharray": "2 3", "stroke-width": 1}, svg);
+      el("text", {x: px(f.az) - 3, y: PT + 10, "text-anchor": "end", style: "fill:var(--cell)"}, svg).textContent = "aerostat ↑";
+    });
+    // towers: lit ones as red diamonds, solid if the top light is in view
+    S.towers.forEach(t => { if (!inW(t.az) || t.a === null || t.a < view.E0) return;
+      const lit = isLit(t), seen = inView(t); if (!lit && !seen) return;
+      const x = px(t.az), y = py(t.a), r = lit ? 4.5 : 3;
+      el("path", {d: `M${x},${y - r} L${x + r},${y} L${x},${y + r} L${x - r},${y} Z`, fill: lit && seen ? "var(--cell)" : "none", stroke: lit ? "var(--cell)" : "var(--muted)", "stroke-width": 1.3}, svg);
+      if (panoZoom && lit) el("text", {x: x + 6, y: y - 5}, svg).textContent = `${fmt(t.h, 0)} m tower${seen ? "" : " (hidden)"}`;
+    });
+    // axis
+    const tick = panoZoom ? 2 : 10;
+    for (let a = Math.ceil(view.A0 / tick) * tick; a <= view.A1; a += tick) {
+      el("line", {x1: px(a), x2: px(a), y1: PH - PB, y2: PH - PB + 4, stroke: "var(--muted)"}, svg);
+      el("text", {x: px(a), y: PH - PB + 14, "text-anchor": "middle"}, svg).textContent = `${fmt(refMag ? norm(a - DECL) : a, 0)}°`;
+    }
+    el("text", {x: PW - PR, y: PH - 1, "text-anchor": "end"}, svg).textContent = refMag ? "magnetic bearing" : "true bearing";
+    el("text", {x: 2, y: PH - 1}, svg).textContent = "elev °";
+    if (b !== null && inW(b)) {
+      el("line", {x1: px(b), x2: px(b), y1: PT, y2: PH - PB, stroke: "var(--accent)", "stroke-width": 1.6}, svg);
       const e = parseFloat($("elev").value);
       if (!isNaN(e)) el("circle", {cx: px(b), cy: py(Math.tan(e * D2R) * 1000), r: 5, fill: "none", stroke: "var(--accent)", "stroke-width": 2}, svg);
     }
+    const hdeg = (view.A1 - view.A0) / (PW - PL - PR), vdeg = mrad2deg(view.E1 - view.E0) / (PH - PT - PB);
+    $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. ◆ red = lit tower (hollow if its light is hidden), purple = railroad in view.`;
   }
   svg.addEventListener("click", ev => {
-    const r = svg.getBoundingClientRect(), sx = P.W / r.width, x = (ev.clientX - r.left) * sx, y = (ev.clientY - r.top) * (P.H / r.height);
-    if (x < P.L || x > P.W - P.R || y < P.T || y > P.H - P.B) return;
-    const az = P.A0 + (x - P.L) / (P.W - P.L - P.R) * (P.A1 - P.A0), m = P.E1 - (y - P.T) / (P.H - P.T - P.B) * (P.E1 - P.E0);
+    const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (PW / r.width), y = (ev.clientY - r.top) * (PH / r.height);
+    if (x < PL || x > PW - PR || y < PT || y > PH - PB) return;
+    const az = view.A0 + (x - PL) / (PW - PL - PR) * (view.A1 - view.A0), m = view.E1 - (y - PT) / (PH - PT - PB) * (view.E1 - view.E0);
     setTrueBearing(az, mrad2deg(m));
   });
+  $("panoFull").onclick = () => { panoZoom = false; $("panoFull").setAttribute("aria-pressed", "true"); $("panoZoom").setAttribute("aria-pressed", "false"); drawPano(); };
+  $("panoZoom").onclick = () => { panoZoom = true; $("panoZoom").setAttribute("aria-pressed", "true"); $("panoFull").setAttribute("aria-pressed", "false"); drawPano(); };
 
   // ------------------------------------------------------------ field log (this device only)
   let LOG = [];
