@@ -450,7 +450,7 @@ def fig05():
     a.set_xlabel("Refraction coefficient k")
     a.set_ylabel("Road length with k_crit ≤ k (km)")
     a.set_title("(a) Road in view versus refraction", loc="left")
-    a.legend(loc="upper left", fontsize=6)
+    a.legend(loc="lower right", fontsize=6)
     sec = a.secondary_xaxis("top", functions=(lambda k: k / 5.338 - 0.0343, lambda g: (g + 0.0343) * 5.338))
     sec.set_xlabel("dT/dz (K/m) at 850 hPa, 283 K", fontsize=6.3)
     sec.tick_params(labelsize=6)
@@ -520,7 +520,7 @@ def fig06():
     a2.set_title("(b) The US-67 and RM 2810 sector", loc="left")
     e1, e2 = exaggeration(fig, a1), exaggeration(fig, a2)
     for ax, e in ((a1, e1), (a2, e2)):
-        ax.text(0.995, 0.97, f"vertical ×{e:.0f}", transform=ax.transAxes, ha="right", va="top", fontsize=6.3, zorder=11,
+        ax.text(0.005, 0.97, f"vertical ×{e:.0f}", transform=ax.transAxes, ha="left", va="top", fontsize=6.3, zorder=11,
                 bbox=dict(fc="white", ec="none", pad=0.3, alpha=0.8))
     handles = [Patch(fc=c, label=l) for c, l in zip(SEQ, ["0.01–0.1 per hour", "0.1–1", "1–10", "≥ 10"])]
     handles += [Patch(fc="white", ec="k", hatch="////", lw=0.5, label="Permanent light (tower, town, skyglow, aerostat)"),

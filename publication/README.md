@@ -2,7 +2,7 @@
 
 Figures and method notes for the Marfa Lights manuscript. Everything here is generated from the code in `../analysis/` and the data in `../data/`. Please do not edit figures by hand: change the script and re-run it.
 
-**Status: preliminary.** No result here has yet been checked against field observations.
+**Status: preliminary.** The sight-line geometry has been checked against one evening of photographs from the Viewing Area (Figure 7, note 9). Visibility of hidden stretches, RM 2810 and the brightness model are not yet field-tested.
 
 ## Figures (`figures/`)
 

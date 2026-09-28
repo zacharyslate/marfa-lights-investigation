@@ -7,7 +7,7 @@
 <meta name="description" content="What field studies of the Marfa Lights found, how atmospheric refraction works over Mitchell Flat, and what a terrain line-of-sight model shows.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=9">
+<link rel="stylesheet" href="assets/site.css?v=10">
 </head>
 <body>
 <header id="bar"></header>
@@ -24,13 +24,13 @@
       <li>Most lights seen from the Viewing Area are car headlights, trains, tower lights, towns, planes or bright planets.</li>
       <li>Only short stretches of two roads are in view: US-67 at 229°–238° true and RM 2810 at 253°–259° true, both just below the mountain skyline.</li>
       <li>A car pointing at the platform can look brighter than any star, then fade as the road turns.</li>
-      <li>Photos from the platform confirm the map: every car light in a twilight sequence sits on the modelled road, within about 0.01°. <a href="visit.html#cars">See the photos</a>.</li>
+      <li>Photos from the platform confirm the map: every car light in a twilight sequence sits on the modelled road, within about 0.01°. <a href="#cars">See the photos</a>.</li>
       <li>Some reported lights have never been explained. Careful records are how they get taken seriously.</li>
       <li>The <a href="app/">app</a> and the <a href="map.html">identifier</a> do this checking for you.</li>
     </ul>
   </section>
 
-  <div class="two">
+  <div>
     <section class="prose">
       <h2>What observers describe</h2>
       <p>James Bunnell, a retired aerospace engineer, ran automated camera stations on ranches around Mitchell Flat for years. He describes the lights as orbs that brighten and fade, change colour, move or hover, and split or merge. They are usually yellow-orange, sometimes green, blue or red, and usually above the brush but below the mesas. He counted about 9.5 such lights a year, spread over about five nights. He believes his cameras caught only about half of them.<sup><a href="#r1">1</a></sup></p>
@@ -48,42 +48,120 @@
       <p>Surveyors measure this bending with a refraction coefficient <i>k</i>. The textbook value is 0.13. Measured close to the ground, <i>k</i> swings from about −4 on hot afternoons to +16 around sunset.<sup><a href="#r6">6</a></sup> Humidity barely affects how visible light bends. It matters for haze and dimming, not for bending.<sup><a href="#r7">7</a></sup></p>
       </details>
 
-      <h2>What our terrain model adds</h2>
-      <p>We worked out exactly which parts of the landscape you can see from the platform, using government elevation data and allowing for the curve of the Earth and the bending of light. The short version: very little road is in view, and the few lights that can fool you sit in known places.</p>
-      <details class="more"><summary>The details: roads, towers, the railroad and headlight brightness</summary>
-      <p>We traced a line of sight from the Viewing Area to every 60 m of US-67 between Shafter and Marfa, and to every 120 m of the other state roads across a 120° fan (157°–277° true), over USGS 3DEP elevation data.</p>
-      <ul>
-        <li><b>Only a short stretch of road is in view.</b> At normal refraction, a headlight is clearly visible along about 9 km of the 65 km of road. That stretch lies between 229° and 238° true, 24–40 km away, just north of the road's high point. It is broken into about 23 separate pieces. A car driving through it would blink in and out.</li>
-        <li><b>Refraction adds little.</b> Even a strong night inversion (k = 1) extends the visible road by only about 2 km. The nearer road toward Marfa, between 238° and 277°, stays hidden behind a low rise under any realistic conditions.</li>
-        <li><b>Headlights appear against the mountains.</b> They sit below the Chinati Mountains skyline, not against open sky. A light seen above the skyline is not a car on US-67.</li>
-        <li><b>Three lit towers sit in the viewing direction.</b> An 89 m telephone tower stands 20 km away at 230° true, in front of the visible stretch of road. Its aviation lights appear right among the headlights. A second lit tower, on a ridge 56 km away at 259°, shows just above the skyline. A 106 m power-line tower at 256°, 17 km out, carries red lights at night and white strobes by day. (FCC Antenna Structure Registrations, checked against the terrain model.)</li>
-        <li><b>A second road is in view: RM 2810.</b> Pinto Canyon Road leaves Marfa to the southwest and climbs into the Chinati foothills. About 27 km of it is in clear view at 253°–259° true, 32–53 km away, just below the skyline. We missed this in our first version, which only modelled US-67.</li>
-        <li><b>The railroad matters too.</b> The Texas Pacifico track to Presidio is in view 4–8 km south and south-southwest of the platform, between about 143° and 213° true.</li>
-        <li><b>Direction decides brightness.</b> Headlights are bright only near their axis. On one straight of US-67, at 233.5° true and 31–33 km out, northbound cars point within 3–5° of the platform. With high beams they should look about magnitude −2, brighter than Sirius. Seen 12° off its axis, the same car is already 10–20 times fainter, and it fades further beyond that. Southbound cars show only red tail lights. This is based on one measured production headlamp, so treat it as a guide, not a prediction for every car.</li>
-      </ul>
-      <p>So a light below the skyline between about 239° and 251°, or between 261° and 274° true, has no catalogued road on its bearing. Those are the lights worth logging carefully. A light between 238° and 277° is not automatically unexplained: RM 2810 traffic and two lit towers sit in that arc. See the <a href="sightlines.html">full sight-line report</a> and the <a href="map.html">map</a>.</p>
-      </details>
+    </section>
+  </div>
 
-      <figure class="photo plain"><img src="img/fig02_panorama_zos-900.webp" srcset="img/fig02_panorama_zos-900.webp 900w, img/fig02_panorama_zos-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 800px" width="1600" height="1433" alt="Panorama from the Viewing Area showing the skyline, the visible stretches of US-67 and RM 2810, towers, the railroad and the shaded Zone of Skepticism" loading="lazy" decoding="async"><figcaption><b>The view from the platform, with every known light source and the Zone of Skepticism.</b> Figure: this project. <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">Code, data and full-size PDF</a>.</figcaption></figure>
+  <section class="figs" aria-labelledby="figs-h">
+    <div class="prose">
+      <h2 id="figs-h">What our terrain model shows, in seven figures</h2>
+      <p>We worked out exactly which parts of the landscape you can see from the platform. The model uses government elevation data,<sup><a href="#r12">12</a></sup> the curve of the Earth and the bending of light, then adds every road, railroad, lit tower and town we could find in public records.<sup><a href="#r10">10</a></sup> The figures below walk through what that shows, one step at a time. Tap any figure to open it full size.</p>
+    </div>
 
-      <h2>The Zone of Skepticism</h2>
-      <p>We combine every catalogued light into one picture: roads and track in view, lit towers, towns and their skyglow, and the aerostat. For each, we mark every place in the sky it could appear, for refraction anywhere from k = 0 to k = 1, widened by the observer's measurement error. We call this the Zone of Skepticism. A light inside it has an ordinary candidate that must be ruled out first. A light outside it has none that we know of. That makes it worth attention, not proof of anything.</p>
-      <details class="more"><summary>How big is the zone, and how busy is it?</summary>
-      <p>How much of the view the zone covers depends on how well you measure. In the band just below the skyline, where the lights are usually described, the zone covers about a third of the fan if bearings come from a photo with the skyline in frame (±0.3°). With a hand compass (±3°) it covers about three-quarters. <b>Careful measurement is what makes a sighting testable.</b></p>
-      <p>Not every source is equally busy, though. US-67 carries over a thousand vehicles a day. RM 2810 carries a few dozen. The Texas Pacifico track is listed with no more than one night train. So we also weight each source by how often it actually puts a light in front of you, using state traffic counts, federal train counts and the headlight model. On a typical clear night, with bearings from a photo, about four-fifths of the band just below the skyline sees fewer than one ordinary catalogued light per 100 hours. Northbound US-67 sends up to about 15 cars an hour through its stretch of the view. The panorama in the <a href="map.html">identifier</a> shades the zone by this rate.</p>
+    <article class="figblock" id="fig1">
+      <figure class="photo plain">
+        <a href="img/fig01_study_area-1600.webp" class="figlink"><img src="img/fig01_study_area-900.webp" srcset="img/fig01_study_area-900.webp 900w, img/fig01_study_area-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="1440" alt="Shaded-relief map of the country southwest of the Viewing Area with a fan of sight lines, roads coloured by whether they are in view, railroads, towers and towns" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 1. Where the platform can see.</b> <a href="img/fig01_study_area-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig01_study_area.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>Where the platform can see</h3>
+        <p><b>How to read it.</b> The star is the Viewing Area. Each thin grey line is a sight line, drawn every half degree across a 120° fan from south-southeast to west (157°–277° true). The lines that reach US-67 stop there. Roads are coloured by whether a car's headlight would be in direct view from the platform: red and orange for US-67, pink for other state roads, grey for hidden. Blue lines are railroads. Diamonds are lit towers, filled when the top light is in view.</p>
+        <p><b>What it shows.</b> Of the 65 km of US-67 between Shafter and Marfa, only about 9 km is clearly in view. It lies in one band 24–40 km away, just north of the road's high point, at bearings of 229°–238° true. Everything nearer to Marfa is hidden behind a low rise in the flat. The same test found a second road that most accounts ignore: RM 2810, Pinto Canyon Road, which is in view for about 27 km as it climbs into the Chinati foothills at 253°–259°. The Union Pacific line runs right past the platform, and the Texas Pacifico line to Presidio is in view 4–8 km to the south.</p>
+        <p><b>Why it matters.</b> This map is the basis for everything else on this page. A light below the skyline on a bearing with no road, track or tower in view has no catalogued ordinary source. In practice that means roughly 239°–251° and 261°–274° true, where no road is in view. Even there, check for lit towers and ranch lights before calling a light unexplained.</p>
+      </div>
+    </article>
+    <article class="figblock" id="fig2">
+      <figure class="photo plain">
+        <a href="img/fig02_panorama_zos-1600.webp" class="figlink"><img src="img/fig02_panorama_zos-900.webp" srcset="img/fig02_panorama_zos-900.webp 900w, img/fig02_panorama_zos-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="1433" alt="Two panoramas from the Viewing Area: the skyline, terrain layers, the visible roads and railroad as dots, lit towers, and a green shaded Zone of Skepticism" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 2. The view from the platform and the Zone of Skepticism.</b> <a href="img/fig02_panorama_zos-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig02_panorama_zos.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>What you actually see</h3>
+        <p><b>How to read it.</b> This is the view from the platform, drawn the way your eye sees it: bearing across, height above level up. Heights are stretched about 20 times, so the flat, low landscape is readable. The black line is the mountain skyline. Grey layers are ridges at different distances. Coloured dots are where headlights would appear on the roads and track in view. The lower panel zooms into the US-67 and RM 2810 sector.</p>
+        <p><b>What it shows.</b> Headlights on US-67 appear as a slanting chain just below the Chinati skyline, never above it. RM 2810's lights sit even closer to the skyline, further west. Two lit towers stand right among them: an 89 m tower at 230°, in front of the highway, and a 106 m power-line tower at 256°, among the RM 2810 lights. An 82 m tower on a ridge 56 km away at 259° shows just above the skyline. Skyglow from Presidio, Ojinaga, Shafter and Marfa, and the tethered radar balloon to the west-northwest, complete the list of steady sources.</p>
+        <p><b>The Zone of Skepticism</b> (green) marks every place in this view where a catalogued light could appear. It allows for refraction from normal up to a strong inversion, and for the observer's measurement error. A light inside the zone has an ordinary candidate that must be ruled out first. A light outside it has none that we know of: that makes it worth recording carefully, not proof of anything. How big the zone is depends on how well you measure. Just below the skyline, it covers about a third of the view with bearings from a photo (±0.3°, solid green), but about three-quarters with a hand compass (±3°, dashed outline). <b>Careful measurement is what makes a sighting testable.</b></p>
+      </div>
+    </article>
+    <article class="figblock" id="fig3">
+      <figure class="photo plain">
+        <a href="img/fig03_headlights-1600.webp" class="figlink"><img src="img/fig03_headlights-900.webp" srcset="img/fig03_headlights-900.webp 900w, img/fig03_headlights-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="1072" alt="Headlamp beam patterns with dots showing where the Viewing Area falls in each car's beam, and a graph of predicted car brightness by bearing compared with Sirius and the naked-eye limit" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 3. How bright a car would look.</b> <a href="img/fig03_headlights-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig03_headlights.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>Why a car can outshine every star, then vanish</h3>
+        <p><b>How to read it.</b> The top panels are the measured beam patterns of one U.S. production headlamp, a 2016 Ford Focus, from a federal compliance test.<sup><a href="#r8">8</a></sup> Darker grey means more light. Each dot shows where the Viewing Area falls in the beam of a car on US-67 (orange) or RM 2810 (pink) driving toward Marfa. The bottom panel turns that into brightness, in the astronomers' magnitude scale: smaller numbers are brighter. The dashed line is Sirius, the brightest star; the dotted line is roughly the faintest star you can see.</p>
+        <p><b>What it shows.</b> Headlights are only bright near their axis. Most of the time the platform is well off to the side of a car's beam, and a car 30 km away looks like an ordinary or faint star. But on one straight of US-67, at about 233.5° true, cars heading north point within a few degrees of the platform. On high beam they should reach about magnitude −2, brighter than Sirius, then fade quickly as the road turns. RM 2810 has a similar spot near 255°–256°. Cars driving away show only faint red tail lights.</p>
+        <p><b>Limits.</b> This uses a single measured lamp and assumes very clear air. Real lamps, their aim and haze all vary, so treat these as a guide to where a car can flare, not an exact brightness.<sup><a href="#r9">9</a></sup></p>
+      </div>
+    </article>
+    <article class="figblock" id="fig4">
+      <figure class="photo plain">
+        <a href="img/fig04_sightlines-1600.webp" class="figlink"><img src="img/fig04_sightlines-900.webp" srcset="img/fig04_sightlines-900.webp 900w, img/fig04_sightlines-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="1669" alt="Four terrain cross-sections from the Viewing Area along different bearings, showing which ground is in direct view and where roads and track cross" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 4. Terrain cross-sections along four bearings.</b> <a href="img/fig04_sightlines-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig04_sightlines.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>Why so little road is in view</h3>
+        <p><b>How to read it.</b> Each panel is a slice through the landscape along one bearing, from the platform (left) out to 80 km. The ground has been adjusted for the curve of the Earth and normal refraction, so that every sight line from your eye is a straight line from the top-left corner. Coloured ground is in direct view. Triangles mark where a road or track crosses the slice.</p>
+        <ul>
+          <li><b>233.6°:</b> the US-67 crossing about 32 km out sits on ground in view. This is the straight where cars point at the platform.</li>
+          <li><b>240°:</b> US-67 crosses about 22 km out, in a hollow of the flat. Slightly higher ground in front hides it, so no car there can be seen.</li>
+          <li><b>255.6°:</b> RM 2810 crosses several times as it climbs into the Chinati foothills, and those crossings are in view, just below the skyline.</li>
+          <li><b>190°:</b> no highway at all, but the Texas Pacifico track is in view about 5 km out.</li>
+        </ul>
+        <p><b>What it shows.</b> The flat is not flat. Differences of a few tens of metres, spread over many kilometres, decide whether a light 30 km away is visible or hidden. That is why the visible road comes in short pieces, and why a car can blink in and out as it drives. The <a href="sightlines.html">full sight-line report</a> lets you explore a cross-section on any bearing.</p>
+      </div>
+    </article>
+    <article class="figblock" id="fig5">
+      <figure class="photo plain">
+        <a href="img/fig05_refraction-1600.webp" class="figlink"><img src="img/fig05_refraction-900.webp" srcset="img/fig05_refraction-900.webp 900w, img/fig05_refraction-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="760" alt="Two graphs: length of road in view as the refraction coefficient increases, and how much a light rises with distance for different changes in refraction" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 5. Sensitivity to refraction.</b> <a href="img/fig05_refraction-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig05_refraction.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>What if the air bends light more?</h3>
+        <p><b>How to read it.</b> Refraction is described by a coefficient <i>k</i>. Normal air is about 0.13. On calm, clear nights the ground cools and a temperature inversion can push <i>k</i> toward 1 or beyond. The top axis gives the matching change in temperature with height. The left panel shows how much of each road comes into view as <i>k</i> rises. The right panel shows how much higher a light appears when <i>k</i> changes, depending on how far away it is.</p>
+        <p><b>What it shows.</b> For US-67, even a strong inversion (<i>k</i> = 1) adds only about 2 km of visible road: the stretch near Marfa stays hidden. RM 2810 is more sensitive, because it runs just below the skyline, where a small lift brings more of it into view. A change of 1 in <i>k</i> lifts a light 30 km away by about 0.13°, a quarter of the Moon's width. Refraction can raise, stretch and double distant lights, but it cannot bring the hidden stretch of US-67 into view.<sup><a href="#r5">5</a>,<a href="#r6">6</a></sup></p>
+      </div>
+    </article>
+    <article class="figblock" id="fig6">
+      <figure class="photo plain">
+        <a href="img/fig06_weighted_zone-1600.webp" class="figlink"><img src="img/fig06_weighted_zone-900.webp" srcset="img/fig06_weighted_zone-900.webp 900w, img/fig06_weighted_zone-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="1256" alt="Panorama shaded by the expected number of ordinary lights per hour, with most of the view below the skyline unshaded and marked as having no catalogued source" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 6. How busy each part of the view is.</b> <a href="img/fig06_weighted_zone-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig06_weighted_zone.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>Where ordinary lights are common, and where they are rare</h3>
+        <p><b>How to read it.</b> This is the same view as Figure 2, but the shading now shows how often an ordinary light is expected to pass through each part of it on a typical clear night. Darker blue means busier. Hatched bars are lights that are always there: towers, towns, skyglow and the radar balloon. Unshaded ground gets fewer than one catalogued ordinary light every 100 hours.</p>
+        <p><b>What it shows.</b> Not every source is equally busy. US-67 carries over a thousand vehicles a day, and its northbound traffic sends up to about 15 cars an hour through its stretch of the view. RM 2810 carries a few dozen vehicles a day, so fewer than one an hour shows up there. The Texas Pacifico line has at most one night train. Weighted this way, and with bearings from a photo, about four-fifths of the band just below the skyline is quiet: fewer than one ordinary light per 100 hours. With a hand compass that falls to about a third, because a rough bearing overlaps the busy areas.<sup><a href="#r10">10</a>,<a href="#r11">11</a></sup></p>
+        <p><b>Why it matters.</b> A light in a quiet area is the kind most worth a careful record. The <a href="map.html">identifier</a> and the <a href="app/">app</a> use this map to tell you whether you are looking at a busy or a quiet spot.</p>
+      </div>
+    </article>
+    <article class="figblock" id="fig7">
+      <figure class="photo plain">
+        <a href="img/fig07_photo_validation-1600.webp" class="figlink"><img src="img/fig07_photo_validation-900.webp" srcset="img/fig07_photo_validation-900.webp 900w, img/fig07_photo_validation-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="856" alt="Three-panel figure: a dusk photo with the modelled skyline and road overlaid, a long-exposure close-up with headlight streaks along the modelled road, and a graph comparing the lights' distances from the road with random points" loading="lazy" decoding="async"></a>
+        <figcaption><b>Figure 7. Checking the model against real photos.</b> <a href="img/fig07_photo_validation-1600.webp">Open full size</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/figures/fig07_photo_validation.pdf">PDF</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3>Does the model match reality?</h3>
+        <p><b>How to read it.</b> Panel a is one of ten telephoto photos taken from the Viewing Area on 21 November 2018, at dusk. The white line is the modelled skyline, the dashed lines are modelled ridge lines, and the yellow dots are where the model says US-67 is in view. The circled lights are cars. Panel b is a 45-second exposure: each car has drawn a streak, and the circles are the modelled road. Panel c compares how far each light sits from the modelled road (red) with random points in the same part of the view (grey).</p>
+        <p><b>What it shows.</b> We lined each photo up with the skyline, which fixes where the camera pointed to about a hundredth of a degree. Then we asked where the lights sit. All twelve lights in the short exposures fell within 0.021° of the stretch of US-67 the model says is visible, with a median of 0.011°. At 30 km that is about 6 m. A random point in the same part of the view lands that close only about 6% of the time. The long-exposure streaks follow the modelled road to a median of 0.005°. The lights' heights fit a refraction coefficient of about 0.11: an ordinary evening, not an inversion. The sun in a sunset frame from the same session showed that the camera clock ran 59 minutes ahead, so the photos were taken at 18:12–18:26 CST.</p>
+        <p><b>What it doesn't show.</b> This tests the geometry of the terrain, the road and ordinary refraction on one evening. It does not test the stretches the model calls hidden, RM 2810, or the brightness model, because none of those were in these frames. Photos toward 240° and 253°–259° are the next step. Method: <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/notes/09_photo_validation.md">publication note 9</a>.</p>
+      </div>
+    </article>
 
-      <figure class="photo plain"><img src="img/fig06_weighted_zone-900.webp" srcset="img/fig06_weighted_zone-900.webp 900w, img/fig06_weighted_zone-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 800px" width="1600" height="1256" alt="Panorama shaded by the expected number of ordinary lights per hour; most of the view below the skyline is unshaded" loading="lazy" decoding="async"><figcaption><b>How many ordinary lights pass each part of the view per hour on a typical night.</b> Figure: this project. <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">Code, data and full-size PDF</a>.</figcaption></figure>
-      <figure class="photo plain"><img src="img/fig03_headlights-900.webp" srcset="img/fig03_headlights-900.webp 900w, img/fig03_headlights-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 800px" width="1600" height="1072" alt="Headlamp beam patterns and the predicted brightness of cars on US-67 and RM 2810 facing the Viewing Area" loading="lazy" decoding="async"><figcaption><b>Direction decides brightness: measured headlamp beams, and how bright a car facing the platform would look.</b> Figure: this project. <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">Code, data and full-size PDF</a>.</figcaption></figure>
+    <article class="figblock" id="cars">
+      <div class="prose">
+        <h3>What cars look like from the platform</h3>
+        <p>These are the lights behind Figure 7, as you would see them. Each small light is a car on US-67, 25 to 33 km away, photographed from the Viewing Area through a 210 mm telephoto lens about 20 minutes after sunset. At this distance a car's two headlights merge into one point.</p>
+      </div>
+      <figure class="photo full"><img src="img/zw_cars_twilight-900.webp" srcset="img/zw_cars_twilight-900.webp 900w, img/zw_cars_twilight-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="623" alt="Telephoto view from the Viewing Area at dusk: the Chinati Mountains skyline, a hazy blue flat, and three tiny points of light marked 1 to 3, with close-ups below showing each as a small warm-white dot" loading="lazy" decoding="async"><figcaption><b>Three cars on US-67 at 18:13 CST.</b> The faint yellow dots mark where the map puts the road; the close-ups show each light as it really looks. Photo: Zach Warren.</figcaption></figure>
+      <figure class="photo full"><img src="img/zw_car_streaks-900.webp" srcset="img/zw_car_streaks-900.webp 900w, img/zw_car_streaks-1600.webp 1600w" sizes="(max-width: 1240px) 100vw, 1180px" width="1600" height="796" alt="The same view 13 minutes later in a 45-second exposure: white streaks of light run along the road on the far flat, with close-ups below" loading="lazy" decoding="async"><figcaption><b>The same view 13 minutes later, 45-second exposure.</b> Each car draws a line as it drives, and the lines follow the road's curves. Photo: Zach Warren.</figcaption></figure>
+      <div class="prose">
+        <p><b>What to take from it.</b> A car on US-67 is a small, steady, warm-white point just below the mountains that drifts slowly sideways, often in company with others. Near 233.5° it can flare much brighter for a few seconds as the road points at you. A light that behaves like this is a vehicle. A light that doesn't, especially one in a quiet part of Figure 6, is the kind worth reporting. For a night at the platform, see <a href="visit.html">Visiting and observing</a>.</p>
+        <p class="muted" style="font-size:14.5px">Dust on the lens shows up as soft dark blobs in the sky, and a hair on the sensor as a dark squiggle, as in these photos. Both stay in the same place in the frame when you move the camera. A light on the land does not.</p>
+      </div>
+    </article>
+  </section>
 
-      </details>
-
-      <h2>Checked against real photos</h2>
-      <p>A model is only as good as its test. We lined up ten telephoto photos taken from the Viewing Area at dusk against the modelled skyline. Each matched with an RMS error of 0.006–0.017° (roughly 5–15 pixels), which fixes where the camera was pointing. Then we asked where the lights in the photos sit. All twelve lights in the short exposures fell within 0.021° of the stretch of US-67 the model says is visible, the median being 0.011°. A random point in the same part of the view lands that close only about 6% of the time. In a 45-second exposure, the headlight streaks follow the modelled road to a median of 0.005°.</p>
-      <details class="more"><summary>The figure, and what this does and doesn't show</summary>
-        <figure class="photo plain"><img src="img/fig07_photo_validation-900.webp" srcset="img/fig07_photo_validation-900.webp 900w, img/fig07_photo_validation-1600.webp 1600w" sizes="(max-width: 900px) 100vw, 800px" width="1600" height="856" alt="Three-panel figure: a dusk photo with the modelled skyline and road overlaid, a long-exposure close-up with headlight streaks along the modelled road, and a graph comparing the lights' distances from the road with random points" loading="lazy" decoding="async"><figcaption><b>Photo check of the sight-line model.</b> (a) Frame from 21 November 2018, 18:13 CST, with the modelled skyline, the 10 km and 25 km ridge lines and the visible stretch of US-67. The circled lights are cars. (b) 45-second exposure: headlight streaks against the modelled road. (c) Distance of each detected light from the modelled road, compared with random points in the same band. Photos: Zach Warren.</figcaption></figure>
-        <p>This tests the geometry: the terrain model, the road trace and ordinary refraction. The lights' heights fit a refraction coefficient of about 0.11, typical for a normal evening and not an inversion. It does not test the visibility of stretches that the model says are hidden, because none were in these frames. A camera clock check against the setting sun showed the camera ran 59 minutes ahead of Central Standard Time, so the photos were taken at 18:12–18:26 CST. Details are in <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">publication note 09</a>.</p>
-      </details>
-
+  <div class="two">
+    <section class="prose">
       <h2>How you can help</h2>
       <ul>
         <li><b>Use the <a href="app/">app</a> at the Viewing Area.</b> It tells you what each light is likely to be, and it works without phone signal.</li>
@@ -99,10 +177,11 @@
       <p>The ~30 m elevation data misses road cuts, brush and buildings.</p>
       <p>Brightness comes from one measured U.S. headlamp (a 2016 Ford Focus) and an assumed clear-night visibility. Real lamps, aim and haze vary.</p>
       <p>County and private ranch roads, ranch lights and unregistered structures are not yet catalogued.</p>
-      <p>It has not yet been checked against field observations.</p>
+      <p>Its geometry has been checked against one evening of photos, for US-67 at 230°–238° (Figure 7). The hidden stretches, RM 2810 and the brightness model have not yet been tested in the field.</p>
       <p>Code and data: <a href="https://github.com/zacharyslate/marfa-lights-investigation">GitHub</a>.</p>
     </aside>
   </div>
+
 
   <section class="prose">
     <h2>Sources</h2>
@@ -118,6 +197,8 @@
       <li id="r9">B. E. Schaefer, “Astronomy and the limits of vision,” <i>Vistas in Astronomy</i> 36, 311–361 (1993). <a href="https://doi.org/10.1016/0083-6656(93)90113-X">doi:10.1016/0083-6656(93)90113-X</a></li>
       <li id="r10">Road geometry: TxDOT Roadways (on-system routes), Texas Department of Transportation open data, extract of 1 September 2026. Traffic: TxDOT AADT Annuals (2025). Trains: FRA grade-crossing inventory (night through-trains).</li>
       <li id="r11">I. J. Reagan, M. L. Brumbelow, M. J. Flannagan, J. M. Sullivan, “High beam headlamp use rates: effects of rurality, proximity of other traffic, and roadway curvature,” <i>Traffic Injury Prevention</i> (2017). <a href="https://www.iihs.org/topics/bibliography/ref/2116">iihs.org</a></li>
+      <li id="r12">USGS 3D Elevation Program (3DEP), 3DEPElevation ImageServer, about 1 arc-second, retrieved 28 September 2026. <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer">elevation.nationalmap.gov</a>. Towers: FCC Antenna Structure Registration. Railroads: USDOT BTS North American Rail Network.</li>
+      <li id="r13">Sun and planet positions: Astronomy Engine (D. Cross, MIT licence). <a href="https://github.com/cosinekitty/astronomy">github.com/cosinekitty/astronomy</a></li>
       <li>Methods, figures and notes: the <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication">publication folder</a> on GitHub.</li>
     </ol>
   </section>

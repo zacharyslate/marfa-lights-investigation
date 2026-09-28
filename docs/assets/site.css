@@ -152,3 +152,12 @@ details.more>*+*{margin-top:12px}
 
 h2.h3{font-size:21px;font-weight:600;color:var(--ink)}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* science page: figure blocks */
+.figs{display:grid;gap:56px}
+.figblock{display:grid;gap:18px;scroll-margin-top:80px}
+.figblock .photo.plain img{border:1px solid var(--rule)}
+.figblock h3{font-size:24px}
+.figlink{display:block;cursor:zoom-in}
+:root[data-theme="night"] .figblock .photo.plain img{filter:grayscale(1) sepia(1) hue-rotate(-50deg) saturate(4) brightness(.55)}
+.figblock .photo{max-width:1000px}
