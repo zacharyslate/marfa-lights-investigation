@@ -6,7 +6,9 @@ Take a horizontal line from the eye and go a distance *d* along it. The Earth's 
 
     h_c = d² / (2R)
 
-This is the leading term of the exact expression; for *d* ≤ 100 km the error is under 1 mm. Example values: 35 m at 21 km, 98 m at 35 km, 196 m at 50 km.
+This is the leading term of the exact height of the tangent line above the sphere, R(sec(d/R) − 1) = d²/(2R) + 5d⁴/(24R³) + …, so the approximation error grows as d⁴: about 0.2 mm at 21 km, 1.2 mm at 35 km, 5 mm at 50 km and 8 cm at 100 km. Example values: 34.6 m at 21 km, 96.1 m at 35 km, 196.2 m at 50 km.
+
+The Earth is not a sphere. At Marfa's latitude (30.3° N) the WGS84 ellipsoid's radius of curvature is 6,351 km north–south and 6,383 km east–west; along the sightlines toward the south-west (azimuth ~225°) it is 6,367 km (Euler's formula). The line-of-sight model (analysis/marfa) does not use h_c at all: it places the eye, the lamp and every terrain sample in Earth-centred coordinates on the WGS84 ellipsoid (heights converted from NAVD88 with the GEOID18 grid) and measures heights relative to the straight chord between eye and lamp, so Earth curvature enters exactly. The formula above is kept here because it explains the size of the effect.
 
 ## Refraction coefficient k
 

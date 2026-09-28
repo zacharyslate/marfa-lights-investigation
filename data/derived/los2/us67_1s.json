@@ -1,0 +1,88 @@
+{
+ "set": "us67",
+ "dem": "1s",
+ "dem_sources": [
+  "USGS_1_n30w104.tif",
+  "USGS_1_n30w105.tif",
+  "USGS_1_n30w106.tif",
+  "USGS_1_n31w104.tif",
+  "USGS_1_n31w105.tif",
+  "USGS_1_n31w106.tif"
+ ],
+ "n": 3095,
+ "lamps": [
+  0.56,
+  0.66,
+  0.86,
+  1.12,
+  1.37,
+  2.5,
+  4.0
+ ],
+ "ks": [
+  0.0,
+  0.13,
+  0.25,
+  0.5,
+  1.0
+ ],
+ "viewer": [
+  -103.8827973,
+  30.2751108
+ ],
+ "viewer_ground_H": 1493.5702817634428,
+ "eye": 1.6,
+ "geoid_N": -21.18591879088709,
+ "skip_obs": 5.0,
+ "skip_tgt": 3.0,
+ "fine": 2.0,
+ "coarse": 5.0,
+ "fine_zone": 3000.0,
+ "spacing": null,
+ "clutter": [
+  0.25,
+  0.5,
+  1.0
+ ],
+ "mc": {
+  "n": 200,
+  "sigma": [
+   2.05,
+   2.05,
+   2.05,
+   2.05,
+   2.05,
+   2.05
+  ],
+  "corr": [
+   125.0,
+   125.0,
+   125.0,
+   125.0,
+   125.0,
+   125.0
+  ],
+  "eye_sd": 0.15,
+  "seed": 0
+ },
+ "seconds": 145,
+ "errors": [],
+ "n_errors": 0,
+ "columns": {
+  "az": "geodesic azimuth viewer->target (deg true)",
+  "dist": "geodesic distance (m)",
+  "target_H": "DEM ground height at the target (NAVD88 m)",
+  "target_src": "index into dem_sources of the raster that supplied target_H",
+  "k_crit": "[point, lamp] refraction coefficient above which the lamp is visible",
+  "lim_s": "[point, lamp] distance from the viewer of the limiting terrain sample (m)",
+  "lim_src": "[point, lamp] DEM source index of the limiting sample",
+  "D": "[point, lamp] chord length (m)",
+  "geo_el": "[point, lamp] chord elevation at the eye (deg)",
+  "clr": "[point, lamp, k] clearance of the ray over the terrain (m, <0 = blocked)",
+  "dL": "[point, lamp, k] lamp-height change that flips visibility (m; <0: margin to spare)",
+  "dE": "[point, lamp, k] eye-height change that flips visibility (m; <0: margin to spare)",
+  "app_el": "[point, lamp, k] apparent elevation (deg)",
+  "kc_clutter": "[point, lamp, clutter] k_crit with clutter m added to terrain >10 m from both ends",
+  "p_vis": "[point, lamp, k] Monte Carlo probability of visibility (terrain + eye-height errors)"
+ }
+}

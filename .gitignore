@@ -7,3 +7,10 @@ data/inputs/runways.csv
 outputs/Marfa_ray_fan_profiles.csv
 data/photos_raw/
 data/img_src/
+data/dem/raw/
+data/geoid/*.tif
+data/dem/ept/
+data/dem/obstruction/*.npz
+data/derived/los2/*.npz
+!data/derived/los2/us67_lidar.npz
+!data/derived/los2/us67_lidar_obs_dense.npz

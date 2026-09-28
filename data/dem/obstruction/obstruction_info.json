@@ -1,0 +1,17 @@
+{
+ "n_points": 29380870,
+ "n_cells": 11211973,
+ "ground_minus_dem": {
+  "n": 2807498,
+  "median": -0.0008172982569476517,
+  "mad_sd": 0.02036180816695264,
+  "p05": -0.041239216272072096,
+  "p95": 0.04397254851024854
+ },
+ "source": "s3://usgs-lidar-public/{TX_WestTexas_B3_2018,TX_WestTexas_B7_2018} (EPT)",
+ "above_m": 0.3,
+ "noise_classes": [
+  7,
+  18
+ ]
+}

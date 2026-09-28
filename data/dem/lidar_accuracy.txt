@@ -1,0 +1,8 @@
+USGS 3DEP lidar project TX_WestTexas_2018_D19 - vertical accuracy (USGS-computed, from the project metadata)
+Source: https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/metadata/TX_WestTexas_2018_D19/vertical_accuracy/USGS/TX_WestTexas_2018_D19_13_14_dem.txt
+        (and ..._13_14_lpc.txt; ..._utm13_VA.txt for the UTM 13 blocks)  retrieved 2026-09-28
+
+DEM (both UTM zones):  NVA checkpoints 565, RMSEz 5.60 cm, 95% (1.96 RMSEz) 10.98 cm
+                       VVA checkpoints 461, 95th percentile 21.60 cm
+LPC:                   NVA RMSEz 5.50 cm (95%: 10.77 cm); VVA 95th percentile 20.90 cm
+UTM 13 blocks only:    NVA checkpoints 356, RMSEz 5.80 cm (95%: 11.37 cm); VVA checkpoints 312, 95th pct 21.76 cm
