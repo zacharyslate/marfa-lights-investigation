@@ -36,6 +36,10 @@ Update (2026‑09‑28, 120° fan):
 - **Zone of Skepticism.** The zone is the region of the view where a catalogued light can appear.
   In the 0.29° band just below the skyline it covers ~33% of the fan with instrumented bearings
   (±0.3°) and ~74% with hand‑compass bearings (±3°).
+- **Activity‑weighted zone.** Weighting each source by how often it produces a light (TxDOT traffic
+  counts, FRA night‑train counts, headlight detectability) leaves ~80% of that band with fewer than
+  one catalogued ordinary light per 100 hours at instrumented precision. With a hand compass the
+  share falls to ~36%. See `publication/notes/08_weighted_zone.md`.
 
 ## Repository layout
 
@@ -49,6 +53,7 @@ Update (2026‑09‑28, 120° fan):
 | `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
 | `analysis/headlight_model.py` | Headlamp photometry model: brightness of a car at every road point, by travel direction |
 | `analysis/zone_of_skepticism.py` | Zone of Skepticism polygons (`data/derived/zos.json`, `docs/data/zos.json`) |
+| `analysis/weighted_zone.py` | Activity‑weighted zone: expected ordinary lights per hour; per‑night version from measured k, MOR and error |
 | `analysis/pub_figures.py` | Publication figures → `publication/figures/` |
 | `publication/` | Publication‑ready figures (PDF/SVG/PNG) and method notes (maths, physics, geography, sources) |
 | `data/inputs/` | Google Earth trace of US‑67 and reference points; infrastructure layers retrieved from public services |
@@ -67,6 +72,7 @@ python analysis/build_site.py             # -> docs/sightlines.html
 python analysis/headlight_model.py        # -> data/derived/headlights.json
 python analysis/build_site_data.py        # -> docs/data/site.json (website map layers)
 python analysis/zone_of_skepticism.py     # -> data/derived/zos.json, docs/data/zos.json
+python analysis/weighted_zone.py          # -> data/derived/weighted_zone.json, docs/data/zos_rate.json
 python analysis/pub_figures.py            # -> publication/figures/*
 ```
 
@@ -94,6 +100,8 @@ port reading a downloaded 3DEP GeoTIFF is planned.
 
 - USGS 3D Elevation Program — 3DEPElevation ImageServer (retrieved 2026‑09‑28)
 - TxDOT Roadways (on‑system routes), extract 2026‑09‑01 (retrieved 2026‑09‑28)
+- TxDOT AADT Annuals (2025 and prior years); FRA grade‑crossing inventory night through‑trains
+- Reagan, I. J., et al. (2017). High beam headlamp use rates. *Traffic Injury Prevention*.
 - NHTSA FMVSS 108 compliance report 108‑CAN‑17‑004 (headlamp photometry)
 - Schaefer, B. E. (1993). Astronomy and the limits of vision. *Vistas in Astronomy* 36, 311–361.
 - OurAirports open data — github.com/davidmegginson/ourairports-data

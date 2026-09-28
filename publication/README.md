@@ -45,6 +45,12 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 - (a) Length of US-67 and of RM 2810 whose critical refraction coefficient is ≤ k, plotted against k. This includes the grazing (marginal) part: US-67 has 9.3 km clearly visible plus 1.2 km grazing at k = 0.13. The top axis converts k to the temperature gradient, using Hirt et al. (2010) at 850 hPa and 283 K.
 - (b) Rise in apparent elevation for a change Δk in refraction, plotted against distance.
 
+**Figure 6 · `fig06_weighted_zone`: The activity-weighted Zone of Skepticism.**
+- Colour shows the expected number of catalogued ordinary lights per hour passing through each part of the view on a standard night: k = 0.13, MOR 100 km, observer error ±0.3° × ±0.1°.
+- Road rates use TxDOT AADT, only for the direction facing the platform, weighted by the headlight detectability of note 4. Rail rates use FRA night through-train counts.
+- The shading uses one ordinal blue ramp. Unshaded ground receives fewer than 0.01 lights per hour. Hatching marks permanent lights (towers, towns, skyglow, the aerostat).
+- Definition and sensitivity: note 8.
+
 ## Notes (`notes/`)
 
 | File | Contents |
@@ -56,6 +62,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 | `05_zone_of_skepticism.md` | definition, construction, coverage, what it leaves out |
 | `06_geography_geology_climate.md` | setting, with sources |
 | `07_data_sources.md` | provenance table and catalogue gaps |
+| `08_weighted_zone.md` | activity-weighted zone: model, parameters, results, motion signature, per-night use |
 
 ## Regenerate everything
 
@@ -68,6 +75,7 @@ python analysis/marfa_occlusion.py
 python analysis/headlight_model.py      # -> data/derived/headlights.json
 python analysis/build_site_data.py      # -> docs/data/site.json
 python analysis/zone_of_skepticism.py   # -> data/derived/zos.json, docs/data/zos.json
+python analysis/weighted_zone.py        # -> data/derived/weighted_zone.json, docs/data/zos_rate.json
 python analysis/pub_figures.py          # -> publication/figures/*
 ```
 

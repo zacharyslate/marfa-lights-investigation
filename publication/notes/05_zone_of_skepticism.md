@@ -1,5 +1,7 @@
 # 5. The Zone of Skepticism
 
+> This note defines the **binary** zone: where a catalogued light *can* appear. The binary version treats a nearly idle railroad the same as a highway. Note 8 weights each source by how often it actually produces a light, and that weighted version supersedes this one for field use.
+
 ## Definition
 
 The **Zone of Skepticism (ZoS)** is the set of apparent positions, in true bearing and elevation angle as seen from the Viewing Area, where a **catalogued ordinary light source** could appear, once refraction and the observer's own measurement error are allowed for.

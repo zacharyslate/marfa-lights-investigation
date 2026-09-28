@@ -1,7 +1,8 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const [S, ZOS] = await Promise.all([fetch("data/site.json?v=4").then(r => r.json()),
-    fetch("data/zos.json?v=4").then(r => r.json()).catch(() => null)]);
+  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=5").then(r => r.json()),
+    fetch("data/zos.json?v=5").then(r => r.json()).catch(() => null),
+    fetch("data/zos_rate.json?v=5").then(r => r.json()).catch(() => null)]);
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;
@@ -39,7 +40,8 @@
     const b = f.reduce((a, p) => p.mH < a.mH ? p : a);
     const dirTxt = b.dir === 0 ? "heading toward Marfa" : "heading away from Marfa";
     const cmp = m => m <= -1 ? "as bright as the brightest stars" : m <= 1.5 ? "like a bright star" : m <= 4 ? "like a modest star" : m <= 6 ? "faint, near the naked-eye limit" : "too faint to see";
-    return `A car ${dirTxt} here can point within ${fmt(Math.max(1, Math.abs(b.h)), 0)}° of the platform: about magnitude ${fmt(b.mH, 1)} on high beam (${cmp(b.mH)}), ${fmt(b.mL, 1)} on low beam. Cars going the other way show only red tail lights.`;
+    const w = Math.abs(Math.sin(b.h * D2R)) * (100 / 3.6) / (b.d * 1000) * 180 / Math.PI * 60;
+    return `At 100 km/h a car here crosses the view at about ${fmt(w, w < 0.1 ? 2 : 1)}° per minute. A car ${dirTxt} can point within ${fmt(Math.max(1, Math.abs(b.h)), 0)}° of the platform: about magnitude ${fmt(b.mH, 1)} on high beam (${cmp(b.mH)}), ${fmt(b.mL, 1)} on low beam. Cars going the other way show only red tail lights.`;
   }
   const HIT = S.rays.filter(r => r[4] === 1);
   const hwyDistAt = az => {           // distance to the first US-67 crossing, only where rays meet US-67
@@ -73,6 +75,16 @@
   // Zone of Skepticism (analysis/zone_of_skepticism.py): rings of [az, el_mrad]
   const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
     const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
+  // activity-weighted zone (analysis/weighted_zone.py): expected ordinary lights per hour
+  // envelope of two nights: normal refraction (k = 0.13) and a strong inversion (k = 1)
+  const RATE = ZR ? ZR.standard : null, RATES = ZR ? [ZR.standard, ZR.inversion] : [];
+  function rateAt(az, m) {          // index of the highest level containing the point in either scenario, -1 if none
+    if (!RATE) return null;
+    let lvl = -1;
+    RATES.forEach(Rs => Rs.levels.forEach((lv, i) => { let n = 0; Rs.rate_polys[String(lv)].forEach(r => { if (inRing(az, m, r)) n++; }); if (n % 2 === 1 && i > lvl) lvl = i; }));
+    return lvl;
+  }
+  const RATE_TXT = ["0.01–0.1 per hour (one every 10–100 hours)", "0.1–1 per hour", "1–10 per hour", "10 or more per hour"];
   function zosAt(az, m) {           // null = cannot say; true/false = inside/outside tier A (tier B if only a bearing)
     if (!ZOS) return null;
     if (m === null) return null;
@@ -317,9 +329,16 @@
     else if (hwyRuns.length) lines.push(`<b>US-67 lies on this bearing but is hidden${Math.abs(K - 0.13) < 1e-9 ? " at standard refraction" : ` at k = ${fmt(K, 2)}`}.</b> Car headlights here need unusual refraction. Check the other sources below.`);
     else lines.push(`<b>US-67 is not on this bearing.</b>${inFan ? "" : " You are pointing outside the 120° viewing fan."}`);
     if (anyRoad) lines.push(`<b>Another road is in view on this bearing</b> (see below). Its traffic can look just like a Marfa Light.`);
-    const z = zosAt(b, elev === null ? null : Math.tan(elev * D2R) * 1000);
+    const mEl = elev === null ? null : Math.tan(elev * D2R) * 1000;
+    const z = zosAt(b, mEl);
+    let rl = null;
+    if (RATE) {
+      if (mEl !== null) rl = rateAt(b, mEl);
+      else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const sk = skyAt(norm(a)); if (sk) for (let m = -15; m <= sk.m; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); } }
+    }
+    if (rl !== null && rl >= 0) lines.push(`<span>Ordinary lights expected ${mEl === null ? `somewhere below the skyline within ±${tol}°` : "at this spot"}: <b>${RATE_TXT[rl]}</b> on a clear night (normal refraction up to a strong inversion).</span>`);
     if (z !== null) lines.push(z ? `<span>Inside the <b>Zone of Skepticism</b>: a known light source can appear here. Rule it out first.</span>`
-      : `<span>Outside the <b>Zone of Skepticism</b>: no catalogued light source appears here. Note the time, bearing and height carefully.</span>`);
+      : `<span>Outside the <b>Zone of Skepticism</b>: no catalogued light source appears here${rl === -1 ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
     if (elev !== null && skyDeg !== null) {
       lines.push(elev > skyDeg + 0.1
         ? `At ${fmt(elev, 2)}° the light is <b>above the skyline</b> (${fmt(skyDeg, 2)}° here, ridge ${fmt(sky.d, 0)} km away). A ground light can't sit there. Think aircraft, stars or planets, satellites, or the aerostat at ~${fmt(norm(293 - (refMag ? DECL : 0)), 0)}°${refMag ? " magnetic" : " true"}.`
@@ -394,13 +413,13 @@
     layer(1, .10); layer(5, .09); layer(4, .09); layer(3, .10);
     el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill: "none", stroke: "var(--ink-2)", "stroke-width": 1.3}, svg);
     el("line", {x1: PL, x2: PW - PR, y1: py(0), y2: py(0), stroke: "var(--muted)", "stroke-dasharray": "3 3", "stroke-width": .8}, svg);
-    // Zone of Skepticism, tier A (clipped to the plot)
-    if (ZOS && showZos) {
+    // activity-weighted Zone of Skepticism: expected ordinary lights per hour (clipped to the plot)
+    if (RATE && showZos) {
       const cid = "panoclip"; const defs = el("defs", {}, svg); const cp = el("clipPath", {id: cid}, defs);
       el("rect", {x: PL, y: PT, width: PW - PL - PR, height: PH - PT - PB}, cp);
       const g = el("g", {"clip-path": `url(#${cid})`}, svg);
-      ZOS.tiers.A.forEach(r => { if (r.some(q => q[0] >= view.A0 - 1 && q[0] <= view.A1 + 1))
-        el("path", {d: "M" + r.map(q => `${px(q[0]).toFixed(1)},${py(q[1]).toFixed(1)}`).join("L") + "Z", fill: "var(--zos)", "fill-opacity": .28, stroke: "var(--zos)", "stroke-width": .6, "fill-rule": "evenodd"}, g); });
+      RATE.levels.forEach((lv, i) => RATES.forEach(Rs => Rs.rate_polys[String(lv)].forEach(r => { if (r.some(q => q[0] >= view.A0 - 1 && q[0] <= view.A1 + 1))
+        el("path", {d: "M" + r.map(q => `${px(q[0]).toFixed(1)},${py(q[1]).toFixed(1)}`).join("L") + "Z", fill: `var(--r${i + 1})`, "fill-opacity": .6, "fill-rule": "evenodd"}, g); })));
     }
     S.fan.forEach(a => { if (inW(a)) el("line", {x1: px(a), x2: px(a), y1: PT, y2: PH - PB, stroke: "var(--accent)", "stroke-dasharray": "1 3", "stroke-width": .8}, svg); });
     // US-67
@@ -441,7 +460,7 @@
       if (!isNaN(e)) el("circle", {cx: px(b), cy: py(Math.tan(e * D2R) * 1000), r: 5, fill: "none", stroke: "var(--accent)", "stroke-width": 2}, svg);
     }
     const hdeg = (view.A1 - view.A0) / (PW - PL - PR), vdeg = mrad2deg(view.E1 - view.E0) / (PH - PT - PB);
-    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. Green = Zone of Skepticism (where a known light can appear, allowing for refraction and a ±0.3° bearing error). ◆ red = lit tower (hollow if hidden), purple = railroad in view, magenta = other roads in view.`;
+    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. Blue = Zone of Skepticism, shaded by how many ordinary lights pass there per hour on a clear night, from normal refraction up to a strong inversion (lightest 0.01–0.1, then 0.1–1, 1–10, 10+), allowing a ±0.3° bearing error. Unshaded ground: fewer than one per 100 hours from catalogued sources. ◆ red = lit tower (hollow if hidden), purple = railroad in view, magenta = other roads in view.`;
   }
   svg.addEventListener("click", ev => {
     const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (PW / r.width), y = (ev.clientY - r.top) * (PH / r.height);

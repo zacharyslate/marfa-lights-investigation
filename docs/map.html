@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
 <link rel="stylesheet" href="assets/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/site.css?v=4">
+<link rel="stylesheet" href="assets/site.css?v=5">
 <style>
 body{overflow:hidden}
 .mapapp{display:grid;grid-template-columns:minmax(0,1fr) 410px;height:calc(100dvh - 55px)}
@@ -97,12 +97,12 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
     <section class="sec" id="panorama">
       <div class="eyebrow">View from the platform</div>
       <h2>Panorama</h2>
-      <p class="hint">The skyline, roads, towers and railroad as seen from the Viewing Area, south-southeast (left) to west-northwest (right). Green is the Zone of Skepticism: places where a known light source can appear. Tap where you see the light, relative to the mountains, to set both bearing and elevation.</p>
+      <p class="hint">The skyline, roads, towers and railroad as seen from the Viewing Area, south-southeast (left) to west-northwest (right). Blue is the Zone of Skepticism, shaded by how many ordinary lights pass each spot per hour on a typical night. Tap where you see the light, relative to the mountains, to set both bearing and elevation.</p>
       <div class="row">
         <div class="seg" role="group" aria-label="Panorama width">
           <button type="button" id="panoFull" aria-pressed="true">Full view</button><button type="button" id="panoZoom" aria-pressed="false">Zoom on bearing</button>
         </div>
-        <button type="button" class="sbtn" id="zosBtn" aria-pressed="true">Zone of Skepticism</button>
+        <button type="button" class="sbtn" id="zosBtn" aria-pressed="true">Expected lights per hour</button>
       </div>
       <svg id="pano" viewBox="0 0 640 260" role="img" aria-label="Panorama of the skyline, US-67, towers and railroad from the viewing area"></svg>
       <p class="hint" id="panoNote" style="font-size:13px"></p>
@@ -132,7 +132,7 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
   </aside>
 </main>
 <script src="assets/leaflet/leaflet.js"></script>
-<script src="assets/site.js?v=4"></script>
-<script src="assets/map.js?v=4"></script>
+<script src="assets/site.js?v=5"></script>
+<script src="assets/map.js?v=5"></script>
 </body>
 </html>

@@ -63,8 +63,9 @@ ROADS = S["roads"]
 
 def save(fig, name):
     os.makedirs(OUT, exist_ok=True)
+    meta = {"pdf": {"CreationDate": None, "ModDate": None}, "svg": {"Date": None}, "png": {}}   # reproducible files
     for ext in ("pdf", "svg", "png"):
-        fig.savefig(f"{OUT}/{name}.{ext}", bbox_inches="tight", pad_inches=0.02)
+        fig.savefig(f"{OUT}/{name}.{ext}", bbox_inches="tight", pad_inches=0.02, metadata=meta[ext])
     plt.close(fig)
     print("wrote", name)
 
@@ -463,9 +464,76 @@ def fig05():
     save(fig, "fig05_refraction")
 
 
+# ============================================================ figure 6: activity-weighted zone
+SEQ = ["#86b6ef", "#3987e5", "#1c5cab", "#0d366b"]      # one-hue ordinal ramp (validated, light surface)
+
+
+def draw_rate(ax, WZ, a0, a1):
+    s = SKY[(SKY[:, 0] >= a0) & (SKY[:, 0] <= a1)]
+    az = s[:, 0]
+    for col, gray in ((1, "#EFEFEF"), (5, "#E4E4E4"), (4, "#D9D9D9"), (3, "#CDCDCD")):
+        ax.fill_between(az, -2.0, m2deg(s[:, col]), color=gray, lw=0, zorder=1)
+    for lv, c in zip(WZ["levels"], SEQ):
+        for ring in WZ["rate_polys"][f"{lv:g}"]:
+            r = np.array(ring)
+            if r[:, 0].max() < a0 - 1 or r[:, 0].min() > a1 + 1:
+                continue
+            ax.add_patch(Polygon(np.c_[r[:, 0], m2deg(r[:, 1])], closed=True, fc=c, ec="none", zorder=3))
+    for ring in WZ["fixed_polys"]:
+        r = np.array(ring)
+        if r[:, 0].max() < a0 - 1 or r[:, 0].min() > a1 + 1:
+            continue
+        ax.add_patch(Polygon(np.c_[r[:, 0], m2deg(r[:, 1])], closed=True, fc="none", ec="k", lw=0.5, hatch="////", zorder=4))
+    ax.plot(az, m2deg(s[:, 1]), color="k", lw=0.7, zorder=6)
+    for a in S["fan"]:
+        if a0 <= a <= a1:
+            ax.axvline(a, color="k", lw=0.6, ls=(0, (4, 2)), zorder=5)
+
+
+def fig06():
+    WZ = json.load(open("data/derived/weighted_zone.json"))
+    st = WZ["standard"]
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(W2, W2 * 0.72), gridspec_kw=dict(height_ratios=[1, 1.2], hspace=0.45))
+    draw_rate(a1, st, 155, 300)
+    a1.set_xlim(155, 300)
+    a1.set_ylim(-0.75, 0.6)
+    a1.set_xticks(np.arange(160, 301, 10))
+    a1.set_ylabel("Elevation angle (°)")
+    a1.set_xlabel("True bearing (°)")
+    a1.add_patch(plt.Rectangle((224, -0.72), 38, 0.98, fill=False, lw=0.7, ec="k", zorder=9))
+    a1.text(224.4, 0.23, "b", fontsize=7, fontweight="bold", va="top", zorder=9)
+    lab = dict(fontsize=6, ha="center", zorder=10, bbox=dict(fc="white", ec="none", pad=0.4, alpha=0.8))
+    a1.text(186, -0.66, "Texas Pacifico track, ≤ 0.08 trains/h", **lab)
+    a1.text(233, -0.62, "US-67", **lab)
+    a1.text(249, 0.40, "RM 2810", **lab)
+    a1.text(272, 0.40, "US-90, UP, Marfa →", **lab)
+    a1.set_title("(a) Expected ordinary lights per hour: standard night, k = 0.13, MOR 100 km, error ±0.3° × ±0.1°", loc="left", fontsize=7.3)
+    draw_rate(a2, st, 224, 262)
+    a2.set_xlim(224, 262)
+    a2.set_ylim(-0.45, 0.32)
+    a2.set_xticks(np.arange(224, 263, 2))
+    a2.set_ylabel("Elevation angle (°)")
+    a2.set_xlabel("True bearing (°)")
+    a2.text(233.4, -0.30, "US-67 northbound: up to ~15 cars/h", **lab)
+    a2.text(250.5, 0.25, "RM 2810: ≤ 0.5 cars/h", **lab)
+    a2.text(245.5, -0.2, "no catalogued source", fontsize=6.5, ha="center", style="italic", color="#333", zorder=10)
+    a2.set_title("(b) The US-67 and RM 2810 sector", loc="left")
+    e1, e2 = exaggeration(fig, a1), exaggeration(fig, a2)
+    for ax, e in ((a1, e1), (a2, e2)):
+        ax.text(0.995, 0.97, f"vertical ×{e:.0f}", transform=ax.transAxes, ha="right", va="top", fontsize=6.3, zorder=11,
+                bbox=dict(fc="white", ec="none", pad=0.3, alpha=0.8))
+    handles = [Patch(fc=c, label=l) for c, l in zip(SEQ, ["0.01–0.1 per hour", "0.1–1", "1–10", "≥ 10"])]
+    handles += [Patch(fc="white", ec="k", hatch="////", lw=0.5, label="Permanent light (tower, town, skyglow, aerostat)"),
+                Line2D([], [], color="k", lw=0.7, label="Skyline (k = 0.13)")]
+    fig.legend(handles=handles, loc="lower center", ncol=6, bbox_to_anchor=(0.5, -0.03), fontsize=6.0, columnspacing=1.0,
+               handletextpad=0.5, title="Expected rate of catalogued transient lights (unshaded = < 0.01 per hour)", title_fontsize=6.3)
+    save(fig, "fig06_weighted_zone")
+
+
 if __name__ == "__main__":
     fig01()
     fig02()
     fig03()
     fig04()
     fig05()
+    fig06()
