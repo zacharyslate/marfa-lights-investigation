@@ -161,3 +161,43 @@ h2.h3{font-size:21px;font-weight:600;color:var(--ink)}
 .figlink{display:block;cursor:zoom-in}
 :root[data-theme="night"] .figblock .photo.plain img{filter:grayscale(1) sepia(1) hue-rotate(-50deg) saturate(4) brightness(.55)}
 .figblock .photo{max-width:1000px}
+
+/* history page */
+.coldopen{position:relative;border-radius:var(--radius);overflow:hidden;color:#ece9e2;
+  background:linear-gradient(90deg,rgba(6,8,12,.94) 0%,rgba(6,8,12,.82) 55%,rgba(6,8,12,.35) 100%),url(../img/nps_chisos_night-1800.webp) center 70%/cover #06080c}
+.coldopen .co-in{max-width:68ch;padding:clamp(24px,5vw,56px);display:grid;gap:14px}
+.coldopen .eyebrow{color:#f0a43a}
+.coldopen .co-big{font:600 clamp(22px,3vw,30px)/1.3 var(--f-disp);letter-spacing:.01em;color:#fff;margin:0}
+.coldopen p{margin:0;color:#d5d9df;font-size:17px}
+.coldopen a{color:#f3b561}
+.coldopen .co-kicker{font:600 20px/1.3 var(--f-disp);color:#f0a43a;letter-spacing:.02em}
+:root[data-theme="night"] .coldopen{background:#120202;color:var(--ink)}
+:root[data-theme="night"] .coldopen p,:root[data-theme="night"] .coldopen .co-big{color:var(--ink)}
+.names{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.names li{font:600 16px/1 var(--f-disp);letter-spacing:.04em;text-transform:uppercase;border:1px solid var(--rule);background:var(--surface);border-radius:99px;padding:9px 14px;color:var(--ink)}
+.names li:first-child{border-color:var(--accent);color:var(--accent)}
+.era{margin-top:10px;display:grid;gap:2px;border-top:1px solid var(--rule);padding-top:14px}
+.era h3{font-size:24px}
+.voice{margin:0;border-left:3px solid var(--accent);padding:4px 0 4px 14px;font:600 18px/1.35 var(--f-disp);color:var(--ink);letter-spacing:.01em}
+.voice cite{display:block;font:400 13.5px/1.4 var(--f-body);color:var(--muted);margin-top:6px;font-style:normal;letter-spacing:0}
+.verdicts{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px;margin-top:18px}
+.vcard{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:16px 18px;display:grid;gap:8px;align-content:start}
+.vcard h3{font-size:19px;line-height:1.2}
+.vcard p{margin:0;color:var(--ink-2);font-size:15px}
+.badge{justify-self:start;font:600 11.5px/1 var(--f-mono);letter-spacing:.07em;text-transform:uppercase;padding:5px 8px;border-radius:4px;border:1px solid currentColor}
+.b-doc{color:#1b7a47} .b-trad{color:#9a5700} .b-folk{color:#7a3fa0} .b-unver{color:#5d6673} .b-myth{color:#b42318} .b-open{color:#1c5cab}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .b-doc{color:#5fd08f}:root:not([data-theme="light"]) .b-trad{color:#f0a43a}:root:not([data-theme="light"]) .b-folk{color:#c9a0f0}:root:not([data-theme="light"]) .b-unver{color:#a9b1bb}:root:not([data-theme="light"]) .b-myth{color:#ff8a7a}:root:not([data-theme="light"]) .b-open{color:#8fbcf2}}
+:root[data-theme="dark"] .b-doc{color:#5fd08f}:root[data-theme="dark"] .b-trad{color:#f0a43a}:root[data-theme="dark"] .b-folk{color:#c9a0f0}:root[data-theme="dark"] .b-unver{color:#a9b1bb}:root[data-theme="dark"] .b-myth{color:#ff8a7a}:root[data-theme="dark"] .b-open{color:#8fbcf2}
+:root[data-theme="night"] .badge{color:var(--ink)}
+.world{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,420px),1fr));gap:18px;margin-top:18px}
+.wcard{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;display:grid;align-content:start}
+.wcard img{width:100%;height:auto;display:block;background:#fff}
+.wcard .wbody{padding:16px 18px;display:grid;gap:10px}
+.wcard h3{font-size:21px}
+.wcard p{margin:0;color:var(--ink-2);font-size:15.5px}
+.wcard .lesson{border-top:1px dashed var(--rule);padding-top:10px;color:var(--ink)}
+.wcard .credit{font-size:12.5px;color:var(--muted)}
+:root[data-theme="night"] .wcard img{filter:grayscale(1) sepia(1) hue-rotate(-50deg) saturate(4) brightness(.5)}
+.culture{display:grid;gap:10px}
+.prose .names{display:flex;flex-wrap:wrap;gap:8px;padding:0;list-style:none}
+.world{align-items:start}
