@@ -109,3 +109,22 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);verti
 th{font:600 13px var(--f-mono);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
 .tablewrap{overflow-x:auto}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* ---------- photographs and figures */
+.photo{margin:0;display:grid;gap:6px;min-width:0}
+.photo img{width:100%;height:auto;display:block;border-radius:var(--radius);background:var(--surface-2)}
+.photo figcaption{font-size:13.5px;line-height:1.45;color:var(--muted)}
+.photo figcaption b{color:var(--ink-2);font-weight:600}
+.photo.banner img{aspect-ratio:21/8;object-fit:cover}
+.photo.wide img{aspect-ratio:16/9;object-fit:cover}
+.photo.plain img{background:#fff}
+.photos2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px;align-items:start}
+.place .photo img{border-radius:4px}
+.hero-photo{position:relative;border-radius:var(--radius);overflow:hidden}
+.hero-photo img{width:100%;height:auto;aspect-ratio:21/8;object-fit:cover;object-position:50% 88%;display:block}
+.hero-photo figcaption{position:absolute;right:8px;bottom:6px;font-size:11.5px;color:#e8e8e8;text-shadow:0 0 3px #000}
+.hero-photo figcaption a{color:#fff}
+@media (max-width:640px){.photo.banner img,.hero-photo img{aspect-ratio:16/9}}
+/* night vision: photos go dim and red so they don't spoil dark adaptation */
+:root[data-theme="night"] .photo img,:root[data-theme="night"] .hero-photo img{filter:grayscale(1) sepia(1) hue-rotate(-50deg) saturate(5) brightness(.4)}
+.prose .photo:not(.plain):not(.banner) img{aspect-ratio:16/9;object-fit:cover}
