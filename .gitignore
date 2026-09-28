@@ -1,0 +1,6 @@
+ZACH-venv/
+__pycache__/
+*.pyc
+data/inputs/airports.csv
+data/inputs/runways.csv
+.DS_Store

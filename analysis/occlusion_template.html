@@ -1,0 +1,347 @@
+<title>US-67 Sight Lines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#f3f4f2; --surface:#fcfcfb; --ink:#141917; --ink-2:#4f5856; --muted:#737c79; --rule:#d7dcd9; --grid:#e6e9e7;
+  --vis:#2a78d6; --marg:#eb6834; --hid:#b3bab7; --sky:#eef3f8; --ground:#dcd6c8; --ground-line:#8a7f68;
+  --k1:#0d366b; --k2:#1c5cab; --k3:#2a78d6; --k4:#5598e7; --k5:#86b6ef; --k6:#c4cac7;
+  --rail:#7b4fb0; --focus:#2a78d6;
+  --f-disp:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#111413; --surface:#1a1a19; --ink:#eef1ef; --ink-2:#bfc6c3; --muted:#8f9894; --rule:#2f3432; --grid:#262a28;
+    --vis:#3987e5; --marg:#d95926; --hid:#4d5451; --sky:#16202b; --ground:#2b2821; --ground-line:#9c8f72;
+    --k1:#cde2fb; --k2:#9ec5f4; --k3:#6da7ec; --k4:#3987e5; --k5:#1c5cab; --k6:#3d4341; --rail:#b08ae0;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#111413; --surface:#1a1a19; --ink:#eef1ef; --ink-2:#bfc6c3; --muted:#8f9894; --rule:#2f3432; --grid:#262a28;
+  --vis:#3987e5; --marg:#d95926; --hid:#4d5451; --sky:#16202b; --ground:#2b2821; --ground-line:#9c8f72;
+  --k1:#cde2fb; --k2:#9ec5f4; --k3:#6da7ec; --k4:#3987e5; --k5:#1c5cab; --k6:#3d4341; --rail:#b08ae0;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-body);padding-inline:20px;padding-block:28px 56px}
+.wrap{max-width:1160px;margin:0 auto;display:grid;gap:36px}
+h1,h2,h3{font-family:var(--f-disp);text-wrap:balance;margin:0;letter-spacing:.005em}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.05;font-weight:700}
+h2{font-size:22px;font-weight:600}
+h3{font-size:16px;font-weight:600}
+p{margin:0;max-width:68ch}
+.eyebrow{font:500 12px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:12px}
+.lede{color:var(--ink-2);font-size:16px}
+.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.fig{background:var(--surface);padding:14px 16px;display:grid;gap:2px}
+.fig b{font:600 26px/1.1 var(--f-disp);font-variant-numeric:tabular-nums}
+.fig span{color:var(--ink-2);font-size:13px}
+.sw{display:inline-block;width:18px;height:4px;border-radius:2px;vertical-align:middle;margin-right:6px}
+.maps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:20px}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px;display:grid;gap:12px;align-content:start;min-width:0}
+.panel .sub{color:var(--ink-2);font-size:13.5px}
+svg{display:block;width:100%;height:auto;font-family:var(--f-mono)}
+svg text{fill:var(--muted);font-size:10px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--ink-2);list-style:none;margin:0;padding:0}
+.legend li{display:flex;align-items:center}
+.ctl{display:grid;gap:6px;border-top:1px solid var(--rule);padding-top:12px}
+.ctl label{font:500 13px var(--f-body)}
+.ctl input[type=range]{width:100%;accent-color:var(--vis)}
+.ctl output{font:500 13px/1.4 var(--f-mono);color:var(--ink);font-variant-numeric:tabular-nums}
+.ctl .note{font-size:12px;color:var(--muted)}
+.tip{position:fixed;pointer-events:none;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;font:12px/1.45 var(--f-mono);box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:10;max-width:260px}
+.scroll{overflow-x:auto}
+.profiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:16px}
+.pill{display:inline-block;font:500 11px/1 var(--f-mono);padding:4px 7px;border-radius:99px;border:1px solid currentColor;letter-spacing:.03em}
+.method{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:20px 32px}
+.method section{display:grid;gap:8px}
+.method ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--ink-2);font-size:14px}
+table{border-collapse:collapse;width:100%;font:12.5px/1.4 var(--f-mono);font-variant-numeric:tabular-nums}
+th,td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--grid);white-space:nowrap}
+th{color:var(--muted);font-weight:500;text-align:right}
+th:first-child,td:first-child{text-align:left}
+details summary{cursor:pointer;font:600 14px var(--f-disp);letter-spacing:.02em}
+details summary:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.src{font-size:13px;color:var(--ink-2);display:grid;gap:4px}
+.src a{color:var(--vis)}
+code{font-family:var(--f-mono);font-size:.92em}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">Marfa Lights investigation · digital line-of-sight study</div>
+  <h1>Where US‑67 can be seen from the Viewing Area</h1>
+  <p class="lede">A 0.7 m headlight on US‑67 between Shafter and Marfa, tested for terrain occlusion from an eye 1.6 m above the Marfa Lights Viewing Area. Earth curvature and atmospheric refraction are included. Terrain comes from the USGS 3DEP elevation model at about 30 m resolution.</p>
+  <div class="figs" id="figs"></div>
+</header>
+
+<div class="maps">
+  <div class="panel">
+    <div class="eyebrow">Map 1</div>
+    <h2>Standard atmosphere, k = 0.13</h2>
+    <p class="sub">The textbook refraction state. Each 60 m of road is classed by whether a headlight clears the terrain in between.</p>
+    <svg id="map1" viewBox="0 0 520 620" role="img" aria-label="Plan view map of US-67 coloured by visibility at standard refraction"></svg>
+    <ul class="legend">
+      <li><span class="sw" style="background:var(--vis);height:5px"></span>Visible, clears distant terrain by more than 5 m</li>
+      <li><span class="sw" style="background:var(--marg);height:4px"></span>Marginal, thin clearance or blocked only within 1 km of the car</li>
+      <li><span class="sw" style="background:var(--hid);height:2px"></span>Hidden by terrain</li>
+      <li><span class="sw" style="background:repeating-linear-gradient(90deg,var(--rail) 0 5px,transparent 5px 8px);height:2px"></span>Texas Pacifico railroad</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <div class="eyebrow">Map 2</div>
+    <h2>Across refraction states</h2>
+    <p class="sub">Colour is the smallest refraction coefficient <i>k</i> at which a headlight becomes visible. Night surface inversions raise <i>k</i>; daytime heating lowers it.</p>
+    <svg id="map2" viewBox="0 0 520 620" role="img" aria-label="Plan view map of US-67 coloured by the refraction coefficient needed to see each point"></svg>
+    <ul class="legend" id="leg2"></ul>
+    <div class="ctl">
+      <label for="kslider">Test one refraction state</label>
+      <input id="kslider" type="range" min="-1" max="3" step="0.01" value="0.13">
+      <output id="kout" for="kslider"></output>
+      <span class="note">Road that stays visible at this <i>k</i> is drawn at full strength. The temperature gradient uses <i>k</i> = 503·P/T²·(0.0343 + dT/dz) at P ≈ 850 hPa, T ≈ 283 K (Hirt et al. 2010).</span>
+    </div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="eyebrow">Perspective</div>
+  <h2>What the platform sees, looking southwest to west</h2>
+  <p class="sub">Apparent elevation angle against true azimuth, at standard refraction. The shaded ground ends at the modelled skyline, which along most of this arc is the Chinati Mountains 60–70 km away. Visible road points sit below that skyline, so their headlights appear against dark mountainside rather than open sky. Hidden points are drawn faintly where they would appear if the nearer ground were not in the way. This frame is built for overlaying on calibrated photos later. 1 mrad ≈ 0.057°, about a car length at 80 m.</p>
+  <div class="scroll"><svg id="pano" viewBox="0 0 1080 360" style="min-width:720px" role="img" aria-label="Panorama of skyline and highway positions as seen from the viewing area"></svg></div>
+  <ul class="legend">
+    <li><span class="sw" style="background:var(--vis);height:8px;width:8px;border-radius:50%"></span>Visible</li>
+    <li><span class="sw" style="background:var(--marg);height:8px;width:8px;border-radius:50%"></span>Marginal</li>
+    <li><span class="sw" style="background:var(--hid);height:8px;width:8px;border-radius:50%"></span>Hidden</li>
+    <li><span class="sw" style="background:var(--ground-line);height:2px"></span>Skyline (k = 0.13)</li>
+  </ul>
+</div>
+
+<div class="panel">
+  <div class="eyebrow">Cross-sections</div>
+  <h2>Three sight lines, drawn with curvature</h2>
+  <p class="sub">Terrain height relative to the observer's eye, after the curvature-and-refraction drop. A straight line from the eye to the car is the line of sight. Solid is standard refraction. Dashed is a strong inversion (k = 0.5), which lifts distant terrain less and flattens the Earth optically.</p>
+  <div class="profiles" id="profiles"></div>
+</div>
+
+<div class="panel">
+  <details>
+    <summary>Visible stretches at standard refraction, as a table</summary>
+    <div class="scroll" style="margin-top:12px"><table id="runs"><thead><tr><th>Stretch</th><th>Chainage km</th><th>Azimuth °</th><th>Distance km</th><th>Road elev m</th><th>Apparent elev mrad</th><th>Length m</th></tr></thead><tbody></tbody></table></div>
+  </details>
+</div>
+
+<div class="method">
+  <section>
+    <h3>How it was computed</h3>
+    <ul>
+      <li>US‑67 comes from your Google Earth trace, resampled every 60 m, with 1,077 points from Shafter (km 0) to Marfa (km 64.6).</li>
+      <li>For each point, terrain is sampled every 15 m along the great-circle path from the viewer using bilinear DEM interpolation.</li>
+      <li>Apparent heights drop by d²(1 − k)/2R. The visibility threshold <i>k</i><sub>crit</sub> is solved in closed form, and a spot-check against brute force at ±0.01 found no mismatches.</li>
+      <li>The first 30 m and last 60 m of each path are skipped so the viewer's own pad and the car's own road bed don't count as obstacles.</li>
+    </ul>
+  </section>
+  <section>
+    <h3>What limits it</h3>
+    <ul>
+      <li><b>Constant <i>k</i>.</b> Near-ground gradients vary strongly with height. Hirt et al. measured k from about −4 by day to +16 near sunset at 1.8 m. A ray-trace through a layered temperature profile is the next step for the grazing paths.</li>
+      <li><b>Humidity barely bends visible light.</b> The water-vapour term in the optical refractive index is small (Ciddor 1996). Humidity matters here mainly through haze and extinction, which dims lights. It does not change what is occluded.</li>
+      <li><b>30 m terrain.</b> This resolution misses road cuts, embankments, fences, brush and buildings. "Marginal" flags where that matters.</li>
+      <li><b>Headlights are directional.</b> This model says where a lamp is geometrically visible, not whether it points at you. Road heading is the next layer.</li>
+    </ul>
+  </section>
+</div>
+
+<div class="src">
+  <div class="eyebrow">Sources</div>
+  <span>USGS 3D Elevation Program, 3DEPElevation ImageServer, retrieved 2026‑09‑28: <a href="https://elevation.nationalmap.gov/arcgis/rest/services/3DEPElevation/ImageServer" target="_blank" rel="noopener">elevation.nationalmap.gov</a></span>
+  <span>Hirt, C., Guillaume, S., Wisbar, A., Bürki, B., Sternberg, H. (2010). Monitoring of the refraction coefficient in the lower atmosphere using a controlled setup of simultaneous reciprocal vertical angle measurements. <i>J. Geophys. Res.</i> 115, D21102. <a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2010JD014067" target="_blank" rel="noopener">doi:10.1029/2010JD014067</a></span>
+  <span>Ciddor, P. E. (1996). Refractive index of air: new equations for the visible and near infrared. <i>Applied Optics</i> 35(9), 1566–1573.</span>
+  <span>Railroad: USDOT BTS North American Rail Network. Highway trace: user's Google Earth KML.</span>
+</div>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const D = __DATA__;
+const NS = "http://www.w3.org/2000/svg";
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const P = D.pts.map(p => ({x:p[0], y:p[1], ch:p[2], az:p[3], d:p[4], z:p[5], kc:p[6], kc25:p[7], a:p[8], clr:p[9], far:p[10], cls:p[11], bin:p[12]}));
+const STEP = D.meta.hwy_step_m / 1000;
+const km = f => (P.filter(f).length * STEP);
+const fmt = (v, n = 1) => v.toLocaleString("en-US", {minimumFractionDigits:n, maximumFractionDigits:n});
+const CLS = {vis:"Visible", marg:"Marginal", hid:"Hidden"};
+const BIN = Object.fromEntries(D.bins.map(b => [b[2], b[3]]));
+
+// ---------- headline figures
+const vis = P.filter(p => p.cls === "vis");
+const visAz = [Math.min(...vis.map(p => p.az)), Math.max(...vis.map(p => p.az))];
+const visD = [Math.min(...vis.map(p => p.d)), Math.max(...vis.map(p => p.d))];
+document.getElementById("figs").innerHTML = [
+  [`${fmt(km(p => p.cls === "vis"))} km`, `<span class="sw" style="background:var(--vis)"></span>clearly visible at standard refraction`],
+  [`${fmt(km(p => p.cls === "marg"))} km`, `<span class="sw" style="background:var(--marg)"></span>marginal, depends on detail finer than the DEM`],
+  [`${fmt(km(p => p.cls === "hid"))} km`, `<span class="sw" style="background:var(--hid)"></span>hidden by terrain, of ${fmt(P[P.length-1].ch)} km modelled`],
+  [`${fmt(visAz[0])}°–${fmt(visAz[1])}°`, `visible band, ${fmt(visD[0],0)}–${fmt(visD[1],0)} km away, south of the fan's centre`]
+].map(([b, s]) => `<div class="fig"><b>${b}</b><span>${s}</span></div>`).join("");
+
+// ---------- tooltip
+const tip = document.getElementById("tip");
+function showTip(ev, p) {
+  tip.innerHTML = `<b>Chainage ${fmt(p.ch,2)} km</b> from Shafter<br>Azimuth ${fmt(p.az,2)}° · ${fmt(p.d,2)} km<br>Road ${fmt(p.z,0)} m · apparent ${fmt(p.a,2)} mrad<br>Map 1: ${CLS[p.cls]}<br>k<sub>crit</sub> ${p.kc > 50 ? "&gt; 50" : fmt(p.kc,2)} (2.5 m target ${p.kc25 > 50 ? "&gt; 50" : fmt(p.kc25,2)})`;
+  tip.hidden = false;
+  const x = Math.min(ev.clientX + 14, window.innerWidth - 270), y = ev.clientY + 14;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+
+// ---------- plan maps
+const X0 = -45, X1 = 5, Y0 = -54, Y1 = 7, W = 520, H = 620, PAD = 18;
+const sc = Math.min((W - 2*PAD) / (X1 - X0), (H - 2*PAD) / (Y1 - Y0));
+const mx = x => PAD + (x - X0) * sc, my = y => H - PAD - (y - Y0) * sc;
+function baseMap(svg) {
+  el("rect", {x:0, y:0, width:W, height:H, fill:"var(--surface)"}, svg);
+  const cp = el("clipPath", {id: svg.id + "clip"}, el("defs", {}, svg));
+  el("rect", {x:PAD, y:PAD, width:W-2*PAD, height:H-2*PAD}, cp);
+  const g = el("g", {"clip-path": `url(#${svg.id}clip)`}, svg);
+  // fan wedge
+  const [e1, e2] = D.edges;
+  el("path", {d:`M${mx(0)},${my(0)} L${mx(e1[0])},${my(e1[1])} A${45*sc},${45*sc} 0 0 1 ${mx(e2[0])},${my(e2[1])} Z`, fill:"var(--grid)", stroke:"none", opacity:.8}, g);
+  for (const r of [10, 20, 30, 40, 50]) {
+    el("circle", {cx:mx(0), cy:my(0), r:r*sc, fill:"none", stroke:"var(--rule)", "stroke-width":1, "stroke-dasharray": r % 20 ? "2 4" : "none"}, g);
+    el("text", {x:mx(0) - r*sc*Math.sin(Math.PI/4) - 4, y:my(0) + r*sc*Math.cos(Math.PI/4) + 12, "text-anchor":"end"}, g).textContent = r + " km";
+  }
+  for (const line of D.rail) el("polyline", {points: line.map(q => `${mx(q[0])},${my(q[1])}`).join(" "), fill:"none", stroke:"var(--rail)", "stroke-width":1.4, "stroke-dasharray":"5 3"}, g);
+  return g;
+}
+function addMarkers(svg) {
+  const cx = mx(0), cy = my(0);
+  el("path", {d:`M${cx},${cy-8} L${cx+2.4},${cy-2.4} L${cx+8},${cy-2.4} L${cx+3.4},${cy+1.4} L${cx+5},${cy+7.5} L${cx},${cy+3.8} L${cx-5},${cy+7.5} L${cx-3.4},${cy+1.4} L${cx-8},${cy-2.4} L${cx-2.4},${cy-2.4} Z`, fill:"var(--ink)"}, svg);
+  el("text", {x:cx - 10, y:cy - 10, "text-anchor":"end", style:"fill:var(--ink);font-size:11px"}, svg).textContent = "Viewing Area";
+  const hx = mx(D.hp[0]), hy = my(D.hp[1]);
+  el("path", {d:`M${hx},${hy-7} L${hx+6},${hy+4} L${hx-6},${hy+4} Z`, fill:"none", stroke:"var(--ink)", "stroke-width":1.5}, svg);
+  el("text", {x:hx + 9, y:hy + 4, style:"fill:var(--ink);font-size:11px"}, svg).textContent = "High point 1,650 m";
+  el("text", {x:mx(P[0].x) + 8, y:my(P[0].y) + 4, style:"fill:var(--ink-2);font-size:11px"}, svg).textContent = "Shafter";
+  el("text", {x:mx(P[P.length-1].x) - 8, y:my(P[P.length-1].y) - 6, "text-anchor":"end", style:"fill:var(--ink-2);font-size:11px"}, svg).textContent = "toward Marfa";
+  // north arrow + scale bar
+  const nx = W - PAD - 14, ny = PAD + 26;
+  el("path", {d:`M${nx},${ny-18} L${nx+6},${ny} L${nx},${ny-5} L${nx-6},${ny} Z`, fill:"var(--ink-2)"}, svg);
+  el("text", {x:nx, y:ny + 13, "text-anchor":"middle"}, svg).textContent = "N";
+  const sx = W - PAD - 10 - 10*sc, sy = H - PAD - 10;
+  el("line", {x1:sx, y1:sy, x2:sx + 10*sc, y2:sy, stroke:"var(--ink-2)", "stroke-width":2}, svg);
+  el("text", {x:sx + 5*sc, y:sy - 6, "text-anchor":"middle"}, svg).textContent = "10 km";
+}
+function drawRoad(svg, g, colorOf, widthOf) {
+  const segs = [];
+  for (let i = 0; i < P.length - 1; i++) {
+    const a = P[i], b = P[i+1];
+    segs.push(el("line", {x1:mx(a.x), y1:my(a.y), x2:mx(b.x), y2:my(b.y), stroke:colorOf(a), "stroke-width":widthOf(a), "stroke-linecap":"round"}, g));
+  }
+  const hit = el("rect", {x:0, y:0, width:W, height:H, fill:"transparent"}, svg);
+  hit.addEventListener("mousemove", ev => {
+    const r = svg.getBoundingClientRect(), s = W / r.width;
+    const px = (ev.clientX - r.left) * s, py = (ev.clientY - r.top) * s;
+    let best = null, bd = 1e9;
+    for (const p of P) { const d = (mx(p.x) - px)**2 + (my(p.y) - py)**2; if (d < bd) { bd = d; best = p; } }
+    if (bd < 14*14) showTip(ev, best); else hideTip();
+  });
+  hit.addEventListener("mouseleave", hideTip);
+  return segs;
+}
+const COL1 = {vis:"var(--vis)", marg:"var(--marg)", hid:"var(--hid)"}, WID1 = {vis:4.5, marg:3.5, hid:1.6};
+const m1 = document.getElementById("map1");
+drawRoad(m1, baseMap(m1), p => COL1[p.cls], p => WID1[p.cls]); addMarkers(m1);
+
+const m2 = document.getElementById("map2");
+const segs2 = drawRoad(m2, baseMap(m2), p => `var(--${p.bin})`, p => p.bin === "k6" ? 1.6 : 4.2); addMarkers(m2);
+document.getElementById("leg2").innerHTML = D.bins.map(b => `<li><span class="sw" style="background:var(--${b[2]});height:${b[2]==="k6"?2:5}px"></span>${b[3]} · ${fmt(km(p => p.bin === b[2]),2)} km</li>`).join("");
+const ks = document.getElementById("kslider"), ko = document.getElementById("kout");
+function applyK() {
+  const k = +ks.value;
+  segs2.forEach((s, i) => s.setAttribute("opacity", P[i].kc <= k ? 1 : 0.18));
+  const grad = k / (503 * 850 / 283**2) - 0.0343;
+  ko.textContent = `k = ${fmt(k,2)} → ${fmt(km(p => p.kc <= k),2)} km visible · dT/dz ≈ ${grad >= 0 ? "+" : "−"}${fmt(Math.abs(grad),3)} K/m`;
+}
+ks.addEventListener("input", applyK); applyK();
+
+// ---------- panorama
+(function pano() {
+  const svg = document.getElementById("pano"), W = 1080, H = 360, L = 56, R = 16, T = 16, B = 40;
+  const A0 = 216, A1 = 284, E0 = -10.5, E1 = 9;
+  const px = a => L + (a - A0) / (A1 - A0) * (W - L - R), py = e => T + (E1 - e) / (E1 - E0) * (H - T - B);
+  el("rect", {x:L, y:T, width:W-L-R, height:H-T-B, fill:"var(--sky)"}, svg);
+  for (let e = -10; e <= 8; e += 2) {
+    el("line", {x1:L, x2:W-R, y1:py(e), y2:py(e), stroke:"var(--grid)", "stroke-width":1}, svg);
+    el("text", {x:L - 6, y:py(e) + 3, "text-anchor":"end"}, svg).textContent = e + "";
+  }
+  const sky = D.sky.filter(s => s[0] >= A0 && s[0] <= A1);
+  el("path", {d:`M${px(sky[0][0])},${py(E0)} ` + sky.map(s => `L${px(s[0])},${py(Math.max(E0, s[1]))}`).join(" ") + ` L${px(sky[sky.length-1][0])},${py(E0)} Z`, fill:"var(--ground)", stroke:"none"}, svg);
+  el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill:"none", stroke:"var(--ground-line)", "stroke-width":1.5}, svg);
+  el("line", {x1:L, x2:W-R, y1:py(0), y2:py(0), stroke:"var(--ink-2)", "stroke-width":1, "stroke-dasharray":"3 3"}, svg);
+  el("text", {x:W - R - 4, y:py(0) - 5, "text-anchor":"end"}, svg).textContent = "eye level";
+  for (const a of D.fan) {
+    el("line", {x1:px(a), x2:px(a), y1:T, y2:H-B, stroke:"var(--ink-2)", "stroke-width":1, "stroke-dasharray":"1 3"}, svg);
+    el("text", {x:px(a) + 4, y:T + 12}, svg).textContent = `fan ${fmt(a,1)}°`;
+  }
+  for (let a = 220; a <= 280; a += 5) {
+    el("line", {x1:px(a), x2:px(a), y1:H-B, y2:H-B+5, stroke:"var(--muted)"}, svg);
+    el("text", {x:px(a), y:H - B + 18, "text-anchor":"middle"}, svg).textContent = a + "°";
+  }
+  el("text", {x:L + (W-L-R)/2, y:H - 6, "text-anchor":"middle"}, svg).textContent = "true azimuth · SW ← → W";
+  el("text", {x:14, y:T + (H-T-B)/2, transform:`rotate(-90 14 ${T + (H-T-B)/2})`, "text-anchor":"middle"}, svg).textContent = "apparent elevation, mrad";
+  const order = ["hid", "marg", "vis"];
+  for (const c of order) for (const p of P) {
+    if (p.cls !== c || p.a < E0) continue;
+    el("circle", {cx:px(p.az), cy:py(p.a), r: c === "hid" ? 1.6 : 2.6, fill:COL1[c], stroke: c === "hid" ? "none" : "var(--surface)", "stroke-width":.8}, svg);
+  }
+  const hit = el("rect", {x:L, y:T, width:W-L-R, height:H-T-B, fill:"transparent"}, svg);
+  hit.addEventListener("mousemove", ev => {
+    const r = svg.getBoundingClientRect(), s = W / r.width;
+    const qx = (ev.clientX - r.left) * s, qy = (ev.clientY - r.top) * s;
+    let best = null, bd = 1e9;
+    for (const p of P) { const d = (px(p.az) - qx)**2 + (py(p.a) - qy)**2; if (d < bd) { bd = d; best = p; } }
+    if (bd < 12*12) showTip(ev, best); else hideTip();
+  });
+  hit.addEventListener("mouseleave", hideTip);
+})();
+
+// ---------- profiles
+(function profiles() {
+  const host = document.getElementById("profiles");
+  for (const pr of D.profs) {
+    const box = document.createElement("div"); box.style.display = "grid"; box.style.gap = "6px";
+    const cls = pr.std;
+    box.innerHTML = `<h3>Azimuth ${fmt(pr.az,1)}° · road at ${fmt(pr.dt_km,1)} km <span class="pill" style="color:${COL1[cls]}">${CLS[cls]}</span></h3>`;
+    const W = 360, H = 220, L = 44, R = 10, T = 10, B = 30;
+    const svg = el("svg", {viewBox:`0 0 ${W} ${H}`, role:"img", "aria-label":`Terrain profile at azimuth ${pr.az} degrees`});
+    const s13 = pr.k["0.13"], s50 = pr.k["0.5"];
+    const all = s13.terrain.concat(s50.terrain, [s13.target, s50.target, 0]).filter(v => v !== null);
+    const lo = Math.floor(Math.min(...all) / 50) * 50, hi = Math.ceil(Math.max(...all, 20) / 50) * 50;
+    const dmax = Math.min(45, Math.ceil((pr.dt_km + 4) / 5) * 5);
+    const X = d => L + d / dmax * (W - L - R), Y = h => T + (hi - h) / (hi - lo) * (H - T - B);
+    for (let h = lo; h <= hi; h += 50) { el("line", {x1:L, x2:W-R, y1:Y(h), y2:Y(h), stroke:"var(--grid)"}, svg); el("text", {x:L-5, y:Y(h)+3, "text-anchor":"end"}, svg).textContent = h; }
+    for (let d = 0; d <= dmax; d += 5) el("text", {x:X(d), y:H - B + 14, "text-anchor":"middle"}, svg).textContent = d;
+    el("text", {x:W - R, y:H - 4, "text-anchor":"end"}, svg).textContent = "km from viewer";
+    el("text", {x:10, y:T + (H-T-B)/2, transform:`rotate(-90 10 ${T + (H-T-B)/2})`, "text-anchor":"middle"}, svg).textContent = "m vs eye";
+    const pts = (arr) => pr.d_km.map((d, i) => [d, arr[i]]).filter(q => q[1] !== null && q[0] <= dmax);
+    const t13 = pts(s13.terrain);
+    el("path", {d:`M${X(0)},${Y(lo)} ` + t13.map(q => `L${X(q[0])},${Y(q[1])}`).join(" ") + ` L${X(t13[t13.length-1][0])},${Y(lo)} Z`, fill:"var(--ground)", stroke:"var(--ground-line)", "stroke-width":1.2}, svg);
+    el("polyline", {points: pts(s50.terrain).map(q => `${X(q[0])},${Y(q[1])}`).join(" "), fill:"none", stroke:"var(--ground-line)", "stroke-width":1, "stroke-dasharray":"4 3"}, svg);
+    el("line", {x1:X(0), y1:Y(0), x2:X(pr.dt_km), y2:Y(s13.target), stroke:COL1[cls], "stroke-width":1.6}, svg);
+    el("line", {x1:X(0), y1:Y(0), x2:X(pr.dt_km), y2:Y(s50.target), stroke:COL1[cls], "stroke-width":1.2, "stroke-dasharray":"4 3"}, svg);
+    el("circle", {cx:X(pr.dt_km), cy:Y(s13.target), r:4, fill:COL1[cls], stroke:"var(--surface)", "stroke-width":1.5}, svg);
+    el("circle", {cx:X(0), cy:Y(0), r:3.5, fill:"var(--ink)"}, svg);
+    box.appendChild(svg);
+    const note = document.createElement("p"); note.className = "sub";
+    note.textContent = pr.kc <= 0.13 ? `Visible: the headlight stays in view down to k = ${fmt(pr.kc,2)}.` : `Hidden: seeing this headlight needs k ≥ ${pr.kc > 50 ? "50" : fmt(pr.kc,1)}, far beyond a normal night.`;
+    box.appendChild(note);
+    host.appendChild(box);
+  }
+})();
+
+// ---------- runs table
+(function table() {
+  const tb = document.querySelector("#runs tbody"); let run = [], n = 0;
+  const flush = () => { if (!run.length) return; n++; const a = run[0], b = run[run.length-1], m = run[Math.floor(run.length/2)];
+    tb.insertAdjacentHTML("beforeend", `<tr><td>${n}</td><td>${fmt(a.ch,2)}–${fmt(b.ch,2)}</td><td>${fmt(a.az,1)}–${fmt(b.az,1)}</td><td>${fmt(a.d,1)}–${fmt(b.d,1)}</td><td>${fmt(Math.min(...run.map(p=>p.z)),0)}–${fmt(Math.max(...run.map(p=>p.z)),0)}</td><td>${fmt(m.a,2)}</td><td>${fmt(run.length*STEP*1000,0)}</td></tr>`); run = []; };
+  for (const p of P) { if (p.cls === "vis") run.push(p); else flush(); } flush();
+})();
+</script>
