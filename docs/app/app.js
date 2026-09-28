@@ -337,7 +337,9 @@
     planet: '<svg viewBox="0 0 44 44"><path d="M2 34 L10 28 L17 31 L26 25 L34 30 L42 27 V44 H2Z" fill="currentColor" fill-opacity=".35"/><circle cx="24" cy="18" r="4" fill="#ffe7a8"/><path d="M24 10v3M24 23v3M16 18h3M29 18h3" stroke="#ffe7a8" stroke-width="1.5"/></svg>',
     ranch: '<svg viewBox="0 0 44 44"><path d="M10 34 V26 L17 21 L24 26 V34Z" fill="currentColor" fill-opacity=".45"/><circle cx="31" cy="25" r="3" fill="#ffd9a0"/><path d="M31 28v6" stroke="currentColor" stroke-opacity=".5"/></svg>'};
   const BINGO = [
-    ["pair", "Car pair", "Two headlights close together, moving steadily along US-67 at about 229°–238° true (223°–232° on a compass), just below the mountains. Pairs often split and merge as cars pass each other."],
+    ["pair", "Car pair", "Two headlights close together, moving steadily along US-67 at about 229°–238° true (223°–232° on a compass), just below the mountains. Pairs often split and merge as cars pass each other.",
+      [["../img/zw_bingo_carpair-600.webp", "Two cars on US-67, 26 and 27 km away, photographed from the platform at dusk through a 210 mm lens. By eye they are tiny steady points."],
+       ["../img/zw_bingo_streak-600.webp", "In a 45-second exposure a car draws the road as it drives."]]],
     ["flare", "Car on a bend", "A light that suddenly brightens, sometimes brighter than any star, then fades. A car on a bend briefly points straight at you. US-67 at about 233° true and RM 2810 at about 255° true do this."],
     ["tail", "Red tail lights", "Dim red points drifting slowly along a road. These are cars driving away from you."],
     ["train", "Train", "A single brilliant white headlight, often with two small flashing ditch lights beside it. Union Pacific trains pass right by the Viewing Area; the Presidio line to the south sees very few."],
@@ -351,8 +353,9 @@
     const done = store.get(nightKey(), []);
     $("b-grid").innerHTML = BINGO.map(([k, t]) => `<button type="button" data-k="${k}" class="${done.includes(k) ? "done" : ""}" aria-pressed="${done.includes(k)}">${ICON[k]}<span>${t}</span></button>`).join("");
     $("b-grid").querySelectorAll("button").forEach(b => b.onclick = () => {
-      const [k, t, how] = BINGO.find(x => x[0] === b.dataset.k); const has = store.get(nightKey(), []).includes(k);
-      sheet(t, `<div style="color:var(--ink-2)">${ICON[k].replace("<svg", '<svg style="width:72px;height:72px;float:right;margin-left:10px"')}</div><p>${how}</p>`,
+      const [k, t, how, photos] = BINGO.find(x => x[0] === b.dataset.k); const has = store.get(nightKey(), []).includes(k);
+      const ph = (photos || []).map(([src, cap]) => `<figure class="bphoto"><img src="${src}" alt="${cap}" width="600" height="400" loading="lazy"><figcaption>${cap} Photo: Zach Warren.</figcaption></figure>`).join("");
+      sheet(t, `<div style="color:var(--ink-2)">${ICON[k].replace("<svg", '<svg style="width:72px;height:72px;float:right;margin-left:10px"')}</div><p>${how}</p>${ph}`,
         [[has ? "Untick" : "I've seen one", () => { const d = store.get(nightKey(), []); const i = d.indexOf(k); if (i >= 0) d.splice(i, 1); else d.push(k); store.set(nightKey(), d); renderBingo(); if (!has) toast(`${t}: spotted!`); }]]);
     });
     const n = done.length;

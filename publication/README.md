@@ -51,6 +51,13 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 - The shading uses one ordinal blue ramp. Unshaded ground receives fewer than 0.01 lights per hour. Hatching marks permanent lights (towers, towns, skyglow, the aerostat).
 - Definition and sensitivity: note 8.
 
+**Figure 7 · `fig07_photo_validation`: Photo check of the sight-line model.**
+- Photos by Zach Warren from the Viewing Area, 21 November 2018, Sony ILCE-6300 at 210 mm.
+- (a) Frame 06 (1/25 s, 18:13 CST) registered to the modelled skyline (white, RMS 0.008°), with the 10 km and 25 km ridge lines and the modelled visible stretch of US-67 (yellow). The circled lights are cars 26–33 km away.
+- (b) Frame 13 (45 s): headlight streaks against the modelled road. Median offset 0.005°.
+- (c) Cumulative distribution of the angular distance from the modelled US-67 for the 12 lights detected in short exposures, compared with random points in the same band.
+- Method and caveats: note 9.
+
 ## Notes (`notes/`)
 
 | File | Contents |
@@ -63,6 +70,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 | `06_geography_geology_climate.md` | setting, with sources |
 | `07_data_sources.md` | provenance table and catalogue gaps |
 | `08_weighted_zone.md` | activity-weighted zone: model, parameters, results, motion signature, per-night use |
+| `09_photo_validation.md` | registration of Viewing Area photos to the model, camera clock from the Sun, lights and streaks against the modelled road, what is and isn't tested |
 
 ## Regenerate everything
 

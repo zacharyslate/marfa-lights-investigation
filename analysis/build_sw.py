@@ -19,7 +19,7 @@ def files():
         if rel.startswith(".") or "/." in rel:
             continue
         # large photos: keep the phone-sized versions only
-        if rel.startswith("img/") and not any(rel.endswith(s) for s in ("-800.webp", "-900.webp", "-562.webp")):
+        if rel.startswith("img/") and not any(rel.endswith(s) for s in ("-600.webp", "-800.webp", "-900.webp", "-562.webp")):
             continue
         out.append(rel)
     return out

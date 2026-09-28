@@ -54,6 +54,7 @@ Update (2026‑09‑28, 120° fan):
 | `analysis/los_browser.js` | Terrain line‑of‑sight engine (USGS 3DEP DEM; curvature + constant‑k refraction; closed‑form critical k) |
 | `analysis/marfa_occlusion.py` | Map 1 (standard atmosphere) and Map 2 (refraction range) KMLs, per‑point table, site data |
 | `analysis/build_site.py` | Builds `docs/sightlines.html` from `analysis/occlusion_template.html` |
+| `analysis/photo_register.py`, `photo_sun_clock.py`, `photo_validate.py`, `photo_figures.py` | Photo validation: register Viewing Area photos to the modelled skyline, check the camera clock with the Sun, test lights against the modelled road (publication note 9). Raw photos are not in git |
 | `analysis/build_sw.py` | Regenerates `docs/sw.js` (offline precache list and version hash). Run after any change in `docs/` |
 | `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
 | `analysis/headlight_model.py` | Headlamp photometry model: brightness of a car at every road point, by travel direction |
