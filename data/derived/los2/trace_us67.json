@@ -1,0 +1,17 @@
+{
+ "scenarios": [
+  "neutral",
+  "isothermal",
+  "sbl_weak",
+  "sbl_mod",
+  "sbl_strong",
+  "cap_40m"
+ ],
+ "lamp": 0.66,
+ "every": 2,
+ "spacing_m": 60.0,
+ "k_max_skip": 2.9,
+ "n_total_every": 1548,
+ "note": "Ray tracing US-67 sightlines through night-time temperature profiles (height-dependent refraction).\n\n    python -m marfa.run_trace --every 4        # every 4th US-67 point (120 m spacing)\n\nScenarios (dT/dz as a function of height above local ground a, in K/m; see raytrace.py):\n  neutral      lapse -0.0098 K/m (well-mixed; reproduces constant k = 0.13)\n  isothermal   0 K/m\n  sbl_weak     exponential SBL, 3 K over e-folding depth 50 m   (windy or partly cloudy night)\n  sbl_mod      6 K over 30 m                                    (clear, light wind)\n  sbl_strong   10 K over 20 m                                   (clear, calm; surface gradient 0.5 K/m)\n  cap_40m      mixed below 40 m, 4 K inversion between 40 and 60 m above ground (elevated inversion)\nThese are bracketing cases, not a climatology: the near-surface inversion over the Marfa plateau has not been\nmeasured (that is experiment E2). Surface gradients of 0.05-0.5 K/m used here are within the range Hirt et al.\n(2010) observed at 1.8 m over grass (up to 1-2 K/m shortly after sunset).\nOutput: data/derived/los2/trace_us67.npz with, per point and scenario, the number of images, the apparent\nelevation of each image (deg; up to 3) and the equivalent constant k of the primary image.",
+ "seconds": 490
+}
