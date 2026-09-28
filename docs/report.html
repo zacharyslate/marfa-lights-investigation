@@ -71,7 +71,7 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
           <div class="f"><label for="elv">Height above level (degrees)</label><input id="elv" type="number" inputmode="decimal" step="0.05" placeholder="optional, e.g. -0.2"></div>
         </div>
         <div class="f"><label for="how">How did you measure the direction?</label>
-          <select id="how"><option value="">Choose</option><option value="photo">From a photo or video with the skyline in it</option><option value="compass">Hand compass</option><option value="phone">Phone compass</option><option value="landmark">Against a landmark (peak, tower light)</option><option value="guess">Rough estimate</option></select></div>
+          <select id="how"><option value="">Choose</option><option value="photo">From a photo or video with the skyline in it</option><option value="skyfinder">Sky finder (calibrated camera)</option><option value="compass">Hand compass</option><option value="phone">Phone compass</option><option value="landmark">Against a landmark (peak, tower light)</option><option value="guess">Rough estimate</option></select></div>
         <div class="f"><span class="lab">Compared with the mountain skyline, the light was</span>
           <div class="chips" id="sky">
             <label><input type="radio" name="sky" value="above"> Above the skyline</label>
@@ -186,6 +186,7 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
       const s = LOG[+e.target.value]; if (!s) return;
       const d = new Date(s.time); $("t0").value = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
       $("ref").value = "true"; $("brg").value = s.true_bearing; if (s.elev_deg !== "") $("elv").value = s.elev_deg;
+      if (s.source === "camera") { $("how").value = "skyfinder"; if (s.calibration) $("equip").value = `Sky finder, calibrated on ${s.calibration.target} ${s.calibration.minutes_ago} min earlier${s.calibration.last_check_deg !== null ? `, check ${s.calibration.last_check_deg}° off` : ""}`; }
       if (s.note) $("story").value = s.note; update();
     });
   }
@@ -202,7 +203,7 @@ pre{white-space:pre-wrap;font:13.5px/1.5 var(--f-mono);background:var(--surface-
   let checkText = "";
 
   function trueBearing() { const b = parseFloat($("brg").value); return isNaN(b) ? null : norm($("ref").value === "mag" ? b + DECL : b); }
-  function window_() { const h = $("how").value; return h === "photo" ? 1 : h === "landmark" ? 2 : h === "compass" ? 3 : 6; }
+  function window_() { const h = $("how").value; return h === "photo" || h === "skyfinder" ? 1 : h === "landmark" ? 2 : h === "compass" ? 3 : 6; }
 
   function noiseCheck() {
     const b = trueBearing(), eRaw = $("elv").value.trim(), e = eRaw === "" ? null : parseFloat(eRaw);

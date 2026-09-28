@@ -17,6 +17,7 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | `docs/history.html`, `science.html`, `place.html`, `visit.html` | Background pages with numbered, linked sources |
 | `docs/sightlines.html` | The technical sight-line report |
 | `docs/community.html` | Purpose, the dark-sky region, Marfa, good-neighbour guidance, local institutions |
+| `docs/sky.html` | Camera sky finder: live camera with skyline, roads, towers, stars and the Zone of Skepticism drawn over it; calibrate on a known light and record calibrated bearings (Astronomy Engine, MIT; d3-celestial star data, BSD) |
 | `docs/report.html` | Guided sighting report with an automatic noise check; stays on the device until downloaded or posted |
 | `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
 
