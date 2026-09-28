@@ -41,7 +41,7 @@ GEOD = Geod(ellps="WGS84")
 R = 6_371_000.0
 K = 0.13
 EYE = 1.6
-LAMP = 0.7
+LAMP = 0.66                              # reference headlamp height (v2 model; see analysis/marfa/export_site.py)
 MARFA = (-104.0206, 30.3095)             # courthouse area, used only to name travel direction
 AIM_DEG = 0.5                            # assumed aim + load + suspension uncertainty (not a regulatory number)
 DECAY = (0.04, 0.07, 0.12)               # dex per degree beyond the last measured |h|: low, central, high
@@ -115,12 +115,11 @@ class Beam:
 HIGH, LOW = Beam(UB2, "upper beam (UB2)"), Beam(LB2V, "lower beam (LB2V)")
 
 
-def hwy_class(kc, kc_far, farclr, k=K):
-    """US-67 visibility class, identical to analysis/build_site_data.py:
-    v = clearly visible, m = marginal (grazing or blocked only near the car), h = hidden."""
-    if kc <= k:
-        return "v" if farclr > 5 else "m"
-    return "m" if kc_far <= k else "h"
+def hwy_class(r):
+    """US-67 visibility class from the v2 model (data/derived/los_results.json, field 'cls'):
+    v = robustly visible (Monte Carlo P_vis >= 0.95 and still visible under 0.25 m of unresolved grass),
+    h = hidden (P_vis <= 0.05), m = marginal (everything else)."""
+    return r["cls"]
 
 
 def magnitude(E_lux):
@@ -195,11 +194,7 @@ def main():
     viewer, z0 = los["meta"]["viewer"], los["meta"]["z0"]
     F = los["hwy_fields"]
     hw = [dict(zip(F, r)) for r in los["hwy"]]
-    nf = json.load(open("data/derived/los_near_far.json"))
-    cls = {}
-    for r, q in zip(los["hwy"], nf["rows"]):
-        r, q = dict(zip(F, r)), dict(zip(nf["fields"], q))
-        cls[round(r["ch_m"] / 1000, 2)] = hwy_class(r["kc07"], q["kc07_excl1000"], q["farclr_m_k013"])
+    cls = {round(r["ch_m"] / 1000, 2): hwy_class(r) for r in hw}
 
     roads = []
     # US-67 Shafter-Marfa: the main 60 m analysis

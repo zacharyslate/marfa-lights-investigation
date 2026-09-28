@@ -1,13 +1,12 @@
 """
 Marfa Lights investigation — highway occlusion maps (line of sight from the Viewing Area to US-67).
 
-Input: data/los_results.json, produced by the in-browser LOS run against the USGS 3DEP DEM
-(see meta block in that file). Model per highway point (60 m spacing):
-  * observer eye 1.6 m above DEM at the Viewing Area; target = headlight 0.7 m (also 2.5 m)
-  * terrain sampled every 15 m along the great-circle path, bilinear DEM interpolation
-  * curvature + refraction via constant refraction coefficient k (effective radius R/(1-k))
-  * closed-form critical coefficient k_crit: target visible iff k >= k_crit
-    (validated against brute-force visibility at k_crit +/- 0.01 on 30 points: 0 mismatches)
+Input: data/derived/los_results.json and los_near_far.json, written by analysis/marfa/export_site.py from the
+v2 line-of-sight model (publication/notes/11_model_v2_methods.md). Per highway point (60 m, TxDOT centreline):
+  * eye 1.6 m above the lidar surface of the viewing platform; reference headlamp 0.66 m (also 2.5 m)
+  * exact WGS84/ECEF geometry, USGS 1 m lidar terrain plus point-cloud obstructions, GEOID12B
+  * constant refraction coefficient k; target visible iff k >= k_crit (k_crit tested against brute force)
+  * class from a Monte Carlo over DEM and eye-height errors plus a 0.25 m grass bound (field 'cls')
 
 Outputs:
   Marfa_occlusion_map1_standard.kml   Map 1 — standard atmosphere (k = 0.13)
@@ -49,14 +48,12 @@ def kbin(k):
 
 
 def std_class(r, k=0.13):
-    """Map-1 class at standard refraction.
-    vis  : headlight clears all modelled terrain AND clears terrain >1 km before the car by > 5 m
-    marg : clears it only thinly (<= 5 m), or is blocked only by ground within 1 km of the car
-           (road cuts/embankments — below what a 30 m DEM resolves reliably)
-    hid  : blocked by terrain more than 1 km before the car"""
-    if r["kc07"] <= k:
-        return "vis" if r["farclr"] > MARGIN_M else "marg"
-    return "marg" if r["kc07_far"] <= k else "hid"
+    """Map-1 class at standard refraction, from the v2 model (los_results.json field 'cls'):
+    vis  : robustly visible — Monte Carlo P_vis >= 0.95 (lidar terrain, point-cloud obstructions, eye-height
+           and DEM errors) and still visible under 0.25 m of grass the lidar cannot resolve
+    marg : neither robustly visible nor robustly hidden
+    hid  : hidden in >= 95% of Monte Carlo draws"""
+    return {"v": "vis", "m": "marg", "h": "hid"}[r["cls"]]
 
 
 def kml_color(hexrgb, alpha="ff"):
@@ -96,7 +93,7 @@ def main():
     with open("outputs/Marfa_occlusion_points.csv", "w", newline="") as f:
         w = csv.writer(f)
         w.writerow(["chainage_km_from_Shafter", "lon", "lat", "road_elev_m", "azimuth_deg", "distance_km",
-                    "k_crit_headlight_0.7m", "k_crit_2.5m", "apparent_elev_mrad_k0.13", "apparent_elev_deg_k0.13",
+                    "k_crit_headlight_0.66m", "k_crit_2.5m", "apparent_elev_mrad_k0.13", "apparent_elev_deg_k0.13",
                     "clearance_m_k0.13", "far_clearance_m_k0.13", "standard_class", "refraction_bin", "limiting_terrain_km", "in_fan"])
         for r in rows:
             w.writerow([f"{r['ch_m']/1000:.3f}", r["lon"], r["lat"], r["zT"], r["az"], f"{r['dist_m']/1000:.3f}",
@@ -138,14 +135,13 @@ def main():
 <Placemark><name>Marfa Lights Viewing Area (eye {meta['eye']} m, ground {meta['z0']:.1f} m)</name><styleUrl>#viewer</styleUrl><Point><coordinates>{V[0]},{V[1]},0</coordinates></Point></Placemark>
 {fan_edges()}"""
 
-    common = (f"DEM: {meta['dem']}. Eye {meta['eye']} m; headlight target 0.7 m; terrain sampled every "
-              f"{meta['sample_step_m']} m; last {meta['excl_end_m']} m before each target excluded "
-              f"(road-bed smoothing). 'Marginal' = clears distant terrain by <= {MARGIN_M:.0f} m, or blocked only by "
-              f"ground within 1 km of the car, where a 30 m DEM is unreliable.")
+    common = (f"Terrain: {meta['dem']}. Eye {meta['eye']} m above the platform; headlamp {meta.get('lamp_m', 0.66)} m; "
+              f"terrain sampled {meta['sample_step_m']}. 'Visible' = seen in >= 95% of Monte Carlo draws (DEM and "
+              f"eye-height errors) and still seen under 0.25 m of grass; 'Hidden' = seen in <= 5%; else 'Marginal'.")
 
     # ------------------------------------------------ Map 1
-    s1 = {"vis": ("1f9e7a", 6, "Visible — clears distant terrain by > 5 m"),
-          "marg": ("e0b21b", 5, "Marginal — thin clearance, or blocked only within 1 km of the car"),
+    s1 = {"vis": ("1f9e7a", 6, "Visible — robust to DEM, eye-height and grass uncertainty"),
+          "marg": ("e0b21b", 5, "Marginal — visibility depends on sub-metre details"),
           "hid": ("8d9894", 3, "Hidden by terrain")}
     styles1 = "".join(f'<Style id="{k}"><LineStyle><color>{kml_color("#"+c)}</color><width>{wd}</width></LineStyle></Style>'
                       for k, (c, wd, _) in s1.items())
@@ -183,7 +179,7 @@ def main():
     for seg in runs(rows, lambda r: r["bin"]):
         key = seg[-1]["bin"] if len(seg) > 1 and seg[0]["bin"] != seg[-1]["bin"] else seg[0]["bin"]
         pms2[key].append(seg_pm(labels[key], seg, key, seg_desc(seg)))
-    desc2 = (common + " Colour = minimum refraction coefficient k needed to see a 0.7 m headlight. "
+    desc2 = (common + f" Colour = minimum refraction coefficient k needed to see a {meta.get('lamp_m', 0.66)} m headlamp. "
              "k = 503·P/T²·(0.0343 + dT/dz) (Hirt et al. 2010); at P≈850 hPa, T≈283 K: "
              "k 0.13 ≈ standard lapse, k 0.5 ≈ +0.06 K/m, k 1.0 ≈ +0.15 K/m inversion. "
              "Constant-k is an approximation; near-ground gradients vary with height.")
@@ -237,7 +233,7 @@ def main():
         for k in (0.13, 0.5):
             c = 1 - k
             happ = [None if zz is None else round(zz - E - di * di * c / (2 * R), 2) for zz, di in zip(z, d)]
-            tgt = zt + 0.7 - E - dt * dt * c / (2 * R)
+            tgt = zt + meta.get("lamp_m", 0.66) - E - dt * dt * c / (2 * R)
             out["k"][str(k)] = {"terrain": happ, "target": round(tgt, 2)}
         out["d_km"] = [round(x / 1000, 2) for x in d]
         profs.append(out)

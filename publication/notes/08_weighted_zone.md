@@ -1,5 +1,7 @@
 # 8. The activity-weighted Zone of Skepticism
 
+> **Superseded numbers (2026-09-28).** This working note describes the v1 model. The line-of-sight model has since been rebuilt (exact WGS84 geometry, 1 m lidar terrain with point-cloud obstructions, Monte Carlo classes, height-dependent ray tracing); see [note 11](11_model_v2_methods.md) for the current methods and numbers, and [note 12](12_experimental_design.md) for the planned experiments. Where this note and note 11 disagree, note 11 is correct.
+
 ## Why weight the zone
 
 The binary zone (note 5) marks where a catalogued light *can* appear. It treats a highway with about 1,500 vehicles a day the same as a railroad that the FRA inventory lists with zero or one night train. In the binary version, the Texas Pacifico track alone accounted for more than half of the tier-A coverage in the band just below the skyline.

@@ -2,7 +2,11 @@
 
 Figures and method notes for the Marfa Lights manuscript. Everything here is generated from the code in `../analysis/` and the data in `../data/`. Please do not edit figures by hand: change the script and re-run it.
 
-**Status: preliminary.** The sight-line geometry has been checked against one evening of photographs from the Viewing Area (Figure 7, note 9). Visibility of hidden stretches, RM 2810 and the brightness model are not yet field-tested.
+**Status: preliminary.**
+- **Model.** The line-of-sight model is version 2 (`analysis/marfa/`; methods, verification and robustness in [note 11](notes/11_model_v2_methods.md)). It uses exact WGS84 geometry, USGS 1 m lidar terrain with point-cloud obstructions, and GEOID12B. Visibility classes come from a Monte Carlo, and a height-dependent ray trace is included. It is covered by 22 unit tests.
+- **Photos.** The geometry has been checked against one evening of photographs (Figure 7, [note 9](notes/09_photo_validation.md)).
+- **Not yet field-tested.** RM 2810, the brightness model and night-time refraction. The planned experiments are in [note 12](notes/12_experimental_design.md).
+- **Older notes.** Notes 01–08 are v1 working notes; their numbers are superseded by note 11.
 
 ## Figures (`figures/`)
 
@@ -11,7 +15,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 **Figure 1 · `fig01_study_area`: The 120° viewing fan.**
 - Rays at 0.5° from the Marfa Lights Viewing Area (star), 157.3°–277.3° true, over a USGS 3DEP hillshade with 200 m contours.
 - Rays that cross US-67 stop at the first crossing. The rest run 80 km.
-- Roads are coloured by whether a 0.7 m headlamp is in view from the platform at k = 0.13:
+- Roads are coloured by whether a 0.66 m headlamp is in view from the platform at k = 0.13 (v2 Monte Carlo classes):
   - US-67: vermilion = visible, orange = marginal.
   - Other TxDOT state roads: purple = visible.
   - Grey: hidden.
@@ -42,7 +46,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
   - 190°: Texas Pacifico track in view 4–5 km away.
 
 **Figure 5 · `fig05_refraction`: Sensitivity to refraction.**
-- (a) Length of US-67 and of RM 2810 whose critical refraction coefficient is ≤ k, plotted against k. This includes the grazing (marginal) part: US-67 has 9.3 km clearly visible plus 1.2 km grazing at k = 0.13. The top axis converts k to the temperature gradient, using Hirt et al. (2010) at 850 hPa and 283 K.
+- (a) Length of US-67 and of RM 2810 whose critical refraction coefficient is ≤ k, plotted against k. This includes the grazing (marginal) part: In model v2, US-67 (Shafter–Marfa) has 9.5 km robustly visible plus 0.5 km marginal at k = 0.13. The top axis converts k to the temperature gradient, using Hirt et al. (2010) at 850 hPa and 283 K.
 - (b) Rise in apparent elevation for a change Δk in refraction, plotted against distance.
 
 **Figure 6 · `fig06_weighted_zone`: The activity-weighted Zone of Skepticism.**

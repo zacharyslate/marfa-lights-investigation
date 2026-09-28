@@ -9,7 +9,7 @@ These notes give only the context the analysis relies on. Each statement is eith
 - **US-67** runs from Marfa south-southwest to Shafter and Presidio.
   - It climbs to a high point of about 1,650 m, at 228.9° true and about 40 km from the platform (this project, 3DEP).
   - It then descends past Shafter, a former silver-mining town [5].
-- **RM 2810 (Pinto Canyon Road)** leaves Marfa to the south-west. It climbs into the Chinati foothills and, measured from the platform, is in view for 27 km at 253°–259° true (this project).
+- **RM 2810 (Pinto Canyon Road)** leaves Marfa to the south-west. It climbs into the Chinati foothills and, measured from the platform, is in view for about 13 km of its 52 km at 253°–259° true (this project, model v2; an earlier figure of 27 km was a unit error).
 - **Railroads.**
   - The Union Pacific Sunset Route runs beside US-90, past the platform.
   - The Texas Pacifico line (the former South Orient) runs south to Presidio. The track is in view 3.8–8.1 km from the platform (this project).

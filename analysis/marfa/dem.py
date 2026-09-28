@@ -197,10 +197,9 @@ def load(level="lidar", bounds=STUDY_BOUNDS):
                 r.fp = r.footprint_geog()
                 rs.append(r)
     for p in sorted(glob.glob(os.path.join(RAW_DIR, "USGS_1_n*.tif"))):
-        r = Raster(p, bounds=(bounds[0] - 1.5, bounds[1] - 0.5, bounds[2] + 0.5, bounds[3] + 0.5))
-        if r.z.size:
-            r.fp = r.footprint_geog()
-            rs.append(r)
+        r = Raster(p, lazy=True)            # 1" tiles are read lazily: they also serve the 120 km skyline
+        r.fp = r.footprint_geog()
+        rs.append(r)
     return Mosaic(rs)
 
 

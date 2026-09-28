@@ -1,5 +1,7 @@
 # 5. The Zone of Skepticism
 
+> **Superseded numbers (2026-09-28).** This working note describes the v1 model. The line-of-sight model has since been rebuilt (exact WGS84 geometry, 1 m lidar terrain with point-cloud obstructions, Monte Carlo classes, height-dependent ray tracing); see [note 11](11_model_v2_methods.md) for the current methods and numbers, and [note 12](12_experimental_design.md) for the planned experiments. Where this note and note 11 disagree, note 11 is correct.
+
 > This note defines the **binary** zone: where a catalogued light *can* appear. The binary version treats a nearly idle railroad the same as a highway. Note 8 weights each source by how often it actually produces a light, and that weighted version supersedes this one for field use.
 
 ## Definition

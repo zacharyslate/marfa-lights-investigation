@@ -69,6 +69,94 @@
    "retrieved": "2026-09-28"
   },
   {
+   "file": "USGS_1_n29w103.tif",
+   "path": "data/dem/raw/USGS_1_n29w103.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n29w103/USGS_1_n29w103.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 16737684,
+   "sha256": "74a128a8aecfc0a713d2a86a7f6deaca6febefc3e412c5c75edb22b6612f6092",
+   "last_modified": "Tue, 30 Aug 2022 16:19:30 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n29w104.tif",
+   "path": "data/dem/raw/USGS_1_n29w104.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n29w104/USGS_1_n29w104.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 14112747,
+   "sha256": "b1c05be8e249766c9348eae259858257fae63014bd4c649420924c3ae86129cc",
+   "last_modified": "Tue, 30 Aug 2022 16:19:31 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n29w105.tif",
+   "path": "data/dem/raw/USGS_1_n29w105.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n29w105/USGS_1_n29w105.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 12244229,
+   "sha256": "271f5dbfff97d040a314711eada6e21a171a5b133bc9cf8d96a0fc90a1cbdd9d",
+   "last_modified": "Tue, 30 Aug 2022 16:19:34 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n30w103.tif",
+   "path": "data/dem/raw/USGS_1_n30w103.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n30w103/USGS_1_n30w103.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 30923060,
+   "sha256": "ebfc06f99e8be67ad1589381ebc0b4628697afea2b27286a5dc2e1c9720789bb",
+   "last_modified": "Tue, 30 Aug 2022 16:19:49 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n31w103.tif",
+   "path": "data/dem/raw/USGS_1_n31w103.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n31w103/USGS_1_n31w103.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 50816500,
+   "sha256": "cdd2e551c46a002b3edd30dfa761f6420457e158a399261fcd350037852cb155",
+   "last_modified": "Tue, 30 Aug 2022 16:20:39 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n32w104.tif",
+   "path": "data/dem/raw/USGS_1_n32w104.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n32w104/USGS_1_n32w104.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 43659267,
+   "sha256": "942b2347f8bea34167ba27c0c93e5921f6911a5e2a73459ea8cdd33461a82afb",
+   "last_modified": "Tue, 30 Aug 2022 16:21:16 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n32w105.tif",
+   "path": "data/dem/raw/USGS_1_n32w105.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n32w105/USGS_1_n32w105.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 48341287,
+   "sha256": "fb57ef444ebfd3be5318fe5624163046f72ee4051718ce6795dc893896ce4df4",
+   "last_modified": "Tue, 30 Aug 2022 16:21:17 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
+   "file": "USGS_1_n32w106.tif",
+   "path": "data/dem/raw/USGS_1_n32w106.tif",
+   "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/1/TIFF/current/n32w106/USGS_1_n32w106.tif",
+   "product": "USGS 3DEP 1 arc-second DEM (current)",
+   "crs": "EPSG:4269 + NAVD88",
+   "bytes": 45629044,
+   "sha256": "a3e4c64815f146152563c60326e9928be84d35953514faf7f48b86fe4975b5a0",
+   "last_modified": "Tue, 30 Aug 2022 16:21:18 GMT",
+   "retrieved": "2026-09-28"
+  },
+  {
    "file": "USGS_13_n30w104.tif",
    "path": "data/dem/raw/USGS_13_n30w104.tif",
    "url": "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation/13/TIFF/current/n30w104/USGS_13_n30w104.tif",

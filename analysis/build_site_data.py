@@ -59,11 +59,7 @@ def main():
     for r, q in zip(los["hwy"], nf["rows"]):
         r = dict(zip(F, r))
         q = dict(zip(nf["fields"], q))
-        kc, kcfar, farclr = r["kc07"], q["kc07_excl1000"], q["farclr_m_k013"]
-        if kc <= 0.13:
-            cls = "v" if farclr > 5 else "m"
-        else:
-            cls = "m" if kcfar <= 0.13 else "h"
+        kc, cls = r["kc07"], r["cls"]            # v2 classes (analysis/marfa/export_site.py)
         hwy.append([R5(r["lat"]), R5(r["lon"]), round(r["az"], 2), round(r["dist_m"] / 1000, 2),
                     round(r["zT"]), round(kc, 3), cls, round(r["alpha_mrad_k013_h07"], 2),
                     round(r["ch_m"] / 1000, 2)])

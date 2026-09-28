@@ -108,25 +108,48 @@ The author's hand-traced US-67 line differs from TxDOT's centreline by 2.0 m med
 - **Multiple images.** The elevated inversion gives 3–5 images of one lamp on about 0.3 km of road (points 18.6–24.4 km from Marfa). They are stable when the step drops from 5 m to 1 m and the fan density rises sevenfold, but they are only 1–8 arcsec apart. That is below naked-eye resolution: an observer would see one light, possibly scintillating, not a cluster. Do not claim visible "splitting" from this model.
 - **Why no multiple images in the surface layers.** A surface layer whose gradient decreases monotonically with height produced single images only.
 
-## 7. What is still open (next steps, in order)
+## 7. Everything downstream now runs on v2
 
-1. **Port the other generators** to the new engine: all TxDOT roads at 60 m, rail (1.2/4 m lamps), towers, towns, skyline/panorama, profiles. Then retire `los_browser.js` and the old derived files.
+`analysis/marfa/export_site.py` writes the five derived files the site, the headlight model and the figures read, in their old schemas:
+- `los_results.json`;
+- `los_near_far.json`;
+- `panorama_los.json`;
+- `roads_los.json`;
+- `profiles_fig.json`.
+
+Each is generated from the v2 engine. Supporting runs:
+- **Roads.** All TxDOT roads (26,243 points at 60 m, including county roads).
+- **Rail.** 6,883 points; lamps at 1.2 and 4 m.
+- **Skyline.** Computed out to 120 km; eight 1″ tiles were added for this.
+
+The old classification rule ("visible if far clearance > 5 m") is replaced by the Monte Carlo classes. Effect on US-67 between Shafter and Marfa:
+
+| | Visible | Marginal | Hidden |
+|---|---|---|---|
+| v1 | 9.3 km | 7.4 km | 47.9 km |
+| v2 | **9.5 km** | **0.5 km** | **54.5 km** |
+
+Almost all of v1's "marginal" road was an artefact of the coarse DEM near the car.
+
+**Other results**
+- **RM 2810.** About 13 km of its 52 km is in view. The earlier "27 km" was a unit error: 120 m was used for 72 m samples.
+- **Skyline.** Agrees with v1 to a median of −0.04 mrad (5–95%: −0.35 to +0.32 mrad).
+- **Towers.** 10 of 65 lit towers have their top light in view.
+
+**Photo validation (note 9, v2).** The model is tested against 8 independent sightings in the 2018 frames.
+- Median distance from the visible road curve: 0.0085°.
+- p = 3 × 10⁻⁶ against random placement in the same band.
+- All sightings fall on visible sections although half of the in-frame road is modelled as hidden (p = 0.005).
+- One measured speed is 30 m/s (17–48 m/s).
+- The registration against the v2 skyline moved every camera azimuth by +0.12°, which is exactly v1's azimuth error.
+
+## 8. What is still open (next steps, in order)
+
+1. **Retire the v1 engine.** Remove `los_browser.js` from the pipeline (keep it for the record).
 2. **Photometry.**
-   - Wide-angle intensity: at 68% of geometries the viewer is outside the measured beam of the one production headlamp in the model.
-   - Add DRLs, position, marker, tail and stop lamps with the FMVSS 108 limits (verify the table values before citing).
-   - Model the detection limit with horizon sky brightness and extinction.
-   - Model occupancy as flow × dwell time.
-3. **Redo the photo validation without circularity:**
-   - calibrate pointing with stars (plate solving);
-   - use a pre-registered threshold;
-   - measure distances to the road polyline;
-   - fix the note 09 errors (the scale sign; f ≈ 204 mm; 0.057⁶ vs 0.057¹²; the p09 duplicate; p13's ±60 px window; the p04/p10 and p09→p10 motion inconsistencies).
-4. **Experimental section (field):**
-   - GNSS survey of the platform eye point;
-   - temperature mast at 0.5, 2, 5, 10 m (plus tethered or drone profiles) to measure k(z, t);
-   - time series of the apparent elevation of fixed distant lights;
-   - controlled GNSS-tracked vehicle runs on US-67 with blind observers, scored by Brier score or ROC;
-   - two-station triangulation;
-   - traffic counts and ADS-B logs;
-   - pre-registration.
-5. **Update every figure from `los2`, then write the manuscript.** Target journal still to be chosen by the author.
+   - Wide-angle headlamp intensity.
+   - Add DRLs and position, marker, tail and stop lamps. The FMVSS 108 photometry tables in the official CFR XML are images; read them from the printed CFR before citing values.
+   - Detection limit near the horizon, including sky brightness and extinction.
+   - Occupancy as flow × dwell time.
+3. **Experimental section.** Drafted in note 12; field dates and permissions are for the author to set.
+4. **Manuscript.** Introduction, Methods, Results, Discussion and Experimental design, drawn from notes 09–12.

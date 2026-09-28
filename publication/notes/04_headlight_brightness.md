@@ -1,5 +1,7 @@
 # 4. How bright would a car look? A headlamp photometry model
 
+> **Superseded numbers (2026-09-28).** This working note describes the v1 model. The line-of-sight model has since been rebuilt (exact WGS84 geometry, 1 m lidar terrain with point-cloud obstructions, Monte Carlo classes, height-dependent ray tracing); see [note 11](11_model_v2_methods.md) for the current methods and numbers, and [note 12](12_experimental_design.md) for the planned experiments. Where this note and note 11 disagree, note 11 is correct.
+
 ## Question
 
 A car on a road that is in view is a candidate source only if enough of its light reaches the platform. Headlamps are strongly directional. A car pointing at the Viewing Area can look as bright as the brightest stars. The same car seen 30° off its axis can be invisible. This note computes, for every point of every road in view, how bright a car there would look, given the direction it is pointing.
@@ -95,7 +97,7 @@ For comparison, Sirius is −1.46, and the typical naked-eye limit at a dark sit
 - About half the samples are brighter than +1 with high beams.
 - On the aligned straight at 233.5°–233.7°, high beams reach **−2.2**, brighter than Sirius. Low beams there range from −1.6 to +2.4, depending on aim.
 
-**RM 2810, cars heading toward Marfa** (27 km in view):
+**RM 2810, cars heading toward Marfa** (about 13 km in view; v1 said 27 km, a unit error):
 - High beams reach −2.2 and low beams −0.3 where bends point at the platform, near 255°–256°.
 - The median is +2.0 with high beams and +4.0 with low beams.
 

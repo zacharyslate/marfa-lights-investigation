@@ -19,7 +19,9 @@ import urllib.request
 from .dem import DEM_DIR, GEOID18_GRID, GEOID_GRID, RAW_DIR, ROOT
 
 S3 = "https://prd-tnm.s3.amazonaws.com/StagedProducts/Elevation"
-ONE = ["n30w104", "n30w105", "n30w106", "n31w104", "n31w105", "n31w106"]
+ONE = ["n30w104", "n30w105", "n30w106", "n31w104", "n31w105", "n31w106",
+       # added for the 120 km skyline panorama (az 140-300 deg)
+       "n29w103", "n29w104", "n29w105", "n30w103", "n31w103", "n32w104", "n32w105", "n32w106"]
 THIRD = ["n30w104", "n30w105", "n31w104", "n31w105"]
 LIDAR = [(54, 333), (54, 334), (55, 333), (55, 334), (56, 330), (56, 331), (56, 332), (56, 334), (56, 335),
          (57, 330), (57, 331), (57, 332), (57, 333), (57, 334), (57, 335), (57, 336), (58, 333), (58, 334),
