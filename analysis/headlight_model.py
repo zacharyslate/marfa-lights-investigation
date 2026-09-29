@@ -40,7 +40,7 @@ EYE = 1.6
 LAMP = 0.66                              # reference headlamp height (v2 model; see analysis/marfa/export_site.py)
 MARFA = (-104.0206, 30.3095)             # courthouse area, used only to name travel direction
 AIM_DEG = 0.5                            # assumed aim + load + suspension uncertainty (not a regulatory number)
-MOR_KM = (88, 145, 265)                  # NPS Big Bend: ~55 mi on hazy days, ~90 mi average, ~165 mi natural
+MOR_KM = (68, 111, 203)                  # MOR from NPS Big Bend standard visual range 55, 90, 165 mi (MOR = 0.766 SVR)
 MOR_REF = MOR_KM[1]
 SIRIUS = -1.46
 _MOSAIC = None

@@ -16,6 +16,7 @@ Run:  python -m marfa.run_photometry          (from analysis/)
 from __future__ import annotations
 
 import json
+import math
 import os
 import time
 
@@ -26,12 +27,15 @@ from . import dem, geodesy as g, photometry as P
 LOS2 = os.path.join(dem.ROOT, "data", "derived", "los2")
 K_IDX, K = 1, 0.13
 LAMP_HEAD, LAMP_REAR, LAMP_CHMSL = 0.66, 0.86, 1.12
-# Meteorological optical range (= Koschmieder visual range). NPS Big Bend air profile: average natural visual range
-# ~165 mi, ~90 mi on average with present pollution, below ~55 mi on high-pollution days (nps.gov/articles/airprofiles-bibe.htm)
-MORS = (88.0, 145.0, 265.0)
+# Meteorological optical range. The NPS Big Bend air profile (nps.gov/articles/airprofiles-bibe.htm) gives standard
+# visual range: ~165 mi natural, ~90 mi average with present pollution, below ~55 mi on high-pollution days. Standard
+# visual range is the Koschmieder range for a 2 % contrast threshold, SVR = 3.912/b_ext, whereas MOR is defined by 5 %
+# transmission, MOR = ln(20)/b_ext = 2.996/b_ext; so MOR = 0.766 SVR: 55, 90, 165 mi -> 68, 111, 203 km.
+MOR_FROM_SVR = math.log(20) / 3.912
+MORS = tuple(round(mi * 1.609344 * MOR_FROM_SVR) for mi in (55, 90, 165))
 MU = (20.5, 21.0, 21.5, 22.0)
 F = (1.4, 2.0, 2.4, 4.0)
-MU_REF, F_REF, MOR_REF = 21.0, 2.0, 145.0
+MU_REF, F_REF, MOR_REF = 21.0, 2.0, MORS[1]
 SHAFTER_LAT, MARFA_LAT = 29.8195, 30.3095        # latitude window of US-67 between Shafter and the US-90 junction
 JUNCTION_LON = -104.015                           # east of this US-67 runs concurrent with US-90 past the platform
 
@@ -121,9 +125,9 @@ def main():
     summ["us67"] = rows
     hv = us67 & view_h
     summ["us67_angles"] = {d: dict(h_median=round(float(np.median(out[f"h_{d}"][hv])), 1),
-                                   h_range=[round(float(np.percentile(out[f"h_{d}"][hv], q)), 1) for q in (5, 95)],
+                                   h_p5_p95=[round(float(np.percentile(out[f"h_{d}"][hv], q)), 1) for q in (5, 95)],
                                    v_median=round(float(np.median(out[f"v_{d}"][hv])), 2),
-                                   v_range=[round(float(np.percentile(out[f"v_{d}"][hv], q)), 2) for q in (5, 95)])
+                                   v_p5_p95=[round(float(np.percentile(out[f"v_{d}"][hv], q)), 2) for q in (5, 95)])
                            for d in ("fwd", "rev")}
     summ["us67_grade"] = dict(median_abs=round(float(np.median(np.abs(grade[hv]))), 4),
                               p95_abs=round(float(np.percentile(np.abs(grade[hv]), 95)), 4),

@@ -38,7 +38,7 @@ No market-weighted data were found for signal lamps, so rear lamps are bracketed
     E = Σ I_i T / D²,   T = exp(−ln 20 · D / MOR)        (lux; MOR = distance at 5 % transmission)
     m = −13.99 − 2.5 log10(E / 1 lx)                      (Schaefer 1993)
 
-MOR is the same quantity as the visual range reported by the National Park Service for Big Bend: about 90 mi on average, below about 55 mi on high-pollution days, about 165 mi without pollution. The runs use MOR = 88, 145 (reference) and 265 km.
+The National Park Service reports standard visual range (SVR) for Big Bend: about 90 mi on average, below about 55 mi on high-pollution days, about 165 mi without pollution. SVR is the Koschmieder range for a 2% contrast threshold, 3.912/b_ext, whereas MOR is defined by 5% transmission, ln 20/b_ext, so MOR = 0.766 SVR. The runs use MOR = 68, 111 (reference) and 203 km. (A first version of this note used the SVR values directly as MOR, which made cars about 0.2 mag too bright at 30 km.)
 
 ## Detection threshold
 
@@ -48,34 +48,34 @@ Naked-eye limiting magnitude for a point source on a background of surface brigh
 
 F is the observer's field factor (Crumey: typically 1.4–2.4). The runs span μ = 20.5–22 and F = 1.4–4, giving m_lim = 4.9–6.6. Reference: μ = 21, F = 2, m_lim = 5.86. μ near the horizon at Marfa has not been measured; the bracket is wide for that reason.
 
-## Results for US-67 between Shafter and Marfa (k = 0.13, MOR 145 km)
+## Results for US-67 between Shafter and Marfa (k = 0.13, MOR 111 km)
 
 "In view" means P_vis ≥ 0.5 for that lamp's height: headlamps 0.66 m, rear lamps 0.86 m, high-mounted stop lamp 1.12 m.
 
 | Direction, lamps | Road in view | Magnitude, median (range) | Detectable, reference | Detectable, full bracket* |
 |---|---|---|---|---|
-| Northbound, low beam, market median | 10.0 km | 2.4 (−1.9 to 5.7) | 10.0 km | 9.1–10.0 km |
-| Northbound, low beam, 25th / 75th pct lamp | 10.0 km | 2.7 / 2.0 | 9.4 / 10.0 km | 9.1–10.0 km |
-| Northbound, high beam, median | 10.0 km | 0.1 (−2.6 to 5.2) | 10.0 km | 9.3–10.0 km |
-| Southbound, tail lamps at FMVSS minimum | 10.1 km | 8.8 (7.7 to 10.3) | 0 | 0 |
-| Southbound, tail lamps at FMVSS maximum | 10.1 km | 5.3 (4.6 to 6.0) | 8.6 km | 0.2–10.1 km |
-| Southbound, braking, FMVSS minimum | 10.1 km | 4.4 (3.5 to 5.8) | 10.1 km | 5.0–10.1 km |
-| Southbound, braking, FMVSS maximum | 10.1 km | 2.0 (1.2 to 2.7) | 10.1 km | 10.1 km |
+| Northbound, low beam, market median | 10.0 km | 2.6 (−1.7 to 6.0) | 9.6 km | 9.0–10.0 km |
+| Northbound, low beam, 25th / 75th pct lamp | 10.0 km | 2.9 / 2.2 | 9.4 / 10.0 km | 8.7–10.0 / 9.1–10.0 km |
+| Northbound, high beam, median | 10.0 km | 0.4 (−2.4 to 5.4) | 10.0 km | 9.3–10.0 km |
+| Southbound, tail lamps at FMVSS minimum | 10.1 km | 9.1 (7.9 to 10.6) | 0 | 0 |
+| Southbound, tail lamps at FMVSS maximum | 10.1 km | 5.6 (4.7 to 6.3) | 6.7 km | 0–10.1 km |
+| Southbound, braking, FMVSS minimum | 10.1 km | 4.6 (3.7 to 6.1) | 9.4 km | 4.4–10.1 km |
+| Southbound, braking, FMVSS maximum | 10.1 km | 2.2 (1.4 to 2.9) | 10.1 km | 10.1 km |
 
-*Least favourable = MOR 88 km, μ = 20.5, F = 4; most favourable = MOR 265 km, μ = 22, F = 1.4.
+*Least favourable = MOR 68 km, μ = 20.5, F = 4; most favourable = MOR 203 km, μ = 22, F = 1.4.
 
 **What this means.**
 
-1. **Headlamps.** A northbound car is a naked-eye light everywhere the road is in view, under every combination of lamp, haze and observer tried. Typically it is a 2nd-magnitude light; on the straight at 233.6°–233.8° (31–33 km, heading within a few degrees of the platform) it reaches magnitude −1.9 on low beam and −2.6 on high beam, brighter than Sirius (−1.46).
-2. **Brightness is not steady.** Because the viewer sits just above the low-beam cut-off (v ≈ 0 to +2.5°), where intensity changes by about ten times per degree, a 1–2% change in road grade changes the brightness by one to three magnitudes within seconds (Figure 8b). The model predicts lights that flare and fade without any change in the car.
-3. **Tail lamps** are the least constrained part. At the regulatory minimum they are invisible (m ≈ 8–10). At the maximum they sit right at the threshold (m ≈ 5.3). Braking makes them easily visible. Market data would narrow this.
+1. **Headlamps.** A northbound car is a naked-eye light over at least 87% of the road in view under every combination of lamp, haze and observer tried, and over 93% at the reference values. Typically it is a light of magnitude 2–3; on the straight at 233.6°–233.8° (31–33 km, heading within a few degrees of the platform) it reaches magnitude −1.7 on low beam and −2.4 on high beam, brighter than Sirius (−1.46).
+2. **Brightness is not steady.** Within one window the brightness changes by a median 1.1 mag (up to 4.9 mag); between successive 60 m samples (2 s at 30 m/s) the change exceeds 0.8 mag one time in ten (max 2.7 mag). The causes are grade, which pitches the beam by degrees (the viewer sits near the top of the low beam, v ≈ 0 to +2.5°, where intensity falls by a factor of about 2 per degree, median), and curves, which swing h. The model predicts lights that brighten and fade without any change in the car. (An earlier draft said "tenfold per degree"; the UMTRI table gives ×1.4–2.3 per degree at the observer positions, interquartile.)
+3. **Tail lamps** are the least constrained part. At the regulatory minimum they are invisible (m ≈ 8–10.6). At the maximum they sit right at the threshold (m ≈ 5.6). Braking brings them to m ≈ 4.6 even at the minimum. Market data would narrow this.
 4. **Colour.** Headlamps are white; tail and stop lamps are red. A red light moving away along the US-67 bearings is the tail-lamp case, and it is faint.
-5. **RM 2810** (12.9 km in view): only the direction toward Marfa faces the viewer (|h| 3–42°, median 18°). Low-beam median m = 3.7, brightest −1.0; high beam brightest −2.6.
-6. **v1 comparison.** v1 predicted about −2 on high beam at 233.7°. v2 agrees on the brightest spot (−2.6 at 233.8°) and adds that the typical northbound car is m ≈ 2–3, that detection is robust to haze and lamp type, and the tail-lamp bracket.
+5. **RM 2810** (12.9 km in view): only the direction toward Marfa faces the viewer (|h| 3–42°, median 18°). Low-beam median m = 4.0, brightest −0.7; high beam brightest −2.4 (MOR 111 km).
+6. **v1 comparison.** v1 predicted about −2 on high beam at 233.7°. v2 agrees on the brightest spot (−2.4 at 233.8°) and adds that the typical northbound car is m ≈ 2–3, that detection is robust to haze and lamp type, and the tail-lamp bracket.
 
 ## One car, and how many at once (Figure 8)
 
-A northbound car at 30 m/s (the speed measured in the photographs, note 9) crosses the in-view region in 13.6 min. It is in view for 334 s, in **18 separate windows**: median 510 m of road (17 s), from 60 m (2 s, the sampling limit) to 2.1 km (70 s). It moves across the view at about 0.9° per minute (90th percentile 1.2°/min), always within 0.4° of the skyline. So one car produces a light that appears, drifts, brightens and fades, vanishes, and reappears a little further along, 18 times.
+A northbound car at 30 m/s (the speed measured in the photographs, note 9) crosses the in-view region in 13.6 min. It is in view for 334 s, in **18 separate windows**: median 510 m of road (17 s), from 60 m (2 s, the sampling limit) to 2.1 km (70 s). It moves across the view at about 0.9° per minute (90th percentile 1.2°/min), always below the skyline by 0.04–0.84° (median 0.26°). So one car produces a light that appears, drifts, brightens and fades, vanishes, and reappears a little further along, 18 times.
 
 Southbound cars give the same windows in reverse order (tail lamps).
 

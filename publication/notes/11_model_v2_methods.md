@@ -46,7 +46,7 @@ The author's hand-traced US-67 line differs from TxDOT's centreline by 2.0 m med
 
 ## 4. Verification
 
-- **22 unit tests pass**, including:
+- **30 unit tests pass** (22 for the line of sight and ray tracer, 8 for the photometry), including:
   - Euler radius;
   - smooth-Earth horizon distances for k = 0, 0.13 and 0.5;
   - k_crit against brute force on random terrain;
