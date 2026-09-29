@@ -100,7 +100,7 @@ Figure~\ref{fig:geometry} illustrates this. Equation~(\ref{eq:kcrit}) turns a vi
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{fig00_geometry.pdf}
-\caption{Line-of-sight geometry in the frame of the straight chord $OT$ (illustrative profile, 30~km). The terrain is plotted as its height $y$ above the chord, which includes Earth's curvature. A refracted ray with coefficient $k$ lies above the chord by $k s(D-s)/2R$. Here the ridge at $s_i$ blocks the standard ray ($k=0.13$); the lamp becomes visible for $k\ge\kc=0.29$.}
+\caption{Line-of-sight geometry in the frame of the straight chord $OT$ (illustrative profile, 30~km). The terrain is plotted as its height $y$ above the chord, which includes Earth's curvature. A refracted ray with coefficient $k$ lies above the chord by $k s(D-s)/2R$. Here the ridge at $s_i$, which rises $y_i$ above the chord, blocks the standard ray ($k=0.13$); the lamp becomes visible for $k\ge\kc=0.29$.}
 \label{fig:geometry}
 \end{figure}
 
@@ -213,7 +213,7 @@ Figure~\ref{fig:panorama} shows every catalogued ordinary source as the observer
 
 \begin{figure*}[t]
 \includegraphics[width=0.95\textwidth]{fig09_panorama_sources.pdf}
-\caption{(a) Catalogued ordinary light sources as seen from the viewing area ($k=0.13$), with the known-source mask: the set of directions in which some catalogued source can appear for any $k$ from 0 to 1, widened by the observer's pointing error (filled: photographic pointing, $\pm0.3^\circ\times\pm0.1^\circ$; dashed: compass pointing, $\pm3^\circ\times\pm0.25^\circ$). Grey shades are ridges within 10, 25, and 45~km and beyond; vertical lines mark the usual $120^\circ$ viewing fan and the bearing of the tethered aerostat. The box is the region shown in (b). (b) The US-67 sector at true scale, rendered as at night: every dot is a position where a northbound car's headlamps can appear, with area increasing with the predicted brightness (low beam, fleet median, $V=111$~km). At any moment only a few of these positions are occupied (Sec.~\ref{sec:onecar}).}
+\caption{(a) Catalogued ordinary light sources as seen from the viewing area ($k=0.13$), with the known-source mask: the set of directions in which some catalogued source can appear for any $k$ from 0 to 1, widened by the observer's pointing error (filled: photographic pointing, $\pm0.3^\circ\times\pm0.1^\circ$; dashed: compass pointing, $\pm3^\circ\times\pm0.25^\circ$). Bearings $155^\circ$--$300^\circ$ true, vertical scale exaggerated $22\times$. Grey shades are ridges within 10, 25, and 45~km and beyond; dashed vertical lines mark the usual $120^\circ$ viewing fan, and the dotted line the bearing of the tethered aerostat, whose altitude varies. The box is the region shown in (b). (b) The US-67 sector, $228^\circ$--$240^\circ$ by $-0.45^\circ$ to $+1.0^\circ$, at true scale (no vertical exaggeration) and rendered as at night. Each white dot is a position where a northbound car's headlamps can appear, with area increasing with the predicted brightness (low beam, fleet median, $V=111$~km); at any moment only a few of these positions are occupied (Sec.~\ref{sec:onecar}). The red dot is the obstruction light of the 89-m tower at $230.3^\circ$, 20~km away; the circle shows the size of the full Moon.}
 \label{fig:panorama}
 \end{figure*}
 
@@ -227,7 +227,7 @@ US-67 runs almost straight at the platform. A northbound car (toward Marfa) has 
 
 \begin{figure*}[t]
 \includegraphics[width=0.92\textwidth]{fig03_headlights.pdf}
-\caption{(a,b) Median U.S. low- and high-beam patterns (one lamp, candela), with the platform's position in the beam of northbound cars on US-67 (orange) and of cars on RM~2810 facing the platform (pink). (c) Predicted magnitude of one car on the stretches of US-67 in view ($V=111$~km, $k=0.13$): northbound headlamps (circles: low beam, bars 25th--75th percentile of the fleet; triangles: high beam) and southbound tail lamps (filled squares: regulatory maximum; open: minimum; crosses: braking at the minimum). Band: naked-eye limit, Eq.~(\ref{eq:mlim}).}
+\caption{(a) Median U.S. low-beam and (b) high-beam pattern of one lamp (UMTRI market-weighted data; contours in candela), with the platform's position in the beam of northbound cars on US-67 (orange) and of cars on RM~2810 facing the platform (pink). (c) Predicted magnitude of one car (two lamps) on the stretches of US-67 in view, versus distance along the road from Shafter; only road in view is plotted ($V=111$~km, $k=0.13$): northbound headlamps (circles: low beam, bars 25th--75th percentile of the fleet; triangles: high beam) and southbound tail lamps (filled squares: regulatory maximum; open: minimum; crosses: braking at the minimum). Band: naked-eye limit, Eq.~(\ref{eq:mlim}).}
 \label{fig:headlights}
 \end{figure*}
 
@@ -265,7 +265,7 @@ where $L$ is the length of road in view and $u$ the speed. With $L=10.0$~km and 
 
 \begin{figure*}[t]
 \includegraphics[width=0.8\textwidth]{fig08_one_car.pdf}
-\caption{A northbound car on US-67 at 30~m/s, seen from the platform. (a) Bearing versus time; orange where the headlamps are in view (dot area increases with brightness), grey where terrain hides the road. (b) Magnitude on low beam (solid) and high beam (dashed), fleet median, $V=111$~km.}
+\caption{A northbound car on US-67 at 30~m/s, seen from the platform ($V=111$~km, $k=0.13$). It appears in 18 windows, for a median of 17~s each and 334~s in all, during the 13.6~min it takes to cross the region in view. (a) Bearing versus time; orange where the headlamps are in view (dot area increases with brightness), grey where terrain hides the road. (b) Magnitude on low beam (solid) and high beam (dashed), fleet median, $V=111$~km.}
 \label{fig:onecar}
 \end{figure*}
 
@@ -305,7 +305,7 @@ This is a test of internal consistency, not of absolute pointing: because the fr
 
 \begin{figure*}[t]
 \includegraphics[width=0.92\textwidth]{fig07_photo_validation.pdf}
-\caption{Check of the geometry against photographs from the platform, 21 November 2018. (a) Detected lights (circles, with distances) and the modeled US-67 in view (dots), with the modeled skyline and ridge lines. (b) A 45-s exposure; the streak, found without reference to the model, lies a median $0.005^\circ$ from the modeled road (circles). (c) Cumulative distribution of the distance from detected lights to the modeled road, and of random positions in the same band.}
+\caption{Check of the geometry against photographs from the platform, 21 November 2018. (a) Detected lights (circles, with distances) and the modeled US-67 in view (dots), with the modeled skyline and ridge lines. (b) A 45-s exposure; the streak of traffic, found without reference to the model, lies a median $0.005^\circ$ from the modeled road (circles). (c) Cumulative distribution of the distance from detected lights to the modeled road, and of random positions in the same band.}
 \label{fig:photos}
 \end{figure*}
 

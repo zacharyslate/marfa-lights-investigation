@@ -77,9 +77,6 @@ def fig07():
     rx, ry, _ = road_px(n); ok = (rx > x0) & (rx < x1)
     ax.plot(rx[ok], ry[ok], "o", ms=2.2, mfc="none", mec=C_MODEL, mew=0.5, alpha=0.9, label="US-67 (model)")
     ax.set_xlim(x0, x1); ax.set_ylim(y1, y0); ax.set_xticks([]); ax.set_yticks([])
-    st = max(VAL["p13_streaks"]["streaks"], key=lambda q: q["x1"] - q["x0"])
-    ax.text(0.01, 0.04, f"45 s exposure; streak found without the model lies {st['median_sep_deg']:.3f}° (median) from it",
-            transform=ax.transAxes, color="white", fontsize=6, va="bottom")
     ax.legend(loc="upper left", fontsize=5.8, labelcolor="white", markerscale=2)
     PF.panel(ax, "b", x=-0.02, y=1.0)
     # (c) separations vs chance
@@ -101,8 +98,7 @@ def fig07():
     ax.step(rs, np.arange(1, len(rs) + 1) / len(rs), where="post", color=PF.OI["grey"], lw=1.0, label="random points in the same band")
     ax.set_xscale("log"); ax.set_xlim(1e-4, 1); ax.set_ylim(0, 1.02)
     ax.set_xlabel("angular distance to modelled US-67 (°)"); ax.set_ylabel("cumulative fraction")
-    ax.text(1.2e-4, 0.62, f"detected\nlights\np = {U['p_value_exact']:.0e}", color=PF.OI["verm"], fontsize=6.5, ha="left", va="center")
-    ax.text(0.2, 0.35, "random points\nin the same band", color="#6b6b6b", fontsize=6.5, ha="left", va="center")
+    ax.legend(loc="upper left", fontsize=5.8)
     PF.panel(ax, "c", x=-0.28, y=1.0)
     PF.save(fig, "fig07_photo_validation")
 

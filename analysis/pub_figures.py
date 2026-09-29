@@ -77,6 +77,18 @@ def m2deg(x):
     return np.asarray(x, float) * M2D
 
 
+SCALES = {}
+
+
+def note_scale(name, value):
+    """Keep figure scale factors (vertical exaggeration) for the captions: publication/figures/scales.json."""
+    SCALES[name] = round(float(value))
+    path = f"{OUT}/scales.json"
+    old = json.load(open(path)) if os.path.exists(path) else {}
+    old.update(SCALES)
+    json.dump(old, open(path, "w"), indent=1, sort_keys=True)
+
+
 def panel(ax, letter, x=-0.06, y=1.02):
     ax.text(x, y, letter, transform=ax.transAxes, fontweight="bold", fontsize=9, va="bottom", ha="left")
 
@@ -195,7 +207,6 @@ def fig01():
                Line2D([], [], marker="D", ls="", mfc="k", mec="k", ms=4, label="Lit tower, top in view"),
                Line2D([], [], marker="D", ls="", mfc="white", mec="k", ms=4, label="Lit tower, top hidden")]
     ax.legend(handles=handles, loc="lower right", fontsize=6, frameon=True, facecolor="white", edgecolor="none", framealpha=0.85)
-    ax.set_title("Viewing fan from the Marfa Lights Viewing Area: 241 rays at 0.5°, 157.3°–277.3° true", loc="left")
     save(fig, "fig01_study_area")
 
 
@@ -348,8 +359,7 @@ def fig03():
         h = np.where(np.abs(z["h_rev"][sel]) < 90, z["h_rev"][sel], z["h_fwd"][sel])
         v = np.where(np.abs(z["h_rev"][sel]) < 90, z["v_rev"][sel], z["v_fwd"][sel])
         obs[key] = np.c_[h, v][np.abs(h) < 90]
-    for i, (beam, title) in enumerate(((PH.LOW, "(a) Low beam, one lamp (UMTRI market-weighted median)"),
-                                       (PH.HIGH, "(b) High beam, one lamp (UMTRI market-weighted median)"))):
+    for i, (beam, title) in enumerate(((PH.LOW, "a"), (PH.HIGH, "b"))):
         ax = fig.add_subplot(gs[0, i])
         I = beam(Hg, Vg, "p50")
         ax.contourf(Hg, Vg, np.log10(np.maximum(I, 1)), levels=np.log10([1] + levels + [1e5]), cmap="Greys", alpha=0.9)
@@ -366,7 +376,7 @@ def fig03():
         ax.set_xlabel("h: angle right of the car's heading (°)")
         if i == 0:
             ax.set_ylabel("v: angle above the lamp axis (°)")
-        ax.set_title(title, loc="left", fontsize=7.2)
+        panel(ax, title, x=-0.12 if i == 0 else -0.08)
         if i == 1:
             ax.legend(loc="upper right", fontsize=5.6, frameon=True, facecolor="white", edgecolor="none", framealpha=0.85)
     ax = fig.add_subplot(gs[1, :])
@@ -376,11 +386,9 @@ def fig03():
     x = x[o]
     vh, vr = z["view_head"][us][o], z["view_rear"][us][o]
     g = lambda k: z[k][us][o]
-    ax.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0)
-    ax.axhline(ml, color=OI["blue"], lw=0.6, ls=":")
-    ax.text(47.0, ml_lo - 0.1, f"naked-eye limit, Crumey (2014): {ml_lo:.1f}–{ml_hi:.1f}", fontsize=6, color=OI["blue"], va="bottom")
-    ax.axhline(-1.46, color="k", lw=0.5, ls="--")
-    ax.text(47.0, -1.46, "Sirius (−1.46)", fontsize=6, va="bottom")
+    ax.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0, label=f"naked-eye limit, {ml_lo:.1f}–{ml_hi:.1f}")
+    ax.axhline(ml, color=OI["blue"], lw=0.6, ls=":", label=f"naked-eye limit, reference ({ml:.1f})")
+    ax.axhline(-1.46, color="k", lw=0.5, ls="--", label="Sirius (−1.46)")
     lo, mid, hi = g(f"m_low_p75_rev_{mor}"), g(f"m_low_p50_rev_{mor}"), g(f"m_low_p25_rev_{mor}")
     ax.vlines(x[vh], lo[vh], hi[vh], color=C_VIS, lw=0.5, alpha=0.5)
     ax.plot(x[vh], mid[vh], "o", ms=2.2, mfc="white", mec=C_VIS, mew=0.6, label="northbound, low beam (median; bar 25–75 % of fleet)")
@@ -392,9 +400,9 @@ def fig03():
     ax.plot(x[ok], g(f"m_brake_min_fwd_{mor}")[ok], "x", ms=2.4, mew=0.6, color=OI["blue"], label="southbound, braking (FMVSS 108 minimum)")
     ax.set_xlim(27, 56)
     ax.set_ylim(11, -3.5)
-    ax.set_xlabel("Distance along US-67 from Shafter (km); only road in view is plotted (none lies outside 28–55 km)")
+    ax.set_xlabel("Distance along US-67 from Shafter (km)")
     ax.set_ylabel("Apparent magnitude")
-    ax.set_title(f"(c) Predicted brightness of one car on US-67 (two lamps; MOR {mor} km; k = 0.13)", loc="left")
+    panel(ax, "c", x=-0.055)
     ax.legend(loc="upper center", ncol=3, fontsize=5.8, bbox_to_anchor=(0.5, -0.2), columnspacing=1.2)
     save(fig, "fig03_headlights")
 
@@ -416,26 +424,21 @@ def fig08():
     m_hi = np.where(vw, z[f"m_high_p50_rev_{mor}"][us][o], np.nan)
     a1.plot(t, np.where(vw, np.nan, az), "-", color=C_HID, lw=1.0, zorder=0, label="road hidden by terrain")
     size = np.clip(7 - np.nan_to_num(m_lo, nan=7), 0.4, 9) ** 1.6
-    a1.scatter(t[vw], az[vw], s=size[vw], color=C_VIS, lw=0, alpha=0.9, label="headlamps in view (dot area ∝ brightness, low beam)")
+    a1.scatter(t[vw], az[vw], s=size[vw], color=C_VIS, lw=0, alpha=0.9, label="headlamps in view")
     a1.set_ylabel("True bearing from the\nViewing Area (°)")
     a1.set_ylim(254, 226)
     a1.legend(loc="lower left", fontsize=6, markerscale=0.8)
-    a2.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0)
+    a2.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0, label="naked-eye limit")
     a2.axhline(ml, color=OI["blue"], lw=0.6, ls=":")
-    a2.text(14.2, ml_lo - 0.1, "naked-eye limit (Crumey 2014)", fontsize=6, color=OI["blue"], va="bottom")
-    a2.axhline(-1.46, color="k", lw=0.5, ls="--")
-    a2.text(14.2, -1.46, "Sirius", fontsize=6, va="bottom")
+    a2.axhline(-1.46, color="k", lw=0.5, ls="--", label="Sirius")
     a2.plot(t, m_lo, "-", color=C_VIS, lw=1.0, label="low beam (market median)")
     a2.plot(t, m_hi, color=C_VIS, lw=0.6, alpha=0.6, ls=(0, (3, 1.5)), label="high beam (market median)")
-    a2.legend(loc="upper right", fontsize=6)
+    a2.legend(loc="lower right", fontsize=6, ncol=2, frameon=True, facecolor="white", edgecolor="none", framealpha=0.9)
     a2.set_ylim(7.5, -3)
     a2.set_xlim(14, 31)
     a2.set_ylabel("Apparent magnitude")
     a2.set_xlabel(f"Time after a northbound car passes Shafter at {u:.0f} m/s (min)")
     nb = T["rev"]
-    a1.set_title(f"A northbound car appears {nb['n_windows']} times, for a median {nb['dwell_s']['30.0']['median']:.0f} s each "
-                 f"({nb['dwell_s']['30.0']['total']:.0f} s in view in {nb['dwell_s']['30.0']['span']/60:.1f} min); "
-                 f"MOR {mor} km, k = 0.13", loc="left", fontsize=7.2)
     panel(a1, "a", x=-0.07)
     panel(a2, "b", x=-0.07)
     save(fig, "fig08_one_car")
@@ -478,7 +481,7 @@ def fig04():
             ax.plot(x, yi, "v", ms=3.5, color="k", zorder=5)
         ax.set_ylim(-420, 350)
         ax.set_ylabel("m relative to eye")
-        ax.set_title(title, loc="left")
+        panel(ax, "abcd"[axs.tolist().index(ax)] if hasattr(axs, "tolist") else title, x=-0.07)
         ax.axhline(0, color="k", lw=0.3)
     axs[-1].set_xlabel("Distance from the Viewing Area (km)")
     axs[-1].set_xlim(0, 80)
@@ -487,9 +490,7 @@ def fig04():
                Line2D([], [], color="k", lw=0.5, ls=":", label="Steepest sight line (the skyline ray)"),
                Line2D([], [], marker="v", ls="", color="k", ms=3.5, label="Road or track crossing")]
     fig.legend(handles=handles, loc="lower center", ncol=2, bbox_to_anchor=(0.5, -0.04), fontsize=6.3)
-    ex = exaggeration(fig, axs[0]) * 1000      # x in km, y in m
-    for ax in axs:
-        ax.set_title(f"vertical ×{ex:.0f}", loc="right", fontsize=6.3)
+    note_scale("fig04_vertical", exaggeration(fig, axs[0]) * 1000)      # x in km, y in m
     save(fig, "fig04_sightlines")
 
 
@@ -501,11 +502,10 @@ def fig05():
     a.plot(ks, [(kc67 <= k).sum() * 0.06 for k in ks], color=C_VIS, lw=1.3, label="US-67 (Shafter–Marfa, 64.6 km)")
     rm = np.array([q[5] for rd in ROADS if rd["k"] == "RM2810" for q in rd["p"]])
     a.plot(ks, [(rm <= k).sum() * 0.12 for k in ks], color=C_ROAD2, lw=1.3, label="RM 2810 (in the fan)")
-    a.axvline(K0, color="k", lw=0.5, ls="--")
-    a.text(K0 + 0.05, 0.97, "k = 0.13", fontsize=6, transform=a.get_xaxis_transform(), va="top")
+    a.axvline(K0, color="k", lw=0.5, ls="--", label="k = 0.13")
     a.set_xlabel("Refraction coefficient k")
     a.set_ylabel("Road length with k_crit ≤ k (km)")
-    a.set_title("(a) Road in view versus refraction", loc="left")
+    panel(a, "a", x=-0.14, y=1.13)
     a.legend(loc="lower right", fontsize=6)
     sec = a.secondary_xaxis("top", functions=(lambda k: k / 5.338 - 0.0343, lambda g: (g + 0.0343) * 5.338))
     sec.set_xlabel("dT/dz (K/m) at 850 hPa, 283 K", fontsize=6.3)
@@ -515,7 +515,7 @@ def fig05():
         b.plot(d, d * 1000 * dk / (2 * R) * 180 / math.pi, color="k", lw=0.8, ls=ls, label=f"Δk = {dk:g}")
     b.set_xlabel("Distance to the light (km)")
     b.set_ylabel("Rise in apparent elevation (°)")
-    b.set_title("(b) Apparent-elevation shift, Δα = dΔk/2R", loc="left")
+    panel(b, "b", x=-0.14, y=1.13)
     b.legend(loc="upper left", fontsize=6)
     save(fig, "fig05_refraction")
 
@@ -559,14 +559,13 @@ def fig06():
     a1.add_patch(plt.Rectangle((224, -0.72), 38, 0.98, fill=False, lw=0.7, ec="k", zorder=9))
     a1.text(224.4, 0.23, "b", fontsize=7, fontweight="bold", va="top", zorder=9)
     lab = dict(fontsize=6, ha="center", zorder=10, bbox=dict(fc="white", ec="none", pad=0.4, alpha=0.8))
-    a1.text(186, -0.66, "Texas Pacifico track, ≤ 0.08 trains/h", **lab)
+    a1.text(186, -0.66, "Texas Pacifico", **lab)
     a1.text(233, -0.62, "US-67", **lab)
     a1.text(249, 0.40, "RM 2810", **lab)
     a1.text(272, 0.40, "US-90, UP, Marfa →", **lab)
     P = st["params"]
     rmax = {(l["label"], l["dir"]): l["rate_max_per_h"] for l in st["summary"]}
-    a1.set_title(f"(a) Expected ordinary lights per hour: standard night, k = {P['k']:g}, MOR {P['mor_km']:g} km, "
-                 f"error ±{P['err_az_deg']:g}° × ±{P['err_el_deg']:g}°", loc="left", fontsize=7.3)
+    panel(a1, "a", x=-0.07)
     draw_rate(a2, st, 224, 262)
     a2.set_xlim(224, 262)
     a2.set_ylim(-0.45, 0.32)
@@ -575,14 +574,13 @@ def fig06():
     a2.set_xlabel("True bearing (°)")
     us = max(v for (l, d), v in rmax.items() if l.startswith("US-67 (Shafter"))
     rm = max(v for (l, d), v in rmax.items() if l.startswith("RM 2810"))
-    a2.text(233.4, -0.30, f"US-67 northbound: up to ~{us:.0f} cars/h", **lab)
-    a2.text(250.5, 0.25, f"RM 2810: ≤ {rm:.1f} cars/h", **lab)
-    a2.text(245.5, -0.2, "no catalogued source", fontsize=6.5, ha="center", style="italic", color="#333", zorder=10)
-    a2.set_title("(b) The US-67 and RM 2810 sector", loc="left")
+    a2.text(233.4, -0.30, "US-67", **lab)
+    a2.text(250.5, 0.25, "RM 2810", **lab)
+    panel(a2, "b", x=-0.07)
+    note_scale("fig06_us67_rate_max", us)
     e1, e2 = exaggeration(fig, a1), exaggeration(fig, a2)
-    for ax, e in ((a1, e1), (a2, e2)):
-        ax.text(0.005, 0.97, f"vertical ×{e:.0f}", transform=ax.transAxes, ha="left", va="top", fontsize=6.3, zorder=11,
-                bbox=dict(fc="white", ec="none", pad=0.3, alpha=0.8))
+    note_scale("fig06a_vertical", e1)
+    note_scale("fig06b_vertical", e2)
     handles = [Patch(fc=c, label=l) for c, l in zip(SEQ, ["0.01–0.1 per hour", "0.1–1", "1–10", "≥ 10"])]
     handles += [Patch(fc="white", ec="k", hatch="////", lw=0.5, label="Permanent light (tower, town, skyglow, aerostat)"),
                 Line2D([], [], color="k", lw=0.7, label="Skyline (k = 0.13)")]
@@ -609,7 +607,7 @@ def fig09():
     PH, z, us, mor, ml, _ = _phot()
     B0, B1, E0, E1 = 228.0, 240.0, -0.45, 1.0
     fig = plt.figure(figsize=(W2, W2 * 0.60))
-    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 0.42], hspace=0.95)
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 0.42], hspace=0.8)
     a1 = fig.add_subplot(gs[0])
     A0, A1 = 155, 300
     draw_terrain(a1, A0, A1)
@@ -625,8 +623,8 @@ def fig09():
     a1.text(B0 + 0.4, E1 - 0.04, "b", fontsize=7, fontweight="bold", va="top", zorder=9)
     for az, lab in ((180, "S"), (202.5, "SSW"), (225, "SW"), (247.5, "WSW"), (270, "W"), (292.5, "WNW")):
         a1.text(az, 1.08, lab, ha="center", va="top", fontsize=6.5, color="#444")
-    a1.set_title("(a) Catalogued ordinary light sources seen from the viewing area, 155°–300° true", loc="left", fontsize=7.5)
-    a1.set_title(f"vertical ×{exaggeration(fig, a1):.0f}", loc="right", fontsize=6.5)
+    panel(a1, "a", x=-0.07)
+    note_scale("fig09a_vertical", exaggeration(fig, a1))
     handles = [Patch(fc=C_ZOS, alpha=0.33, ec=C_ZOS, lw=0.3, label="Known-source mask, photographic pointing (±0.3° × ±0.1°)"),
                Patch(fc="none", ec=C_ZOS, lw=0.7, ls=(0, (3, 1.5)), label="… compass pointing (±3° × ±0.25°)"),
                Line2D([], [], marker="o", ls="", color=C_VIS, ms=3, label="US-67 in view"),
@@ -642,26 +640,24 @@ def fig09():
     a2 = fig.add_subplot(gs[1])
     sk = SKY[(SKY[:, 0] >= B0 - 0.5) & (SKY[:, 0] <= B1 + 0.5)]
     az = sk[:, 0]
-    a2.set_facecolor("#0b1230")
-    for col, gray in ((1, "#1c1c22"), (5, "#15151a"), (4, "#0f0f13"), (3, "#09090b")):
+    a2.set_facecolor("#2d3f73")
+    for col, gray in ((1, "#5a5c6b"), (5, "#4a4b57"), (4, "#3b3c45"), (3, "#2c2d34")):
         a2.fill_between(az, E0 - 1, m2deg(sk[:, col]), color=gray, lw=0, zorder=1)
-    a2.plot(az, m2deg(sk[:, 1]), color="#3a3f55", lw=0.5, zorder=2)
+    a2.plot(az, m2deg(sk[:, 1]), color="#8a90a8", lw=0.5, zorder=2)
     ch = z["chain"][us]
     o = np.argsort(ch)
     azr, el = z["az"][us][o], z["app_el"][us][o]
     vh = z["view_head"][us][o]
     mh = z[f"m_low_p50_rev_{mor}"][us][o]
     size = np.clip(6.5 - mh, 0.25, 9.0) ** 1.6 * 0.45
-    a2.scatter(azr[vh], el[vh], s=size[vh], color="#fff4d6", lw=0, zorder=5)
+    a2.scatter(azr[vh], el[vh], s=size[vh], color="#fff4d6", lw=0, zorder=5, label="possible headlamp positions")
     for t in S["towers"]:
         if t["light"] != "none" and t["a"] is not None and B0 <= t["az"] <= B1 and t["kc"] <= K0:
-            a2.plot(t["az"], m2deg(t["a"]), "o", ms=2.2, color="#ff3b30", mec="none", zorder=6)
-            a2.annotate(f"{t['h']:.0f} m tower", (t["az"], m2deg(t["a"])), xytext=(4, 0), textcoords="offset points",
-                        ha="left", va="center", fontsize=5.6, color="#cccccc", zorder=7)
-    a2.add_patch(plt.Circle((239.45, 0.70), 0.26, fill=False, ec="#cccccc", lw=0.5, zorder=6))
-    a2.text(239.1, 0.70, "full Moon (0.5°)", ha="right", va="center", fontsize=5.6, color="#cccccc", zorder=7)
-    a2.text(228.15, 0.93, "possible positions of a northbound car's headlamps; dot area grows with brightness",
-            fontsize=5.6, color="#dddddd", va="top", zorder=7)
+            a2.plot(t["az"], m2deg(t["a"]), "o", ms=2.2, color="#ff3b30", mec="none", zorder=6, label="lit tower")
+    a2.add_patch(plt.Circle((239.45, 0.70), 0.25, fill=False, ec="#e6e6e6", lw=0.6, zorder=6))
+    a2.plot([], [], "o", mfc="none", mec="#333333", ms=6, label="full Moon, 0.5° (scale)")
+    a2.legend(loc="upper left", fontsize=5.8, ncol=3, frameon=True, facecolor="white", edgecolor="none", framealpha=0.9,
+              markerscale=1.0)
     a2.set_xlim(B0, B1)
     a2.set_ylim(E0, E1)
     a2.set_aspect("equal")
@@ -672,8 +668,7 @@ def fig09():
     for sp in a2.spines.values():
         sp.set_visible(True)
         sp.set_linewidth(0.6)
-    a2.set_title("(b) The US-67 sector at true scale (no vertical exaggeration), 228°–240° × −0.45° to +1.0°", loc="left",
-                 fontsize=7.5)
+    panel(a2, "b", x=-0.07, y=1.04)
     save(fig, "fig09_panorama_sources")
 
 

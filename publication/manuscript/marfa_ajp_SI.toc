@@ -17,7 +17,7 @@
 \contentsline {subsection}{\numberline {S5.3}Signal lamps}{9}{subsection.5.3}%
 \contentsline {subsection}{\numberline {S5.4}Transmission, magnitude, and threshold}{9}{subsection.5.4}%
 \contentsline {subsection}{\numberline {S5.5}Further results}{9}{subsection.5.5}%
-\contentsline {section}{\numberline {S6}One car and occupancy}{9}{section.6}%
+\contentsline {section}{\numberline {S6}One car and occupancy}{10}{section.6}%
 \contentsline {section}{\numberline {S7}Known-source catalogue, mask, and rate map}{10}{section.7}%
 \contentsline {subsection}{\numberline {S7.1}Catalogue}{10}{subsection.7.1}%
 \contentsline {subsection}{\numberline {S7.2}Known-source mask}{10}{subsection.7.2}%
