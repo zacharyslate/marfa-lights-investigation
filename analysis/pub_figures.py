@@ -8,6 +8,7 @@ Publication figures for the Marfa Lights investigation -> publication/figures/
                             predicted brightness of a car on US-67 in either direction
     fig04_sightlines        terrain cross-sections along four bearings with the line of sight
     fig05_refraction        visible road length and apparent-elevation shift versus refraction k
+    fig09_panorama_sources  manuscript panorama: catalogued sources, known-source mask, US-67 sector at true scale
     fig06_weighted_zone     expected ordinary lights per hour across the view
     fig08_one_car           what one car on US-67 looks like from the Viewing Area over time
 
@@ -562,15 +563,20 @@ def fig06():
     a1.text(233, -0.62, "US-67", **lab)
     a1.text(249, 0.40, "RM 2810", **lab)
     a1.text(272, 0.40, "US-90, UP, Marfa →", **lab)
-    a1.set_title("(a) Expected ordinary lights per hour: standard night, k = 0.13, MOR 100 km, error ±0.3° × ±0.1°", loc="left", fontsize=7.3)
+    P = st["params"]
+    rmax = {(l["label"], l["dir"]): l["rate_max_per_h"] for l in st["summary"]}
+    a1.set_title(f"(a) Expected ordinary lights per hour: standard night, k = {P['k']:g}, MOR {P['mor_km']:g} km, "
+                 f"error ±{P['err_az_deg']:g}° × ±{P['err_el_deg']:g}°", loc="left", fontsize=7.3)
     draw_rate(a2, st, 224, 262)
     a2.set_xlim(224, 262)
     a2.set_ylim(-0.45, 0.32)
     a2.set_xticks(np.arange(224, 263, 2))
     a2.set_ylabel("Elevation angle (°)")
     a2.set_xlabel("True bearing (°)")
-    a2.text(233.4, -0.30, "US-67 northbound: up to ~15 cars/h", **lab)
-    a2.text(250.5, 0.25, "RM 2810: ≤ 0.5 cars/h", **lab)
+    us = max(v for (l, d), v in rmax.items() if l.startswith("US-67 (Shafter"))
+    rm = max(v for (l, d), v in rmax.items() if l.startswith("RM 2810"))
+    a2.text(233.4, -0.30, f"US-67 northbound: up to ~{us:.0f} cars/h", **lab)
+    a2.text(250.5, 0.25, f"RM 2810: ≤ {rm:.1f} cars/h", **lab)
     a2.text(245.5, -0.2, "no catalogued source", fontsize=6.5, ha="center", style="italic", color="#333", zorder=10)
     a2.set_title("(b) The US-67 and RM 2810 sector", loc="left")
     e1, e2 = exaggeration(fig, a1), exaggeration(fig, a2)
@@ -585,6 +591,92 @@ def fig06():
     save(fig, "fig06_weighted_zone")
 
 
+
+# ============================================================ manuscript figure: panorama with the known-source mask
+def draw_mask(ax):
+    """Known-source mask: every position where a catalogued ordinary light can appear (k = 0 to 1), dilated by the
+    observer's pointing error; A = photographic pointing, B = compass pointing (data/derived/zos.json)."""
+    for ring in Z["tiers"]["B"]:
+        r = np.array(ring)
+        ax.add_patch(Polygon(np.c_[r[:, 0], m2deg(r[:, 1])], closed=True, fc="none", ec=C_ZOS, lw=0.7,
+                             ls=(0, (3, 1.5)), zorder=4))
+    for ring in Z["tiers"]["A"]:
+        r = np.array(ring)
+        ax.add_patch(Polygon(np.c_[r[:, 0], m2deg(r[:, 1])], closed=True, fc=C_ZOS, ec=C_ZOS, lw=0.3, alpha=0.33, zorder=3))
+
+
+def fig09():
+    PH, z, us, mor, ml, _ = _phot()
+    B0, B1, E0, E1 = 228.0, 240.0, -0.45, 1.0
+    fig = plt.figure(figsize=(W2, W2 * 0.60))
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.0, 0.42], hspace=0.95)
+    a1 = fig.add_subplot(gs[0])
+    A0, A1 = 155, 300
+    draw_terrain(a1, A0, A1)
+    draw_mask(a1)
+    draw_sources(a1, A0, A1, label=False)
+    a1.axhline(0, color="k", lw=0.4, ls=":", zorder=5)
+    a1.set_xlim(A0, A1)
+    a1.set_ylim(-0.75, 1.1)
+    a1.set_xticks(np.arange(160, 301, 10))
+    a1.set_ylabel("Elevation angle (°)")
+    a1.set_xlabel("True bearing (°)")
+    a1.add_patch(plt.Rectangle((B0, E0), B1 - B0, E1 - E0, fill=False, lw=0.8, ec="k", zorder=9))
+    a1.text(B0 + 0.4, E1 - 0.04, "b", fontsize=7, fontweight="bold", va="top", zorder=9)
+    for az, lab in ((180, "S"), (202.5, "SSW"), (225, "SW"), (247.5, "WSW"), (270, "W"), (292.5, "WNW")):
+        a1.text(az, 1.08, lab, ha="center", va="top", fontsize=6.5, color="#444")
+    a1.set_title("(a) Catalogued ordinary light sources seen from the viewing area, 155°–300° true", loc="left", fontsize=7.5)
+    a1.set_title(f"vertical ×{exaggeration(fig, a1):.0f}", loc="right", fontsize=6.5)
+    handles = [Patch(fc=C_ZOS, alpha=0.33, ec=C_ZOS, lw=0.3, label="Known-source mask, photographic pointing (±0.3° × ±0.1°)"),
+               Patch(fc="none", ec=C_ZOS, lw=0.7, ls=(0, (3, 1.5)), label="… compass pointing (±3° × ±0.25°)"),
+               Line2D([], [], marker="o", ls="", color=C_VIS, ms=3, label="US-67 in view"),
+               Line2D([], [], marker="o", ls="", color=C_ROAD2, ms=3, label="Other state roads in view"),
+               Line2D([], [], marker="s", ls="", color=C_RAIL, ms=2.5, label="Railroad in view"),
+               Line2D([], [], marker="D", ls="", mfc="k", mec="k", ms=3.5, label="Lit tower, top in view"),
+               Line2D([], [], marker="D", ls="", mfc="white", mec="k", ms=3.5, label="Lit tower, top hidden"),
+               Line2D([], [], color="k", lw=0.7, label="Skyline (k = 0.13)")]
+    a1.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.2), ncol=4, fontsize=5.8, columnspacing=1.0,
+              handletextpad=0.5)
+
+    # (b) the US-67 sector without vertical exaggeration, rendered as at night
+    a2 = fig.add_subplot(gs[1])
+    sk = SKY[(SKY[:, 0] >= B0 - 0.5) & (SKY[:, 0] <= B1 + 0.5)]
+    az = sk[:, 0]
+    a2.set_facecolor("#0b1230")
+    for col, gray in ((1, "#1c1c22"), (5, "#15151a"), (4, "#0f0f13"), (3, "#09090b")):
+        a2.fill_between(az, E0 - 1, m2deg(sk[:, col]), color=gray, lw=0, zorder=1)
+    a2.plot(az, m2deg(sk[:, 1]), color="#3a3f55", lw=0.5, zorder=2)
+    ch = z["chain"][us]
+    o = np.argsort(ch)
+    azr, el = z["az"][us][o], z["app_el"][us][o]
+    vh = z["view_head"][us][o]
+    mh = z[f"m_low_p50_rev_{mor}"][us][o]
+    size = np.clip(6.5 - mh, 0.25, 9.0) ** 1.6 * 0.45
+    a2.scatter(azr[vh], el[vh], s=size[vh], color="#fff4d6", lw=0, zorder=5)
+    for t in S["towers"]:
+        if t["light"] != "none" and t["a"] is not None and B0 <= t["az"] <= B1 and t["kc"] <= K0:
+            a2.plot(t["az"], m2deg(t["a"]), "o", ms=2.2, color="#ff3b30", mec="none", zorder=6)
+            a2.annotate(f"{t['h']:.0f} m tower", (t["az"], m2deg(t["a"])), xytext=(4, 0), textcoords="offset points",
+                        ha="left", va="center", fontsize=5.6, color="#cccccc", zorder=7)
+    a2.add_patch(plt.Circle((239.45, 0.70), 0.26, fill=False, ec="#cccccc", lw=0.5, zorder=6))
+    a2.text(239.1, 0.70, "full Moon (0.5°)", ha="right", va="center", fontsize=5.6, color="#cccccc", zorder=7)
+    a2.text(228.15, 0.93, "possible positions of a northbound car's headlamps; dot area grows with brightness",
+            fontsize=5.6, color="#dddddd", va="top", zorder=7)
+    a2.set_xlim(B0, B1)
+    a2.set_ylim(E0, E1)
+    a2.set_aspect("equal")
+    a2.set_xticks(np.arange(B0, B1 + 0.1, 1))
+    a2.set_yticks([-0.4, 0, 0.5, 1.0])
+    a2.set_xlabel("True bearing (°)")
+    a2.set_ylabel("Elev. (°)")
+    for sp in a2.spines.values():
+        sp.set_visible(True)
+        sp.set_linewidth(0.6)
+    a2.set_title("(b) The US-67 sector at true scale (no vertical exaggeration), 228°–240° × −0.45° to +1.0°", loc="left",
+                 fontsize=7.5)
+    save(fig, "fig09_panorama_sources")
+
+
 if __name__ == "__main__":
     fig01()
     fig02()
@@ -593,3 +685,4 @@ if __name__ == "__main__":
     fig05()
     fig06()
     fig08()
+    fig09()

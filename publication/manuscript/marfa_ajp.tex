@@ -6,6 +6,7 @@
 \usepackage{dcolumn}
 \usepackage{bm}
 \usepackage{url}
+\usepackage{xurl}
 \usepackage[hidelinks]{hyperref}
 \graphicspath{{../figures/}}
 
@@ -13,11 +14,12 @@
 \anonymousfalse
 \ifdefined\anonbuild\anonymoustrue\fi
 \newcommand{\repo}{\ifanonymous[repository withheld for review]\else\url{https://github.com/zacharyslate/marfa-lights-investigation}\fi}
+\newcommand{\website}{\ifanonymous[website withheld for review; a copy is included in the supplementary material]\else\url{https://zacharyslate.github.io/marfa-lights-investigation/}\fi}
 \newcommand{\kc}{k_{\mathrm{crit}}}
 
 \begin{document}
 
-\title{Where headlights can hide: line of sight, refraction, and photometry of distant car lights at Marfa, Texas}
+\title{Separating the known from the unknown at Marfa, Texas: line of sight, refraction, and photometry of the ordinary lights seen from the Marfa lights viewing area}
 
 \ifanonymous
 \author{[Author withheld for review]}
@@ -30,7 +32,7 @@
 \date{\today}
 
 \begin{abstract}
-The ``Marfa lights'' are lights seen at night from a roadside viewing area in West Texas, looking toward the Chinati Mountains. Spectroscopy has shown that many of them are vehicle headlamps, yet observers continue to report lights that appear and vanish, flare, drift, and hang near the horizon. We ask a narrower physics question: where, in the view from the platform, can an ordinary car's lamps appear at all, how bright should they look, and how should they behave in time? We build a model from public data---1-m airborne lidar terrain, the state road centerlines, market-weighted headlamp beam patterns, federal signal-lamp photometry, and a naked-eye detection threshold---and use exact ellipsoidal geometry with atmospheric refraction. A single number, the critical refraction coefficient $\kc=\max_i 2Ry_i/[s_i(D-s_i)]$, decides whether a lamp is visible over the terrain. Because the sight lines graze the ground within about a meter, a Monte Carlo treatment of terrain error, vegetation from the lidar point cloud, and ray tracing through nocturnal temperature inversions are needed to make the answer robust. About 10~km of US Highway 67, split into 29 separate stretches 18--40~km away, is in view. There a northbound car is a naked-eye light of typical magnitude $+2.6$ that can outshine Sirius; southbound tail lamps are near the limit of vision. One car appears in 18 separate windows over 14 minutes, for a median 17~s each, brightening and fading by a median of one magnitude within each window as the road's grade and heading change. We check the geometry against photographs taken from the platform. The model is a compact exercise in geodesy, atmospheric optics, radiometry, and visual detection, and it defines where a light would have no ordinary explanation.
+For more than eighty years, visitors to a roadside viewing area near Marfa, Texas, have reported lights on the horizon that appear, brighten, drift, and vanish. Any attempt to study them faces a foreground of ordinary lights---vehicle headlamps and tail lamps, trains, obstruction lights on towers, and the glow of distant towns---that must be removed before an unusual light can be recognized. We build a quantitative model of that foreground from public data and first principles, and present it as a screening tool. Exact ellipsoidal geometry on 1-m airborne lidar terrain, with atmospheric refraction, gives where each ordinary source can be seen; a single number, the critical refraction coefficient $\kc=\max_i 2Ry_i/[s_i(D-s_i)]$, decides whether a lamp clears the terrain. Because the sight lines graze the ground within about a meter, a Monte Carlo treatment of terrain error, vegetation from the lidar point cloud, and ray tracing through nocturnal inversions are needed to make the answer robust. Market-weighted headlamp beam patterns, federal signal-lamp photometry, and a contrast-threshold model of the eye give how bright each source looks. About 10~km of US Highway 67, 18--40~km away, is in view, always just below the skyline. There a northbound car is typically a magnitude $+2.6$ light that can outshine Sirius; it appears in 18 separate windows of median 17~s, drifting about $0.9^\circ$ per minute and brightening and fading as the road's grade changes. Southbound tail lamps are near the limit of vision. We check the geometry against photographs from the platform, tabulate the observable signatures of every catalogued source, and map the parts of the view where no catalogued source can appear. An online version lets observers test a sighting against the model.
 \end{abstract}
 
 \maketitle
@@ -41,11 +43,13 @@ The ``Marfa lights'' are lights seen at night from a roadside viewing area in We
 
 About 14~km east of the town of Marfa, Texas, a roadside viewing area on US Highway 90 looks south and southwest across a high grassland basin toward the Chinati Mountains. Since at least the 1940s, visitors have reported lights there that appear on the horizon, brighten, move, split, and vanish.\cite{Smith2017,Hall2006} Physicists have studied them before. Stephan \textit{et al.}\ combined azimuth logging, video, and continuous spectroscopy over 20 nights and used them to identify vehicle headlamps and distant streetlamps among the lights recorded; they also showed that atmospheric oxygen absorption can measure the distance to such sources.\cite{Stephan2009} Similar ``ghost lights'' elsewhere have been traced to headlights and locomotives (Brown Mountain, North Carolina;\cite{Mansfield1971} the Paulding light, Michigan\cite{MTU2010}) or to a car seen by mirage (the Min Min light, Australia\cite{Pettigrew2003}), whereas at Hessdalen, Norway, a long instrumental campaign left some events unexplained.\cite{Caron2016}
 
-If many Marfa lights are headlights, a skeptic must still explain the features that make them seem strange: that they sit on or just below the skyline, appear and vanish without moving much, flare to brilliance, and seem too far away or too bright to be cars. A proponent, conversely, needs to know where in the view no ordinary light can appear, so that a sighting there would matter. Both needs are met by the same thing: a quantitative, reproducible model of what ordinary lamps look like from the platform.
+Any search for a rare phenomenon against a bright background must first remove the background. Astronomers searching for new transients subtract catalogued stars and mask known artifacts before they look at what remains. In the language of detection theory, ordinary sources that are mistaken for the phenomenon are false positives, and what survives the screening is the list of candidates. At Marfa the background is made of ordinary lights: headlamps and tail lamps on the highways, locomotive headlights, the red obstruction lights of communication towers, the glow of distant towns, and aircraft. Without a quantitative model of where and how these appear, a report of a light can be neither dismissed nor taken seriously, and observers with different expectations talk past each other.
 
-This paper builds that model from first principles and public data, and it is deliberately a model paper: we do not report new field experiments. We answer three questions. (i)~\textit{Geometry:} which parts of which roads are in direct view of the platform, allowing for Earth's curvature, the terrain, vegetation, and refraction? (ii)~\textit{Photometry:} how bright is a car there, given where the platform falls in its beam? (iii)~\textit{Behavior in time:} what does one car look like as it drives the road? Each step uses physics taught in undergraduate courses (geodesy and curvature, refraction in a stratified medium, the inverse-square law and the astronomical magnitude scale, and the statistics of visual detection) and each rests on data a student can download. We give simple estimates alongside the full calculation.
+This paper builds that model, and we intend it as a tool rather than as an argument. For every catalogued ordinary source it predicts where in the view the source can appear, how bright it should be, what color it is, and how it should behave in time. An observer can then remove the lights that match an ordinary source and concentrate on those that do not. We do not claim that all Marfa lights are ordinary; a model of the known cannot say what the unknown is. What it can do is define the observables that would make a light interesting: a position where no catalogued source can appear, or a behavior that no catalogued source shows.
 
-Section~\ref{sec:data} describes the site and data, Sec.~\ref{sec:geometry} the line-of-sight model and its robustness, Sec.~\ref{sec:refraction} refraction beyond a single coefficient, Sec.~\ref{sec:photometry} the photometry, and Sec.~\ref{sec:results} the results, including a check against photographs. Section~\ref{sec:discussion} discusses what the model does and does not show.
+The model is built from first principles and public data, and it is deliberately a model paper: we report no new field experiments. We answer three questions. (i)~\textit{Geometry:} which parts of which roads, railroads, and structures are in direct view of the platform, allowing for Earth's curvature, the terrain, vegetation, and refraction? (ii)~\textit{Photometry:} how bright is a car there, given where the platform falls in its beam? (iii)~\textit{Behavior in time:} what does one car look like as it drives the road? Each step uses physics taught in undergraduate courses (geodesy and curvature, refraction in a stratified medium, the inverse-square law and the astronomical magnitude scale, and the statistics of visual detection), and each rests on data a student can download. We give simple estimates alongside the full calculation.
+
+Section~\ref{sec:data} describes the site and data, Sec.~\ref{sec:geometry} the line-of-sight model and its robustness, Sec.~\ref{sec:refraction} refraction beyond a single coefficient, and Sec.~\ref{sec:photometry} the photometry. Section~\ref{sec:results} gives the results, including a check against photographs, and Sec.~\ref{sec:screening} turns them into a screening procedure. Section~\ref{sec:discussion} discusses what the model does and does not show. Full methods are in the supplementary material.\cite{SM}
 
 %=======================================================================
 \section{Site and data}\label{sec:data}
@@ -76,7 +80,7 @@ For a smooth sphere of radius $R$, a point at distance $d$ lies below the observ
 \Delta h = \frac{(1-k)\,d^2}{2R}.
 \label{eq:drop}
 \end{equation}
-At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye 1.6~m up is only $\sqrt{2Rh/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (Fig.~\ref{fig:sections}, top). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
+At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye 1.6~m up is only $\sqrt{2Rh/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (terrain cross-sections along several bearings are shown in the supplementary material\cite{SM}). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
 
 \subsection{Exact geometry and the critical refraction coefficient}
 
@@ -100,11 +104,7 @@ Figure~\ref{fig:geometry} illustrates this. Equation~(\ref{eq:kcrit}) turns a vi
 \label{fig:geometry}
 \end{figure}
 
-\begin{figure*}[t]
-\includegraphics[width=0.72\textwidth]{fig04_sightlines.pdf}
-\caption{Terrain cross-sections from the platform along four bearings, reduced for curvature and refraction ($k=0.13$) and exaggerated $18\times$ vertically. Colored: ground in direct view. Triangles: road or track crossings. Along $233.6^\circ$ the view skims the far slope that carries US-67; along $240^\circ$ a low rise hides the highway.}
-\label{fig:sections}
-\end{figure*}
+
 
 \subsection{How robust is ``visible''?}
 
@@ -112,11 +112,13 @@ A visible/hidden answer from Eq.~(\ref{eq:kcrit}) is only as good as its inputs,
 
 \textit{Margins.} The lamp margin $d_L$ is the smallest change in lamp height that flips visibility, and $d_E$ is the same for the eye. On US-67 no visible point has a lamp margin larger than 0.84~m.
 
-\textit{Terrain error.} We draw 200 realizations of correlated Gaussian terrain error along each sight line, with a standard deviation and correlation length for each elevation source: lidar 0.056~m (its accuracy report) with an assumed 20~m; 1/3 arc-second 0.56~m and 70~m; 1 arc-second 2.05~m and 125~m, the latter two measured against the lidar on 40\,000 points. A 0.15~m error in eye height is added. The fraction of realizations in which the lamp is visible, $P_{\mathrm{vis}}$, gives three classes: visible ($P_{\mathrm{vis}}\ge0.95$ and still visible with 0.25~m of unresolved grass added to the ground), hidden ($P_{\mathrm{vis}}\le0.05$), and marginal (the rest). In Table~\ref{tab:config}, ``robust'' uses the $P_{\mathrm{vis}}$ criterion alone. Appendix~\ref{app:mc} gives details.
+\textit{Terrain error.} We draw 200 realizations of correlated Gaussian terrain error along each sight line, with a standard deviation and correlation length for each elevation source: lidar 0.056~m (its accuracy report) with an assumed 20~m; 1/3 arc-second 0.56~m and 70~m; 1 arc-second 2.05~m and 125~m, the latter two measured against the lidar on 40\,000 points. A 0.15~m error in eye height is added. The fraction of realizations in which the lamp is visible, $P_{\mathrm{vis}}$, gives three classes: visible ($P_{\mathrm{vis}}\ge0.95$ and still visible with 0.25~m of unresolved grass added to the ground), hidden ($P_{\mathrm{vis}}\le0.05$), and marginal (the rest). In Table~\ref{tab:config}, ``robust'' uses the $P_{\mathrm{vis}}$ criterion alone. The supplementary material gives details.\cite{SM}
 
 \textit{Obstructions.} From the lidar point cloud (29.4 million points around the grazing corridors) we mark a 1-m cell as obstructed when it has at least two returns and at least 25\% of them more than 0.3~m above the ground, and raise it to the height of its highest return. Ground returns agree with the elevation model to a median of $-0.8$~mm.
 
 \textit{Refraction.} Section~\ref{sec:refraction}.
+
+The code reproduces an earlier, independent implementation (1075 of 1077 points agree) and passes 30 unit tests; both checks are described in the supplementary material.\cite{SM}
 
 %=======================================================================
 \section{Refraction near the ground at night}\label{sec:refraction}
@@ -166,7 +168,7 @@ where $V$ is the meteorological optical range (the distance at which transmissio
 m = -13.99 - 2.5\log_{10}E.
 \label{eq:mag}
 \end{equation}
-For example, a car 30~km away that sends 300~cd per lamp toward the platform, with $V=111$~km, gives $E=3.2\times10^{-7}$~lx and $m=+2.2$, about as bright as Polaris.
+For example, a car 30~km away that sends 300~cd per lamp toward the platform, with $V=111$~km, gives $E=3.0\times10^{-7}$~lx and $m=+2.3$, about as bright as Polaris.
 
 Whether the eye sees it depends on the background. Crumey's fit to laboratory contrast thresholds gives the naked-eye limiting magnitude of a point source on a background of surface brightness $\mu$ (in mag\,arcsec$^{-2}$) as\cite{Crumey2014}
 \begin{equation}
@@ -179,11 +181,11 @@ valid for $20<\mu<22$, where $F$ is a field factor that describes the observer a
 \section{Results}\label{sec:results}
 %=======================================================================
 
-\subsection{What is in view}
+\subsection{What is in view}\label{sec:inview}
 
 Table~\ref{tab:config} gives the length of US-67 in view for a headlamp 0.66~m high at $k=0.13$, from Marfa to Presidio, for each terrain model. The three elevation models agree point by point for 98.6--99.7\% of the road, but only the lidar is accurate enough to decide visibility with confidence: with the 1-arc-second model almost all of the ``visible'' road is uncertain in the Monte Carlo, with the lidar almost all of it is robust. Measured vegetation and structures remove about 0.5~km. Of the 64.5~km between Shafter and Marfa, 9.5~km is in the visible class, 0.5~km marginal, and 54.5~km hidden. At 30-m sampling the visible road forms 29 separate stretches (five of them single samples; at the 60-m sampling used below, 18), 18--40~km from the platform, at bearings $229^\circ$--$238^\circ$ (plus one 60-m point at $251.9^\circ$), at apparent elevations between $-0.40^\circ$ and $+0.06^\circ$. Every one of them lies below the skyline, by $0.04^\circ$--$0.84^\circ$ (median $0.26^\circ$), so the lights are seen against the dark mountains rather than the sky. The limiting terrain point lies a median 3.0~km from the car.
 
-\begin{table}[b]
+\begin{table}[t]
 \caption{Length of US-67 (Marfa to Presidio, 3095 points every 30~m) in view of the platform for a lamp 0.66~m high at $k=0.13$. ``Visible'': deterministic, $\kc\le k$; ``robust'': $P_{\mathrm{vis}}\ge0.95$; ``uncertain'': $0.05<P_{\mathrm{vis}}<0.95$.}
 \label{tab:config}
 \begin{ruledtabular}
@@ -201,53 +203,27 @@ Lidar + obstructions & 9.93 & 9.72 & 0.27\\
 \end{ruledtabular}
 \end{table}
 
-Other sources are few. On Ranch-to-Market Road 2810, 13~km of 52~km is in view, at $253^\circ$--$259^\circ$ and 32--53~km. The Texas Pacifico railroad is in view for 12.5~km at 3.8--8~km distance for a locomotive headlight 4~m high (9.7~km for a lamp at 1.2~m), and 10 of the 65 lit towers in the area show their top light. Lamp height matters more than refraction (Table~\ref{tab:lampk}): a truck's clearance lamps at 4~m see about 4~km more road than a car's headlamps.
+Lamp height matters more than refraction: at $k=0.13$ a headlamp 0.56~m high sees 9.72~km of road, one at 1.37~m 10.83~km, and a truck's clearance lamps at 4~m 13.77~km (the full table is in the supplementary material\cite{SM}).
 
-\begin{table}[b]
-\caption{Length of US-67 in view (km, lidar with obstructions) versus lamp height and refraction coefficient.}
-\label{tab:lampk}
-\begin{ruledtabular}
-\begin{tabular}{lccc}
-Lamp height & $k=0$ & $k=0.13$ & $k=1$\\
-\hline
-0.56 m (low headlamp) & 9.45 & 9.72 & 11.49\\
-1.37 m (high headlamp, pickup) & 10.59 & 10.83 & 12.42\\
-4.0 m (truck clearance lamp) & 13.50 & 13.77 & 15.33\\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
+
+
+\subsection{The view from the platform}
+
+Figure~\ref{fig:panorama} shows every catalogued ordinary source as the observer sees it. Panel (a) spans $155^\circ$--$300^\circ$ of bearing, which includes the usual $120^\circ$ fan, with the vertical scale exaggerated so that the structure below the skyline is visible. Panel (b) shows the US-67 sector at true scale, as the eye sees it: the possible positions of cars on the highway form a broken chain against the dark terrain, typically a quarter of a degree (and at most $0.84^\circ$) below the skyline, and nowhere rise above it. Each gap in the chain is a stretch of road hidden by a fold of the basin. Seen at this scale, a single car appearing in one window and then another could easily be described as a light that moves, vanishes, and reappears elsewhere.
+
+\begin{figure*}[t]
+\includegraphics[width=0.95\textwidth]{fig09_panorama_sources.pdf}
+\caption{(a) Catalogued ordinary light sources as seen from the viewing area ($k=0.13$), with the known-source mask: the set of directions in which some catalogued source can appear for any $k$ from 0 to 1, widened by the observer's pointing error (filled: photographic pointing, $\pm0.3^\circ\times\pm0.1^\circ$; dashed: compass pointing, $\pm3^\circ\times\pm0.25^\circ$). Grey shades are ridges within 10, 25, and 45~km and beyond; vertical lines mark the usual $120^\circ$ viewing fan and the bearing of the tethered aerostat. The box is the region shown in (b). (b) The US-67 sector at true scale, rendered as at night: every dot is a position where a northbound car's headlamps can appear, with area increasing with the predicted brightness (low beam, fleet median, $V=111$~km). At any moment only a few of these positions are occupied (Sec.~\ref{sec:onecar}).}
+\label{fig:panorama}
+\end{figure*}
 
 \subsection{Refraction}
 
-Figure~\ref{fig:refraction}(a) shows how much road comes into view as $k$ rises: about 1.6~km more for US-67 between $k=0.13$ and 1. The main effect of refraction is on elevation, not visibility: a change $\Delta k$ lifts a light at distance $d$ by $d\,\Delta k/2R$, $0.13^\circ$ for $\Delta k=1$ at 30~km [Fig.~\ref{fig:refraction}(b)]. Table~\ref{tab:trace} summarizes the ray tracing. Even the strongest of our inversions adds only 1.5~km of visible road and lifts lights by at most $7.5'$. The elevated inversion produces three to five images of one lamp at five road points (60-m samples between 18.6 and 24.4~km from Marfa), a superior mirage, but they are only 1--8 arcseconds apart, far below the eye's resolution; they would be seen as one light, possibly twinkling. The images are stable when the step is reduced from 5 to 1~m and the fan density increased sevenfold. Surface layers whose gradient decreases monotonically with height gave single images only.
-
-\begin{figure*}[t]
-\includegraphics[width=0.8\textwidth]{fig05_refraction.pdf}
-\caption{(a) Road in view (constant-$k$ model) versus refraction coefficient; the top axis gives the equivalent temperature gradient from Eq.~(\ref{eq:hirt}). (b) Rise in apparent elevation of a light for a change $\Delta k$.}
-\label{fig:refraction}
-\end{figure*}
-
-\begin{table}[t]
-\caption{Ray tracing through temperature profiles that follow the terrain (US-67 from Marfa to Presidio at 60-m spacing, 0.66~m lamp; the neutral case differs from Table~\ref{tab:config} through the coarser sampling). $k_{\mathrm{eq}}$: median constant $k$ that reproduces the traced arrival angle. Lift: rise in apparent elevation relative to $k=0.13$.}
-\label{tab:trace}
-\begin{ruledtabular}
-\begin{tabular}{lccc}
-Profile & Visible & $k_{\mathrm{eq}}$ & Lift, median/max\\
- & (km) & & (arcmin)\\
-\hline
-Neutral & 9.78 & 0.13 & 0 / 0\\
-Isothermal & 9.90 & 0.18 & 0.4 / 0.6\\
-Weak inversion (3 K / 50 m) & 10.86 & 0.30 & 1.4 / 1.7\\
-Moderate (6 K / 30 m) & 10.92 & 0.47 & 2.9 / 4.3\\
-Strong (10 K / 20 m) & 11.28 & 0.67 & 4.5 / 7.5\\
-Elevated, 40--60 m & 9.66 & 0.36 & 1.8 / 2.8\\
-\end{tabular}
-\end{ruledtabular}
-\end{table}
+Refraction matters more for where a light appears than for whether it appears. Raising $k$ from 0.13 to 1 brings about 1.6~km more of US-67 into view, but a change $\Delta k$ lifts a light at distance $d$ by $d\,\Delta k/2R$, $0.13^\circ$ for $\Delta k=1$ at 30~km. In the ray tracing, the strongest of our surface inversions adds 1.5~km of visible road and lifts lights by at most $7.5'$. The elevated inversion produces three to five images of one lamp at five road points, a superior mirage, but they are only 1--8 arcseconds apart, far below the eye's resolution; they would be seen as one light, possibly twinkling. Surface layers whose gradient decreases monotonically with height gave single images only. The results for every profile are tabulated in the supplementary material.\cite{SM}
 
 \subsection{Brightness}
 
-US-67 runs almost straight at the platform. A northbound car (toward Marfa) has the platform $3^\circ$--$33^\circ$ to the driver's right (5th--95th percentile; median $14^\circ$), and $0.6^\circ$ below to $2.5^\circ$ above the lamp axis, near the top of the low beam [Fig.~\ref{fig:headlights}(a,b)]. Table~\ref{tab:phot} and Fig.~\ref{fig:headlights}(c) give the result. A northbound car is a naked-eye light over at least 87\% of the road in view for every lamp percentile, visual range, and threshold we tried, and over 93\% at the reference values: typically magnitude $+2.6$ on low beam and $+0.4$ on high beam. On the straight at $233.7^\circ$ (31--33~km) it reaches $-1.7$ on low beam and $-2.4$ on high beam, brighter than Sirius ($-1.46$). A southbound car shows its tail lamps $3^\circ$--$33^\circ$ off its rear axis (5th--95th percentile). At the regulatory minimum they are invisible ($m\approx9$); at the maximum they are at the threshold ($m\approx5.6$); braking brings them to $m\approx4.6$ even at the minimum, visible over most of the road. A red light on these bearings is therefore most likely a braking car.
+US-67 runs almost straight at the platform. A northbound car (toward Marfa) has the platform $3^\circ$--$33^\circ$ to the driver's right (5th--95th percentile; median $14^\circ$), and $0.6^\circ$ below to $2.5^\circ$ above the lamp axis, near the top of the low beam [Fig.~\ref{fig:headlights}(a,b)]. Table~\ref{tab:phot} and Fig.~\ref{fig:headlights}(c) give the result. A northbound car is a naked-eye light over at least 87\% of the road in view for every lamp percentile, visual range, and threshold we tried, and over 93\% at the reference values: typically magnitude $+2.6$ on low beam and $+0.4$ on high beam. On the straight at $233.7^\circ$ (31--33~km) it reaches $-1.7$ on low beam and $-2.4$ on high beam, brighter than Sirius ($-1.46$). A southbound car shows its tail lamps $3^\circ$--$33^\circ$ off its rear axis (5th--95th percentile). At the regulatory minimum they are invisible ($m\approx9$); at the maximum they are at the threshold ($m\approx5.6$); braking brings them to $m\approx4.6$ even at the minimum, visible over most of the road. Apart from the fixed red light of the tower at $230.3^\circ$ (Table~\ref{tab:signatures}), a red light on these bearings is therefore most likely a braking car.
 
 \begin{figure*}[t]
 \includegraphics[width=0.92\textwidth]{fig03_headlights.pdf}
@@ -259,27 +235,28 @@ US-67 runs almost straight at the platform. A northbound car (toward Marfa) has 
 \caption{Predicted magnitude of one car on US-67 (Shafter--Marfa) where its lamps are in view, and the road length over which it is brighter than $m_{\mathrm{lim}}$: reference ($V=111$~km, $\mu=21$, $F=2$, $m_{\mathrm{lim}}=5.9$) and full bracket (least favorable $V=68$~km, $\mu=20.5$, $F=4$; most favorable $V=203$~km, $\mu=22$, $F=1.4$). Road sampled every 60~m; ``in view'' means $P_{\mathrm{vis}}\ge0.5$ for the lamp's height.}
 \label{tab:phot}
 \begin{ruledtabular}
+\small
 \begin{tabular}{lccc}
 Lamps & $m$, median & Detectable & Bracket\\
  & (range) & (km) & (km)\\
 \hline
 \multicolumn{4}{l}{\textit{Northbound, 10.0 km in view}}\\
-Low beam, 25th pct. lamp & 2.9 ($-1.4$ to 6.8) & 9.4 & 8.7--10.0\\
-Low beam, fleet median & 2.6 ($-1.7$ to 6.0) & 9.6 & 9.0--10.0\\
-High beam, fleet median & 0.4 ($-2.4$ to 5.4) & 10.0 & 9.3--10.0\\
+Low beam, 25th pct. & 2.9 ($-1.4$ to 6.8) & 9.4 & 8.7--10.0\\
+Low beam, median & 2.6 ($-1.7$ to 6.0) & 9.6 & 9.0--10.0\\
+High beam, median & 0.4 ($-2.4$ to 5.4) & 10.0 & 9.3--10.0\\
 \multicolumn{4}{l}{\textit{Southbound, 10.1 km in view}}\\
-Tail lamps, FMVSS min. & 9.1 (7.9 to 10.6) & 0 & 0\\
-Tail lamps, FMVSS max. & 5.6 (4.7 to 6.3) & 6.7 & 0--10.1\\
+Tail, FMVSS min. & 9.1 (7.9 to 10.6) & 0 & 0\\
+Tail, FMVSS max. & 5.6 (4.7 to 6.3) & 6.7 & 0--10.1\\
 Braking, FMVSS min. & 4.6 (3.7 to 6.1) & 9.4 & 4.4--10.1\\
 \end{tabular}
 \end{ruledtabular}
 \end{table}
 
-\subsection{One car in time}
+\subsection{One car in time}\label{sec:onecar}
 
 Figure~\ref{fig:onecar} follows a northbound car at 30~m/s. It takes 13.6 minutes to cross the region in view and is visible for 334~s of it, in 18 separate windows: a median 510~m of road (17~s), from 60~m (2~s, our sampling limit) to 2.1~km (70~s). While visible it drifts across the view at about $0.9^\circ$ per minute, never more than $0.84^\circ$ below the skyline. Within a window its brightness changes by a median of 1.1 magnitudes (up to 4.9), and between successive 2-s samples by up to 0.8 magnitudes in one case in ten, with no change in the car: grade changes pitch the beam by degrees across the top of the low beam, where intensity falls by a factor of about 2 per degree, and curves swing the heading.
 
-One ordinary car therefore produces a light that appears, drifts, brightens and dims, vanishes, and reappears a little further on, 18 times. (The 18 windows are the 29 stretches of Sec.~\ref{sec:results}A at coarser sampling.) For a one-way flow $q$ with random arrivals, the number of cars in view is Poisson distributed with mean
+One ordinary car therefore produces a light that appears, drifts, brightens and dims, vanishes, and reappears a little further on, 18 times. (The 18 windows are the 29 stretches of Sec.~\ref{sec:inview} sampled every 60~m instead of 30~m.) For a one-way flow $q$ with random arrivals, the number of cars in view is Poisson distributed with mean
 \begin{equation}
 N = \frac{qL}{u},
 \label{eq:occupancy}
@@ -291,6 +268,34 @@ where $L$ is the length of road in view and $u$ the speed. With $L=10.0$~km and 
 \caption{A northbound car on US-67 at 30~m/s, seen from the platform. (a) Bearing versus time; orange where the headlamps are in view (dot area increases with brightness), grey where terrain hides the road. (b) Magnitude on low beam (solid) and high beam (dashed), fleet median, $V=111$~km.}
 \label{fig:onecar}
 \end{figure*}
+
+\subsection{The other catalogued sources}\label{sec:others}
+
+Table~\ref{tab:signatures} collects the observable signatures of every catalogued source in the southwestern view, the information an observer needs to recognize each one. Besides US-67, the catalogue contains other roads, two railroads, lit towers, the glow of towns, and a tethered aerostat. Ranch-to-Market Road 2810 is in view for 13~km of its 52~km, at $253^\circ$--$259^\circ$ and 32--53~km, but carries fewer than 60 vehicles a day. US-90 and the US-67/90 concurrency beside the platform are in view at $280^\circ$--$288^\circ$, at 0.3--26~km. The Texas Pacifico railroad is in view for 6.7~km within the usual fan ($159^\circ$--$213^\circ$, 3.8--8~km; 12.5~km in all) for a locomotive headlight 4~m high, and the crossing inventory reports at most one through train per night on it;\cite{FRA_xing} the Union Pacific line, with up to six night trains, is in view at $282^\circ$--$297^\circ$, partly above the skyline. Of the 65 registered towers in the area, 29 are lit; seven of these show their top light, five within $155^\circ$--$300^\circ$ and three within the usual fan, with red obstruction lights, steady or flashing at a fixed rate.\cite{FAA_AC} The glow of Shafter, Presidio, Ojinaga, and Marfa sits on the skyline at fixed bearings.
+
+Combining these sources with traffic rates gives a map of how often an ordinary light is expected in each direction. Within the usual fan and within 5~mrad ($0.29^\circ$) below the skyline, 79\% of the view has an expected rate of catalogued transient lights below 0.01 per hour and no fixed light. This estimate assumes that 2\% of the daily traffic passes in a night hour, that a quarter of drivers use high beams, and that a light's position is known to $\pm0.3^\circ$ in azimuth and $\pm0.1^\circ$ in elevation. With compass bearings ($\pm3^\circ$ by $\pm0.25^\circ$) the quiet fraction falls to 37\%, and the known-source mask of Fig.~\ref{fig:panorama}(a) grows from 30\% to 73\% of the band. The precision of a report therefore decides how much of the view it can test.
+
+\begin{table*}[t]
+\caption{Observable signatures of the catalogued ordinary light sources in the southwestern view from the viewing area (model, $k=0.13$, $V=111$~km). Bearings are true. Magnitudes are for one vehicle; the naked-eye limit is $m_{\mathrm{lim}}\approx4.9$--6.6.}
+\label{tab:signatures}
+\begin{ruledtabular}
+\footnotesize
+\begin{tabular}{p{2.5cm}p{2.1cm}p{2.1cm}p{3.3cm}p{3.5cm}p{2.1cm}}
+Source & Bearing & Elevation & Color, brightness & Behavior & Frequency\\
+\hline
+US-67 northbound (headlamps) & $229^\circ$--$238^\circ$ (and $252^\circ$) & $0.04^\circ$--$0.84^\circ$ below the skyline & white; $m$ from $-1.7$ to 6, median 2.6 (low beam) & 18 windows of 2--70~s; drifts $\approx0.9^\circ$/min toward larger bearing & $\approx$1 in view per 10 vehicles/h\\
+US-67 southbound (tail lamps) & same & same & red; $m$ 4.7--6.3 at FMVSS maximum, invisible at minimum; braking 3.7--6.1 & same windows in reverse order; drifts toward smaller bearing & same\\
+RM 2810 (toward Marfa) & $253^\circ$--$259^\circ$ & 0--$0.27^\circ$ below the skyline & white; $m$ median 4.0 & short windows & $<1$ vehicle/h\\
+US-90 and US-67/90 & $280^\circ$--$288^\circ$ & near horizontal & white or red; very bright & fast; 0.3--26~km away & busiest roads\\
+Texas Pacifico railroad & $159^\circ$--$213^\circ$ & $0.2^\circ$--$0.5^\circ$ below horizontal & white headlight and ditch lights & slow; 3.8--8~km away & $\le1$ train per night\\
+Union Pacific railroad & $282^\circ$--$297^\circ$ & partly above the skyline & white headlight and ditch lights & 0.3--27~km away & $\le6$ trains per night\\
+Lit towers, top in view & $230.3^\circ$, $255.7^\circ$, $259.2^\circ$, $279.7^\circ$, $284.2^\circ$ & fixed: $-0.34^\circ$, $-0.19^\circ$, $+0.08^\circ$, $-0.04^\circ$, $+0.06^\circ$ from the skyline & red obstruction light & steady or fixed flash rate & permanent\\
+Town skyglow & $211^\circ$--$219^\circ$, $286^\circ$ & on the skyline & diffuse glow & fixed & permanent\\
+Tethered aerostat & $292.9^\circ$ & variable & lights when aloft & fixed bearing & intermittent\\
+Aircraft, satellites, stars, planets & any & mostly above the skyline & various & predictable from flight tracking and ephemerides & continual\\
+\end{tabular}
+\end{ruledtabular}
+\end{table*}
 
 \subsection{A check against photographs}
 
@@ -305,12 +310,30 @@ This is a test of internal consistency, not of absolute pointing: because the fr
 \end{figure*}
 
 %=======================================================================
+\section{Using the model to screen observations}\label{sec:screening}
+%=======================================================================
+
+The results above turn into a sequence of tests that removes ordinary lights from a set of observations, in the order of how much each test removes.
+
+\textit{1. Position.} Is the light inside the known-source mask for the precision with which its position was measured? A light seen above the skyline is compared with aircraft tracks, with star, planet, and satellite ephemerides, and with the few fixed sources that reach above the skyline (two towers, the aerostat, and parts of the Union Pacific line); one below it is compared with Table~\ref{tab:signatures}.
+
+\textit{2. Color and brightness.} Does it match the source class at that position: white and of magnitude about $-2$ to 6 on the US-67 bearings for a car approaching Marfa; red and near the limit of vision for one driving away; red and fixed for a tower?
+
+\textit{3. Motion.} Does it move along the locus of a road at a rate a vehicle there could produce ($\approx0.9^\circ$ per minute on US-67, toward larger bearing for northbound and smaller bearing for southbound traffic), or stay fixed like a tower?
+
+\textit{4. Timing.} Does it last for seconds to about a minute and then reappear a little further along the road, as a car passing through the windows of Fig.~\ref{fig:onecar} does? Is the number of such lights consistent with the traffic, Eq.~(\ref{eq:occupancy})?
+
+A light that matches no catalogued source on any one of these tests---one outside the mask, or one inside it whose color, brightness, motion, or timing fits no source there---is a candidate worth careful measurement. Examples are a light that holds its position for many minutes where there is no tower, moves across a road's locus or faster than a vehicle on it could, rises above the skyline with no aircraft to account for it, or appears in a direction where no catalogued source can be seen at all. The model does not say what such a light is; it says that it is not one of the ordinary sources in Table~\ref{tab:signatures}.
+
+The same model is available as a website, \website, which applies the position test and lists the candidate sources, with their expected brightness and rate, for any direction an observer enters. It includes an interactive map of the view with every catalogued source, a phone-camera overlay that draws the skyline and the predicted positions of roads and towers on the live image and records calibrated bearings, and a sighting form that checks a report against every known source. Photographs like those of Fig.~\ref{fig:photos} can be registered to the modeled skyline with the published code.
+
+%=======================================================================
 \section{Discussion}\label{sec:discussion}
 %=======================================================================
 
-\textit{What the model explains.} Several features of reported sightings follow from ordinary physics. The lights sit just below the skyline because the only road in view lies on the far slope of the basin, seen against the mountains within $0.84^\circ$ of their crest. They appear and vanish without moving much because terrain cuts the road into short windows. They can be startlingly bright, brighter than any star, where the road points at the platform and the car pitches its beam upward. They brighten and fade within a single appearance because grade and curvature move the observer across the low-beam pattern. They seem too far away to be cars because the eye has no distance cue for a point source, and a light 30~km off at magnitude $+2$ looks like a star. Refraction adds only minutes of arc of lift and, in our profiles, no resolvable splitting.
+\textit{What the model accounts for.} Several features often reported for the lights follow from ordinary physics once the geometry is known. Lights on the US-67 bearings sit just below the skyline because the only road in view lies on the far slope of the basin, seen against the mountains. They appear and vanish without moving much because terrain cuts the road into short windows. They can be brighter than any star where the road points at the platform and a car pitches its beam upward. They brighten and fade within a single appearance because grade and curvature move the observer across the low-beam pattern. Car lights on these bearings are hard to recognize as such because the eye has no distance cue for a point source, and a light 30~km off at magnitude $+2$ looks like a star. Refraction adds only minutes of arc of lift and, in our profiles, no resolvable splitting. Recognizing these lights for what they are is what allows any others to stand out.
 
-\textit{What it does not show.} A model of where ordinary lamps can appear does not prove that any particular sighting was a car. It also does not cover every source: private ranch roads, ranch lights, off-road vehicles, and aircraft are not catalogued. Conversely, it defines where a light would be hard to explain. Combining the sources above with traffic rates, we find that in the band within 5~mrad below the skyline, about 80\% of the view has an expected rate of catalogued transient lights below 0.01 per hour and no fixed light. This estimate assumes that 2\% of the daily traffic passes in a night hour, that a quarter of drivers use high beams, and that a light's position is known to $\pm0.3^\circ$ in azimuth and $\pm0.1^\circ$ in elevation; with coarser positions the quiet fraction shrinks quickly. A light that appears there, or that stays steady for minutes, or that moves against the direction of the road, would not be explained by this model, and would deserve careful measurement.
+\textit{What it does not account for.} A model of where ordinary lamps can appear does not show that any particular sighting was one of them, and it cannot describe sources that are not in its catalogue: private ranch roads and ranch lights, off-road vehicles, and anything not yet known. The unexplained part of the view is therefore unexplained only with respect to the catalogue; extending the catalogue, for example with ranch lighting mapped from satellite night imagery, would shrink it further. Conversely, lights that remain outside the mask after careful measurement are exactly the observations that deserve attention.
 
 \textit{Limitations.} The largest are in the photometry. The beam survey describes lamps of about 2004; modern LED headlamps have sharper cut-offs and different wide-angle light, which the fleet percentiles do not cover. Signal lamps are bracketed by regulation, not measured. Pitch is approximated by the road grade, and the horizon sky brightness and the observer's field factor are not known for this site. The headlamp conclusion is insensitive to these; the tail-lamp result is not. In the geometry, grass lower than about 0.3~m is below what the lidar resolves (allowing for 0.25~m of it removes 0.6~km of visible road), and the refraction profiles are brackets, not measurements.
 
@@ -320,7 +343,7 @@ This is a test of internal consistency, not of absolute pointing: because the fr
 \section{Conclusions}
 %=======================================================================
 
-Exact geometry on 1-m lidar terrain shows that about 10~km of US-67, in 29 short stretches 18--40~km away, is in view of the Marfa lights viewing area, always just below the skyline. A single number, the critical refraction coefficient, decides visibility for each lamp position; because rays graze the ground within a meter or two, only lidar terrain with a terrain-error Monte Carlo makes that decision robust, and nocturnal inversions of up to 0.5~K/m at the surface change it little. Market-weighted beam patterns and a contrast-threshold model show that a northbound car there is a naked-eye light over nearly all of the road in view, typically of second or third magnitude and sometimes brighter than Sirius, while tail lamps are near the limit of vision. A single car should appear some 18 times in a quarter of an hour, brightening and fading with the road's grade and curves. The model makes these ordinary lights predictable in position, brightness, and timing, and so marks the rest of the view as the place to look for anything else.
+We have built a quantitative model of the ordinary lights seen from the Marfa lights viewing area, intended as a tool for separating them from anything else. Exact geometry on 1-m lidar terrain shows that about 10~km of US-67, in 29 short stretches 18--40~km away, is in view of the platform, always just below the skyline. A single number, the critical refraction coefficient, decides visibility for each lamp position; because rays graze the ground within about a meter, only lidar terrain with a terrain-error Monte Carlo makes that decision robust, and nocturnal inversions of up to 0.5~K/m at the surface change it little. Market-weighted beam patterns and a contrast-threshold model show that a northbound car there is a naked-eye light over nearly all of the road in view, typically of second or third magnitude and sometimes brighter than Sirius, while tail lamps are near the limit of vision. A single car should appear some 18 times in a quarter of an hour, brightening and fading with the road's grade and curves. Together with the railroad, the lit towers, and the glow of towns, these predictions give a table of observable signatures and a map of where ordinary lights can and cannot appear. Used as a screen, the model lets observers remove false positives and concentrate on the lights that remain unexplained.
 
 \begin{acknowledgments}
 [To be added at conditional acceptance.]
@@ -329,7 +352,7 @@ Exact geometry on 1-m lidar terrain shows that about 10~km of US-67, in 29 short
 \section*{Author declarations}
 \textit{Conflict of interest.} The author has no conflicts to disclose.
 
-\textit{Data availability.} All code, derived data, figures, and a manifest (URLs and SHA-256 checksums) of the public source data are available at \repo. The photographs are available from the author on request.
+\textit{Data availability.} The model is available as an interactive website at \website. All code, derived data, and figures, the public inputs, and a manifest of the terrain and geoid files (URLs and SHA-256 checksums) are available at \repo; an archived version of the repository will be deposited with a persistent identifier on acceptance. The photographs are available from the author on request.
 
 \textit{Use of AI tools.} [Author to review before submission.] In accordance with AIP Publishing's policy, we disclose that an AI system (Claude, Anthropic; configured model identifier claude-opus-5-5, 2026) was used to write and test the analysis code, to extract tabulated values from source documents (the UMTRI and FMVSS photometric tables, checked cell by cell against the printed tables), and to draft text. It was used because the project was carried out by a single author. All code is public and covered by unit tests, and every number in this paper is produced by that code.
 
@@ -339,13 +362,6 @@ Exact geometry on 1-m lidar terrain shows that about 10~km of US-67, in 29 short
 
 In a horizontally stratified atmosphere with refractive index $n(z)$, a ray at elevation angle $e$ bends toward the denser air with curvature $\kappa=-(1/n)(dn/dz)\cos e$. Writing $\kappa=k/R$ defines the refraction coefficient; with $n-1\propto P/T$ and hydrostatic pressure this gives Eq.~(\ref{eq:hirt}). In the chord frame and for small angles, $y''=-k/R$. With constant $k$ and $y(0)=0$, the ray is $y=\theta s-ks^2/2R$; requiring $y(D)=0$ gives $\theta=kD/2R$ and $y=ks(D-s)/2R$, Eq.~(\ref{eq:sag}). The relative error of the parabolic approximation is of order $(D/R)^2\approx10^{-5}$. The apparent elevation of the lamp is the chord elevation plus $\theta$, and a change $\Delta k$ raises it by $D\Delta k/2R$.
 
-\section{Terrain-error Monte Carlo}\label{app:mc}
-
-Each elevation source (lidar, 1/3 and 1 arc-second) gets its own, independent error field along the sight line. For a source with correlation length $\ell$ we generate a unit-variance first-order autoregressive sequence on a uniform grid of spacing $g=\min(\ell/4,\,5~\mathrm{m})$, $\delta_{j+1}=\phi\,\delta_j+\sqrt{1-\phi^2}\,\xi_j$ with $\phi=e^{-g/\ell}$ and independent standard normal $\xi_j$; this has the exponential correlation $e^{-|\Delta s|/\ell}$. We interpolate it linearly to the terrain samples, restore unit variance (interpolation lowers it by at most 6\%), and multiply by the standard deviation $\sigma$ of the source that supplied each sample. The values for the 1/3 and 1 arc-second models were measured against the lidar on about 40\,000 points; the lidar $\sigma$ comes from its accuracy report and its 20~m correlation length is assumed. An independent eye-height error ($\sigma=0.15$~m) tilts the chord, adding $\delta_{\mathrm{eye}}(D-s)/D$. For each of 200 realizations the lamp is visible if the perturbed terrain stays below the ray; $P_{\mathrm{vis}}$ is the fraction of realizations in which it does. Only samples that could reach the ray within $6\sigma$ are evaluated. Unit tests confirm the error statistics, the deterministic limit, and the analytic probability for a pure eye-height error.
-
-\section{Verification}\label{app:verify}
-
-Thirty unit tests cover the geometry (Euler radius, smooth-Earth horizon distances for $k=0$, 0.13, 0.5; $\kc$ against brute force on random terrain; an isolated ridge; margins flipping visibility), the Monte Carlo, the ray tracer (constant-$k$ reproduction; the reach of a surface duct against its analytic value), and the photometry (tabulated beam values; the magnitude scale; the definition of visual range; the sign conventions of $h$ and $v$). Run with the settings of an earlier, independent implementation (1-arc-second terrain, 15-m step), the model agrees on visibility for 1075 of 1077 points; the earlier implementation's azimuths were $0.12^\circ$ too large, from mixing spherical and ellipsoidal geometry. Changing the terrain step from 2/5~m to 1/2~m changes none of 3095 results.
 
 \bibliography{refs}
 

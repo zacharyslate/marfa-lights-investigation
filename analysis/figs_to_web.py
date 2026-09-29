@@ -7,7 +7,7 @@ from PIL import Image
 page = "docs/science.html"
 html = open(page, encoding="utf-8").read()
 for p in sorted(glob.glob("publication/figures/fig*.png")):
-    if "fig00_" in p:            # manuscript-only schematic, not on the website
+    if "fig00_" in p or "fig09_" in p:   # manuscript-only figures, not on the website
         continue
     name = os.path.basename(p)[:-4]
     im = Image.open(p).convert("RGB")

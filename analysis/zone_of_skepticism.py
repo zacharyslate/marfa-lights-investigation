@@ -78,9 +78,10 @@ def segments():
     sky = np.array(site["sky"])
     sky_at = lambda az: float(np.interp(az, sky[:, 0], sky[:, 1]))
     for t in site["towns"]:
-        if "a" not in t or not (AZ[0] + 1 <= t["az"] <= AZ[1] - 1):
+        if not (AZ[0] + 1 <= t["az"] <= AZ[1] - 1):
             continue
-        if t["kc"] <= K_RANGE[1]:
+        # towns beyond the terrain model (no apparent elevation computed: Presidio, Ojinaga) count as skyglow only
+        if "a" in t and t["kc"] is not None and t["kc"] <= K_RANGE[1]:
             for daz in np.linspace(-0.5, 0.5, 11) * math.degrees(1.5 / t["d"]):     # ~3 km wide town
                 segs.append((t["az"] + daz, alpha_at(t["a"], t["d"], max(t["kc"], K_RANGE[0])),
                              alpha_at(t["a"], t["d"], K_RANGE[1]), "town", t["n"]))

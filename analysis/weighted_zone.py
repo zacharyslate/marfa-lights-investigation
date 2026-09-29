@@ -156,9 +156,10 @@ def fixed_segments(k):
         if t["light"] != "none" and t["kc"] is not None and t["kc"] <= k and t["a"] is not None:
             out.append((t["az"], alpha_at(t["a"], t["d"], k), alpha_at(t["a"], t["d"], k)))
     for t in site["towns"]:
-        if "a" not in t or not (AZ[0] + 1 <= t["az"] <= AZ[1] - 1):
+        if not (AZ[0] + 1 <= t["az"] <= AZ[1] - 1):
             continue
-        if t["kc"] <= k:
+        # towns beyond the terrain model (no apparent elevation computed: Presidio, Ojinaga) count as skyglow only
+        if "a" in t and t["kc"] is not None and t["kc"] <= k:
             for daz in np.linspace(-0.5, 0.5, 11) * math.degrees(1.5 / t["d"]):
                 out.append((t["az"] + daz, alpha_at(t["a"], t["d"], k), alpha_at(t["a"], t["d"], k)))
         else:
@@ -301,8 +302,9 @@ def main():
         print(json.dumps(out["stats"], indent=1))
         return
     scenarios = {}
-    for name, k, rear in (("standard", K0, False), ("inversion", 1.0, False), ("tail_max", K0, True)):
-        out, grid, motion = run(k=k, label=name, rear=rear)
+    for name, k, rear, eaz, eel in (("standard", K0, False, 0.3, 0.1), ("inversion", 1.0, False, 0.3, 0.1),
+                                    ("tail_max", K0, True, 0.3, 0.1), ("compass", K0, False, 3.0, 0.25)):
+        out, grid, motion = run(k=k, label=name, rear=rear, err_az=eaz, err_el_deg=eel)
         scenarios[name] = out
         print(f"\n== {name} (k = {k}) ==")
         print(json.dumps(out["stats"], indent=1))
