@@ -17,7 +17,7 @@
 2. **Length.** The main text runs to 11 two-column pages including references. AJP's norm for regular papers is about 6 pages ([formatting guide](https://www.aapt.org/Publications/AJP/Contributors/Formatting_the_manuscript.cfm)). The methods, refraction figure, ray-tracing table, lamp-height table, cross-sections and verification are already in the SI. Further candidates:
    - Fig. 7 (the photograph check) could become a short paragraph plus an SI figure;
    - Table III (signatures) could move to the SI, though it is the core of the screening tool.
-3. **Affiliation and acknowledgments.** Both are placeholders.
-4. **AI-use statement.** This is required by AIP Publishing when AI affects analysis or data extraction ([policy](https://publishing.aip.org/resources/researchers/policies-and-ethics/ai-policy/)). Review the wording and confirm the tool and version.
+3. **Affiliation and acknowledgments.** Affiliation: Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid. No acknowledgments section (author decision, 2026-09-29).
+4. **AI-use statement.** Required by AIP Publishing when AI affects analysis or data extraction ([policy](https://publishing.aip.org/resources/researchers/policies-and-ethics/ai-policy/)). Reviewed and approved by the author (2026-09-29).
 5. **Photographs.** Credit: Zach Warren. Decide whether to deposit the raw frames as supplementary material.
 6. **Field experiments** are deliberately left out (author decision, 2026-09-29). The design is in `../notes/12_experimental_design.md`.
