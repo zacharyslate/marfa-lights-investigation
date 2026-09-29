@@ -14,6 +14,7 @@ It is published on the website at `docs/paper.html`, together with the PDFs in `
 - `marfa_ajp_SI.tex`: the Supporting Information, with a table of contents.
 - `refs.bib`, `refs_si.bib`: references. Every entry was checked against its source.
 - `analysis/animation.py`: builds the animation `docs/media/one_car.{mp4,webm}` and its poster frame.
+- `analysis/animation_traffic.py`: builds one simulated hour of random two-way traffic, `docs/media/traffic_x20.*` (time ×20) and `traffic_realtime.*` (a typical 5 minutes in real time). Its assumptions are listed in the script's docstring, and the hour's statistics are written to `data/derived/los2/traffic_sim.json`.
 
 ## Releasing a new version
 
