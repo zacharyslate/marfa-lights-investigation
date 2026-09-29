@@ -6,8 +6,9 @@ physically see: the geometry of US‑67 between Shafter and Marfa, terrain occlu
 curvature and atmospheric refraction, and the artificial light sources in the viewing direction.
 The goal is to remove known sources (false positives) before studying anything anomalous.
 
-**Status: preliminary.** Results are not field‑validated and will change. Please do not cite
-figures from this repository without contacting the author.
+**The paper.** *Separating the known from the unknown at Marfa, Texas* (version 1.0, 29 September 2026) is the
+citable output of this repository: https://zacharyslate.github.io/marfa-lights-investigation/paper.html. How to cite it
+is on that page and in `CITATION.cff`. Everything else here is working material. It is not field-validated and may change.
 
 Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub Pages, `docs/` folder)
 
@@ -115,6 +116,11 @@ port reading a downloaded 3DEP GeoTIFF is planned.
 - Electric Power Transmission Lines (HIFLD‑derived); FCC Antenna Structure Registration; Cellular Towers (FCC ULS); EIA‑860 Power Plants
 - Hirt, C., Guillaume, S., Wisbar, A., Bürki, B., Sternberg, H. (2010). *J. Geophys. Res.* 115, D21102. doi:10.1029/2010JD014067
 - Ciddor, P. E. (1996). Refractive index of air: new equations for the visible and near infrared. *Applied Optics* 35(9), 1566–1573.
+
+## Licence
+
+Paper, figures and data: CC BY 4.0 (`LICENSE-CC-BY-4.0.txt`). Code: MIT (`LICENSE`). Photographs by Zach Warren:
+all rights reserved. Third-party images, libraries and data keep their own licences. Details in `LICENSING.md`.
 
 ## Author
 

@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this model, its code or its data, please cite the paper below."
+title: "Marfa Lights Investigation: model, code and data"
+authors:
+  - family-names: Warren
+    given-names: Zach
+    affiliation: "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
+repository-code: "https://github.com/zacharyslate/marfa-lights-investigation"
+url: "https://zacharyslate.github.io/marfa-lights-investigation/"
+license: CC-BY-4.0
+version: "1.0"
+date-released: "2026-09-29"
+keywords:
+  - Marfa lights
+  - atmospheric refraction
+  - line of sight
+  - vehicle headlamps
+  - photometry
+preferred-citation:
+  type: report
+  title: "Separating the known from the unknown at Marfa, Texas: line of sight, refraction, and photometry of the ordinary lights seen from the Marfa lights viewing area"
+  authors:
+    - family-names: Warren
+      given-names: Zach
+      affiliation: "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
+  year: 2026
+  month: 9
+  notes: "Version 1.0, self-published"
+  url: "https://zacharyslate.github.io/marfa-lights-investigation/paper.html"

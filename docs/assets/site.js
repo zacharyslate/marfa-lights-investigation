@@ -42,6 +42,7 @@
     foot.className = "footer";
     foot.innerHTML = `<div class="page">
       <p>An independent research project by Zach Warren. Analysis, data and code: <a href="https://github.com/zacharyslate/marfa-lights-investigation">github.com/zacharyslate/marfa-lights-investigation</a>.</p>
-      <p>Results are preliminary and not yet field-validated. Map data: USGS The National Map, OpenStreetMap contributors, USDOT BTS, FAA, FRA, FCC, EIA, OurAirports.</p></div>`;
+      <p>Results are preliminary and not yet field-validated. Map data: USGS The National Map, OpenStreetMap contributors, USDOT BTS, FAA, FRA, FCC, EIA, OurAirports.</p>
+      <p>Text, figures and data: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code: MIT. Photographs by Zach Warren: all rights reserved. Other images: as credited. <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/LICENSING.md">Licensing details</a>.</p></div>`;
   }
 })();

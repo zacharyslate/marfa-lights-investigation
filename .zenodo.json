@@ -1,0 +1,36 @@
+{
+  "title": "Separating the known from the unknown at Marfa, Texas: line of sight, refraction, and photometry of the ordinary lights seen from the Marfa lights viewing area",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "<p>A physical model of every ordinary light source that can be seen from the Marfa Lights Viewing Area, Texas: where each one can appear, how bright it looks, and how it behaves over time. It is presented as a screening tool: observers can use it to set aside headlamps, tail lamps, trains, tower lights and town glow, and to recognize the lights that none of these explain. It does not claim that every Marfa light is ordinary.</p><p>This archive contains the paper and its Supporting Information (PDF and LaTeX sources in <code>publication/</code> and <code>docs/paper/</code>), the code that produces every number in them (<code>analysis/</code>, 45 automated tests), the derived data, and the project website. The paper is self-published and has not been peer reviewed. Web version: https://zacharyslate.github.io/marfa-lights-investigation/paper.html</p><p>Licences: paper, figures and data CC BY 4.0; code MIT; the author's photographs are all rights reserved; third-party material keeps its own licence. See LICENSING.md.</p>",
+  "creators": [
+    {
+      "name": "Warren, Zach",
+      "affiliation": "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "version": "1.0",
+  "publication_date": "2026-09-29",
+  "language": "eng",
+  "keywords": [
+    "Marfa lights",
+    "atmospheric refraction",
+    "line of sight",
+    "lidar",
+    "vehicle headlamps",
+    "photometry",
+    "visual detection threshold",
+    "light pollution",
+    "Chihuahuan Desert",
+    "Texas"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://zacharyslate.github.io/marfa-lights-investigation/paper.html",
+      "relation": "isIdenticalTo",
+      "resource_type": "publication-preprint"
+    }
+  ]
+}

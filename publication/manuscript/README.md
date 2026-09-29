@@ -25,8 +25,15 @@ It is published on the website at `docs/paper.html`, together with the PDFs in `
 
 3. Copy them to `docs/paper/marfa-known-unknown-vX.Y.pdf` and `docs/paper/marfa-known-unknown-SI-vX.Y.pdf`. Keep the old versions so that existing links still work.
 4. Run `python analysis/build_sw.py`. PDFs and videos are not precached for offline use; they download on demand.
-5. Commit and tag the release (for example `paper-v1.1`).
-   - Optional: archive the tag on Zenodo to get a DOI, which makes the paper citable in the literature.
+5. Update `version` and `publication_date` in `.zenodo.json` and `CITATION.cff`.
+6. Commit, push, and publish a GitHub release with a tag such as `paper-v1.1`.
+   - Zenodo archives every GitHub release of this repository automatically and gives it a DOI.
+   - The concept DOI always resolves to the newest version.
+   - `.zenodo.json` supplies the Zenodo metadata; Zenodo ignores `CITATION.cff` when both files exist.
+
+## Licence
+
+Text, figures and data are released under CC BY 4.0, and the code under MIT. The photographs in Fig. 6 are all rights reserved. See `../../LICENSING.md`.
 
 ## Notes
 
