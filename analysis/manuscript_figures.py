@@ -2,7 +2,7 @@
 
     python analysis/manuscript_figures.py   ->  publication/figures/fig00_geometry.{pdf,svg,png}
 
-Drawn in the frame of the straight eye-lamp chord OT: the terrain is plotted as its height y(s) relative to the
+Drawn in the frame of the straight eye-lamp chord OQ: the terrain is plotted as its height y(s) relative to the
 chord (curvature already included exactly), and a refracted ray with constant coefficient k is an arc that sags
 ABOVE the chord by k s (D - s) / 2R. The lamp is visible when the arc clears every terrain sample, i.e. when
 k >= k_crit = max_i 2 R y_i / (s_i (D - s_i)). Numbers are illustrative (D = 30 km), not a real profile.
@@ -40,7 +40,7 @@ kc = 2 * R * y[i] / (s[i] * (D - s[i]))
 fig, ax = plt.subplots(figsize=(88 * MM, 88 * MM * 0.62))
 ax.fill_between(s / 1e3, y, -30, color="#D9D9D9", lw=0, label="terrain relative to the chord")
 ax.plot(s / 1e3, y, color="k", lw=0.7)
-ax.plot([0, D / 1e3], [0, 0], color="k", lw=0.8, ls=(0, (4, 2)), label="chord $OT$")
+ax.plot([0, D / 1e3], [0, 0], color="k", lw=0.8, ls=(0, (4, 2)), label="chord $OQ$")
 ax.plot(s / 1e3, sag(0.13), color="#D55E00", lw=1.1, label="ray, $k=0.13$ (blocked)")
 ax.plot(s / 1e3, sag(kc), color="#0072B2", lw=1.1, label=f"ray, $k=k_{{crit}}={kc:.2f}$")
 ax.plot([s[i] / 1e3] * 2, [0, y[i]], color="k", lw=0.9)
@@ -51,7 +51,7 @@ ax.annotate("", (0, -1.2), (s[i] / 1e3, -1.2), arrowprops=dict(arrowstyle="<->",
 ax.plot(0, 0, "o", ms=4, color="k")
 ax.plot(D / 1e3, 0, "*", ms=7, color="#E69F00", mec="k", mew=0.4)
 ax.annotate("O (eye)", (0, 0), (1.2, 6.5), fontsize=7, arrowprops=dict(arrowstyle="-", lw=0.4))
-ax.annotate("T (lamp)", (D / 1e3, 0), (27.0, 6.5), fontsize=7, ha="right", arrowprops=dict(arrowstyle="-", lw=0.4))
+ax.annotate("Q (lamp)", (D / 1e3, 0), (27.0, 6.5), fontsize=7, ha="right", arrowprops=dict(arrowstyle="-", lw=0.4))
 ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=5.8, ncol=2, frameon=False)
 ax.set_xlim(-0.5, D / 1e3 + 0.5)
 ax.set_ylim(-17, 9)

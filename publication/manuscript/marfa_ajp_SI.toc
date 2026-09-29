@@ -11,18 +11,18 @@
 \contentsline {section}{\numberline {S4}Refraction}{7}{section.4}%
 \contentsline {subsection}{\numberline {S4.1}Local refraction coefficient}{7}{subsection.4.1}%
 \contentsline {subsection}{\numberline {S4.2}Ray tracing}{7}{subsection.4.2}%
-\contentsline {section}{\numberline {S5}Photometry}{8}{section.5}%
-\contentsline {subsection}{\numberline {S5.1}Heading, grade, and view angles}{8}{subsection.5.1}%
-\contentsline {subsection}{\numberline {S5.2}Headlamp tables}{8}{subsection.5.2}%
+\contentsline {section}{\numberline {S5}Photometry}{9}{section.5}%
+\contentsline {subsection}{\numberline {S5.1}Heading, grade, and view angles}{9}{subsection.5.1}%
+\contentsline {subsection}{\numberline {S5.2}Headlamp tables}{9}{subsection.5.2}%
 \contentsline {subsection}{\numberline {S5.3}Signal lamps}{9}{subsection.5.3}%
-\contentsline {subsection}{\numberline {S5.4}Transmission, magnitude, and threshold}{9}{subsection.5.4}%
-\contentsline {subsection}{\numberline {S5.5}Further results}{9}{subsection.5.5}%
+\contentsline {subsection}{\numberline {S5.4}Transmission, magnitude, and threshold}{10}{subsection.5.4}%
+\contentsline {subsection}{\numberline {S5.5}Further results}{10}{subsection.5.5}%
 \contentsline {section}{\numberline {S6}One car and occupancy}{10}{section.6}%
 \contentsline {section}{\numberline {S7}Known-source catalogue, mask, and rate map}{10}{section.7}%
 \contentsline {subsection}{\numberline {S7.1}Catalogue}{10}{subsection.7.1}%
-\contentsline {subsection}{\numberline {S7.2}Known-source mask}{10}{subsection.7.2}%
-\contentsline {subsection}{\numberline {S7.3}Rate map}{10}{subsection.7.3}%
-\contentsline {section}{\numberline {S8}Photograph analysis}{11}{section.8}%
-\contentsline {section}{\numberline {S9}Verification}{12}{section.9}%
-\contentsline {section}{\numberline {S10}The companion website}{13}{section.10}%
-\contentsline {section}{\numberline {S11}Reproducing the results}{13}{section.11}%
+\contentsline {subsection}{\numberline {S7.2}Known-source mask}{11}{subsection.7.2}%
+\contentsline {subsection}{\numberline {S7.3}Rate map}{11}{subsection.7.3}%
+\contentsline {section}{\numberline {S8}Photograph analysis}{13}{section.8}%
+\contentsline {section}{\numberline {S9}Verification}{14}{section.9}%
+\contentsline {section}{\numberline {S10}The companion website}{14}{section.10}%
+\contentsline {section}{\numberline {S11}Reproducing the results}{15}{section.11}%

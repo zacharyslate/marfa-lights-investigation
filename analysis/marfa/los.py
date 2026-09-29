@@ -106,8 +106,8 @@ def correlated_errors(s, sigma, corr, n, rng, grid=None):
     is generated on a uniform grid of spacing g = min(L/4, 5 m) with scipy.signal.lfilter and linearly
     interpolated to s; each sample takes the field of its own class, scaled by its sigma. (Errors of different
     DEM sources are independent of each other, as they should be.)  Linear interpolation of an AR(1) field
-    reduces its variance between grid nodes by at most (1+phi)/2 ~ 0.94 at g = L/4; the field is rescaled to unit
-    variance at every sample to remove this."""
+    lowers its variance midway between grid nodes to (1+phi)/2, i.e. 0.89 at g = L/4 (standard deviation -6 %);
+    the field is rescaled to unit variance at every sample to remove this."""
     from scipy.signal import lfilter
     s = np.asarray(s, float)
     sigma, corr = np.asarray(sigma, float), np.asarray(corr, float)

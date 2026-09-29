@@ -82,15 +82,15 @@ Each point is converted from geodetic longitude, latitude, and ellipsoidal heigh
 
 \subsection{Chord frame and the critical coefficient}
 
-Let $\hat{\mathbf u}$ be the unit vector from $O$ to $T$ and $\hat{\mathbf w}$ the unit vector perpendicular to it in the plane spanned by $\hat{\mathbf u}$ and the mean ellipsoid normal. For each terrain sample $P_i$,
+Let $\hat{\mathbf u}$ be the unit vector from the eye $O$ to the lamp $Q$ and $\hat{\mathbf w}$ the unit vector perpendicular to it in the plane spanned by $\hat{\mathbf u}$ and the mean ellipsoid normal. For each terrain sample $P_i$,
 \begin{equation}
 s_i=(\mathbf P_i-\mathbf O)\cdot\hat{\mathbf u},\qquad y_i=(\mathbf P_i-\mathbf O)\cdot\hat{\mathbf w}.
 \end{equation}
 With a constant refraction coefficient the ray is an arc lying above the chord by $\sigma_i(k)=ks_i(D-s_i)/2R$ (Eq.~2 and Appendix~A), where $R$ is the radius of curvature of the normal section of the ellipsoid in the azimuth $\alpha$ of the sight line, from Euler's formula,
 \begin{equation}
-\frac1R=\frac{\cos^2\alpha}{M}+\frac{\sin^2\alpha}{N},
+\frac1R=\frac{\cos^2\alpha}{R_M}+\frac{\sin^2\alpha}{R_N},
 \end{equation}
-with $M$ and $N$ the meridional and prime-vertical radii at the mean latitude. The lamp is visible if and only if $k\ge\kc=\max_i 2Ry_i/[s_i(D-s_i)]$ (Eq.~3). The clearance at $k$ is $c(k)=\min_i[\sigma_i(k)-y_i]$, and the apparent elevation of the lamp at the eye is the chord elevation plus $kD/2R$.
+with $R_M$ and $R_N$ the meridional and prime-vertical radii of curvature at the mean latitude. The lamp is visible if and only if $k\ge\kc=\max_i 2Ry_i/[s_i(D-s_i)]$ (Eq.~3). The clearance at $k$ is $c(k)=\min_i[\sigma_i(k)-y_i]$, and the apparent elevation of the lamp at the eye is the chord elevation plus $kD/2R$.
 
 \subsection{Sampling and end exclusions}
 
@@ -123,13 +123,13 @@ The lamp margin $d_L$ is the change in lamp height that puts the ray exactly on 
 
 \subsection{Terrain-error Monte Carlo}
 
-Each elevation source gets its own, independent error field along the sight line. For a source with correlation length $\ell$ we generate a unit-variance first-order autoregressive sequence on a uniform grid of spacing $g=\min(\ell/4,5~\mathrm m)$,
+Each elevation source gets its own, independent error field along the sight line. For a source with correlation length $\ell$ we generate a unit-variance first-order autoregressive sequence on a uniform grid of spacing $\Delta=\min(\ell/4,5~\mathrm m)$,
 \begin{equation}
-\delta_{j+1}=\phi\,\delta_j+\sqrt{1-\phi^2}\,\xi_j,\qquad \phi=e^{-g/\ell},
+\delta_{j+1}=\phi\,\delta_j+\sqrt{1-\phi^2}\,\xi_j,\qquad \phi=e^{-\Delta/\ell},
 \end{equation}
-with independent standard normal $\xi_j$, which has correlation $e^{-|\Delta s|/\ell}$. It is interpolated linearly to the terrain samples, rescaled to unit variance (linear interpolation lowers it by at most 6\%), and multiplied by the standard deviation $\sigma$ of the source that supplied each sample. An independent eye-height error $\delta_{\mathrm{eye}}$ ($\sigma=0.15$~m) tilts the chord, adding $\delta_{\mathrm{eye}}(D-s)/D$. In each of 200 realizations the lamp is visible if the perturbed terrain stays below the ray; $P_{\mathrm{vis}}$ is the fraction of realizations in which it does. Only samples that could reach the ray within $6\sigma$ are evaluated.
+with independent standard normal $\xi_j$, which has correlation $e^{-|\Delta s|/\ell}$. It is interpolated linearly to the terrain samples, rescaled to unit variance (midway between grid nodes linear interpolation lowers the variance to $(1+\phi)/2$, at worst 0.89, i.e.\ the standard deviation by 6\%), and multiplied by the standard deviation $\sigma$ of the source that supplied each sample. An independent eye-height error $\delta_{\mathrm{eye}}$ ($\sigma=0.15$~m) tilts the chord, adding $\delta_{\mathrm{eye}}(D-s)/D$. In each of 200 realizations the lamp is visible if the perturbed terrain stays below the ray; $P_{\mathrm{vis}}$ is the fraction of realizations in which it does. Only samples that could reach the ray within $6\sigma$ are evaluated.
 
-The error statistics of the 1/3 and 1 arc-second models were measured against the lidar at 39\,807 points (\texttt{data/derived/los2/dem\_error.json}): standard deviations 0.56~m and 2.05~m (biases $-0.02$~m and $-0.09$~m). Semivariograms of the difference along random transects, fitted with the exponential model $\gamma(h)=\sigma^2(1-e^{-h/\ell})$ with the sill fixed at $\sigma^2$, give correlation lengths $\ell=70$~m and 125~m. For the lidar we use the reported non-vegetated RMSE, 0.056~m, and an assumed correlation length of 20~m.
+The error statistics of the 1/3 and 1 arc-second models were measured against the lidar at 39\,807 points (\texttt{data/derived/los2/dem\_error.json}): standard deviations 0.56~m and 2.05~m (biases $-0.02$~m and $-0.09$~m). Semivariograms of the difference along random transects, fitted with the exponential model $\gamma(r)=\sigma^2(1-e^{-r/\ell})$ at lag $r$, with the sill fixed at $\sigma^2$ (the semivariogram of a field with correlation $e^{-r/\ell}$), give correlation lengths $\ell=70$~m and 125~m. For the lidar we use the reported non-vegetated RMSE, 0.056~m, and an assumed correlation length of 20~m.
 
 \textit{Classes.} Visible: $P_{\mathrm{vis}}\ge0.95$ and still visible when 0.25~m of unresolved grass is added to the terrain. Hidden: $P_{\mathrm{vis}}\le0.05$. Marginal: otherwise. Between Shafter and Marfa (64.5~km) this gives 9.5~km visible, 0.5~km marginal, and 54.5~km hidden. The earlier implementation, which classed as ``visible'' any point with more than 5~m of clearance far from the car, gave 9.3, 7.4, and 47.9~km; almost all of its marginal road was an artifact of coarse terrain near the car.
 
@@ -173,11 +173,11 @@ The ``max'' obstruction variant gives 9.84~km at the reference settings, and uni
 
 \subsection{Local refraction coefficient}
 
-A ray at elevation $e$ in a horizontally stratified atmosphere curves toward the denser air with curvature $\kappa=-(1/n)(dn/dz)\cos e$. With $n-1=cP/T$ ($c=79.0\times10^{-6}$~K/hPa at visible wavelengths) and hydrostatic pressure, $dP/dz=-gP/(R_dT)$, one finds
+A ray at elevation $e$ in a horizontally stratified atmosphere curves toward the denser air with curvature $\kappa=-(1/n)(dn/dz)\cos e$. With $n-1=cP/T$ ($c=79.0\times10^{-6}$~K/hPa at visible wavelengths) and hydrostatic pressure, $dP/dz=-g_0P/(R_dT)$ ($g_0$ the acceleration of gravity, $R_d$ the gas constant of dry air), one finds, for $n\approx1$ and $\cos e\approx1$,
 \begin{equation}
-k=R\kappa \approx R\,c\,\frac{P}{T^2}\left(\frac{g}{R_d}+\frac{dT}{dz}\right)=503\,\frac{P}{T^2}\left(0.0343+\frac{dT}{dz}\right),
+k=R\kappa \approx R\,c\,\frac{P}{T^2}\left(\frac{g_0}{R_d}+\frac{dT}{dz}\right)\approx503\,\frac{P}{T^2}\left(0.0343+\frac{dT}{dz}\right),
 \end{equation}
-Eq.~(4) of the main paper,\cite{Hirt2010} with $g/R_d=0.0342$~K/m the autoconvective lapse rate. At 850~hPa and 283~K the prefactor is 5.34~K$^{-1}$\,m.
+Eq.~(4) of the main paper.\cite{Hirt2010} Here $Rc=503$~m\,K/hPa for $R=6371$~km, and $g_0/R_d=0.0342$~K/m is the autoconvective lapse rate, which Hirt \textit{et al.}\ give as 0.0343; the difference changes $k$ by less than 0.001. At 850~hPa and 283~K the prefactor $503P/T^2$ is 5.34~m/K. (The code computes the same relation from $c$, $g_0$, and $R_d$; a unit test checks it against a numerical derivative of $n(z)$ in a hydrostatic atmosphere.)
 
 \subsection{Ray tracing}
 
@@ -222,7 +222,7 @@ Elevated inversion, 40--60~m & 9.66 & 0.36 & 1.8 / 2.8\\
 
 \subsection{Heading, grade, and view angles}
 
-The heading $\psi$ at each 60-m road sample is the geodesic azimuth between its two neighbors along the TxDOT centerline. The grade $g$ is the lidar height difference between points 25~m ahead and 25~m behind along $\psi$, divided by 50~m, and clipped to $\pm8\%$ (no point on US-67 between Shafter and Marfa needed clipping). Both directions of travel are evaluated. The angles of the observer in the lamp frame are $h=\beta-\psi$, wrapped to $(-180^\circ,180^\circ]$, and $v=\epsilon_T-\arctan g-a$, with $\epsilon_T=-e_O-D/R+kD/2R$ (Eq.~6). For equal heights and no refraction both ends see the chord at $-D/2R$, which is one of the unit tests.
+The heading $\psi$ at each 60-m road sample is the geodesic azimuth between its two neighbors along the TxDOT centerline. The grade $g$ is the lidar height difference between points 25~m ahead and 25~m behind along $\psi$, divided by 50~m, and clipped to $\pm8\%$ (no point on US-67 between Shafter and Marfa needed clipping). Both directions of travel are evaluated. The angles of the observer in the lamp frame are $h=\beta-\psi$, wrapped to $(-180^\circ,180^\circ]$, and $v=\epsilon_Q-\arctan g-\delta_{\mathrm{aim}}$, with $\epsilon_Q=-e_O-D/R+kD/2R$ (Eq.~6). The term $-e_O-D/R$ is the elevation of the chord at the lamp: the verticals at the eye and the lamp differ by the central angle, which $D/R$ reproduces to better than $1''$ at these ranges. Refraction raises the ray at both ends by $kD/2R$. For equal heights and no refraction both ends see the chord at $-D/2R$. Unit tests check the formula against exact three-dimensional geometry.
 
 On US-67 the platform lies $3^\circ$--$33^\circ$ to the right of northbound drivers (5th--95th percentile; median $14^\circ$) and $0.6^\circ$ below to $2.5^\circ$ above their lamp axis (median $+0.8^\circ$). Southbound drivers have it $3^\circ$--$33^\circ$ off their rear axis.
 
@@ -322,7 +322,7 @@ In the band 5~mrad below the skyline, the fraction of the view with $\lambda<0.0
 
 \textit{Independent sightings.} Frames seconds apart show the same vehicles, so the unit of analysis is a sighting within a burst (frames 04+05, 06+07, 08, 09, 10). Two detections in one burst are the same vehicle if they lie on the same road and their along-road separation is within what a vehicle at $\le45$~m/s covers between frames, plus 60~m. This gives eight sightings.
 
-\textit{Statistic and null model.} The statistic is the median angular distance from the sightings to the modeled curve of visible road (piecewise linear between consecutive in-view 60-m samples). The null places the same number of random points per burst uniformly in each frame's ground band. The observed median is $0.0085^\circ$ (maximum $0.013^\circ$), against a null median of medians of $0.28^\circ$; only 1.4\% of the band lies within $0.0085^\circ$ of visible road. The exact probability that at least 4 of 8 random points fall that close (Poisson-binomial, with each burst's own fraction) is $3\times10^{-6}$ ($2\times10^{-6}$ without the contrast rule); no one of 4000 Monte Carlo draws was as close.
+\textit{Statistic and null model.} The statistic is the median angular distance from the sightings to the modeled curve of visible road (piecewise linear between consecutive in-view 60-m samples). The null places the same number of random points per burst uniformly in each frame's ground band. The observed median is $0.0085^\circ$ (maximum $0.013^\circ$), against a null median of medians of $0.28^\circ$; only 1.4\% of the band lies within $0.0085^\circ$ of visible road. The exact probability that at least 4 of 8 random points fall that close (Poisson-binomial, with each burst's own fraction) is $3\times10^{-6}$; because a median of 8 values can only be as small as $x$ if at least four values are, this is an upper bound on the chance of a median as small as observed ($2\times10^{-6}$ without the contrast rule); no one of 4000 Monte Carlo draws was as close.
 
 \textit{Visible--hidden boundary.} 48--50\% of the US-67 samples that project into each frame are modeled as hidden, yet the road sample nearest each of the eight sightings is a visible one. If the model's split had no predictive power, the probability would be the product of the frames' visible fractions, about 0.005.
 
@@ -336,11 +336,12 @@ In the band 5~mrad below the skyline, the fraction of the view with $\lambda<0.0
 \section{Verification}\label{s:verify}
 %=======================================================================
 
-Thirty unit tests (\texttt{analysis/tests/}) pass:
+Forty-five unit tests (\texttt{analysis/tests/}) pass:
 \begin{itemize}\itemsep0pt
 \item \textit{Geometry:} Euler normal-section radius; smooth-Earth horizon distance for $k=0$, 0.13, 0.5; dip of a sea-level horizon; $\kc$ against brute force on random terrain; an isolated ridge against its analytic $\kc$; the multi-lamp engine against the single-lamp engine; lamp and eye margins flip visibility; fine sampling near both ends; missing terrain raises an error; clutter raises $\kc$.
 \item \textit{Monte Carlo:} statistics of the correlated error field; the deterministic limit; the analytic probability for a pure eye-height error.
 \item \textit{Ray tracer:} Eq.~(4) gives the standard value; constant gradients reproduce constant-$k$ arcs and horizons; the reach of a surface duct matches its analytic value.
+\item \textit{Equations} (\texttt{test\_equations.py}, independent of the model code): the curvature drop and horizon against an exact sphere; the parabolic sag against the exact circular arc; $\kc$ as the visibility threshold; the refraction coefficient of Eq.~(4) against a numerical derivative of $n(z)$ in a hydrostatic atmosphere; the comparison bound for height-dependent $k$; the elevation at the lamp, Eq.~(6), against exact three-dimensional geometry; the pitch sign; optical and visual range; the magnitude constant (from Schaefer's foot-candle form, and the Sun as a check); the Crumey values; the occupancy, Eq.~(10), against a simulation of random traffic; the angular drift rate; Euler's radius; the autoregressive error field; and the conservativeness of the median test.
 \item \textit{Photometry:} tabulated UMTRI values; the magnitude scale; the definition of optical range; the Crumey relation; sign conventions of $h$ and $v$; level-ground symmetry; signal-lamp brackets.
 \end{itemize}
 

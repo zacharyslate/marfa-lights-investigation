@@ -80,18 +80,18 @@ For a smooth sphere of radius $R$, a point at distance $d$ lies below the observ
 \Delta h = \frac{(1-k)\,d^2}{2R}.
 \label{eq:drop}
 \end{equation}
-At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye 1.6~m up is only $\sqrt{2Rh/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (terrain cross-sections along several bearings are shown in the supplementary material\cite{SM}). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
+At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye $h_{\mathrm e}=1.6$~m up is only $\sqrt{2Rh_{\mathrm e}/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (terrain cross-sections along several bearings are shown in the supplementary material\cite{SM}). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
 
 \subsection{Exact geometry and the critical refraction coefficient}
 
-We place the eye $O$, the lamp $T$, and terrain samples $P_i$ along the geodesic from $O$ to $T$ (computed with Karney's algorithm on the WGS84 ellipsoid\cite{Karney2013}) in Earth-centered Cartesian coordinates. For each sample we record its distance along the chord, $s_i=(\mathbf{P}_i-\mathbf{O})\cdot\hat{\mathbf u}$, and its height above the chord, $y_i=(\mathbf P_i-\mathbf O)\cdot\hat{\mathbf w}$, where $\hat{\mathbf u}$ points from $O$ to $T$ and $\hat{\mathbf w}$ is perpendicular to it in the vertical plane. Earth's curvature is then contained exactly in the $y_i$; no $d^2/2R$ approximation is needed.
+We place the eye $O$, the lamp $Q$, and terrain samples $P_i$ along the geodesic from $O$ to $Q$ (computed with Karney's algorithm on the WGS84 ellipsoid\cite{Karney2013}) in Earth-centered Cartesian coordinates. For each sample we record its distance along the chord, $s_i=(\mathbf{P}_i-\mathbf{O})\cdot\hat{\mathbf u}$, and its height above the chord, $y_i=(\mathbf P_i-\mathbf O)\cdot\hat{\mathbf w}$, where $\hat{\mathbf u}$ points from $O$ to $Q$ and $\hat{\mathbf w}$ is perpendicular to it in the vertical plane. Earth's curvature is then contained exactly in the $y_i$; no $d^2/2R$ approximation is needed.
 
-With a constant refraction coefficient the ray from $O$ to $T$ is a circular arc of radius $R/k$ (Appendix~\ref{app:kcrit}), which lies above the chord by
+With a constant refraction coefficient the ray from $O$ to $Q$ is a circular arc of radius $R/k$ (Appendix~\ref{app:kcrit}), which lies above the chord by
 \begin{equation}
 \sigma_i(k)=\frac{k\,s_i(D-s_i)}{2R},
 \label{eq:sag}
 \end{equation}
-where $D=|OT|$ and $R$ is the radius of curvature of the ellipsoid's normal section in the direction of the sight line (Euler's formula). The lamp is visible if the arc clears every sample, $y_i\le\sigma_i(k)$ for all $i$. Because $\sigma_i$ is linear in $k$, this is equivalent to
+where $D=|OQ|$ and $R$ is the radius of curvature of the ellipsoid's normal section in the direction of the sight line (Euler's formula). The lamp is visible if the arc clears every sample, $y_i\le\sigma_i(k)$ for all $i$. Because $\sigma_i$ is linear in $k$, this is equivalent to
 \begin{equation}
 k\ \ge\ \kc\equiv\max_i\ \frac{2R\,y_i}{s_i(D-s_i)}.
 \label{eq:kcrit}
@@ -100,7 +100,7 @@ Figure~\ref{fig:geometry} illustrates this. Equation~(\ref{eq:kcrit}) turns a vi
 
 \begin{figure}[t]
 \includegraphics[width=\columnwidth]{fig00_geometry.pdf}
-\caption{Line-of-sight geometry in the frame of the straight chord $OT$ (illustrative profile, 30~km). The terrain is plotted as its height $y$ above the chord, which includes Earth's curvature. A refracted ray with coefficient $k$ lies above the chord by $k s(D-s)/2R$. Here the ridge at $s_i$, which rises $y_i$ above the chord, blocks the standard ray ($k=0.13$); the lamp becomes visible for $k\ge\kc=0.29$.}
+\caption{Line-of-sight geometry in the frame of the straight chord $OQ$ (illustrative profile, 30~km). The terrain is plotted as its height $y$ above the chord, which includes Earth's curvature. A refracted ray with coefficient $k$ lies above the chord by $k s(D-s)/2R$. Here the ridge at $s_i$, which rises $y_i$ above the chord, blocks the standard ray ($k=0.13$); the lamp becomes visible for $k\ge\kc=0.29$.}
 \label{fig:geometry}
 \end{figure}
 
@@ -118,7 +118,7 @@ A visible/hidden answer from Eq.~(\ref{eq:kcrit}) is only as good as its inputs,
 
 \textit{Refraction.} Section~\ref{sec:refraction}.
 
-The code reproduces an earlier, independent implementation (1075 of 1077 points agree) and passes 30 unit tests; both checks are described in the supplementary material.\cite{SM}
+The code reproduces an earlier, independent implementation (1075 of 1077 points agree) and passes 45 unit tests, 15 of which re-derive every equation of this paper independently of the model code; both checks are described in the supplementary material.\cite{SM}
 
 %=======================================================================
 \section{Refraction near the ground at night}\label{sec:refraction}
@@ -134,7 +134,7 @@ with $P$ in hPa, $T$ in K, and $dT/dz$ in K/m. At the site ($P\approx850$~hPa, $
 y''(s) = -\frac{k\big(a(s)\big)}{R},\qquad a = y - y_{\mathrm{ground}}(s),
 \label{eq:ray}
 \end{equation}
-where $a$ is the ray's height above the local ground. For constant $k$ the ray through $T$ is exactly Eq.~(\ref{eq:sag}), which we use as a test. We launch a fan of rays from the eye, discard those that hit the terrain, and find the launch angles that arrive at the lamp; each is an image. The profiles are brackets, not a climatology: an exponential stable boundary layer with 3, 6, or 10~K of inversion over 50, 30, or 20~m (the standard nocturnal form\cite{Stull1988}; surface gradients 0.06, 0.2, and 0.5~K/m), an isothermal layer, a neutral one, and an elevated 4-K inversion between 40 and 60~m. They do not reach the strongest gradients measured in the lowest 2~m, which the rays at issue here cross only near the two ends.
+where $a$ is the ray's height above the local ground. For constant $k$ the ray through $Q$ is exactly Eq.~(\ref{eq:sag}), which we use as a test. We launch a fan of rays from the eye, discard those that hit the terrain, and find the launch angles that arrive at the lamp; each is an image. The profiles are brackets, not a climatology: an exponential stable boundary layer with 3, 6, or 10~K of inversion over 50, 30, or 20~m (the standard nocturnal form\cite{Stull1988}; surface gradients 0.06, 0.2, and 0.5~K/m), an isothermal layer, a neutral one, and an elevated 4-K inversion between 40 and 60~m. They do not reach the strongest gradients measured in the lowest 2~m, which the rays at issue here cross only near the two ends.
 
 A useful bound limits the work. If the largest local coefficient anywhere along a path is $k_{\max}$, then $y''\ge-k_{\max}/R$ with fixed end points, so every ray lies below the constant-$k_{\max}$ arc. A lamp with $\kc>k_{\max}$ is therefore hidden in that atmosphere, and need not be traced. In our profiles $k_{\max}=2.82$, which leaves 212 of the 1548 US-67 points (Marfa to Presidio, 60-m spacing) to trace.
 
@@ -146,11 +146,11 @@ A useful bound limits the work. If the largest local coefficient anywhere along 
 
 Lamps are strongly directional, so brightness depends on where the observer sits in the lamp's own coordinates. For a car with heading $\psi$ we define the horizontal angle of the observer off the heading, positive to the driver's right, $h=\beta-\psi$ (with $\beta$ the bearing from car to observer), and the vertical angle above the lamp axis,
 \begin{equation}
-v = \epsilon_T - \arctan g - a,\qquad
-\epsilon_T = -e_O - \frac{D}{R} + \frac{kD}{2R}.
+v = \epsilon_Q - \arctan g - \delta_{\mathrm{aim}},\qquad
+\epsilon_Q = -e_O - \frac{D}{R} + \frac{kD}{2R}.
 \label{eq:angles}
 \end{equation}
-Here $e_O$ is the elevation of the chord at the eye, so $\epsilon_T$ is the elevation of the arriving ray above the lamp's local horizontal; $g$ is the road grade along the heading, which pitches the car; and $a$ is an aim error (zero in the central case, $\pm0.5^\circ$ in the bands). We take $g$ from the lidar $\pm25$~m along the road. On US-67 the median grade is 1.6\% and the 95th percentile 4.7\%, so pitch commonly moves the observer in the beam by $1^\circ$--$3^\circ$, as much as the geometry itself.
+Here $e_O$ is the elevation of the chord at the eye, so $\epsilon_Q$ is the elevation of the ray at the lamp above the lamp's local horizontal (the verticals at the eye and the lamp differ by the angle $D/R$); $g$ is the road grade along the heading, which pitches the car; and $\delta_{\mathrm{aim}}$ is the vertical aim error of the lamp, positive when it is aimed high (zero in the central case, $\pm0.5^\circ$ in the bands). We take $g$ from the lidar $\pm25$~m along the road. On US-67 the median grade is 1.6\% and the 95th percentile 4.7\%, so pitch commonly moves the observer in the beam by $1^\circ$--$3^\circ$, as much as the geometry itself.
 
 \subsection{Lamp intensities}
 
