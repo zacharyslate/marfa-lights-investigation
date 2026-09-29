@@ -69,7 +69,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 | `01_geometry_and_rays.md` | observer, the fan, geodesics, angular size at range |
 | `02_curvature_and_refraction.md` | curvature drop, refraction coefficient, Hirt formula, why humidity doesn't bend light, limits of a constant k |
 | `03_line_of_sight.md` | DEM, visibility test, closed-form critical k, visibility classes, cross-sections, skyline |
-| `04_headlight_brightness.md` | car-frame angles, measured beam data, interpolation, lux to magnitude, results, limitations |
+| `04_headlight_brightness.md` | photometry v2: car-frame angles, market-weighted beams and FMVSS brackets, magnitude and detection threshold, one car over time, occupancy, limitations |
 | `05_zone_of_skepticism.md` | definition, construction, coverage, what it leaves out |
 | `06_geography_geology_climate.md` | setting, with sources |
 | `07_data_sources.md` | provenance table and catalogue gaps |
@@ -84,11 +84,13 @@ Run from the repository root, using the project virtual environment (`ZACH-venv`
 python analysis/marfa_ray_fan.py
 python analysis/marfa_infrastructure.py
 python analysis/marfa_occlusion.py
+(cd analysis && python -m marfa.run_photometry && python -m marfa.run_traffic)   # -> data/derived/los2/photometry.*, traffic_us67.json (needs roads_lidar.npz from marfa.run_los)
 python analysis/headlight_model.py      # -> data/derived/headlights.json
 python analysis/build_site_data.py      # -> docs/data/site.json
 python analysis/zone_of_skepticism.py   # -> data/derived/zos.json, docs/data/zos.json
 python analysis/weighted_zone.py        # -> data/derived/weighted_zone.json, docs/data/zos_rate.json
 python analysis/pub_figures.py          # -> publication/figures/*
+python analysis/figs_to_web.py && python analysis/build_sw.py   # -> docs/img/*.webp, docs/sw.js
 ```
 
 ## Reference

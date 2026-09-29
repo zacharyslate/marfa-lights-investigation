@@ -2,6 +2,8 @@
 
 > **Superseded numbers (2026-09-28).** This working note describes the v1 model. The line-of-sight model has since been rebuilt (exact WGS84 geometry, 1 m lidar terrain with point-cloud obstructions, Monte Carlo classes, height-dependent ray tracing); see [note 11](11_model_v2_methods.md) for the current methods and numbers, and [note 12](12_experimental_design.md) for the planned experiments. Where this note and note 11 disagree, note 11 is correct.
 
+> **Photometry v2 update (2026-09-29).** The rates now use the v2 brightness model (note 4): UMTRI market-weighted beams, lidar grades, MOR 145 km (NPS Big Bend average visual range) and m_lim = 5.86 (Crumey 2014, μ = 21, F = 2). Weighted quiet fraction of the band 0–5 mrad below the skyline: **0.805** standard night (k = 0.13), 0.779 strong inversion (k = 1), 0.797 if southbound tail lamps at the FMVSS maximum are counted (new 'tail_max' scenario, an upper bound). Tail lamps are no longer described as "well below the limit": at the regulatory maximum they are near it (note 4).
+
 ## Why weight the zone
 
 The binary zone (note 5) marks where a catalogued light *can* appear. It treats a highway with about 1,500 vehicles a day the same as a railroad that the FRA inventory lists with zero or one night train. In the binary version, the Texas Pacifico track alone accounted for more than half of the tier-A coverage in the band just below the skyline.

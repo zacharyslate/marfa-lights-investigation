@@ -4,10 +4,12 @@ Publication figures for the Marfa Lights investigation -> publication/figures/
     fig01_study_area        map of the 120 deg viewing fan, roads by visibility, rail, lit towers, towns
     fig02_panorama_zos      panorama from the Viewing Area with every catalogued source and the
                             Zone of Skepticism; (a) 155-300 deg, (b) zoom on the US-67 / RM 2810 sector
-    fig03_headlights        measured headlamp beams with the observer's position in each beam, and the
-                            predicted brightness of cars facing the Viewing Area
+    fig03_headlights        market-weighted headlamp beams with the observer's position in each beam, and the
+                            predicted brightness of a car on US-67 in either direction
     fig04_sightlines        terrain cross-sections along four bearings with the line of sight
     fig05_refraction        visible road length and apparent-elevation shift versus refraction k
+    fig06_weighted_zone     expected ordinary lights per hour across the view
+    fig08_one_car           what one car on US-67 looks like from the Viewing Area over time
 
 Each figure is written as PDF (vector, fonts embedded as Type 42), SVG, and PNG at 300 dpi.
 Colours: Okabe & Ito (2008) colour-blind-safe palette.
@@ -320,69 +322,122 @@ def fig02():
     save(fig, "fig02_panorama_zos")
 
 
-# ============================================================ figure 3: headlights
+# ============================================================ figure 3: headlights (photometry v2)
+def _phot():
+    import sys
+    sys.path.insert(0, "analysis")
+    from marfa import photometry as PH
+    from marfa.run_photometry import JUNCTION_LON, MARFA_LAT, SHAFTER_LAT, MOR_REF, MU_REF, F_REF
+    z = np.load("data/derived/los2/photometry.npz", allow_pickle=True)
+    us = (z["route"] == "US0067-KG") & (z["lat"] >= SHAFTER_LAT) & (z["lat"] <= MARFA_LAT) & (z["lon"] < JUNCTION_LON)
+    return PH, z, us, int(MOR_REF), float(PH.m_lim(MU_REF, F_REF)), (float(PH.m_lim(20.5, 4.0)), float(PH.m_lim(22.0, 1.4)))
+
+
 def fig03():
-    import importlib.util
-    spec = importlib.util.spec_from_file_location("hm", "analysis/headlight_model.py")
-    hm = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(hm)
-    fig = plt.figure(figsize=(W2, W2 * 0.72))
+    PH, z, us, mor, ml, (ml_lo, ml_hi) = _phot()
+    fig = plt.figure(figsize=(W2, W2 * 0.74))
     gs = fig.add_gridspec(2, 2, height_ratios=[1, 1.05], hspace=0.5, wspace=0.22)
-    hh = np.linspace(-40, 40, 321)
-    vv = np.linspace(-4.5, 4.5, 181)
+    hh = np.linspace(-45, 45, 361)
+    vv = np.linspace(-5, 7, 241)
     Hg, Vg = np.meshgrid(hh, vv)
-    levels = [30, 100, 300, 1000, 3000, 10000, 30000]
+    levels = [10, 30, 100, 300, 1000, 3000, 10000, 30000]
+    rm = (z["route"] == "RM2810-KG") & z["view_head"]
     obs = {}
-    for rd in HL["roads"]:
-        if rd["key"] in ("US67", "RM2810"):
-            q = [p for p in rd["pts"] if p[4] in "vm" and abs(p[7]) < 90]
-            obs[rd["key"]] = np.array([[p[7], p[8]] for p in q])
-    for i, (beam, title, pts) in enumerate(((hm.LOW, "(a) Lower beam (LB2V), one lamp", hm.LB2V),
-                                            (hm.HIGH, "(b) Upper beam (UB2), one lamp", hm.UB2))):
+    for key, sel in (("US67", us & z["view_head"]), ("RM2810", rm)):
+        h = np.where(np.abs(z["h_rev"][sel]) < 90, z["h_rev"][sel], z["h_fwd"][sel])
+        v = np.where(np.abs(z["h_rev"][sel]) < 90, z["v_rev"][sel], z["v_fwd"][sel])
+        obs[key] = np.c_[h, v][np.abs(h) < 90]
+    for i, (beam, title) in enumerate(((PH.LOW, "(a) Low beam, one lamp (UMTRI market-weighted median)"),
+                                       (PH.HIGH, "(b) High beam, one lamp (UMTRI market-weighted median)"))):
         ax = fig.add_subplot(gs[0, i])
-        I = beam(Hg, Vg)
-        cf = ax.contourf(Hg, Vg, np.log10(I), levels=np.log10([10] + levels + [1e5]), cmap="Greys", alpha=0.9)
-        c = ax.contour(Hg, Vg, np.log10(I), levels=np.log10(levels), colors="k", linewidths=0.3)
+        I = beam(Hg, Vg, "p50")
+        ax.contourf(Hg, Vg, np.log10(np.maximum(I, 1)), levels=np.log10([1] + levels + [1e5]), cmap="Greys", alpha=0.9)
+        c = ax.contour(Hg, Vg, np.log10(np.maximum(I, 1)), levels=np.log10(levels), colors="k", linewidths=0.3)
         ax.clabel(c, fmt=lambda x: f"{10**x:,.0f}", fontsize=5, inline_spacing=1)
-        p = np.array(pts)
-        ax.plot(p[:, 0], p[:, 1], "+", color=OI["sky"], ms=3.5, mew=0.8, label="measured test point")
-        ax.plot(obs["US67"][:, 0], obs["US67"][:, 1], "o", ms=1.8, color=C_VIS, mec="none", alpha=0.8, label="Viewing Area seen from US-67 cars")
-        ax.plot(obs["RM2810"][:, 0], obs["RM2810"][:, 1], "o", ms=1.8, color=C_ROAD2, mec="none", alpha=0.8, label="… from RM 2810 cars")
+        ax.plot(obs["US67"][:, 0], obs["US67"][:, 1], "o", ms=1.8, color=C_VIS, mec="none", alpha=0.85,
+                label="Viewing Area seen from northbound US-67 cars")
+        ax.plot(obs["RM2810"][:, 0], obs["RM2810"][:, 1], "o", ms=1.8, color=C_ROAD2, mec="none", alpha=0.85,
+                label="… from RM 2810 cars facing the viewer")
         ax.axhline(0, color="k", lw=0.3)
         ax.axvline(0, color="k", lw=0.3)
-        ax.set_xlim(-40, 40)
-        ax.set_ylim(-4.5, 4.5)
+        ax.set_xlim(-45, 45)
+        ax.set_ylim(-5, 7)
         ax.set_xlabel("h: angle right of the car's heading (°)")
         if i == 0:
             ax.set_ylabel("v: angle above the lamp axis (°)")
-        ax.set_title(title, loc="left")
-        edge = 20 if i == 0 else 12
-        ax.axvspan(-40, -edge, color="white", alpha=0.45, lw=0)
-        ax.axvspan(edge, 40, color="white", alpha=0.45, lw=0)
-        ax.text(-39, 4.2, "extrapolated", fontsize=5.6, va="top", style="italic")
-        ax.text(39, 4.2, "extrapolated", fontsize=5.6, va="top", ha="right", style="italic")
+        ax.set_title(title, loc="left", fontsize=7.2)
         if i == 1:
-            ax.legend(loc="lower right", fontsize=5.6, frameon=True, facecolor="white", edgecolor="none", framealpha=0.85)
+            ax.legend(loc="upper right", fontsize=5.6, frameon=True, facecolor="white", edgecolor="none", framealpha=0.85)
     ax = fig.add_subplot(gs[1, :])
-    for key, col, lab in (("US67", C_VIS, "US-67"), ("RM2810", C_ROAD2, "RM 2810")):
-        rd = [r for r in HL["roads"] if r["key"] == key][0]
-        q = np.array([[p[0], p[9], p[10], p[11], p[12], p[13], p[14]] for p in rd["pts"]
-                      if p[4] in "vm" and abs(p[7]) < 90], float)
-        q = q[np.argsort(q[:, 0])]
-        ax.errorbar(q[:, 0], q[:, 4], yerr=[q[:, 4] - q[:, 6], q[:, 5] - q[:, 4]], fmt="none", ecolor=col, elinewidth=0.4, alpha=0.35)
-        ax.plot(q[:, 0], q[:, 4], "^", ms=2.6, color=col, mec="none", label=f"{lab}, high beam")
-        ax.plot(q[:, 0], q[:, 1], "o", ms=2.3, mfc="white", mec=col, mew=0.6, label=f"{lab}, low beam")
+    ch = z["chain"][us]
+    x = (ch.max() - ch) / 1000                     # km from Shafter (TxDOT chainage runs from the Marfa end)
+    o = np.argsort(x)
+    x = x[o]
+    vh, vr = z["view_head"][us][o], z["view_rear"][us][o]
+    g = lambda k: z[k][us][o]
+    ax.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0)
+    ax.axhline(ml, color=OI["blue"], lw=0.6, ls=":")
+    ax.text(47.0, ml_lo - 0.1, f"naked-eye limit, Crumey (2014): {ml_lo:.1f}–{ml_hi:.1f}", fontsize=6, color=OI["blue"], va="bottom")
     ax.axhline(-1.46, color="k", lw=0.5, ls="--")
-    ax.text(247, -1.46, "Sirius (−1.46)", fontsize=6, va="bottom", ha="center")
-    ax.axhline(6.0, color="k", lw=0.5, ls=":")
-    ax.text(247, 6.0, "typical naked-eye limit (≈6)", fontsize=6, va="bottom", ha="center")
-    ax.set_xlim(227.5, 263)
-    ax.set_ylim(10.5, -3.5)
-    ax.set_xlabel("True bearing of the car from the Viewing Area (°)")
+    ax.text(47.0, -1.46, "Sirius (−1.46)", fontsize=6, va="bottom")
+    lo, mid, hi = g(f"m_low_p75_rev_{mor}"), g(f"m_low_p50_rev_{mor}"), g(f"m_low_p25_rev_{mor}")
+    ax.vlines(x[vh], lo[vh], hi[vh], color=C_VIS, lw=0.5, alpha=0.5)
+    ax.plot(x[vh], mid[vh], "o", ms=2.2, mfc="white", mec=C_VIS, mew=0.6, label="northbound, low beam (median; bar 25–75 % of fleet)")
+    ax.plot(x[vh], g(f"m_high_p50_rev_{mor}")[vh], "^", ms=2.4, color=C_VIS, mec="none", label="northbound, high beam (median)")
+    tmin, tmax = g(f"m_tail_min_fwd_{mor}"), g(f"m_tail_max_fwd_{mor}")
+    ok = vr & (tmax < 20)
+    ax.plot(x[ok], tmax[ok], "s", ms=1.9, color=OI["blue"], mec="none", label="southbound, tail lamps at FMVSS 108 maximum")
+    ax.plot(x[ok], tmin[ok], "s", ms=1.9, mfc="white", mec=OI["blue"], mew=0.5, label="southbound, tail lamps at FMVSS 108 minimum")
+    ax.plot(x[ok], g(f"m_brake_min_fwd_{mor}")[ok], "x", ms=2.4, mew=0.6, color=OI["blue"], label="southbound, braking (FMVSS 108 minimum)")
+    ax.set_xlim(27, 56)
+    ax.set_ylim(11, -3.5)
+    ax.set_xlabel("Distance along US-67 from Shafter (km); only road in view is plotted (none lies outside 28–55 km)")
     ax.set_ylabel("Apparent magnitude")
-    ax.set_title("(c) Predicted brightness of a car facing the Viewing Area (two lamps; MOR 100 km; bars: ±0.5° aim, fall-off range)", loc="left")
-    ax.legend(loc="lower center", ncol=2, fontsize=6, bbox_to_anchor=(0.42, 0.03))
+    ax.set_title(f"(c) Predicted brightness of one car on US-67 (two lamps; MOR {mor} km; k = 0.13)", loc="left")
+    ax.legend(loc="upper center", ncol=3, fontsize=5.8, bbox_to_anchor=(0.5, -0.2), columnspacing=1.2)
     save(fig, "fig03_headlights")
+
+
+# ============================================================ figure 8: one car seen from the Viewing Area
+def fig08():
+    PH, z, us, mor, ml, (ml_lo, ml_hi) = _phot()
+    T = json.load(open("data/derived/los2/traffic_us67.json"))
+    u = 30.0
+    ch = z["chain"][us]
+    o = np.argsort(ch)
+    ch = ch[o] - ch.min()
+    az = z["az"][us][o]
+    vw = z["view_head"][us][o]
+    t = (ch.max() - ch) / u / 60                         # northbound: time after passing Shafter
+    fig, (a1, a2) = plt.subplots(2, 1, figsize=(W2, W2 * 0.6), sharex=True,
+                                 gridspec_kw=dict(hspace=0.12, height_ratios=[1, 1.1]))
+    m_lo = np.where(vw, z[f"m_low_p50_rev_{mor}"][us][o], np.nan)
+    m_hi = np.where(vw, z[f"m_high_p50_rev_{mor}"][us][o], np.nan)
+    a1.plot(t, np.where(vw, np.nan, az), "-", color=C_HID, lw=1.0, zorder=0, label="road hidden by terrain")
+    size = np.clip(7 - np.nan_to_num(m_lo, nan=7), 0.4, 9) ** 1.6
+    a1.scatter(t[vw], az[vw], s=size[vw], color=C_VIS, lw=0, alpha=0.9, label="headlamps in view (dot area ∝ brightness, low beam)")
+    a1.set_ylabel("True bearing from the\nViewing Area (°)")
+    a1.set_ylim(254, 226)
+    a1.legend(loc="lower left", fontsize=6, markerscale=0.8)
+    a2.axhspan(ml_lo, ml_hi, color=OI["sky"], alpha=0.18, lw=0)
+    a2.axhline(ml, color=OI["blue"], lw=0.6, ls=":")
+    a2.text(14.2, ml_lo - 0.1, "naked-eye limit (Crumey 2014)", fontsize=6, color=OI["blue"], va="bottom")
+    a2.axhline(-1.46, color="k", lw=0.5, ls="--")
+    a2.text(14.2, -1.46, "Sirius", fontsize=6, va="bottom")
+    a2.plot(t, m_lo, "-", color=C_VIS, lw=1.0, label="low beam (market median)")
+    a2.plot(t, m_hi, color=C_VIS, lw=0.6, alpha=0.6, ls=(0, (3, 1.5)), label="high beam (market median)")
+    a2.legend(loc="upper right", fontsize=6)
+    a2.set_ylim(7.5, -3)
+    a2.set_xlim(14, 31)
+    a2.set_ylabel("Apparent magnitude")
+    a2.set_xlabel(f"Time after a northbound car passes Shafter at {u:.0f} m/s (min)")
+    nb = T["rev"]
+    a1.set_title(f"A northbound car appears {nb['n_windows']} times, for a median {nb['dwell_s']['30.0']['median']:.0f} s each "
+                 f"({nb['dwell_s']['30.0']['total']:.0f} s in view in {nb['dwell_s']['30.0']['span']/60:.1f} min); "
+                 f"MOR {mor} km, k = 0.13", loc="left", fontsize=7.2)
+    panel(a1, "a", x=-0.07)
+    panel(a2, "b", x=-0.07)
+    save(fig, "fig08_one_car")
 
 
 # ============================================================ figure 4: sight-line cross-sections
@@ -537,3 +592,4 @@ if __name__ == "__main__":
     fig04()
     fig05()
     fig06()
+    fig08()

@@ -146,10 +146,6 @@ Almost all of v1's "marginal" road was an artefact of the coarse DEM near the ca
 ## 8. What is still open (next steps, in order)
 
 1. **Retire the v1 engine.** Remove `los_browser.js` from the pipeline (keep it for the record).
-2. **Photometry.**
-   - Wide-angle headlamp intensity.
-   - Add DRLs and position, marker, tail and stop lamps. The FMVSS 108 photometry tables in the official CFR XML are images; read them from the printed CFR before citing values.
-   - Detection limit near the horizon, including sky brightness and extinction.
-   - Occupancy as flow × dwell time.
-3. **Experimental section.** Drafted in note 12; field dates and permissions are for the author to set.
+2. **Photometry.** Done (note 4, v2): market-weighted UMTRI beams, FMVSS No. 108 brackets for tail and stop lamps, lidar grades, NPS visual range, Crumey (2014) threshold, one-car timeline and occupancy. Remaining: a current (LED-era) beam survey and a horizon sky-brightness measurement.
+3. **Experimental section.** Drafted in note 12; kept out of the manuscript, which is a model paper (author decision, 2026-09-29).
 4. **Manuscript.** Introduction, Methods, Results, Discussion and Experimental design, drawn from notes 09–12.

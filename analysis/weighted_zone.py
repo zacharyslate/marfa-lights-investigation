@@ -12,9 +12,11 @@ For each position (bearing, elevation) the rate is
   roads   q = AADT * HOURLY_SHARE / 2 per direction (vehicles per hour), from the nearest
           TxDOT count station on the same route (highest of the 2025 AADT and the two previous years).
           P_detect = p_high * [m_high <= m_lim] + (1 - p_high) * [m_low <= m_lim]
-          with m from headlight_model.py, corrected to the night's MOR. Cars facing away
-          show only tail lamps, which are well below the naked-eye limit at these ranges
-          (they are not counted here; see the note).
+          with m from headlight_model.py (photometry v2), corrected to the night's MOR. Cars facing
+          away show tail lamps: at the FMVSS No. 108 minimum they are far below the naked-eye limit
+          at these ranges (m ~ 8-10), at the regulatory maximum they are near it (m ~ 4.5-6). They are
+          not counted in the standard scenario (a lower bound on the rate); the 'tail_max' scenario
+          counts them at the regulatory maximum (an upper bound).
   rail    q = night through-trains / 12 h, from the FRA grade-crossing inventory
           (Form FRA F 6180.71 defines night as 6 PM to 6 AM), the highest value reported at
           any crossing of that railroad.
@@ -62,7 +64,8 @@ D2M = 1000 * math.pi / 180
 HOURLY_SHARE = 0.02
 P_HIGH = 0.25
 SPEED_KMH = 100.0
-M_LIM = 6.0
+M_LIM = 5.86                            # Crumey (2014) eq. 54 at mu = 21.0 mag/arcsec^2, F = 2
+MOR_REF = json.load(open("data/derived/headlights.json"))["meta"].get("mor_ref_km", 100)
 LEVELS = [0.01, 0.1, 1.0, 10.0]         # contour levels, lights per hour
 ROUTE = {"US67": "US0067", "RM2810": "RM2810", "US0090": "US0090", "US0067": "US0067", "FM0170": "FM0170",
          "SH0118": "SH0118", "RM0169": "RM0169", "FM1112": "FM1112", "SH0017": "SH0017"}
@@ -72,11 +75,11 @@ def alpha_at(a013, d_km, k):
     return a013 + d_km * 1000 * (k - K0) / (2 * R) * 1000
 
 
-def mag_at_mor(m100, d_km, mor):
-    """Correct a magnitude computed for MOR = 100 km to another MOR."""
-    if m100 is None:
+def mag_at_mor(m_ref, d_km, mor):
+    """Correct a magnitude computed for MOR = MOR_REF km (headlights.json) to another MOR."""
+    if m_ref is None:
         return None
-    return m100 + 2.5 * math.log10(math.e) * math.log(20) * d_km * (1 / mor - 1 / 100)
+    return m_ref + 2.5 * math.log10(math.e) * math.log(20) * d_km * (1 / mor - 1 / MOR_REF)
 
 
 def load_aadt():
@@ -100,7 +103,7 @@ def nearest_aadt(stations, lon, lat):
     return best
 
 
-def sources(k, mor, m_lim, p_high, hourly_share, rail_rates):
+def sources(k, mor, m_lim, p_high, hourly_share, rail_rates, rear=False):
     """List of lines: dict(kind, label, rate_scale, pts=[(az, el_mrad, km, weight), ...])."""
     lines = []
     hl = json.load(open("data/derived/headlights.json"))
@@ -117,11 +120,15 @@ def sources(k, mor, m_lim, p_high, hourly_share, rail_rates):
                 az, km, a, kc, cls = p[0], p[1], p[2], p[3], p[4]
                 lat, lon = rd["lat"][i // 2], rd["lon"][i // 2]
                 vis = 1.0 if kc <= k else (0.5 if (cls == "m" and k >= K0) else 0.0)
-                if vis == 0 or abs(p[7]) >= 90 or not st:
+                if vis == 0 or not st or (abs(p[7]) >= 90 and not rear):
                     seq.append(None)
                     continue
-                mL, mH = mag_at_mor(p[9], km, mor), mag_at_mor(p[12], km, mor)
-                pdet = p_high * (mH is not None and mH <= m_lim) + (1 - p_high) * (mL is not None and mL <= m_lim)
+                if abs(p[7]) >= 90:          # facing away: tail lamps at the FMVSS No. 108 maximum
+                    mT = mag_at_mor(p[16], km, mor)
+                    pdet = float(mT is not None and mT <= m_lim)
+                else:
+                    mL, mH = mag_at_mor(p[9], km, mor), mag_at_mor(p[12], km, mor)
+                    pdet = p_high * (mH is not None and mH <= m_lim) + (1 - p_high) * (mL is not None and mL <= m_lim)
                 d_st, q, sid = nearest_aadt(st, lon, lat)
                 rate = q * hourly_share / 2 * pdet * vis
                 seq.append((az, alpha_at(a, km, k), km, rate, sid, q))
@@ -238,12 +245,12 @@ def rail_rates_from_fra():
     return out, detail
 
 
-def run(k=K0, mor=100.0, err_az=0.3, err_el_deg=0.1, m_lim=M_LIM, p_high=P_HIGH, hourly_share=HOURLY_SHARE,
-        rail_rates=None, label="night"):
+def run(k=K0, mor=MOR_REF, err_az=0.3, err_el_deg=0.1, m_lim=M_LIM, p_high=P_HIGH, hourly_share=HOURLY_SHARE,
+        rail_rates=None, label="night", rear=False):
     rr, rr_detail = rail_rates_from_fra()
     if rail_rates:
         rr.update(rail_rates)
-    lines, motion = sources(k, mor, m_lim, p_high, hourly_share, rr)
+    lines, motion = sources(k, mor, m_lim, p_high, hourly_share, rr, rear=rear)
     az, el, lam = rate_map(lines, err_az, err_el_deg * D2M)
     fixed = fixed_map(fixed_segments(k), err_az, err_el_deg * D2M)
     site = json.load(open("docs/data/site.json"))
@@ -281,7 +288,7 @@ def run(k=K0, mor=100.0, err_az=0.3, err_el_deg=0.1, m_lim=M_LIM, p_high=P_HIGH,
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--k", type=float)
-    ap.add_argument("--mor", type=float, default=100.0)
+    ap.add_argument("--mor", type=float, default=MOR_REF)
     ap.add_argument("--err-az", type=float, default=0.3)
     ap.add_argument("--err-el", type=float, default=0.1)
     ap.add_argument("--mlim", type=float, default=M_LIM)
@@ -294,8 +301,8 @@ def main():
         print(json.dumps(out["stats"], indent=1))
         return
     scenarios = {}
-    for name, k in (("standard", K0), ("inversion", 1.0)):
-        out, grid, motion = run(k=k, label=name)
+    for name, k, rear in (("standard", K0, False), ("inversion", 1.0, False), ("tail_max", K0, True)):
+        out, grid, motion = run(k=k, label=name, rear=rear)
         scenarios[name] = out
         print(f"\n== {name} (k = {k}) ==")
         print(json.dumps(out["stats"], indent=1))

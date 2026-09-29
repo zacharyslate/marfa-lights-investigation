@@ -1,41 +1,37 @@
 """
-Marfa Lights investigation: how bright would a car look from the Viewing Area?
+Marfa Lights investigation: how bright would a car look from the Viewing Area? (photometry v2)
 
-For every sampled point of every road in view, and for both directions of travel,
-this computes where the Viewing Area sits in the car's own headlamp beam and
-turns that into an illuminance at the observer's eye and an apparent magnitude.
+For every sampled point of every road in view, and for both directions of travel, this computes where the
+Viewing Area sits in the car's own lamp pattern and turns that into an illuminance at the observer's eye and an
+apparent magnitude. The physics and the lamp data live in analysis/marfa/photometry.py; this script applies them
+to the site's road samples and writes data/derived/headlights.json (schema kept for the site and the figures).
 
     h   horizontal angle of the observer off the car's heading, + = to the driver's right
     v   vertical angle of the observer above the lamp axis, + = up
         v = eps - theta
         eps   = (E_obs - E_lamp)/d - d(1-k)/(2R)       elevation of the observer seen from the lamp
-        theta = atan(road grade along the heading)     vehicle pitch on the slope
-    I(h,v)  luminous intensity of ONE lamp (cd), from a measured U.S. headlamp pattern
+        theta = atan(road grade along the heading)     vehicle pitch; grade from the 1 m lidar over +-25 m
+    I(h,v)  luminous intensity of ONE lamp (cd): market-weighted U.S. beam patterns (UMTRI-2004-23 low beam,
+            UMTRI-2001-19 high beam; 25th/50th/75th percentiles), held at the 45 deg value beyond 45 deg
     E   = 2 I(h,v) T / d^2           two lamps, unresolved at these ranges (lux)
     T   = exp(-sigma d),  sigma = ln(20)/MOR    (MOR definition: 5 % transmission)
-    m   = -13.99 - 2.5 log10(E / 1 lx)          (Schaefer 1993, converted from foot-candles)
-
-Beam data
----------
-NHTSA compliance test report 108-CAN-17-004 (Calcoast-ITL, 30 Nov 2016): 2016 Ford Focus S,
-left-hand VOR replaceable-bulb headlamp (H11 low / H1 high), sample LH1, test distance 100 ft.
-Upper beam = FMVSS 108 Table XVIII column UB2; lower beam = Table XIX-a column LB2V.
-https://static.nhtsa.gov/odi/ctr/2017/TRTR-644737-2017-001.pdf
-Values below are the "Measured" column (before any re-aim).
-
-This is ONE production lamp. Other lamps differ, especially in the lower beam near
-the cut-off, where 0.5 deg of aim changes intensity several-fold. The model therefore
-also reports a band from aim/pitch error of +-AIM_DEG and from the unknown fall-off
-beyond the last measured angle. Treat the band, not the central value, as the answer.
+    m   = -13.99 - 2.5 log10(E / 1 lx)          (Schaefer 1993)
+Bands: 'dim' = 25th percentile lamp with the worse of +-AIM_DEG vertical aim; 'bright' = 75th percentile lamp
+with the better aim. Rear lamps (cars facing away): FMVSS No. 108 minimum and maximum for two tail lamps, and
+for two tail + two stop lamps + the high-mounted stop lamp (braking).
 
 Run from the repository root:  python analysis/headlight_model.py
 """
 import json
 import math
+import os
+import sys
 
 import numpy as np
 from pyproj import Geod
-from scipy.interpolate import LinearNDInterpolator, RegularGridInterpolator
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
+from marfa import dem, photometry as P      # noqa: E402
 
 GEOD = Geod(ellps="WGS84")
 R = 6_371_000.0
@@ -44,75 +40,17 @@ EYE = 1.6
 LAMP = 0.66                              # reference headlamp height (v2 model; see analysis/marfa/export_site.py)
 MARFA = (-104.0206, 30.3095)             # courthouse area, used only to name travel direction
 AIM_DEG = 0.5                            # assumed aim + load + suspension uncertainty (not a regulatory number)
-DECAY = (0.04, 0.07, 0.12)               # dex per degree beyond the last measured |h|: low, central, high
-MOR_KM = (50, 100, 200)                  # meteorological optical range cases (km)
+MOR_KM = (88, 145, 265)                  # NPS Big Bend: ~55 mi on hazy days, ~90 mi average, ~165 mi natural
+MOR_REF = MOR_KM[1]
 SIRIUS = -1.46
-
-# (h deg, + = right; v deg, + = up; candela)  -- report 108-CAN-17-004, sample LH1
-UB2 = [(0, 0, 55311.55), (0, 2, 11100.53), (-3, 1, 17174.57), (3, 1, 22281.96),
-       (-12, 0, 4373.91), (-9, 0, 7317.46), (-6, 0, 11745.75), (-3, 0, 22738.38),
-       (3, 0, 27568.95), (6, 0, 10260.06), (9, 0, 5572.40), (12, 0, 2673.91),
-       (-9, -1.5, 11761.32), (0, -1.5, 54966.94), (9, -1.5, 8139.44),
-       (-12, -2.5, 7432.08), (0, -2.5, 23416.75), (12, -2.5, 4655.25),
-       (0, -4, 7815.57), (0.2, -0.9, 75077.88)]
-LB2V = [(0, 0, 5383.66), (-8, 4, 121.47), (8, 4, 96.50), (-4, 2, 248.55),
-        (3, 1.5, 314.07), (2, 1.5, 367.76), (-2.2, 1, 549.55), (-1.7, 0.5, 1130.23),
-        (2.9, 0.5, 475.73), (1, 0.5, 589.88), (-8, 0, 1998.15), (-4, 0, 3209.13),
-        (1.3, -0.6, 21004.14), (-3.5, -0.9, 10314.14), (0, -0.9, 30683.04),
-        (2, -1.5, 32466.67), (-15, -2, 5632.36), (-9, -2, 7206.03), (9, -2, 4299.25),
-        (15, -2, 2407.33), (-20, -4, 2166.31), (0, -4, 4736.01), (4, -4, 4493.32),
-        (20, -4, 1042.98), (0.3, -1.2, 36916.81), (-8, 10, 62.44)]
-VSCALE = 4.0      # vertical gradients are much steeper than horizontal: interpolate in (h, 4v)
+_MOSAIC = None
 
 
-class Beam:
-    """Measured beam on a regular (h, v) grid, interpolated in log10(I).
-
-    Inside the convex hull of the test points: linear interpolation in (h, VSCALE*v).
-    Outside it, each row of constant v is continued horizontally from its last in-hull
-    value with a log-linear fall-off of `decay` dex per degree, and rows above or below
-    the hull copy the nearest in-hull row. The fall-off beyond the measured angles is
-    the least constrained part of the model, so it is run at three values (DECAY).
-    """
-
-    HG = np.arange(-90, 90.01, 0.25)
-    VG = np.arange(-8, 12.01, 0.05)
-
-    def __init__(self, pts, name):
-        self.name = name
-        p = np.array(pts, float)
-        self.pts = p
-        lin = LinearNDInterpolator(np.c_[p[:, 0], p[:, 1] * VSCALE], np.log10(p[:, 2]))
-        hh, vv = np.meshgrid(self.HG, self.VG)
-        self.core = lin(np.c_[hh.ravel(), vv.ravel() * VSCALE]).reshape(hh.shape)   # NaN outside hull
-        self.grids = {}
-
-    def grid(self, decay):
-        if decay in self.grids:
-            return self.grids[decay]
-        g = self.core.copy()
-        rows = np.where(~np.isnan(g).all(axis=1))[0]
-        for i in rows:
-            ok = np.where(~np.isnan(g[i]))[0]
-            a, b = ok[0], ok[-1]
-            g[i, :a] = g[i, a] - decay * (self.HG[a] - self.HG[:a])
-            g[i, b + 1:] = g[i, b] - decay * (self.HG[b + 1:] - self.HG[b])
-        for i in range(len(self.VG)):
-            if np.isnan(g[i]).all():
-                g[i] = g[rows[np.argmin(np.abs(rows - i))]]
-        f = RegularGridInterpolator((self.VG, self.HG), g, bounds_error=False, fill_value=None)
-        self.grids[decay] = f
-        return f
-
-    def __call__(self, h, v, decay=DECAY[1]):
-        h, v = np.broadcast_arrays(np.asarray(h, float), np.asarray(v, float))
-        vc = np.clip(v, self.VG[0], self.VG[-1])
-        out = self.grid(decay)(np.c_[vc.ravel(), np.clip(h.ravel(), -90, 90)]).reshape(h.shape)
-        out = np.where(np.abs(h) > 90, -np.inf, out)          # observer behind the car: no headlamp light
-        return 10 ** out
-
-
-HIGH, LOW = Beam(UB2, "upper beam (UB2)"), Beam(LB2V, "lower beam (LB2V)")
+def mosaic():
+    global _MOSAIC
+    if _MOSAIC is None:
+        _MOSAIC = dem.load("lidar")
+    return _MOSAIC
 
 
 def hwy_class(r):
@@ -135,40 +73,33 @@ def wrap(a):
     return (a + 180) % 360 - 180
 
 
-def smooth_series(x, s, half_m):
-    """Least-squares slope dz/ds in a window of +-half_m along the road."""
-    g = np.full(len(x), np.nan)
-    for i in range(len(x)):
-        m = np.abs(s - s[i]) <= half_m
-        if m.sum() >= 3:
-            g[i] = np.polyfit(s[m], x[m], 1)[0]
-    return g
-
-
-def road_geometry(lat, lon, z):
-    """Chainage, heading (deg) and grade (dz/ds) in the sequence order of the points."""
+def road_geometry(lat, lon):
+    """Heading (deg, sequence direction) from the neighbouring samples and grade dz/ds from the lidar at +-25 m."""
     n = len(lat)
-    s = np.zeros(n)
-    for i in range(1, n):
-        s[i] = s[i - 1] + GEOD.inv(lon[i - 1], lat[i - 1], lon[i], lat[i])[2]
     hd = np.zeros(n)
     for i in range(n):
-        a, b = max(0, i - 2), min(n - 1, i + 2)
+        a, b = max(0, i - 1), min(n - 1, i + 1)
         hd[i] = GEOD.inv(lon[a], lat[a], lon[b], lat[b])[0] % 360
-    grade = smooth_series(np.asarray(z, float), s, 250)
-    return s, hd, grade
+    lo1, la1, _ = GEOD.fwd(lon, lat, hd, np.full(n, 25.0))
+    lo0, la0, _ = GEOD.fwd(lon, lat, (hd + 180) % 360, np.full(n, 25.0))
+    z1, _ = mosaic().sample(np.asarray(lo1), np.asarray(la1), strict=False)
+    z0, _ = mosaic().sample(np.asarray(lo0), np.asarray(la0), strict=False)
+    grade = np.clip(np.nan_to_num((z1 - z0) / 50.0), -0.08, 0.08)
+    return hd, grade
 
 
 def evaluate(lat, lon, z, obs_z, viewer):
-    """Per point, per direction: h, v and magnitudes for both beams (central, dim, bright)."""
-    s, hd, grade = road_geometry(lat, lon, z)
+    """Per point, per direction: h, v and magnitudes (MOR_REF) for both beams (central, dim, bright) and rear lamps."""
     lat, lon, z = map(np.asarray, (lat, lon, z))
+    hd, grade = road_geometry(lat, lon)
     az_cv, _, d = GEOD.inv(lon, lat, np.full_like(lon, viewer[0]), np.full_like(lat, viewer[1]))
     az_cv %= 360
     eps = np.degrees(((obs_z + EYE) - (z + LAMP)) / d - d * (1 - K) / (2 * R))
     # "toward Marfa" = the sequence direction in which the distance to Marfa shrinks
     dm = GEOD.inv(lon, lat, np.full_like(lon, MARFA[0]), np.full_like(lat, MARFA[1]))[2]
     seq_to_marfa = np.gradient(dm) < 0
+    T = P.transmission(d, MOR_REF)
+    s = T / d ** 2
     out = {}
     for label, sign in (("to_marfa", 1), ("from_marfa", -1)):
         forward = seq_to_marfa if sign == 1 else ~seq_to_marfa
@@ -177,14 +108,18 @@ def evaluate(lat, lon, z, obs_z, viewer):
         h = wrap(az_cv - head)
         v = eps - pitch
         res = {"heading": head, "h": h, "v": v, "pitch": pitch}
-        for bname, beam in (("low", LOW), ("high", HIGH)):
-            cands = [beam(h, v + dv, dec) for dv in (-AIM_DEG, 0, AIM_DEG) for dec in DECAY]
-            I_c = beam(h, v, DECAY[1])
-            I_lo, I_hi = np.min(cands, axis=0), np.max(cands, axis=0)
-            T = transmission(d, MOR_KM[1])
+        for bname in ("low", "high"):
+            I_c = P.front_intensity(h, v, bname, "p50")
+            I_lo = np.min([P.front_intensity(h, v + dv, bname, "p25") for dv in (-AIM_DEG, 0, AIM_DEG)], axis=0)
+            I_hi = np.max([P.front_intensity(h, v + dv, bname, "p75") for dv in (-AIM_DEG, 0, AIM_DEG)], axis=0)
             for tag, I in (("", I_c), ("_dim", I_lo), ("_bright", I_hi)):
                 res[f"I_{bname}{tag}"] = I
-                res[f"m_{bname}{tag}"] = magnitude(2 * I * T / d ** 2)
+                res[f"m_{bname}{tag}"] = np.where(I > 0, magnitude(I * s), np.inf)
+        for w in ("min", "max"):
+            It = P.rear_intensity(h, False, w)
+            Ib = P.rear_intensity(h, True, w)
+            res[f"m_tail_{w}"] = np.where(It > 0, magnitude(It * s), np.inf)
+            res[f"m_brake_{w}"] = np.where(Ib > 0, magnitude(Ib * s), np.inf)
         out[label] = res
     return d, eps, out
 
@@ -225,13 +160,17 @@ def main():
         return [None if not np.isfinite(v) else round(float(v), n) for v in x]
 
     export = {"meta": {
-        "beam_source": "NHTSA compliance report 108-CAN-17-004 (2016 Ford Focus S, LH VOR headlamp, sample LH1), "
-                       "https://static.nhtsa.gov/odi/ctr/2017/TRTR-644737-2017-001.pdf",
+        "beam_source": "UMTRI market-weighted U.S. headlamp patterns: low beam Schoettle et al. 2004 (UMTRI-2004-23, "
+                       "Table 4), high beam Schoettle et al. 2001 (UMTRI-2001-19, Table 6); central = 50th percentile, "
+                       "dim/bright = 25th/75th percentile with +-0.5 deg aim; rear lamps FMVSS No. 108 min/max "
+                       "(NHTSA TP-108-13)",
         "magnitude": "m = -13.99 - 2.5 log10(E/lx)  (Schaefer 1993, Vistas in Astronomy 36:311)",
-        "transmission": f"exp(-ln(20) d / MOR), MOR = {MOR_KM[1]} km (central); MOR definition WMO-No. 8",
-        "k": K, "eye_m": EYE, "lamp_m": LAMP, "aim_deg": AIM_DEG, "decay_dex_per_deg": DECAY, "two_lamps": True,
+        "transmission": f"exp(-ln(20) d / MOR), MOR = {MOR_REF} km (central); MOR definition WMO-No. 8",
+        "mor_ref_km": MOR_REF,
+        "k": K, "eye_m": EYE, "lamp_m": LAMP, "aim_deg": AIM_DEG, "two_lamps": True,
         "fields": ["az", "km", "a_mrad", "kc", "cls", "dir", "heading", "h", "v",
-                   "m_low", "m_low_dim", "m_low_bright", "m_high", "m_high_dim", "m_high_bright"]},
+                   "m_low", "m_low_dim", "m_low_bright", "m_high", "m_high_dim", "m_high_bright",
+                   "m_tail_min", "m_tail_max", "m_brake_min", "m_brake_max"]},
         "roads": []}
     print(f"{'road':34s} {'dir':10s} {'n_vis':>5s} {'h range':>14s} {'v range':>12s} {'m_low':>14s} {'m_high':>14s}")
     for rd in roads:
@@ -250,17 +189,18 @@ def main():
                             round(float(rd["kc"][i]), 3), rd["cls"][i], dname,
                             round(float(res["heading"][i]), 1), round(float(res["h"][i]), 1), round(float(res["v"][i]), 2)]
                            + r2([res[k][i] for k in ("m_low", "m_low_dim", "m_low_bright",
-                                                      "m_high", "m_high_dim", "m_high_bright")], 1))
+                                                      "m_high", "m_high_dim", "m_high_bright",
+                                                      "m_tail_min", "m_tail_max", "m_brake_min", "m_brake_max")], 1))
         export["roads"].append({"road": rd["road"], "key": rd["key"],
                                 "lat": r2(rd["lat"], 5), "lon": r2(rd["lon"], 5), "pts": pts})
     json.dump(export, open("data/derived/headlights.json", "w"), separators=(",", ":"))
 
     # reference numbers for the notes
-    print("\nReference: lamp pair straight on (h=v=0), MOR 100 km:")
+    print(f"\nReference: lamp pair straight on (h=v=0), MOR {MOR_REF} km:")
     for km in (10, 20, 30, 40, 50):
-        for bname, beam in (("low", LOW), ("high", HIGH)):
+        for bname, beam in (("low", P.LOW), ("high", P.HIGH)):
             I = float(beam(0, 0))
-            print(f"  {km:3d} km {bname:4s} I={I:8.0f} cd  m={float(magnitude(2 * I * transmission(km * 1000, 100) / (km * 1000) ** 2)):5.1f}")
+            print(f"  {km:3d} km {bname:4s} I={I:8.0f} cd  m={float(magnitude(2 * I * transmission(km * 1000, MOR_REF) / (km * 1000) ** 2)):5.1f}")
     return roads
 
 

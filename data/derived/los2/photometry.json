@@ -1,0 +1,275 @@
+{
+ "generated": "2026-09-29",
+ "seconds": 7,
+ "k": 0.13,
+ "lamps": {
+  "head": 0.66,
+  "rear": 0.86,
+  "chmsl": 1.12
+ },
+ "mor_km": [
+  88.0,
+  145.0,
+  265.0
+ ],
+ "m_lim": {
+  "20.5_1.4": 6.054379910804405,
+  "20.5_2.0": 5.6671250108400475,
+  "20.5_2.4": 5.469171895720986,
+  "20.5_4.0": 4.914550021680094,
+  "21.0_1.4": 6.246079910804406,
+  "21.0_2.0": 5.858825010840048,
+  "21.0_2.4": 5.6608718957209865,
+  "21.0_4.0": 5.106250021680095,
+  "21.5_1.4": 6.437779910804405,
+  "21.5_2.0": 6.0505250108400475,
+  "21.5_2.4": 5.852571895720986,
+  "21.5_4.0": 5.297950021680094,
+  "22.0_1.4": 6.629479910804406,
+  "22.0_2.0": 6.242225010840048,
+  "22.0_2.4": 6.044271895720986,
+  "22.0_4.0": 5.489650021680095
+ },
+ "m_lim_ref": {
+  "mu": 21.0,
+  "F": 2.0,
+  "value": 5.858825010840048
+ },
+ "grade_clipped": 540,
+ "note": "fwd = direction of increasing TxDOT chainage (northbound on US-67); lengths in km of road (60 m samples) in view (P_vis >= 0.5) and brighter than m_lim",
+ "us67": {
+  "fwd:low_p25": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:low_p50": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:low_p75": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:low_floor": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:high_p50": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:tail_min": {
+   "km_in_view": 10.14,
+   "km_detect_ref": 0.0,
+   "m_median": 8.83,
+   "m_min": 7.67,
+   "m_max": 10.31,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "fwd:tail_max": {
+   "km_in_view": 10.14,
+   "km_detect_ref": 8.64,
+   "m_median": 5.33,
+   "m_min": 4.55,
+   "m_max": 6.02,
+   "km_detect_bracket": [
+    0.18,
+    10.08
+   ]
+  },
+  "fwd:brake_min": {
+   "km_in_view": 10.14,
+   "km_detect_ref": 10.08,
+   "m_median": 4.43,
+   "m_min": 3.48,
+   "m_max": 5.84,
+   "km_detect_bracket": [
+    5.04,
+    10.08
+   ]
+  },
+  "fwd:brake_max": {
+   "km_in_view": 10.14,
+   "km_detect_ref": 10.08,
+   "m_median": 1.97,
+   "m_min": 1.19,
+   "m_max": 2.66,
+   "km_detect_bracket": [
+    10.08,
+    10.08
+   ]
+  },
+  "rev:low_p25": {
+   "km_in_view": 10.02,
+   "km_detect_ref": 9.42,
+   "m_median": 2.67,
+   "m_min": -1.64,
+   "m_max": 6.51,
+   "km_detect_bracket": [
+    9.06,
+    10.02
+   ]
+  },
+  "rev:low_p50": {
+   "km_in_view": 10.02,
+   "km_detect_ref": 10.02,
+   "m_median": 2.41,
+   "m_min": -1.92,
+   "m_max": 5.74,
+   "km_detect_bracket": [
+    9.12,
+    10.02
+   ]
+  },
+  "rev:low_p75": {
+   "km_in_view": 10.02,
+   "km_detect_ref": 10.02,
+   "m_median": 1.96,
+   "m_min": -2.27,
+   "m_max": 5.13,
+   "km_detect_bracket": [
+    9.36,
+    10.02
+   ]
+  },
+  "rev:low_floor": {
+   "km_in_view": 10.02,
+   "km_detect_ref": 9.96,
+   "m_median": 2.41,
+   "m_min": -1.92,
+   "m_max": 7.32,
+   "km_detect_bracket": [
+    9.12,
+    9.96
+   ]
+  },
+  "rev:high_p50": {
+   "km_in_view": 10.02,
+   "km_detect_ref": 10.02,
+   "m_median": 0.14,
+   "m_min": -2.57,
+   "m_max": 5.2,
+   "km_detect_bracket": [
+    9.3,
+    10.02
+   ]
+  },
+  "rev:tail_min": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "rev:tail_max": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "rev:brake_min": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  },
+  "rev:brake_max": {
+   "km_in_view": 0.0,
+   "km_detect_ref": 0.0,
+   "m_median": null,
+   "m_min": null,
+   "m_max": null,
+   "km_detect_bracket": [
+    0.0,
+    0.0
+   ]
+  }
+ },
+ "us67_angles": {
+  "fwd": {
+   "h_median": -165.5,
+   "h_range": [
+    -176.5,
+    -146.7
+   ],
+   "v_median": -0.86,
+   "v_range": [
+    -2.97,
+    0.47
+   ]
+  },
+  "rev": {
+   "h_median": 14.3,
+   "h_range": [
+    3.3,
+    32.9
+   ],
+   "v_median": 0.84,
+   "v_range": [
+    -0.58,
+    2.46
+   ]
+  }
+ },
+ "us67_grade": {
+  "median_abs": 0.0161,
+  "p95_abs": 0.0473,
+  "n_clipped": 0
+ },
+ "us67_dist_km": [
+  18.1,
+  39.9
+ ]
+}
