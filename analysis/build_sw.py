@@ -7,7 +7,7 @@ Run after changing anything in docs/:  python analysis/build_sw.py
 import hashlib, json, pathlib
 
 DOCS = pathlib.Path(__file__).resolve().parents[1] / "docs"
-EXCLUDE_SUFFIX = {".md", ".txt", ".yml"}
+EXCLUDE_SUFFIX = {".md", ".txt", ".yml", ".pdf", ".mp4", ".webm"}   # large downloads are fetched on demand, not precached
 
 
 def files():

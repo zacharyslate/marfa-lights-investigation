@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Lights Paper</title>
+<meta name="description" content="Separating the known from the unknown at Marfa, Texas: a physical model of the ordinary lights seen from the Marfa Lights Viewing Area. Full paper, Supporting Information, and an animation of one car seen from the platform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=11">
+<style>
+  .paper-meta{color:var(--muted);margin:6px 0 0}
+  .abstract{max-width:72ch}
+  .toc{columns:2 18rem;column-gap:2rem;margin:8px 0 0;padding-left:20px}
+  .toc li{break-inside:avoid;margin:0 0 6px}
+  .cite{font-family:"JetBrains Mono",monospace;font-size:.85rem;white-space:pre-wrap;overflow-wrap:anywhere;background:var(--surface);border:1px solid var(--rule);border-radius:8px;padding:12px;margin:8px 0 0}
+  video.anim{display:block;width:100%;height:auto;border-radius:6px;background:#111418}
+</style>
+</head>
+<body>
+<header id="bar"></header>
+<main class="page">
+  <header class="prose">
+    <div class="eyebrow">The paper · Version 1.0 · 29 September 2026</div>
+    <h1>Separating the known from the unknown at Marfa, Texas</h1>
+    <p class="lede">Line of sight, refraction, and photometry of the ordinary lights seen from the Marfa Lights Viewing Area.</p>
+    <p class="paper-meta">Zach Warren · Instituto de Cerámica y Vidrio (ICV), Consejo Superior de Investigaciones Científicas (CSIC), Madrid, Spain</p>
+    <div class="row">
+      <a class="btn" href="paper/marfa-known-unknown-v1.0.pdf">Read the paper (PDF, 11 pages)</a>
+      <a class="btn ghost" href="paper/marfa-known-unknown-SI-v1.0.pdf">Supporting Information (PDF, 16 pages)</a>
+    </div>
+  </header>
+
+  <section class="note" style="max-width:none">
+    <b>What this paper is.</b> A physical model of every ordinary light source that can be seen from the Viewing Area: where each one can appear, how bright it looks, and how it behaves over time. It is meant as a tool. Observers can use it to set aside headlights, tail lights, trains, tower lights and town glow, and to recognize the lights that none of these explain. It does not claim that every Marfa light is ordinary. It is self-published here rather than in a journal, so that the model, its data and this page stay together and can be updated.
+  </section>
+
+  <section class="prose abstract">
+    <h2>Abstract</h2>
+    <p>For more than eighty years, visitors to a roadside viewing area near Marfa, Texas, have reported lights on the horizon that appear, brighten, drift, and vanish. Any attempt to study them faces a foreground of ordinary lights (vehicle headlamps and tail lamps, trains, obstruction lights on towers, and the glow of distant towns) that must be removed before an unusual light can be recognized. We build a quantitative model of that foreground from public data and first principles, and present it as a screening tool. Exact ellipsoidal geometry on 1-m airborne lidar terrain, with atmospheric refraction, gives where each ordinary source can be seen; a single number, the critical refraction coefficient <i>k</i><sub>crit</sub> = max<sub><i>i</i></sub> 2<i>Ry<sub>i</sub></i>/[<i>s<sub>i</sub></i>(<i>D</i> − <i>s<sub>i</sub></i>)], decides whether a lamp clears the terrain. Because the sight lines graze the ground within about a meter, a Monte Carlo treatment of terrain error, vegetation from the lidar point cloud, and ray tracing through nocturnal inversions are needed to make the answer robust. Market-weighted headlamp beam patterns, federal signal-lamp photometry, and a contrast-threshold model of the eye give how bright each source looks. About 10 km of US Highway 67, 18–40 km away, is in view, always just below the skyline. There a northbound car is typically a magnitude +2.6 light that can outshine Sirius; it appears in 18 separate windows of median 17 s, drifting about 0.9° per minute and brightening and fading as the road's grade changes. Southbound tail lamps are near the limit of vision. We check the geometry against photographs from the platform, tabulate the observable signatures of every catalogued source, and map the parts of the view where no catalogued source can appear. An online version lets observers test a sighting against the model.</p>
+  </section>
+
+  <section class="figs" aria-labelledby="anim-h">
+    <article class="figblock" id="animation">
+      <figure class="photo plain">
+        <video class="anim" controls muted playsinline loop preload="none" poster="media/one_car_poster.jpg" width="1600" height="290" aria-describedby="anim-cap">
+          <source src="media/one_car.webm" type="video/webm">
+          <source src="media/one_car.mp4" type="video/mp4">
+          Your browser cannot play this video. <a href="media/one_car.mp4">Download it (MP4)</a>.
+        </video>
+        <figcaption id="anim-cap"><b>Animation. One car on US-67, seen from the platform.</b> <a href="media/one_car.mp4">MP4</a></figcaption>
+      </figure>
+      <div class="prose">
+        <h3 id="anim-h">What one car looks like over a quarter of an hour</h3>
+        <p><b>How to read it.</b> This is the US-67 sector of the view (Fig. 3b of the paper), 228°–240° true, at true scale: one degree across is one degree up, as your eye sees it. A car leaves Shafter heading north toward Marfa at 30 m/s (about 67 mph, the speed measured in our photographs). Time runs 20 times faster than real life, and the clock shows real time. The light is drawn larger when it is brighter, using the model's brightness for a typical U.S. low beam on a clear night. It disappears when hills hide the road, or when it drops below what the eye can see. The faint dotted chain marks every place along the road where a car can be seen; on a real night it is invisible. The red dot is the steady light of an 89-m tower at 230.3°, and the circle shows the size of the full Moon.</p>
+        <p><b>What it shows.</b> The car appears 18 separate times in about 14 minutes, for a median of 17 seconds each. Each time it pops up a little further along, drifts slowly sideways and downward, brightens and fades as the road rises and falls, and vanishes again. Near 233.7° the road points almost straight at the platform, and the car briefly outshines every star. An observer who did not know a road was there could easily describe this as a light that comes and goes, wanders, and changes brightness.</p>
+      </div>
+    </article>
+  </section>
+
+  <section class="prose">
+    <h2>What is in the paper</h2>
+    <ol class="toc">
+      <li><b>Introduction.</b> Why ordinary lights have to be removed first, and what earlier studies found.</li>
+      <li><b>Site and data.</b> The platform, 1-m lidar terrain, roads, traffic.</li>
+      <li><b>Line of sight.</b> A back-of-the-envelope estimate, then exact geometry and the critical refraction coefficient; how robust "visible" is.</li>
+      <li><b>Refraction near the ground at night.</b> From temperature gradients to ray tracing.</li>
+      <li><b>Photometry and detection.</b> Where the platform sits in a car's beam, lamp intensities, magnitudes, and the naked-eye limit.</li>
+      <li><b>Results.</b> What is in view, the view from the platform, brightness, one car in time, the other catalogued sources, and a check against photographs.</li>
+      <li><b>Using the model to screen observations.</b> Four tests: position, color and brightness, motion, and timing.</li>
+      <li><b>Discussion and conclusions.</b> What the model accounts for, what it does not, limitations, and student projects.</li>
+      <li><b>Appendix.</b> The refracted ray and the critical coefficient.</li>
+    </ol>
+    <h2>What is in the Supporting Information</h2>
+    <p>Full methods and extra material, with a table of contents: data and provenance; line-of-sight geometry; the terrain-error Monte Carlo and the vegetation layer; refraction and ray tracing; photometry tables; one car and traffic; the known-source catalogue, mask and rate map; the photograph analysis; verification tests; a guide to this website; and how to reproduce every result.</p>
+    <h2>How it was checked</h2>
+    <p>Every number in the paper is produced by public code. The code passes 45 automated tests. Fifteen of them re-derive each equation of the paper independently of the model. The model also reproduces an earlier, independent version of itself, and its predicted road positions match real car lights in photographs taken from the platform to within about 0.01°. <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/publication/notes/13_equation_check.md">Equation check</a> · <a href="https://github.com/zacharyslate/marfa-lights-investigation">Code and data</a>.</p>
+    <h2>How to cite</h2>
+    <p>Z. Warren, “Separating the known from the unknown at Marfa, Texas: line of sight, refraction, and photometry of the ordinary lights seen from the Marfa lights viewing area,” version 1.0 (29 September 2026), https://zacharyslate.github.io/marfa-lights-investigation/paper.html</p>
+    <pre class="cite">@misc{Warren2026Marfa,
+  author = {Zach Warren},
+  title  = {Separating the known from the unknown at {Marfa}, {Texas}: line of sight, refraction, and photometry of the ordinary lights seen from the {Marfa} lights viewing area},
+  year   = {2026},
+  note   = {Version 1.0, 29 September 2026},
+  url    = {https://zacharyslate.github.io/marfa-lights-investigation/paper.html}
+}</pre>
+    <h2>Versions</h2>
+    <ul>
+      <li><b>1.0</b>, 29 September 2026: first public version.</li>
+    </ul>
+    <p class="muted">Corrections and comments are welcome through the <a href="https://github.com/zacharyslate/marfa-lights-investigation/issues">project's issue tracker</a>.</p>
+  </section>
+</main>
+<footer id="foot"></footer>
+<script src="assets/site.js?v=10"></script>
+</body>
+</html>

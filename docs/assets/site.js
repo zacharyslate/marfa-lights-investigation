@@ -1,7 +1,7 @@
 /* Marfa Lights Field Guide — shared header, footer and theme switch. */
 (function () {
   const PAGES = [
-    ["map.html", "Map"], ["history.html", "History & Folklore"], ["science.html", "The Science"],
+    ["map.html", "Map"], ["history.html", "History & Folklore"], ["science.html", "The Science"], ["paper.html", "The Paper"],
     ["place.html", "The Place"], ["visit.html", "Visiting"], ["sky.html", "Sky finder"], ["community.html", "Community"], ["app/", "Get the app"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];

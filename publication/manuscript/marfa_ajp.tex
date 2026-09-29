@@ -1,4 +1,4 @@
-% Marfa lights model paper -- target: American Journal of Physics (regular article).
+% Marfa lights model paper -- self-published on the project website (paper.html), version 1.0.
 % Build:  latexmk -pdf marfa_ajp.tex      (REVTeX 4.2; figures are read from ../figures/)
 % For anonymous review set \anonymoustrue: author, affiliation, repository and photographer are withheld.
 \documentclass[aip,jap,amsmath,amssymb,reprint,floatfix]{revtex4-2}
@@ -14,7 +14,7 @@
 \anonymousfalse
 \ifdefined\anonbuild\anonymoustrue\fi
 \newcommand{\repo}{\ifanonymous[repository withheld for review]\else\url{https://github.com/zacharyslate/marfa-lights-investigation}\fi}
-\newcommand{\website}{\ifanonymous[website withheld for review; a copy is included in the supplementary material]\else\url{https://zacharyslate.github.io/marfa-lights-investigation/}\fi}
+\newcommand{\website}{\ifanonymous[website withheld for review; a copy is included in the Supporting Information]\else\url{https://zacharyslate.github.io/marfa-lights-investigation/}\fi}
 \newcommand{\kc}{k_{\mathrm{crit}}}
 
 \begin{document}
@@ -29,7 +29,7 @@
 \affiliation{Instituto de Cer\'amica y Vidrio (ICV), Consejo Superior de Investigaciones Cient\'{\i}ficas (CSIC), Madrid, Spain}
 \fi
 
-\date{\today}
+\date{Version 1.0, 29 September 2026. Published at \url{https://zacharyslate.github.io/marfa-lights-investigation/paper.html}}
 
 \begin{abstract}
 For more than eighty years, visitors to a roadside viewing area near Marfa, Texas, have reported lights on the horizon that appear, brighten, drift, and vanish. Any attempt to study them faces a foreground of ordinary lights---vehicle headlamps and tail lamps, trains, obstruction lights on towers, and the glow of distant towns---that must be removed before an unusual light can be recognized. We build a quantitative model of that foreground from public data and first principles, and present it as a screening tool. Exact ellipsoidal geometry on 1-m airborne lidar terrain, with atmospheric refraction, gives where each ordinary source can be seen; a single number, the critical refraction coefficient $\kc=\max_i 2Ry_i/[s_i(D-s_i)]$, decides whether a lamp clears the terrain. Because the sight lines graze the ground within about a meter, a Monte Carlo treatment of terrain error, vegetation from the lidar point cloud, and ray tracing through nocturnal inversions are needed to make the answer robust. Market-weighted headlamp beam patterns, federal signal-lamp photometry, and a contrast-threshold model of the eye give how bright each source looks. About 10~km of US Highway 67, 18--40~km away, is in view, always just below the skyline. There a northbound car is typically a magnitude $+2.6$ light that can outshine Sirius; it appears in 18 separate windows of median 17~s, drifting about $0.9^\circ$ per minute and brightening and fading as the road's grade changes. Southbound tail lamps are near the limit of vision. We check the geometry against photographs from the platform, tabulate the observable signatures of every catalogued source, and map the parts of the view where no catalogued source can appear. An online version lets observers test a sighting against the model.
@@ -49,7 +49,7 @@ This paper builds that model, and we intend it as a tool rather than as an argum
 
 The model is built from first principles and public data, and it is deliberately a model paper: we report no new field experiments. We answer three questions. (i)~\textit{Geometry:} which parts of which roads, railroads, and structures are in direct view of the platform, allowing for Earth's curvature, the terrain, vegetation, and refraction? (ii)~\textit{Photometry:} how bright is a car there, given where the platform falls in its beam? (iii)~\textit{Behavior in time:} what does one car look like as it drives the road? Each step uses physics taught in undergraduate courses (geodesy and curvature, refraction in a stratified medium, the inverse-square law and the astronomical magnitude scale, and the statistics of visual detection), and each rests on data a student can download. We give simple estimates alongside the full calculation.
 
-Section~\ref{sec:data} describes the site and data, Sec.~\ref{sec:geometry} the line-of-sight model and its robustness, Sec.~\ref{sec:refraction} refraction beyond a single coefficient, and Sec.~\ref{sec:photometry} the photometry. Section~\ref{sec:results} gives the results, including a check against photographs, and Sec.~\ref{sec:screening} turns them into a screening procedure. Section~\ref{sec:discussion} discusses what the model does and does not show. Full methods are in the supplementary material.\cite{SM}
+Section~\ref{sec:data} describes the site and data, Sec.~\ref{sec:geometry} the line-of-sight model and its robustness, Sec.~\ref{sec:refraction} refraction beyond a single coefficient, and Sec.~\ref{sec:photometry} the photometry. Section~\ref{sec:results} gives the results, including a check against photographs, and Sec.~\ref{sec:screening} turns them into a screening procedure. Section~\ref{sec:discussion} discusses what the model does and does not show. Full methods are in the Supporting Information.\cite{SM}
 
 %=======================================================================
 \section{Site and data}\label{sec:data}
@@ -80,7 +80,7 @@ For a smooth sphere of radius $R$, a point at distance $d$ lies below the observ
 \Delta h = \frac{(1-k)\,d^2}{2R}.
 \label{eq:drop}
 \end{equation}
-At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye $h_{\mathrm e}=1.6$~m up is only $\sqrt{2Rh_{\mathrm e}/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (terrain cross-sections along several bearings are shown in the supplementary material\cite{SM}). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
+At $d=30$~km this is 61~m, and the horizon of a smooth Earth for an eye $h_{\mathrm e}=1.6$~m up is only $\sqrt{2Rh_{\mathrm e}/(1-k)}\approx4.8$~km away. Cars 30~km away are visible from Marfa only because the platform looks down into a basin and US-67 climbs the far side (terrain cross-sections along several bearings are shown in the Supporting Information\cite{SM}). Whether a given car is visible is then decided by the terrain in between, and the margins are small: the ray from a lamp at 30~km, refracted with $k=0.13$, rises only $kD^2/8R\approx2.3$~m above the straight chord at its midpoint. That is comparable to the height of a headlamp (0.66~m), much larger than the lidar error, and comparable to the 2-m error of a 30-m elevation model. This estimate sets the requirements for everything that follows.
 
 \subsection{Exact geometry and the critical refraction coefficient}
 
@@ -112,13 +112,13 @@ A visible/hidden answer from Eq.~(\ref{eq:kcrit}) is only as good as its inputs,
 
 \textit{Margins.} The lamp margin $d_L$ is the smallest change in lamp height that flips visibility, and $d_E$ is the same for the eye. On US-67 no visible point has a lamp margin larger than 0.84~m.
 
-\textit{Terrain error.} We draw 200 realizations of correlated Gaussian terrain error along each sight line, with a standard deviation and correlation length for each elevation source: lidar 0.056~m (its accuracy report) with an assumed 20~m; 1/3 arc-second 0.56~m and 70~m; 1 arc-second 2.05~m and 125~m, the latter two measured against the lidar on 40\,000 points. A 0.15~m error in eye height is added. The fraction of realizations in which the lamp is visible, $P_{\mathrm{vis}}$, gives three classes: visible ($P_{\mathrm{vis}}\ge0.95$ and still visible with 0.25~m of unresolved grass added to the ground), hidden ($P_{\mathrm{vis}}\le0.05$), and marginal (the rest). In Table~\ref{tab:config}, ``robust'' uses the $P_{\mathrm{vis}}$ criterion alone. The supplementary material gives details.\cite{SM}
+\textit{Terrain error.} We draw 200 realizations of correlated Gaussian terrain error along each sight line, with a standard deviation and correlation length for each elevation source: lidar 0.056~m (its accuracy report) with an assumed 20~m; 1/3 arc-second 0.56~m and 70~m; 1 arc-second 2.05~m and 125~m, the latter two measured against the lidar on 40\,000 points. A 0.15~m error in eye height is added. The fraction of realizations in which the lamp is visible, $P_{\mathrm{vis}}$, gives three classes: visible ($P_{\mathrm{vis}}\ge0.95$ and still visible with 0.25~m of unresolved grass added to the ground), hidden ($P_{\mathrm{vis}}\le0.05$), and marginal (the rest). In Table~\ref{tab:config}, ``robust'' uses the $P_{\mathrm{vis}}$ criterion alone. The Supporting Information gives details.\cite{SM}
 
 \textit{Obstructions.} From the lidar point cloud (29.4 million points around the grazing corridors) we mark a 1-m cell as obstructed when it has at least two returns and at least 25\% of them more than 0.3~m above the ground, and raise it to the height of its highest return. Ground returns agree with the elevation model to a median of $-0.8$~mm.
 
 \textit{Refraction.} Section~\ref{sec:refraction}.
 
-The code reproduces an earlier, independent implementation (1075 of 1077 points agree) and passes 45 unit tests, 15 of which re-derive every equation of this paper independently of the model code; both checks are described in the supplementary material.\cite{SM}
+The code reproduces an earlier, independent implementation (1075 of 1077 points agree) and passes 45 unit tests, 15 of which re-derive every equation of this paper independently of the model code; both checks are described in the Supporting Information.\cite{SM}
 
 %=======================================================================
 \section{Refraction near the ground at night}\label{sec:refraction}
@@ -203,7 +203,7 @@ Lidar + obstructions & 9.93 & 9.72 & 0.27\\
 \end{ruledtabular}
 \end{table}
 
-Lamp height matters more than refraction: at $k=0.13$ a headlamp 0.56~m high sees 9.72~km of road, one at 1.37~m 10.83~km, and a truck's clearance lamps at 4~m 13.77~km (the full table is in the supplementary material\cite{SM}).
+Lamp height matters more than refraction: at $k=0.13$ a headlamp 0.56~m high sees 9.72~km of road, one at 1.37~m 10.83~km, and a truck's clearance lamps at 4~m 13.77~km (the full table is in the Supporting Information\cite{SM}).
 
 
 
@@ -213,13 +213,13 @@ Figure~\ref{fig:panorama} shows every catalogued ordinary source as the observer
 
 \begin{figure*}[t]
 \includegraphics[width=0.95\textwidth]{fig09_panorama_sources.pdf}
-\caption{(a) Catalogued ordinary light sources as seen from the viewing area ($k=0.13$), with the known-source mask: the set of directions in which some catalogued source can appear for any $k$ from 0 to 1, widened by the observer's pointing error (filled: photographic pointing, $\pm0.3^\circ\times\pm0.1^\circ$; dashed: compass pointing, $\pm3^\circ\times\pm0.25^\circ$). Bearings $155^\circ$--$300^\circ$ true, vertical scale exaggerated $22\times$. Grey shades are ridges within 10, 25, and 45~km and beyond; dashed vertical lines mark the usual $120^\circ$ viewing fan, and the dotted line the bearing of the tethered aerostat, whose altitude varies. The box is the region shown in (b). (b) The US-67 sector, $228^\circ$--$240^\circ$ by $-0.45^\circ$ to $+1.0^\circ$, at true scale (no vertical exaggeration) and rendered as at night. Each white dot is a position where a northbound car's headlamps can appear, with area increasing with the predicted brightness (low beam, fleet median, $V=111$~km); at any moment only a few of these positions are occupied (Sec.~\ref{sec:onecar}). The red dot is the obstruction light of the 89-m tower at $230.3^\circ$, 20~km away; the circle shows the size of the full Moon.}
+\caption{(a) Catalogued ordinary light sources as seen from the viewing area ($k=0.13$), with the known-source mask: the set of directions in which some catalogued source can appear for any $k$ from 0 to 1, widened by the observer's pointing error (filled: photographic pointing, $\pm0.3^\circ\times\pm0.1^\circ$; dashed: compass pointing, $\pm3^\circ\times\pm0.25^\circ$). Bearings $155^\circ$--$300^\circ$ true, vertical scale exaggerated $22\times$. Grey shades are ridges within 10, 25, and 45~km and beyond; dashed vertical lines mark the usual $120^\circ$ viewing fan, and the dotted line the bearing of the tethered aerostat, whose altitude varies. The box is the region shown in (b). (b) The US-67 sector, $228^\circ$--$240^\circ$ by $-0.45^\circ$ to $+1.0^\circ$, at true scale (no vertical exaggeration) and rendered as at night. Each white dot is a position where a northbound car's headlamps can appear, with area increasing with the predicted brightness (low beam, fleet median, $V=111$~km); at any moment only a few of these positions are occupied (Sec.~\ref{sec:onecar}). The red dot is the obstruction light of the 89-m tower at $230.3^\circ$, 20~km away; the circle shows the size of the full Moon. An animation of one car crossing this scene is on the paper's web page.}
 \label{fig:panorama}
 \end{figure*}
 
 \subsection{Refraction}
 
-Refraction matters more for where a light appears than for whether it appears. Raising $k$ from 0.13 to 1 brings about 1.6~km more of US-67 into view, but a change $\Delta k$ lifts a light at distance $d$ by $d\,\Delta k/2R$, $0.13^\circ$ for $\Delta k=1$ at 30~km. In the ray tracing, the strongest of our surface inversions adds 1.5~km of visible road and lifts lights by at most $7.5'$. The elevated inversion produces three to five images of one lamp at five road points, a superior mirage, but they are only 1--8 arcseconds apart, far below the eye's resolution; they would be seen as one light, possibly twinkling. Surface layers whose gradient decreases monotonically with height gave single images only. The results for every profile are tabulated in the supplementary material.\cite{SM}
+Refraction matters more for where a light appears than for whether it appears. Raising $k$ from 0.13 to 1 brings about 1.6~km more of US-67 into view, but a change $\Delta k$ lifts a light at distance $d$ by $d\,\Delta k/2R$, $0.13^\circ$ for $\Delta k=1$ at 30~km. In the ray tracing, the strongest of our surface inversions adds 1.5~km of visible road and lifts lights by at most $7.5'$. The elevated inversion produces three to five images of one lamp at five road points, a superior mirage, but they are only 1--8 arcseconds apart, far below the eye's resolution; they would be seen as one light, possibly twinkling. Surface layers whose gradient decreases monotonically with height gave single images only. The results for every profile are tabulated in the Supporting Information.\cite{SM}
 
 \subsection{Brightness}
 
@@ -348,9 +348,9 @@ We have built a quantitative model of the ordinary lights seen from the Marfa li
 \section*{Author declarations}
 \textit{Conflict of interest.} The author has no conflicts to disclose.
 
-\textit{Data availability.} The model is available as an interactive website at \website. All code, derived data, and figures, the public inputs, and a manifest of the terrain and geoid files (URLs and SHA-256 checksums) are available at \repo; an archived version of the repository will be deposited with a persistent identifier on acceptance. The photographs are available from the author on request.
+\textit{Data availability.} The model is available as an interactive website at \website. All code, derived data, and figures, the public inputs, and a manifest of the terrain and geoid files (URLs and SHA-256 checksums) are available at \repo; each released version of the paper is tagged in the repository. The photographs are available from the author on request.
 
-\textit{Use of AI tools.} In accordance with AIP Publishing's policy, we disclose that an AI system (Claude, Anthropic; configured model identifier claude-opus-5-5, 2026) was used to write and test the analysis code, to extract tabulated values from source documents (the UMTRI and FMVSS photometric tables, checked cell by cell against the printed tables), and to draft text. It was used because the project was carried out by a single author. All code is public and covered by unit tests, and every number in this paper is produced by that code.
+\textit{Use of AI tools.} We disclose that an AI system (Claude, Anthropic; configured model identifier claude-opus-5-5, 2026) was used to write and test the analysis code, to extract tabulated values from source documents (the UMTRI and FMVSS photometric tables, checked cell by cell against the printed tables), and to draft text. It was used because the project was carried out by a single author. All code is public and covered by unit tests, and every number in this paper is produced by that code.
 
 \appendix
 

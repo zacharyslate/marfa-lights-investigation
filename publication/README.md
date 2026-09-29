@@ -2,7 +2,7 @@
 
 Figures and method notes for the Marfa Lights manuscript. Everything here is generated from the code in `../analysis/` and the data in `../data/`. Please do not edit figures by hand: change the script and re-run it.
 
-**Manuscript draft:** [`manuscript/marfa_ajp.tex`](manuscript/marfa_ajp.tex) (American Journal of Physics, model paper; PDF alongside). See [`manuscript/README.md`](manuscript/README.md) for the build and the pre-submission checklist.
+**Paper:** [`manuscript/marfa_ajp.tex`](manuscript/marfa_ajp.tex), self-published on the website (`docs/paper.html`). See [`manuscript/README.md`](manuscript/README.md) for the build and how to release a new version.
 
 **Status: preliminary.**
 - **Model.** The line-of-sight model is version 2 (`analysis/marfa/`; methods, verification and robustness in [note 11](notes/11_model_v2_methods.md)). It uses exact WGS84 geometry, USGS 1 m lidar terrain with point-cloud obstructions, and GEOID12B. Visibility classes come from a Monte Carlo, and a height-dependent ray trace is included. It is covered by 22 unit tests.
