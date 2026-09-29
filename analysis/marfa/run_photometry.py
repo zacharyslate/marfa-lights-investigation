@@ -102,7 +102,7 @@ def main():
                 k=K, lamps=dict(head=LAMP_HEAD, rear=LAMP_REAR, chmsl=LAMP_CHMSL), mor_km=MORS,
                 m_lim=mlim, m_lim_ref=dict(mu=MU_REF, F=F_REF, value=ml_ref),
                 grade_clipped=int((np.abs(grade_raw) > 0.08).sum()),
-                note="fwd = direction of increasing TxDOT chainage (northbound on US-67); lengths in km of road "
+                note="fwd = direction of increasing TxDOT chainage (southbound on US-67, Marfa toward Shafter; rev = northbound); lengths in km of road "
                      "(60 m samples) in view (P_vis >= 0.5) and brighter than m_lim")
     rows = {}
     for d in ("fwd", "rev"):

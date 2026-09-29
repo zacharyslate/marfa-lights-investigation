@@ -8,6 +8,7 @@ photographs). Its position, whether its headlamps are in view (P_vis >= 0.5 at k
 beam, fleet median, MOR 111 km) come from data/derived/los2/photometry.npz, sampled every 60 m along the road and
 interpolated in time. The light is drawn with an area that grows with its brightness and is omitted when it is
 fainter than the reference naked-eye limit (m_lim = 5.86). Time is compressed 20 times; the clock shows real time.
+The red code beacon on the one lit tower in the scene flashes at a real-time rate (see BEACON_FPM).
 """
 import os
 import subprocess
@@ -30,6 +31,14 @@ FPS = 30
 T0, T1 = 15.3, 30.6  # minutes after Shafter
 B0, B1, E0, E1 = 228.0, 240.0, -0.45, 1.0
 W, H = 1600, 290     # pixels
+# Tower top beacon. The one lit tower in the scene (FCC ASR 1053636, 89 m) is registered to FCC lighting
+# specification paragraphs 1, 3, 11, 21: paragraph 3 is a red code beacon at the top flashing 12-40 times a minute
+# (paragraph 11 adds steady red side lights at mid-height, whose visibility is not modelled here). The actual rate
+# is not known; 30 per minute is used. The beacon is animated in REAL time, not compressed, so that it flashes at
+# 0.5 Hz on screen (a compressed 10 Hz flicker would be unreadable and above the 3 Hz photosensitivity limit).
+BEACON_FPM = 30.0
+BEACON_DUTY = 0.5    # fraction of each cycle lit (assumed)
+BEACON_RAMP = 0.12   # s, incandescent rise and fall
 
 
 def load():
@@ -45,10 +54,8 @@ def load():
                 m=z[f"m_low_p50_rev_{mor}"][us][o], sky=np.array(site["sky"]), towers=site["towers"])
 
 
-def main():
-    d = load()
-    mlim = float(PH.m_lim(MU_REF, F_REF))
-    os.makedirs(OUT, exist_ok=True)
+def scene(d):
+    """The static night scene (sky, terrain layers, skyline, road locus, lit tower, Moon scale); returns fig, ax."""
     dpi = 100
     fig = plt.figure(figsize=(W / dpi, H / dpi), dpi=dpi)
     ax = fig.add_axes([0.045, 0.2, 0.945, 0.76])
@@ -60,9 +67,14 @@ def main():
     ax.plot(sk[:, 0], sk[:, 1] * m2d, color="#8a90a8", lw=0.6, zorder=2)
     inv = d["view"] & (d["az"] >= B0) & (d["az"] <= B1)
     ax.plot(d["az"][inv], d["el"][inv], ".", ms=1.2, color="#ffffff", alpha=0.18, zorder=3)    # where a car can appear
+    beacons = []
     for t in d["towers"]:
         if t["light"] != "none" and t["a"] is not None and B0 <= t["az"] <= B1 and t["kc"] <= 0.13:
-            ax.plot(t["az"], t["a"] * m2d, "o", ms=3, color="#ff3b30", mec="none", zorder=4)
+            xy = (t["az"], t["a"] * m2d)
+            halo = ax.scatter(*xy, s=90, color="#ff3b30", alpha=0.0, lw=0, zorder=4)
+            core = ax.scatter(*xy, s=14, color="#ff5a4f", alpha=0.0, lw=0, zorder=4)
+            beacons.append((halo, core))
+            ax.text(xy[0], xy[1] - 0.06, "tower", ha="center", va="top", fontsize=8, color="#c8a4a4", zorder=4)
     ax.add_patch(plt.Circle((239.45, 0.70), 0.25, fill=False, ec="#e6e6e6", lw=0.8, zorder=4))
     ax.text(239.1, 0.70, "full Moon", ha="right", va="center", fontsize=9, color="#e6e6e6", zorder=5)
     ax.set_xlim(B0, B1)
@@ -76,6 +88,45 @@ def main():
     fig.patch.set_facecolor("#111418")
     ax.set_xlabel("True bearing from the viewing area (°)", color="#cccccc", fontsize=10)
     ax.set_ylabel("Elev. (°)", color="#cccccc", fontsize=10)
+    fig.beacons = beacons
+    return fig, ax
+
+
+def beacon_level(t_video):
+    """Brightness 0..1 of the tower beacon at video time t_video (s), flashing at the real-time rate."""
+    period = 60.0 / BEACON_FPM
+    x = t_video % period
+    on = BEACON_DUTY * period
+    if x >= on:
+        return 0.0
+    return float(min(1.0, x / BEACON_RAMP, (on - x) / BEACON_RAMP))
+
+
+def set_beacons(fig, t_video, level=None):
+    lv = beacon_level(t_video) if level is None else level
+    for halo, core in fig.beacons:
+        halo.set_alpha(0.25 * lv)
+        core.set_alpha(lv)
+
+
+def encoder(path):
+    """An ffmpeg process that takes raw RGBA frames on stdin and writes an H.264 MP4."""
+    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS),
+           "-i", "-", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "slow", "-movflags", "+faststart",
+           path]
+    return subprocess.Popen(cmd, stdin=subprocess.PIPE)
+
+
+def to_webm(mp4, webm):
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", mp4, "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "36",
+                    "-row-mt", "1", webm], check=True)
+
+
+def main():
+    d = load()
+    mlim = float(PH.m_lim(MU_REF, F_REF))
+    os.makedirs(OUT, exist_ok=True)
+    fig, ax = scene(d)
     halo = ax.scatter([], [], s=[], color="#fff1c9", alpha=0.07, lw=0, zorder=6)
     glow = ax.scatter([], [], s=[], color="#fff1c9", alpha=0.18, lw=0, zorder=6)
     core = ax.scatter([], [], s=[], color="#fffaf0", lw=0, zorder=7)
@@ -95,9 +146,7 @@ def main():
     m = np.interp(s_car, d["s"], mm)
 
     mp4 = os.path.join(OUT, "one_car.mp4")
-    cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgba", "-s", f"{W}x{H}", "-r", str(FPS),
-           "-i", "-", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-preset", "slow", "-movflags", "+faststart", mp4]
-    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    proc = encoder(mp4)
     poster_i = int(np.argmin(np.abs(tmin - 21.05)))
     for i in range(n):
         on = vis[i] and m[i] <= mlim and B0 <= az[i] <= B1
@@ -110,6 +159,7 @@ def main():
         else:
             halo.set_offsets(np.empty((0, 2))); glow.set_offsets(np.empty((0, 2))); core.set_offsets(np.empty((0, 2)))
             status.set_text("hidden by terrain" if not vis[i] else "too faint to see")
+        set_beacons(fig, i / FPS, 1.0 if i == poster_i else None)     # the poster shows the beacon lit
         mins = int(tmin[i]); secs = int(round((tmin[i] - mins) * 60)) % 60
         clock.set_text(f"{mins:02d}:{secs:02d} after leaving Shafter")
         fig.canvas.draw()
@@ -120,8 +170,7 @@ def main():
     proc.stdin.close()
     proc.wait()
     webm = os.path.join(OUT, "one_car.webm")
-    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", mp4, "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", "36",
-                    "-row-mt", "1", webm], check=True)
+    to_webm(mp4, webm)
     for f in (mp4, webm):
         print(f, os.path.getsize(f) // 1024, "kB")
     print("frames", n, "duration", n / FPS, "s")
