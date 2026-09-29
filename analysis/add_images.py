@@ -100,8 +100,8 @@ def main():
          "      " + img("lights_hanson", LH, "photo wide", "Observers at the Viewing Area, 2009.") + "\n\n      <h2>The field studies</h2>"),
         ("      <h2>The Zone of Skepticism</h2>",
          "      " + img("fig02_panorama_zos", "Panorama from the Viewing Area showing the skyline, the visible stretches of US-67 and RM 2810, "
-                        "towers, the railroad and the shaded Zone of Skepticism", "photo plain",
-                        "The view from the platform, with every known light source and the Zone of Skepticism.")
+                        "towers, the railroad and the known-source mask shaded green", "photo plain",
+                        "The view from the platform, with every known light source and the known-source mask.")
          + "\n\n      <h2>The Zone of Skepticism</h2>"),
         ("      <h2>What would settle it</h2>",
          "      " + img("fig06_weighted_zone", "Panorama shaded by the expected number of ordinary lights per hour; most of the view below "

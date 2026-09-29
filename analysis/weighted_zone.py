@@ -1,7 +1,7 @@
 """
-Marfa Lights investigation: the activity-weighted Zone of Skepticism.
+Marfa Lights investigation: the activity-weighted known-source mask (formerly "Zone of Skepticism").
 
-The binary Zone of Skepticism (zone_of_skepticism.py) marks where a catalogued light CAN
+The binary known-source mask (zone_of_skepticism.py) marks where a catalogued light CAN
 appear. This script estimates how OFTEN one does: the expected number of ordinary lights
 per hour that pass through each patch of the view from the Viewing Area, on a given night.
 

@@ -3,7 +3,7 @@ Publication figures for the Marfa Lights investigation -> publication/figures/
 
     fig01_study_area        map of the 120 deg viewing fan, roads by visibility, rail, lit towers, towns
     fig02_panorama_zos      panorama from the Viewing Area with every catalogued source and the
-                            Zone of Skepticism; (a) 155-300 deg, (b) zoom on the US-67 / RM 2810 sector
+                            known-source mask; (a) 155-300 deg, (b) zoom on the US-67 / RM 2810 sector
     fig03_headlights        market-weighted headlamp beams with the observer's position in each beam, and the
                             predicted brightness of a car on US-67 in either direction
     fig04_sightlines        terrain cross-sections along four bearings with the line of sight
@@ -318,8 +318,8 @@ def fig02():
     e1, e2 = exaggeration(fig, a1), exaggeration(fig, a2)
     a1.set_title(f"vertical ×{e1:.0f}", loc="right", fontsize=6.5)
     a2.set_title(f"vertical ×{e2:.0f}", loc="right", fontsize=6.5)
-    handles = [Patch(fc=C_ZOS, alpha=0.33, ec=C_ZOS, lw=0.3, label="Zone of Skepticism, tier A (±0.3° az, ±0.1° el)"),
-               Patch(fc="none", ec=C_ZOS, lw=0.7, ls=(0, (3, 1.5)), label="tier B (±3° az, ±0.25° el)"),
+    handles = [Patch(fc=C_ZOS, alpha=0.33, ec=C_ZOS, lw=0.3, label="Known-source mask, photographic pointing (±0.3° az, ±0.1° el)"),
+               Patch(fc="none", ec=C_ZOS, lw=0.7, ls=(0, (3, 1.5)), label="… compass pointing (±3° az, ±0.25° el)"),
                Line2D([], [], marker="o", ls="", color=C_VIS, ms=3, label="US-67 visible (k = 0.13)"),
                Line2D([], [], marker="o", ls="", color=C_MARG, ms=3, label="US-67 marginal"),
                Line2D([], [], marker="o", ls="", color=C_ROAD2, ms=3, label="Other state roads visible"),

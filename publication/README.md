@@ -24,11 +24,11 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 - Blue lines are railroads. Diamonds are FCC-registered towers with aviation lighting: filled if the top light is in view, hollow if hidden.
 - Axes are km east and north of the viewer, in an azimuthal-equidistant projection.
 
-**Figure 2 · `fig02_panorama_zos`: The view from the platform and the Zone of Skepticism.**
+**Figure 2 · `fig02_panorama_zos`: The view from the platform and the known-source mask.**
 - (a) Bearings 155°–300° true; (b) the US-67 / RM 2810 sector at 224°–262°.
 - Grey layers are terrain silhouettes: the far skyline, then the maximum elevation angle within 45, 25 and 10 km. The black line is the skyline at k = 0.13.
 - Points are the apparent positions, at k = 0.13, of headlamps on roads in view and of locomotive headlamps on track in view. Diamonds are lit towers.
-- Green fill is the Zone of Skepticism, tier A: the locus of every catalogued source for 0 ≤ k ≤ 1, widened by ±0.3° in bearing and ±0.1° in elevation. The dashed green outline is tier B (±3°, ±0.25°).
+- Green fill is the known-source mask for photographic pointing: the locus of every catalogued source for 0 ≤ k ≤ 1, widened by ±0.3° in bearing and ±0.1° in elevation. The dashed green outline is the mask for compass pointing (±3°, ±0.25°).
 - The vertical scale is exaggerated; the factor is printed on each panel. The top axis gives magnetic bearing, using a declination of 6.2° E.
 - Definition: note 5.
 
@@ -51,7 +51,7 @@ Each figure is provided as vector PDF (fonts embedded), SVG and 300 dpi PNG. The
 - (a) Length of US-67 and of RM 2810 whose critical refraction coefficient is ≤ k, plotted against k. This includes the grazing (marginal) part: In model v2, US-67 (Shafter–Marfa) has 9.5 km robustly visible plus 0.5 km marginal at k = 0.13. The top axis converts k to the temperature gradient, using Hirt et al. (2010) at 850 hPa and 283 K.
 - (b) Rise in apparent elevation for a change Δk in refraction, plotted against distance.
 
-**Figure 6 · `fig06_weighted_zone`: The activity-weighted Zone of Skepticism.**
+**Figure 6 · `fig06_weighted_zone`: The activity-weighted known-source mask.**
 - Colour shows the expected number of catalogued ordinary lights per hour passing through each part of the view on a standard night: k = 0.13, MOR 100 km, observer error ±0.3° × ±0.1°.
 - Road rates use TxDOT AADT, only for the direction facing the platform, weighted by the headlight detectability of note 4. Rail rates use FRA night through-train counts.
 - The shading uses one ordinal blue ramp. Unshaded ground receives fewer than 0.01 lights per hour. Hatching marks permanent lights (towers, towns, skyglow, the aerostat).

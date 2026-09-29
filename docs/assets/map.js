@@ -72,10 +72,10 @@
     const f = (az - s[i][0]) / 0.1; return {m: s[i][1] + f * (s[i + 1][1] - s[i][1]), d: s[i][2]};
   };
 
-  // Zone of Skepticism (analysis/zone_of_skepticism.py): rings of [az, el_mrad]
+  // known-source mask (analysis/zone_of_skepticism.py; formerly 'Zone of Skepticism'): rings of [az, el_mrad]
   const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
     const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
-  // activity-weighted zone (analysis/weighted_zone.py): expected ordinary lights per hour
+  // activity-weighted mask (analysis/weighted_zone.py): expected ordinary lights per hour
   // envelope of two nights: normal refraction (k = 0.13) and a strong inversion (k = 1)
   const RATE = ZR ? ZR.standard : null, RATES = ZR ? [ZR.standard, ZR.inversion] : [];
   function rateAt(az, m) {          // index of the highest level containing the point in either scenario, -1 if none
@@ -343,8 +343,8 @@
       else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const sk = skyAt(norm(a)); if (sk) for (let m = -15; m <= sk.m; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); } }
     }
     if (rl !== null && rl >= 0) lines.push(`<span>Ordinary lights expected ${mEl === null ? `somewhere below the skyline within ±${tol}°` : "at this spot"}: <b>${RATE_TXT[rl]}</b> on a clear night (normal refraction up to a strong inversion).</span>`);
-    if (z !== null && !aboveSky) lines.push(z ? `<span>Inside the <b>Zone of Skepticism</b>: a known light source can appear here. Rule it out first.</span>`
-      : `<span>Outside the <b>Zone of Skepticism</b>: no catalogued light source appears here${rl === -1 ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
+    if (z !== null && !aboveSky) lines.push(z ? `<span>Inside the <b>known-source mask</b>: a known, ordinary light source can appear here. Rule it out first.</span>`
+      : `<span>Outside the <b>known-source mask</b>: no catalogued light source appears here${rl === -1 ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
     if (elev !== null && skyDeg !== null) {
       lines.push(elev > skyDeg + 0.1
         ? `At ${fmt(elev, 2)}° the light is <b>above the skyline</b> (${fmt(skyDeg, 2)}° here, ridge ${fmt(sky.d, 0)} km away). A ground light can't sit there. Think aircraft, stars or planets, satellites, or the aerostat at ~${fmt(norm(293 - (refMag ? DECL : 0)), 0)}°${refMag ? " magnetic" : " true"}.`
@@ -419,7 +419,7 @@
     layer(1, .10); layer(5, .09); layer(4, .09); layer(3, .10);
     el("polyline", {points: sky.map(s => `${px(s[0])},${py(s[1])}`).join(" "), fill: "none", stroke: "var(--ink-2)", "stroke-width": 1.3}, svg);
     el("line", {x1: PL, x2: PW - PR, y1: py(0), y2: py(0), stroke: "var(--muted)", "stroke-dasharray": "3 3", "stroke-width": .8}, svg);
-    // activity-weighted Zone of Skepticism: expected ordinary lights per hour (clipped to the plot)
+    // activity-weighted known-source mask: expected ordinary lights per hour (clipped to the plot)
     if (RATE && showZos) {
       const cid = "panoclip"; const defs = el("defs", {}, svg); const cp = el("clipPath", {id: cid}, defs);
       el("rect", {x: PL, y: PT, width: PW - PL - PR, height: PH - PT - PB}, cp);
@@ -466,7 +466,7 @@
       if (!isNaN(e)) el("circle", {cx: px(b), cy: py(Math.tan(e * D2R) * 1000), r: 5, fill: "none", stroke: "var(--accent)", "stroke-width": 2}, svg);
     }
     const hdeg = (view.A1 - view.A0) / (PW - PL - PR), vdeg = mrad2deg(view.E1 - view.E0) / (PH - PT - PB);
-    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. Blue = Zone of Skepticism, shaded by how many ordinary lights pass there per hour on a clear night, from normal refraction up to a strong inversion (lightest 0.01–0.1, then 0.1–1, 1–10, 10+), allowing a ±0.3° bearing error. Unshaded ground: fewer than one per 100 hours from catalogued sources. ◆ red = lit tower (hollow if hidden), purple = railroad in view, magenta = other roads in view.`;
+    if ($("panoNote")) $("panoNote").textContent = `Height stretched about ${fmt(hdeg / vdeg, 0)}× so the skyline detail is visible. Shaded layers are ridges within 10, 25 and 45 km, then the far skyline. Blue = known-source mask, shaded by how many ordinary lights pass there per hour on a clear night, from normal refraction up to a strong inversion (lightest 0.01–0.1, then 0.1–1, 1–10, 10+), allowing a ±0.3° bearing error. Unshaded ground: fewer than one per 100 hours from catalogued sources. ◆ red = lit tower (hollow if hidden), purple = railroad in view, magenta = other roads in view.`;
   }
   svg.addEventListener("click", ev => {
     const r = svg.getBoundingClientRect(), x = (ev.clientX - r.left) * (PW / r.width), y = (ev.clientY - r.top) * (PH / r.height);

@@ -18,7 +18,7 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | `docs/history.html`, `science.html`, `place.html`, `visit.html` | Background pages with numbered, linked sources |
 | `docs/sightlines.html` | The technical sight-line report |
 | `docs/community.html` | Purpose, the dark-sky region, Marfa, good-neighbour guidance, local institutions |
-| `docs/sky.html` | Camera sky finder: live camera with skyline, roads, towers, stars and the Zone of Skepticism drawn over it; calibrate on a known light and record calibrated bearings (Astronomy Engine, MIT; d3-celestial star data, BSD) |
+| `docs/sky.html` | Camera sky finder: live camera with skyline, roads, towers, stars and the known-source mask drawn over it; calibrate on a known light and record calibrated bearings (Astronomy Engine, MIT; d3-celestial star data, BSD) |
 | `docs/app/` | Installable pocket app (PWA): tonight's darkness, moon and planets (Astronomy Engine), NWS forecast, a quick light identifier, sighting log, light bingo, red night mode. Works offline via `docs/sw.js` |
 | `docs/report.html` | Guided sighting report with an automatic noise check; stays on the device until downloaded or posted |
 | `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
@@ -38,7 +38,7 @@ Update (2026‑09‑28, 120° fan):
 - **Headlight direction matters.** Northbound cars on the US‑67 straight at ~233.5° point within
   3–5° of the platform. With high beams they are predicted near magnitude −2, brighter than Sirius
   (one measured production headlamp; see `publication/notes/04_headlight_brightness.md`).
-- **Zone of Skepticism.** The zone is the region of the view where a catalogued light can appear.
+- **Known-source mask** (formerly "Zone of Skepticism"). The mask is the region of the view where a catalogued light can appear.
   In the 0.29° band just below the skyline it covers ~33% of the fan with instrumented bearings
   (±0.3°) and ~74% with hand‑compass bearings (±3°).
 - **Activity‑weighted zone.** Weighting each source by how often it produces a light (TxDOT traffic
@@ -59,8 +59,8 @@ Update (2026‑09‑28, 120° fan):
 | `analysis/build_sw.py` | Regenerates `docs/sw.js` (offline precache list and version hash). Run after any change in `docs/` |
 | `analysis/build_site_data.py` | Exports all website map layers to `docs/data/site.json` |
 | `analysis/headlight_model.py` | Headlamp photometry model: brightness of a car at every road point, by travel direction |
-| `analysis/zone_of_skepticism.py` | Zone of Skepticism polygons (`data/derived/zos.json`, `docs/data/zos.json`) |
-| `analysis/weighted_zone.py` | Activity‑weighted zone: expected ordinary lights per hour; per‑night version from measured k, MOR and error |
+| `analysis/zone_of_skepticism.py` | Known-source mask polygons (`data/derived/zos.json`, `docs/data/zos.json`) |
+| `analysis/weighted_zone.py` | Activity‑weighted mask: expected ordinary lights per hour; per‑night version from measured k, MOR and error |
 | `analysis/pub_figures.py` | Publication figures → `publication/figures/` |
 | `publication/` | Publication‑ready figures (PDF/SVG/PNG) and method notes (maths, physics, geography, sources) |
 | `data/inputs/` | Google Earth trace of US‑67 and reference points; infrastructure layers retrieved from public services |

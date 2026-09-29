@@ -1,11 +1,12 @@
 """
-Marfa Lights investigation: the Zone of Skepticism (ZoS).
+Marfa Lights investigation: the known-source mask (formerly "Zone of Skepticism", ZoS).
 
-The ZoS is the set of apparent positions (true azimuth, elevation angle) seen from the
-Viewing Area where a catalogued, ordinary light source could appear. A light reported
-inside the ZoS has a mundane candidate and needs that candidate ruled out (by timing,
-motion, colour, a second observer) before it can be called anomalous. A light outside it
+The known-source mask is the set of apparent positions (true azimuth, elevation angle) seen
+from the Viewing Area where a catalogued, ordinary light source could appear. A light reported
+inside the mask has an ordinary candidate and needs that candidate ruled out (by timing,
+motion, colour, a second observer) before it can be called unexplained. A light outside it
 has no catalogued candidate. That makes it worth attention, not proof of anything.
+File and variable names (zos) are kept for compatibility.
 
 Construction
 ------------

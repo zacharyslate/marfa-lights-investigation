@@ -140,7 +140,7 @@
     const near = az => Math.abs(angDiff(az, P.az)) <= halfSpan;
     ctx.lineJoin = "round"; ctx.font = "600 12px 'JetBrains Mono', monospace"; ctx.textBaseline = "middle";
 
-    // zone of skepticism (expected ordinary lights per hour, envelope of two refraction states)
+    // known-source mask (expected ordinary lights per hour, envelope of two refraction states)
     if (st.zone && ZR) {
       const fills = ["rgba(255,74,44,.10)", "rgba(255,74,44,.18)", "rgba(255,74,44,.26)", "rgba(255,74,44,.34)"];
       ZR.standard.levels.forEach((lv, i) => [ZR.standard, ZR.inversion].forEach(Z => Z.rate_polys[String(lv)].forEach(r => {
