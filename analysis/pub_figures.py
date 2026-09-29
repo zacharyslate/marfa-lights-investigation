@@ -501,7 +501,7 @@ def fig05():
     rm = np.array([q[5] for rd in ROADS if rd["k"] == "RM2810" for q in rd["p"]])
     a.plot(ks, [(rm <= k).sum() * 0.12 for k in ks], color=C_ROAD2, lw=1.3, label="RM 2810 (in the fan)")
     a.axvline(K0, color="k", lw=0.5, ls="--")
-    a.text(K0 + 0.05, 46, "k = 0.13", fontsize=6)
+    a.text(K0 + 0.05, 0.97, "k = 0.13", fontsize=6, transform=a.get_xaxis_transform(), va="top")
     a.set_xlabel("Refraction coefficient k")
     a.set_ylabel("Road length with k_crit ≤ k (km)")
     a.set_title("(a) Road in view versus refraction", loc="left")
