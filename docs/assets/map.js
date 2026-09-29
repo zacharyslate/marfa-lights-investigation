@@ -1,8 +1,16 @@
 /* Marfa Lights Field Guide — interactive map, light identifier, panorama and field log. */
 (async function () {
-  const [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=8").then(r => r.json()),
-    fetch("data/zos.json?v=8").then(r => r.json()).catch(() => null),
-    fetch("data/zos_rate.json?v=8").then(r => r.json()).catch(() => null)]);
+  const ok = r => { if (!r.ok) throw new Error(r.status); return r.json(); };
+  let S, ZOS, ZR;
+  try {
+    [S, ZOS, ZR] = await Promise.all([fetch("data/site.json?v=9").then(ok),
+      fetch("data/zos.json?v=9").then(ok).catch(() => null),
+      fetch("data/zos_rate.json?v=9").then(ok).catch(() => null)]);
+  } catch (e) {
+    const v = document.getElementById("verdict");
+    if (v) v.innerHTML = "<b>Couldn't load the map data.</b> Check your connection and reload the page.";
+    return;
+  }
   const V = [S.viewer.lat, S.viewer.lon];
   const DECL = S.declination.deg;          // east-positive: true = magnetic + DECL
   const R = 6371000, D2R = Math.PI / 180;
@@ -38,10 +46,11 @@
     const f = run.filter(p => p.mH !== null && p.mH !== undefined);
     if (!f.length) return "";
     const b = f.reduce((a, p) => p.mH < a.mH ? p : a);
+    const fl = run.filter(p => p.mL !== null && p.mL !== undefined), bl = fl.length ? fl.reduce((a, p) => p.mL < a.mL ? p : a) : b;
     const dirTxt = b.dir === 0 ? "heading toward Marfa" : "heading away from Marfa";
     const cmp = m => m <= -1 ? "as bright as the brightest stars" : m <= 1.5 ? "like a bright star" : m <= 4 ? "like a modest star" : m <= 6 ? "faint, near the naked-eye limit" : "too faint to see";
     const w = Math.abs(Math.sin(b.h * D2R)) * (100 / 3.6) / (b.d * 1000) * 180 / Math.PI * 60;
-    return `At 100 km/h a car here crosses the view at about ${fmt(w, w < 0.1 ? 2 : 1)}° per minute. A car ${dirTxt} can point within ${fmt(Math.max(1, Math.abs(b.h)), 0)}° of the platform: about magnitude ${fmt(b.mH, 1)} on high beam (${cmp(b.mH)}), ${fmt(b.mL, 1)} on low beam. Cars going the other way show only red tail lights.`;
+    return `At 100 km/h a car here crosses the view at about ${fmt(w, w < 0.1 ? 2 : 1)}° per minute. A car ${dirTxt} can point within ${fmt(Math.max(1, Math.abs(b.h)), 0)}° of the platform: up to about magnitude ${fmt(b.mH, 1)} on high beam (${cmp(b.mH)}) and ${fmt(bl.mL, 1)} on low beam. Cars going the other way show only red tail lights.`;
   }
   const HIT = S.rays.filter(r => r[4] === 1);
   const hwyDistAt = az => {           // distance to the first US-67 crossing, only where rays meet US-67
@@ -73,27 +82,17 @@
   };
 
   // known-source mask (analysis/zone_of_skepticism.py; formerly 'Zone of Skepticism'): rings of [az, el_mrad]
-  const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
-    const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
   // activity-weighted mask (analysis/weighted_zone.py): expected ordinary lights per hour
   // envelope of two nights: normal refraction (k = 0.13) and a strong inversion (k = 1)
   const RATE = ZR ? ZR.standard : null, RATES = ZR ? [ZR.standard, ZR.inversion] : [];
-  function rateAt(az, m) {          // index of the highest level containing the point in either scenario, -1 if none
-    if (!RATE) return null;
-    let lvl = -1;
-    RATES.forEach(Rs => Rs.levels.forEach((lv, i) => { let n = 0; Rs.rate_polys[String(lv)].forEach(r => { if (inRing(az, m, r)) n++; }); if (n % 2 === 1 && i > lvl) lvl = i; }));
-    return lvl;
-  }
+  // rasterized look-ups (assets/mask.js): rate level, fixed lights, and the mask, all in (true az, el mrad)
+  const MK = window.MarfaMask ? MarfaMask.build(ZR, ZOS, az => { const s = skyAt(az); return s ? s.m : null; }) : null;
   const RATE_TXT = ["0.01–0.1 per hour (one every 10–100 hours)", "0.1–1 per hour", "1–10 per hour", "10 or more per hour"];
   // the traffic model covers this range of true bearings only; outside it, "no known source" means "not modelled"
   const DOMAIN = (ZR && ZR.standard.params.az_domain_deg) || [150, 300];
   const inDomain = az => az >= DOMAIN[0] && az <= DOMAIN[1];
-  function zosAt(az, m) {           // null = cannot say; true/false = inside/outside tier A (tier B if only a bearing)
-    if (!ZOS) return null;
-    if (m === null || !inDomain(az)) return null;
-    let n = 0; ZOS.tiers.A.forEach(r => { if (inRing(az, m, r)) n++; });
-    return n % 2 === 1;
-  }
+  // null = cannot say; true/false = inside/outside the mask for tier A (photo-quality bearing) or B (compass)
+  const zosAt = (az, m, tier) => (!MK || m === null || !inDomain(az)) ? null : MK.inMask(az, m, tier);
 
   // ------------------------------------------------------------ map
   const map = L.map("map", {zoomControl: true, attributionControl: true}).setView(V, 10);
@@ -109,8 +108,8 @@
   const groups = {};
   const LAYERS = [
     ["hwy", "US-67 line of sight", "sw", "--vis", true],
-    ["roads", "Other state roads (RM 2810, US-90…)", "sw", "--road2", true],
-    ["fan", "Viewing fan, 120°, 0.5° rays", "sw", "--accent", true],
+    ["roads", "Other roads (RM 2810, US-90, Nopal Rd…)", "sw", "--road2", true],
+    ["fan", "Viewing fan (120°), rays every 1°", "sw", "--accent", true],
     ["rail", "Railroads", "sw", "--rail", true],
     ["xing", "Rail grade crossings", "swd", "--rail", false],
     ["power", "Power lines ≥ 69 kV", "sw", "--power", false],
@@ -257,7 +256,7 @@
   function identify() {
     const b = trueBearing(), tol = +$("tol").value, eRaw = $("elev").value.trim(), elev = eRaw === "" ? null : parseFloat(eRaw);
     bearingGroup.clearLayers();
-    if (b === null) { const r = parseFloat($("bearing").value); $("verdict").innerHTML = !isNaN(r) ? `<b>Check the bearing.</b> Bearings run from 0 to 360°.` : ""; $("cands").innerHTML = ""; drawPano(); return; }
+    if (b === null) { last = null; const r = parseFloat($("bearing").value); $("verdict").innerHTML = !isNaN(r) ? `<b>Check the bearing.</b> Bearings run from 0 to 360°.` : ""; $("cands").innerHTML = ""; drawPano(); return; }
     // bearing wedge on the map
     const far = 90000, wedge = [V]; for (let a = b - tol; a <= b + tol + 1e-6; a += tol / 6) wedge.push(fwd(V[0], V[1], a, far));
     L.polygon(wedge, {color: css("--accent"), weight: 0, fillOpacity: .12, interactive: false}).addTo(bearingGroup);
@@ -279,7 +278,7 @@
         const ed = vis.map(p => mrad2deg(p.a)); const lo = Math.min(...ed), hi = Math.max(...ed);
         match = elev >= lo - 0.25 && elev <= hi + 0.25 ? " · elevation matches" : ` · headlights here appear at ${fmt(lo, 2)}° to ${fmt(hi, 2)}°`;
       }
-      C.push({d: dmin, chip: "US-67", col: st === "v" ? "--vis" : st === "m" ? "--marg" : "--hid",
+      C.push({iv: st !== "h", em: match.startsWith(" · elevation matches"), d: dmin, chip: "US-67", col: st === "v" ? "--vis" : st === "m" ? "--marg" : "--hid",
         t: st === "v" ? "Car headlights: road in view" : st === "m" ? "Car headlights: road marginally in view" : "US-67, hidden by terrain",
         dist: `${fmt(dmin, 1)}–${fmt(dmax, 1)} km`, sub: `${fmt(run.length * 0.06, 1)} km of road on this bearing, road km ${fmt(run[0].ch, 1)}–${fmt(run[run.length - 1].ch, 1)} from Shafter${match}${vis.length ? ". " + brightText(vis, "US67") : ""}`});
     });
@@ -293,7 +292,7 @@
         const ed = vis.map(p => mrad2deg(p.a)); const lo = Math.min(...ed), hi = Math.max(...ed);
         match = elev >= lo - 0.25 && elev <= hi + 0.25 ? " · elevation matches. " : ` · headlights here appear at ${fmt(lo, 2)}° to ${fmt(hi, 2)}°. `;
       } else if (vis.length) match = ". ";
-      C.push({d: vis.length ? Math.min(...vis.map(p => p.d)) : dmin, chip: "Road", col: vis.length ? "--road2" : "--hid",
+      C.push({iv: vis.length > 0, em: match.startsWith(" · elevation matches"), d: vis.length ? Math.min(...vis.map(p => p.d)) : dmin, chip: "Road", col: vis.length ? "--road2" : "--hid",
         t: vis.length ? `${rd.n}: car headlights, road in view` : `${rd.n}, hidden by terrain`, dist: `${fmt(dmin, 1)}–${fmt(dmax, 1)} km`,
         sub: vis.length ? `${fmt(vis.length * 0.12, 1)} km in view on this bearing${match}${brightText(vis, rd.k)}` : "No line of sight at this refraction"});
     });
@@ -308,7 +307,7 @@
       const hd = hwyDistAt(p.az), front = hd && p.d < hd;
       const rv = S.railpano.filter(r => r[0] === p.o && within(r[1]));
       const seen = rv.some(r => r[4] <= K), known = rv.length > 0;
-      C.push({d: p.d, chip: "Rail", col: "--rail", t: p.o === "UP" ? "Union Pacific trains (headlight, ditch lights)" : "Texas Pacifico trains, Marfa–Presidio line",
+      C.push({iv: seen, d: p.d, chip: "Rail", col: "--rail", t: p.o === "UP" ? "Union Pacific trains (headlight, ditch lights)" : "Texas Pacifico trains, Marfa–Presidio line",
         dist: `${fmt(p.d, 1)} km`, sub: `${p.m ? "Main track" : "Siding/yard"}${known ? (seen ? " · track in view" : " · track hidden by terrain") : ""}${front ? " · in front of US-67 on this bearing" : ""}`});
     });
     const pts = [
@@ -321,7 +320,7 @@
       ...S.xing.filter(x => x.night > 0).map(x => ({...x, chip: "Crossing", col: "--rail", t: `Grade crossing ${x.id}`, sub: `${x.rr}; ${x.night} reported night trains`})),
       ...S.plants.map(p => ({...p, chip: "Plant", col: "--power", t: p.n, sub: `${p.tech}, ${p.mw} MW`})),
       ...S.refs.map(r => ({...r, chip: "Ref", col: "--ink-2", t: r.n, sub: r.note}))];
-    pts.forEach(p => { if (within(p.az)) C.push({d: p.d, chip: p.chip, col: p.col, t: p.t, dist: `${fmt(p.d, 1)} km`, sub: p.sub}); });
+    pts.forEach(p => { if (within(p.az)) C.push({iv: p.chip === "Tower" ? inView(p) : false, d: p.d, chip: p.chip, col: p.col, t: p.t, dist: `${fmt(p.d, 1)} km`, sub: p.sub}); });
     C.sort((a, b) => a.d - b.d);
 
     // verdict
@@ -330,21 +329,23 @@
     const inFan = b >= S.fan[0] && b <= S.fan[1];
     const aboveSky = elev !== null && skyDeg !== null && elev > skyDeg + 0.1;
     if (aboveSky) lines.push(`<b>Above the skyline.</b> Ground traffic on this bearing can't explain a light at this height.`);
-    else if (anyVisible) lines.push(`<b>US-67 is in view on this bearing.</b> A light moving steadily along it, especially a pair that splits or merges, is most likely a vehicle.`);
+    else if (anyVisible) lines.push(`<b>US-67 is in view on this bearing.</b> A light that drifts slowly along it, comes and goes, or meets another light and separates again is most likely a vehicle.`);
     else if (hwyRuns.length) lines.push(`<b>US-67 lies on this bearing but is hidden${Math.abs(K - 0.13) < 1e-9 ? " at standard refraction" : ` at k = ${fmt(K, 2)}`}.</b> Car headlights here need unusual refraction. Check the other sources below.`);
     else lines.push(`<b>US-67 is not on this bearing.</b>${inFan ? "" : " You are pointing outside the 120° viewing fan."}`);
     if (anyRoad && !aboveSky) lines.push(`<b>Another road is in view on this bearing</b> (see below). Its traffic can look just like a Marfa Light.`);
     const mEl = elev === null ? null : Math.tan(elev * D2R) * 1000;
-    const z = zosAt(b, mEl);
-    let rl = null;
+    const tier = tol <= 1 ? "A" : "B", z = zosAt(b, mEl, tier);
+    let rl = null, fx = null;
     if (!inDomain(b)) lines.push(`<b>Outside the modelled view.</b> Expected traffic is only worked out between ${fmt(refMag ? norm(DOMAIN[0] - DECL) : DOMAIN[0], 0)}° and ${fmt(refMag ? norm(DOMAIN[1] - DECL) : DOMAIN[1], 0)}°${refMag ? " magnetic" : " true"} (south to west-northwest). In this direction, "no known source" doesn't mean a light is unusual. US-90, the railway and the towns to the north and east are not modelled.`);
-    else if (RATE) {
-      if (mEl !== null) rl = rateAt(b, mEl);
-      else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const sk = skyAt(norm(a)); if (sk) for (let m = -15; m <= sk.m; m += 0.5) rl = Math.max(rl, rateAt(norm(a), m)); } }
+    else if (MK && RATE) {
+      if (mEl !== null) { rl = MK.rate(b, mEl); fx = MK.fixed(b, mEl); }
+      else { const w = MK.window(b, tol); rl = w.rate; fx = w.fixed; }
     }
     if (rl !== null && rl >= 0) lines.push(`<span>Ordinary lights expected ${mEl === null ? `somewhere below the skyline within ±${tol}°` : "at this spot"}: <b>${RATE_TXT[rl]}</b> on a clear night (normal refraction up to a strong inversion).</span>`);
-    if (z !== null && !aboveSky) lines.push(z ? `<span>Inside the <b>known-source mask</b>: a known, ordinary light source can appear here. Rule it out first.</span>`
-      : `<span>Outside the <b>known-source mask</b>: no catalogued light source appears here${rl === -1 ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
+    if (fx && !aboveSky) lines.push(`<span><b>A fixed light can appear ${mEl === null ? "on this bearing" : "here"}</b>: a lit tower, town glow or the aerostat (see the list below). A tower light stays put and blinks or burns steadily.</span>`);
+    const tierTxt = tier === "A" ? "for a photo-quality bearing (±0.3°)" : "for a compass bearing (±3°)";
+    if (z !== null && !aboveSky) lines.push(z ? `<span>Inside the <b>known-source mask</b> ${tierTxt}: a known, ordinary light source can appear here. Rule it out first.</span>`
+      : `<span>Outside the <b>known-source mask</b> ${tierTxt}: no catalogued light source appears here${rl === -1 && !fx ? " (fewer than one ordinary light per 100 hours expected)" : ""}. Note the time, bearing and height carefully.</span>`);
     if (elev !== null && skyDeg !== null) {
       lines.push(elev > skyDeg + 0.1
         ? `At ${fmt(elev, 2)}° the light is <b>above the skyline</b> (${fmt(skyDeg, 2)}° here, ridge ${fmt(sky.d, 0)} km away). A ground light can't sit there. Think aircraft, stars or planets, satellites, or the aerostat at ~${fmt(norm(293 - (refMag ? DECL : 0)), 0)}°${refMag ? " magnetic" : " true"}.`
@@ -354,22 +355,28 @@
     $("verdict").innerHTML = lines.map(l => `<div>${l.startsWith("<b>") ? l.replace("<b>", '<b class="h">') : l}</div>`).join("");
     $("cands").innerHTML = C.length ? C.map(c => `<li><span class="chip" style="--c:var(${c.col})">${c.chip}</span><span>${c.t}</span><span class="d">${c.dist}</span><span class="sub">${c.sub || ""}</span></li>`).join("")
       : `<li><span></span><span>No catalogued light source on this bearing within ${MAXKM()} km.</span><span></span></li>`;
-    last = {b, tol, elev, top: C[0] ? `${C[0].chip}: ${C[0].t} (${C[0].dist})` : "none", visible: anyVisible};
+    const best = C.find(c => c.em) || C.find(c => c.iv) || C[0];   // elevation match, else in view, else nearest
+    last = {b, tol, elev, top: best ? `${best.chip}: ${best.t} (${best.dist})` : "none", visible: anyVisible};
     drawPano();
   }
   const MAXKM = () => 90;
 
   // ------------------------------------------------------------ phone compass (experimental)
-  let lastHeading = null;
+  let lastHeading = null, shownHeading = null, orientQueued = false;
   function onOrient(e) {
     let h = null;
     if (typeof e.webkitCompassHeading === "number") h = e.webkitCompassHeading;                 // iOS: magnetic
     else if (e.absolute && typeof e.alpha === "number") h = norm(360 - e.alpha);                   // Android absolute
     if (h === null) return;
     lastHeading = lastHeading === null ? h : norm(lastHeading + 0.25 * angDiff(h, lastHeading));  // smooth
-    const bt = norm(lastHeading + DECL);
-    $("bearing").value = fmt(norm(refMag ? bt - DECL : bt), 1).replace(",", "");
-    identify();
+    if (orientQueued || (shownHeading !== null && Math.abs(angDiff(lastHeading, shownHeading)) < 0.1)) return;
+    orientQueued = true;
+    requestAnimationFrame(() => {                // at most one update per frame, and only when the heading moves
+      orientQueued = false; shownHeading = lastHeading;
+      const bt = norm(lastHeading + DECL);
+      $("bearing").value = fmt(norm(refMag ? bt - DECL : bt), 1).replace(",", "");
+      identify();
+    });
   }
   $("compassBtn").addEventListener("click", async () => {
     if (compassOn) {
@@ -381,7 +388,8 @@
         const r = await DeviceOrientationEvent.requestPermission(); if (r !== "granted") throw new Error("denied");
       }
       window.addEventListener("deviceorientationabsolute", onOrient); window.addEventListener("deviceorientation", onOrient);
-      compassOn = true; lastHeading = null; $("compassBtn").setAttribute("aria-pressed", "true"); $("compassBtn").textContent = "Hold reading";
+      compassOn = true; lastHeading = null; shownHeading = null;
+      setTimeout(() => { if (compassOn && lastHeading === null) $("declNote").textContent = "No compass readings yet. This device may not have a compass: enter the bearing by hand, or tap the map or panorama."; }, 2500); $("compassBtn").setAttribute("aria-pressed", "true"); $("compassBtn").textContent = "Hold reading";
       $("declNote").textContent = "Hold the phone flat, top edge pointing at the light, away from the car and metal railings. Phone compasses are often off by 5–10°, so use the ±5° window.";
     } catch (err) {
       $("declNote").textContent = "This browser didn't allow compass access. Enter the bearing by hand, or tap the map or panorama.";
@@ -436,8 +444,10 @@
     // railroad track in view
     S.railpano.forEach(r => { if (inW(r[1]) && r[4] <= K && r[3] >= view.E0) el("circle", {cx: px(r[1]), cy: py(r[3]), r: 1.8, fill: "var(--rail)"}, svg); });
     // towns
-    S.towns.forEach(t => { if (inW(t.az) && t.a !== undefined && !(!panoZoom && t.n.startsWith("Ojinaga"))) {
-      const seen = t.kc <= K, sk = skyAt(t.az), y = seen ? Math.max(py(t.a), PT + 10) : Math.max(py(sk ? sk.m : t.a) - 6, PT + 10);
+    S.towns.forEach(t => { if (inW(t.az) && !(!panoZoom && t.n.startsWith("Ojinaga"))) {
+      const seen = t.a !== undefined && t.a !== null && t.kc !== null && t.kc !== undefined && t.kc <= K, sk = skyAt(t.az);
+      if (!seen && !sk) return;
+      const y = seen ? Math.max(py(t.a), PT + 10) : Math.max(py(sk.m) - 6, PT + 10);
       el("text", {x: px(t.az), y: Math.min(y, PH - PB - 4), "text-anchor": "middle", style: `fill:var(--ink-2);opacity:${seen ? 1 : .55};font-weight:600`}, svg).textContent = (!panoZoom && t.n === "Presidio" ? "Presidio–Ojinaga" : t.n.replace(", Chihuahua", "")) + (seen ? "" : " (glow)");
     }});
     // aerostat: the ground site plus a marker showing it flies higher
@@ -482,12 +492,15 @@
   let LOG = [];
   try { LOG = JSON.parse(localStorage.getItem("mlfg-log") || "[]"); } catch (e) {}
   const saveLog = () => { try { localStorage.setItem("mlfg-log", JSON.stringify(LOG)); } catch (e) {} renderLog(); };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+  const CT = new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit"});
+  const when = t => { try { return CT.format(new Date(t)) + " CT"; } catch (e) { return String(t).slice(5, 16); } };
   function renderLog() {
-    $("log").innerHTML = LOG.slice().reverse().map((s, i) => `<li><span><b class="mono">${s.time.slice(5, 16).replace("T", " ")}</b> · ${fmt(s.true_bearing, 1)}° T${s.elev_deg !== "" ? ` · ${s.elev_deg}°` : ""} · ${s.note ? s.note.slice(0, 40) : s.top}</span><button type="button" data-i="${LOG.length - 1 - i}" aria-label="Delete entry">✕</button></li>`).join("");
+    $("log").innerHTML = LOG.slice().reverse().map((s, i) => `<li><span><b class="mono">${esc(when(s.time))}</b> · ${fmt(s.true_bearing, 1)}° T${s.elev_deg !== "" ? ` · ${esc(s.elev_deg)}°` : ""} · ${esc(s.note ? s.note.slice(0, 40) : s.top)}</span><button type="button" data-i="${LOG.length - 1 - i}" aria-label="Delete entry">✕</button></li>`).join("");
     $("log").querySelectorAll("button").forEach(bt => bt.onclick = () => { LOG.splice(+bt.dataset.i, 1); saveLog(); });
   }
   $("logBtn").addEventListener("click", () => {
-    if (!last) return;
+    if (!last) { $("verdict").innerHTML = "<div><b class=\"h\">Enter a bearing first.</b> Then save the sighting.</div>"; return; }
     LOG.push({time: new Date().toISOString(), true_bearing: +last.b.toFixed(2), magnetic_bearing: +norm(last.b - DECL).toFixed(2),
       elev_deg: last.elev === null ? "" : last.elev, window_deg: last.tol, refraction_k: K, us67_in_view: last.visible, top_candidate: last.top, top: last.top, note: $("note").value.trim()});
     $("note").value = ""; saveLog();

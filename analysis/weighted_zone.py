@@ -68,7 +68,10 @@ M_LIM = 5.86                            # Crumey (2014) eq. 54 at mu = 21.0 mag/
 MOR_REF = json.load(open("data/derived/headlights.json"))["meta"].get("mor_ref_km", 100)
 LEVELS = [0.01, 0.1, 1.0, 10.0]         # contour levels, lights per hour
 ROUTE = {"US67": "US0067", "RM2810": "RM2810", "US0090": "US0090", "US0067": "US0067", "FM0170": "FM0170",
-         "SH0118": "SH0118", "RM0169": "RM0169", "FM1112": "FM1112", "SH0017": "SH0017"}
+         "SH0118": "SH0118", "RM0169": "RM0169", "FM1112": "FM1112", "SH0017": "SH0017", "CR18900002": "CR18900002"}
+# County roads have no TxDOT count. Nopal Road (CR 189-0002) is given an assumed AADT of 60 vehicles a day, the
+# order of the least-travelled count station on RM 2810 (20-52 a day). This is an assumption, stated in the paper.
+ASSUMED_AADT = {"CR18900002": 60}
 
 
 def alpha_at(a013, d_km, k):
@@ -112,6 +115,8 @@ def sources(k, mor, m_lim, p_high, hourly_share, rail_rates, rear=False):
     motion = []
     for rd in hl["roads"]:
         st = aadt.get(ROUTE[rd["key"]], [])
+        if not st and rd["key"] in ASSUMED_AADT:
+            st = [(rd["lon"][0], rd["lat"][0], ASSUMED_AADT[rd["key"]], "assumed")]
         pts = rd["pts"]
         for dname in ("to_marfa", "from_marfa"):
             seq = []

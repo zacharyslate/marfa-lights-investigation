@@ -54,9 +54,9 @@ p{margin:0}
 .bar-in{max-width:1240px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:54px}
 .brand{font:700 20px/1 var(--f-disp);letter-spacing:.02em;color:var(--ink);text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px}
 .brand svg{flex:none}
-.nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px;margin-left:auto}
 .nav::-webkit-scrollbar{display:none}
-.nav a{font:600 15px/1 var(--f-disp);letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;padding:10px 10px;border-radius:4px;white-space:nowrap}
+.nav a{font:600 15px/1 var(--f-disp);letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;padding:10px 8px;border-radius:4px;white-space:nowrap}
 .nav a[aria-current="page"]{color:var(--accent)}
 .nav a:hover{background:var(--surface-2)}
 .theme-btn{flex:none;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:99px;height:34px;padding:0 12px;
@@ -64,9 +64,17 @@ p{margin:0}
 .theme-btn .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
 @media (max-width:760px){
   .bar-in{flex-wrap:wrap;gap:0 10px;padding-block:6px}
-  .nav{order:3;width:100%;margin-left:-10px}
+  /* phones: one scrolling row, faded at the right edge so it is clear that more pages follow */
+  .nav{order:3;width:100%;margin-left:-10px;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;
+    -webkit-mask-image:linear-gradient(to right,#000 88%,transparent);mask-image:linear-gradient(to right,#000 88%,transparent)}
   .nav a{padding:9px 10px;font-size:14px}
   .theme-btn{margin-left:auto}
+}
+@media (max-width:430px){
+  /* small phones: keep the title and the theme switch on one line; the theme name stays available to screen readers */
+  .brand{font-size:18px}
+  .theme-btn{padding:0 10px}
+  .theme-btn span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
 
 /* ---------- page layout */

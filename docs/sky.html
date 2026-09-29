@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#000000">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=11">
+<link rel="stylesheet" href="assets/site.css?v=12">
 <style>
 body.live{overflow:hidden;background:#000}
 body.live #bar,body.live footer,body.live #intro{display:none}
@@ -28,6 +28,7 @@ body.live #stage{display:block}
 .sheet{position:absolute;left:0;right:0;bottom:0;max-height:62vh;overflow:auto;background:rgba(10,0,0,.94);border-top:1px solid #5a1a10;color:#e5452f;
   padding:14px 14px calc(env(safe-area-inset-bottom) + 14px);font:15px/1.4 var(--f-body);display:none}
 .sheet.open{display:block}
+#calSheet{max-height:40vh}   /* keep the crosshair (screen centre) visible while calibrating */
 .sheet h3{font:700 20px/1.1 var(--f-disp);color:#ff5a3c;margin:0 0 8px}
 .sheet p{margin:0 0 10px;color:#c23a26}
 .sheet ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
@@ -105,8 +106,9 @@ body.live #stage{display:block}
     <div class="row"><button type="button" data-close>Done</button></div></div>
 </div>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=11"></script>
+<script src="assets/site.js?v=12"></script>
 <script src="assets/vendor/astronomy.browser.min.js"></script>
-<script src="assets/sky.js?v=3"></script>
+<script src="assets/mask.js?v=1"></script>
+<script src="assets/sky.js?v=4"></script>
 </body>
 </html>

@@ -1,8 +1,9 @@
 /* Marfa Lights Field Guide — shared header, footer and theme switch. */
 (function () {
   const PAGES = [
-    ["map.html", "Map"], ["history.html", "History & Folklore"], ["science.html", "The Science"], ["paper.html", "The Paper"],
-    ["place.html", "The Place"], ["visit.html", "Visiting"], ["sky.html", "Sky finder"], ["community.html", "Community"], ["app/", "Get the app"]
+    // plan and observe first, then background and science
+    ["visit.html", "Visit"], ["map.html", "Map"], ["sky.html", "Sky finder"], ["app/", "App"],
+    ["history.html", "History"], ["place.html", "Place"], ["science.html", "Science"], ["paper.html", "Paper"], ["community.html", "Community"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];
   const LABEL = {auto: "Auto", light: "Light", dark: "Dark", night: "Night vision"};

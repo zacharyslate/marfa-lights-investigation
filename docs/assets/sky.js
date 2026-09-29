@@ -11,17 +11,20 @@
   const $ = id => document.getElementById(id);
   const D2R = Math.PI / 180, R2D = 180 / Math.PI;
   const VIEW = {lat: 30.2751108, lon: -103.8827973, h: 1495.2};
-  const DECL = 6.2;
+  let DECL = 6.2;                 // replaced by the value in site.json once it loads
   const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
   const fmt = (v, n = 1) => { const s = Number(v).toFixed(n); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
   const mrad2deg = m => Math.atan(m / 1000) * R2D;
 
   // ------------------------------------------------------------------ data
-  let S = null, ZR = null, STARS = [];
+  let S = null, ZR = null, STARS = [], MK = null, dataFailed = false;
+  const okJson = r => { if (!r.ok) throw new Error(r.status); return r.json(); };
   const ready = Promise.all([
-    fetch("data/site.json?v=8").then(r => r.json()).then(j => { S = j; }).catch(() => {}),
-    fetch("data/zos_rate.json?v=8").then(r => r.json()).then(j => { ZR = j; }).catch(() => {}),
-    fetch("data/bright_stars.json?v=1").then(r => r.json()).then(j => { STARS = j.stars; }).catch(() => {})]);
+    fetch("data/site.json?v=9").then(okJson).then(j => { S = j; if (S.declination) DECL = S.declination.deg; }).catch(() => { dataFailed = true; }),
+    fetch("data/zos_rate.json?v=9").then(okJson).then(j => { ZR = j; }).catch(() => {}),
+    fetch("data/bright_stars.json?v=1").then(okJson).then(j => { STARS = j.stars; }).catch(() => {})])
+    .then(() => { if (S && window.MarfaMask) MK = MarfaMask.build(ZR, null, skyM); });
+  function skyM(az) { if (!S) return null; const s = S.sky.find(x => Math.abs(x[0] - Math.round(az * 10) / 10) < 0.051); return s ? s[1] : null; }
 
   // ------------------------------------------------------------------ orientation maths
   function rotMatrix(a, b, g) {
@@ -45,7 +48,9 @@
   // ------------------------------------------------------------------ state
   const st = {R: null, hist: [], raw: null, absolute: false, headingOffset: null, dAz: 0, dEl: 0, cal: null, check: null,
     fovLong: 69, zoom: 1, camera: false, zone: true, stars: true, mag: false, lastEvt: 0};
-  try { const c = JSON.parse(localStorage.getItem("mlfg-skycal") || "null"); if (c && Date.now() - c.t < 30 * 60e3) { Object.assign(st, {dAz: c.dAz, dEl: c.dEl, cal: c.cal}); } } catch (e) {}
+  // A saved calibration is reused for 30 minutes, but only on phones that report absolute compass headings (Android):
+  // on iPhone the heading reference is re-derived each time the page loads, so an old correction would not apply.
+  try { const c = JSON.parse(localStorage.getItem("mlfg-skycal") || "null"); if (c && c.abs && Date.now() - c.t < 30 * 60e3) { Object.assign(st, {dAz: c.dAz, dEl: c.dEl, cal: c.cal, calRestored: true}); } } catch (e) {}
   try { const f = parseFloat(localStorage.getItem("mlfg-fov")); if (f) st.fovLong = f; } catch (e) {}
 
   function onOrient(e) {
@@ -53,6 +58,7 @@
     let a = e.alpha;
     const abs = e.absolute === true || e.type === "deviceorientationabsolute";
     if (abs) st.absolute = true;
+    if (!abs && !st.absolute && st.calRestored) { st.dAz = 0; st.dEl = 0; st.cal = null; st.calRestored = false; }
     else if (st.absolute && e.type === "deviceorientation") return;      // prefer the absolute stream when both fire
     const R = rotMatrix(a, e.beta, e.gamma);
     const fwd = mulv(R, [0, 0, -1]);
@@ -205,7 +211,7 @@
     hud(P);
   }
   function hud(P) {
-    if (!P) { $("hudL").innerHTML = `<b>—</b>${st.R ? "" : "Waiting for motion sensors…"}`; return; }
+    if (!P) { $("hudL").innerHTML = `<b>—</b>${dataFailed ? "Couldn't load the map data. Check your connection and reload." : st.R ? "" : "Waiting for motion sensors…"}`; return; }
     const b = st.mag ? `${fmt(norm(P.az - DECL))}° mag` : `${fmt(P.az)}° true`;
     $("hudL").innerHTML = `<b>${b}</b>height ${fmt(P.el, 2)}° · steadiness ±${fmt(P.sd, 2)}°`;
     const c = st.cal;
@@ -229,10 +235,13 @@
     const T = listTargets(); if (!T.length) { toast("No sensor data yet."); return; }
     $("calList").innerHTML = T.map((t, i) => `<li><button type="button" data-i="${i}"><span>${t.name}</span><span class="mono">${fmt(t.az)}° · ${fmt(t.el, 1)}° · ${fmt(t.sep, 0)}° away</span></button></li>`).join("");
     $("calList").querySelectorAll("button").forEach(b => b.onclick = () => {
-      const t = T[+b.dataset.i], P = pointing(20);
+      // recompute a star or planet's position now: they move about 0.25° per minute
+      const t0 = T[+b.dataset.i], P = pointing(20);
+      const t = t0.kind === "tower" ? t0 : (astroTargets(new Date()).find(o => o.name === t0.name) || t0);
       st.dAz = angDiff(t.az, P.rawAz); st.dEl = t.el - P.rawEl;
       st.cal = {name: t.name, kind: t.kind, az: t.az, el: t.el, t: Date.now(), sd: P.sd}; st.check = null;
-      try { localStorage.setItem("mlfg-skycal", JSON.stringify({dAz: st.dAz, dEl: st.dEl, cal: st.cal, t: Date.now()})); } catch (e) {}
+      st.calRestored = false;
+      try { localStorage.setItem("mlfg-skycal", JSON.stringify({dAz: st.dAz, dEl: st.dEl, cal: st.cal, t: Date.now(), abs: st.absolute})); } catch (e) {}
       open(null); toast(`Calibrated on ${t.name}. Bearing corrected by ${fmt(st.dAz, 1)}°, height by ${fmt(st.dEl, 1)}°.`); schedule();
     });
     open("calSheet");
@@ -248,10 +257,8 @@
     schedule();
   });
 
-  // quick noise check (same logic as the report form)
-  const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
-    const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
-  function rateAt(az, m) { if (!ZR) return null; let lvl = -1; [ZR.standard, ZR.inversion].forEach(Z => Z.levels.forEach((lv, i) => { let n = 0; Z.rate_polys[String(lv)].forEach(r => { if (inRing(az, m, r)) n++; }); if (n % 2 && i > lvl) lvl = i; })); return lvl; }
+  // quick noise check (same logic as the report form; look-ups from assets/mask.js)
+  const rateAt = (az, m) => MK ? MK.rate(az, m) : null, fixedAt = (az, m) => MK ? MK.fixed(az, m) : null;
   const RATE_TXT = ["about one every 10–100 hours", "0.1–1 per hour", "1–10 per hour", "10 or more per hour"];
   function nearby(az, tol) {
     const out = [], within = a => Math.abs(angDiff(a, az)) <= tol;
@@ -264,9 +271,10 @@
   }
   $("bRec").addEventListener("click", () => {
     const P = pointing(20); if (!P) { toast("No sensor data yet."); return; }
+    if (!S) { toast("Couldn't load the map data. Check your connection and reload."); return; }
     const DOM = (ZR && ZR.standard.params.az_domain_deg) || [150, 300], inDom = P.az >= DOM[0] && P.az <= DOM[1];
-    const m = Math.tan(P.el * D2R) * 1000, rl = inDom ? rateAt(P.az, m) : null;
-    const skyM = (() => { const s = S.sky.find(x => Math.abs(x[0] - Math.round(P.az * 10) / 10) < 0.051); return s ? s[1] : null; })();
+    const m = Math.tan(P.el * D2R) * 1000, rl = inDom ? rateAt(P.az, m) : null, fx = inDom ? fixedAt(P.az, m) : null;
+    const skyMv = skyM(P.az);
     const err = st.check ? Math.max(st.check.err, P.sd) : null;
     const tol = st.cal ? Math.max(0.3, err || 0.3) : 5;
     const near = nearby(P.az, tol);
@@ -277,11 +285,11 @@
       steadiness_deg: +P.sd.toFixed(3), note: ""};
     let LOG = []; try { LOG = JSON.parse(localStorage.getItem("mlfg-log") || "[]"); } catch (e) {}
     LOG.push(rec); try { localStorage.setItem("mlfg-log", JSON.stringify(LOG)); } catch (e) {}
-    const above = skyM !== null && m > skyM + 1.75;
+    const above = skyMv !== null && m > skyMv + 1.75;
     $("recOut").innerHTML = `<p class="mono">${fmt(P.az, 2)}° true (${fmt(norm(P.az - DECL), 2)}° magnetic) · height ${fmt(P.el, 2)}°<br>${new Date().toLocaleTimeString()}</p>` +
       `<p>${st.cal ? `Calibrated on ${st.cal.name}${st.check ? `, last check ${fmt(st.check.err, 2)}° off` : ". Tap <b>Check</b> on the same light to measure your error"}.` : "<b>Not calibrated</b>: this bearing may be 5–10° off."}</p>` +
-      `<p>${skyM === null ? "" : above ? "<b>Above the skyline</b>: aircraft, stars, planets, satellites or the aerostat are the usual candidates. " : "Below the skyline, against the land. "}` +
-      `${!inDom ? "<b>Outside the modelled view</b> (150°–300° true): traffic in this direction isn't worked out, so the app can't say whether this light is unusual. " : rl === null ? "" : rl >= 0 ? `Ordinary lights expected here: <b>${RATE_TXT[rl]}</b>.` : "<b>Few ordinary lights expected here</b> (under one per 100 hours from known sources)."}</p>` +
+      `<p>${skyMv === null ? "" : above ? "<b>Above the skyline</b>: aircraft, stars, planets, satellites or the aerostat are the usual candidates. " : "Below the skyline, against the land. "}` +
+      `${!inDom ? "<b>Outside the modelled view</b> (150°–300° true): traffic in this direction isn't worked out, so the app can't say whether this light is unusual. " : rl === null ? "" : rl >= 0 ? `Ordinary lights expected here: <b>${RATE_TXT[rl]}</b>.` : fx ? "" : "<b>Few moving ordinary lights expected here</b> (under one per 100 hours from known sources)."}${fx ? " <b>A fixed light can appear here</b>: a lit tower, town glow or the aerostat." : ""}</p>` +
       `<p>${near.length ? `Known sources within ±${fmt(tol, 1)}°: ${near.join(", ")}.` : `No known light source within ±${fmt(tol, 1)}°.`}</p>` +
       `<p>Saved to your field log on this phone.</p>`;
     open("recSheet");
@@ -302,7 +310,7 @@
   $("lMag").addEventListener("change", e => { st.mag = e.target.checked; schedule(); });
 
   // ------------------------------------------------------------------ start / stop
-  let stream = null, wake = null;
+  let stream = null, wake = null, prevTheme = null;
   async function start(withCamera) {
     try {
       if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") {
@@ -318,7 +326,8 @@
       } catch (e) { toast("Camera not available. Showing the overlay only.", 3500); st.camera = false; }
     }
     try { if (navigator.wakeLock) wake = await navigator.wakeLock.request("screen"); } catch (e) {}
-    try { localStorage.setItem("mlfg-theme", "night"); document.documentElement.setAttribute("data-theme", "night"); } catch (e) {}
+    try { prevTheme = localStorage.getItem("mlfg-theme"); localStorage.setItem("mlfg-theme", "night"); } catch (e) {}
+    document.documentElement.setAttribute("data-theme", "night");
     document.body.classList.add("live"); resize();
     await ready; schedule();
     setTimeout(() => { if (!st.R) toast("No motion-sensor data. This page needs a phone or tablet with a compass and gyroscope.", 5000); }, 2500);
@@ -328,6 +337,8 @@
     if (stream) stream.getTracks().forEach(t => t.stop()); stream = null; st.camera = false;
     try { if (wake) wake.release(); } catch (e) {}
     document.body.classList.remove("live"); open(null);
+    try { if (prevTheme) localStorage.setItem("mlfg-theme", prevTheme); else localStorage.removeItem("mlfg-theme"); } catch (e) {}
+    if (prevTheme && prevTheme !== "auto") document.documentElement.setAttribute("data-theme", prevTheme); else document.documentElement.removeAttribute("data-theme");
     if (FROM_APP) location.href = "app/#identify";
   }
   const FROM_APP = new URLSearchParams(location.search).get("from") === "app";

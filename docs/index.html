@@ -7,7 +7,7 @@
 <meta name="description" content="A field guide to the Marfa Lights: an interactive line-of-sight map, a light identifier for the Viewing Area, and the history, folklore and science behind the lights.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=11">
+<link rel="stylesheet" href="assets/site.css?v=12">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
@@ -19,11 +19,11 @@
 <body>
 <header id="bar"></header>
 <main class="page">
-  <figure class="hero-photo"><img src="img/zw_orion_chisos-800.webp" srcset="img/zw_orion_chisos-800.webp 800w, img/zw_orion_chisos-1800.webp 1800w" sizes="100vw" width="1800" height="1200" alt="The constellation Orion and thousands of stars above dark desert mountains and a tall rock butte" loading="eager" decoding="async"><figcaption>Photo: Zach Warren.</figcaption></figure>
+  <figure class="hero-photo"><img src="img/zw_orion_chisos-800.webp" srcset="img/zw_orion_chisos-800.webp 800w, img/zw_orion_chisos-1800.webp 1800w" sizes="100vw" width="1800" height="1200" alt="The constellation Orion and thousands of stars above dark desert mountains and a tall rock butte" loading="eager" decoding="async"><figcaption>Photo © Zach Warren, all rights reserved.</figcaption></figure>
   <section class="hero">
     <div class="eyebrow">Mitchell Flat · Presidio County, Texas</div>
     <h1>Know what you're looking at</h1>
-    <p class="lede">Since at least the 1880s, people have watched unexplained lights over the flat southeast of Marfa. Most lights seen from the Viewing Area have ordinary sources: cars, trains, towers, towns. This guide helps you rule those out. What's left, including experiences that have never been explained, deserves careful attention, not dismissal.</p>
+    <p class="lede">For generations (in print since the 1940s, and by local tradition since the 1880s), people have watched unexplained lights over the flat southeast of Marfa. Many lights seen from the Viewing Area have ordinary sources: cars, trains, towers, towns. This guide helps you rule those out. What's left, including experiences that have never been explained, deserves careful attention, not dismissal.</p>
     <div class="row"><a class="btn" href="app/">Open the pocket app</a><a class="btn ghost" href="map.html">Map and identifier</a><a class="btn ghost" href="visit.html">Plan a night</a></div>
   </section>
 
@@ -43,7 +43,7 @@
   <section class="stats" aria-label="Key results">
     <div class="stat"><b>9.5 km</b><span>of the 64.5 km of US-67 south of Marfa is in clear view from the Viewing Area under normal conditions. Terrain hides most of the rest.</span></div>
     <div class="stat"><b>229°–238°</b><span>true bearing of that visible stretch, 24–40 km away, below the Chinati Mountains skyline</span></div>
-    <div class="stat"><b>13 km</b><span>of a second road, RM 2810, is also in view at 253°–259° true, climbing into the Chinati foothills just below the skyline</span></div>
+    <div class="stat"><b>13 km</b><span>of a second distant road, RM 2810, is also in view at 253°–259° true, climbing into the Chinati foothills just below the skyline</span></div>
     <div class="stat"><b>6.2° E</b><span>magnetic declination at the Viewing Area. Add it to a compass reading to get true bearing.</span></div>
   </section>
 
@@ -65,11 +65,11 @@
   </section>
 
   <section class="note">
-    <b>About this project.</b> This is an independent investigation. Every number on this site comes from public data and code you can inspect and rerun <a href="https://github.com/zacharyslate/marfa-lights-investigation">on GitHub</a>. The analysis is preliminary and not yet checked against field observations. If you spot an error, please open an issue there.
+    <b>About this project.</b> This is an independent investigation. Every number on this site comes from public data and code you can inspect and rerun <a href="https://github.com/zacharyslate/marfa-lights-investigation">on GitHub</a>. The geometry has been checked against one evening of photographs from the platform; field measurements are still to come. If you spot an error, please open an issue there.
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=11"></script>
+<script src="assets/site.js?v=12"></script>
 <script>
 (async () => {
   const S = await fetch("data/site.json?v=8").then(r => r.json());

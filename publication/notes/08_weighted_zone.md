@@ -4,6 +4,8 @@
 
 > **Superseded numbers (2026-09-28).** This working note describes the v1 model. The line-of-sight model has since been rebuilt (exact WGS84 geometry, 1 m lidar terrain with point-cloud obstructions, Monte Carlo classes, height-dependent ray tracing); see [note 11](11_model_v2_methods.md) for the current methods and numbers, and [note 12](12_experimental_design.md) for the planned experiments. Where this note and note 11 disagree, note 11 is correct.
 
+> **Nopal Road added (2026-09-29, paper v1.0).** A county road, Nopal Road (CR 189-0002), is in view at 178°–213°, 7–13 km (v2 lidar line of sight). It is now in the catalogue with an assumed AADT of 60 (no TxDOT count). Quiet fractions become 0.768 (standard), 0.732 (strong inversion), 0.760 (tail lamps at FMVSS maximum) and 0.360 (compass); mask coverage of the band is 33% (photo) and 74% (compass). The numbers in the next paragraph are superseded.
+
 > **Photometry v2 update (2026-09-29).** The rates now use the v2 brightness model (note 4): UMTRI market-weighted beams, lidar grades, MOR 111 km (NPS Big Bend average standard visual range of 90 mi converted to MOR) and m_lim = 5.86 (Crumey 2014, μ = 21, F = 2). Weighted quiet fraction of the band 0–5 mrad below the skyline (120° fan): **0.789** standard night (k = 0.13), 0.763 strong inversion (k = 1), 0.782 if southbound tail lamps at the FMVSS maximum are counted (new 'tail_max' scenario, an upper bound), 0.374 with compass pointing (±3° × ±0.25°, new 'compass' scenario). Presidio and Ojinaga skyglow are now included (they were skipped before because the terrain model gives them no apparent elevation). Tail lamps are no longer described as "well below the limit": at the regulatory maximum they are near it (note 4).
 
 ## Why weight the zone

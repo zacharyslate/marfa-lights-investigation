@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
 <link rel="stylesheet" href="assets/leaflet/leaflet.css">
-<link rel="stylesheet" href="assets/site.css?v=11">
+<link rel="stylesheet" href="assets/site.css?v=12">
 <style>
 body{overflow:hidden}
 .mapapp{display:grid;grid-template-columns:minmax(0,1fr) 410px;height:calc(100dvh - 55px)}
@@ -129,7 +129,7 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
       <div class="eyebrow">Field log</div>
       <h2>Record a sighting</h2>
       <p class="hint">Saves the current bearing, elevation and time on this device only. Download your log as a spreadsheet file when you're done.</p>
-      <textarea id="note" placeholder="Colour, motion, duration, splitting, anything else"></textarea>
+      <textarea id="note" aria-label="Sighting note" placeholder="Colour, motion, duration, splitting, anything else"></textarea>
       <div class="row"><button type="button" class="btn" id="logBtn">Save sighting</button><button type="button" class="btn ghost" id="csvBtn">Download CSV</button></div>
       <p class="hint">Saw something you can't explain? <a href="report.html">Turn a saved sighting into a full report →</a></p>
       <ul class="log" id="log"></ul>
@@ -137,7 +137,8 @@ textarea{width:100%;min-height:54px;font:15px var(--f-body);color:var(--ink);bac
   </aside>
 </main>
 <script src="assets/leaflet/leaflet.js"></script>
-<script src="assets/site.js?v=11"></script>
-<script src="assets/map.js?v=9"></script>
+<script src="assets/site.js?v=12"></script>
+<script src="assets/mask.js?v=1"></script>
+<script src="assets/map.js?v=10"></script>
 </body>
 </html>

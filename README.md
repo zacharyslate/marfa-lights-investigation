@@ -23,28 +23,22 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | `docs/report.html` | Guided sighting report with an automatic noise check; stays on the device until downloaded or posted |
 | `docs/data/site.json` | All map layers, built by `analysis/build_site_data.py` |
 
-## Current results (2026‑09‑28)
+## Main results (paper version 1.0)
 
-At standard refraction (k = 0.13), a 0.7 m headlight on US‑67 is visible from the Viewing Area
-along only ~9.3 km of the 64.6 km modelled, in a band at 228.8°–238.2° true, 24–40 km away.
-A further ~7.4 km is marginal (sub‑DEM detail decides it), and ~47.9 km is hidden by terrain.
-Even strong night‑time inversions (k = 1) extend the visible road to only ~12.8 km. See the site
-for the maps, a panorama from the platform, and cross‑sections.
+The numbers below are those of the paper; the working notes in `publication/notes/` record earlier model versions.
 
-Update (2026‑09‑28, 120° fan):
-- **RM 2810 (Pinto Canyon Road) is also in view**: ~27 km at 252.9°–259.1° true, 32–53 km away,
-  just below the skyline. The earlier statement that nothing between 238° and 277° could be a car
-  was wrong; it holds only for US‑67.
-- **Headlight direction matters.** Northbound cars on the US‑67 straight at ~233.5° point within
-  3–5° of the platform. With high beams they are predicted near magnitude −2, brighter than Sirius
-  (one measured production headlamp; see `publication/notes/04_headlight_brightness.md`).
-- **Known-source mask** (formerly "Zone of Skepticism"). The mask is the region of the view where a catalogued light can appear.
-  In the 0.29° band just below the skyline it covers ~33% of the fan with instrumented bearings
-  (±0.3°) and ~74% with hand‑compass bearings (±3°).
-- **Activity‑weighted zone.** Weighting each source by how often it produces a light (TxDOT traffic
-  counts, FRA night‑train counts, headlight detectability) leaves ~80% of that band with fewer than
-  one catalogued ordinary light per 100 hours at instrumented precision. With a hand compass the
-  share falls to ~36%. See `publication/notes/08_weighted_zone.md`.
+- **US-67.** Of the 64.5 km between Shafter and Marfa, about 10 km is in view from the platform at standard
+  refraction (k = 0.13), at 229°–238° true, 18–40 km away, always just below the skyline. A strong inversion (k = 1)
+  adds only about 1.6 km.
+- **Other roads in view.** RM 2810 (Pinto Canyon Road), 13 km at 253°–259°; US-90 and US-67/90 beside the platform at
+  280°–288°; and Nopal Road, a county road about 5 km in view at 178°–213°, 7–13 km away (no traffic count; an
+  assumed 60 vehicles a day).
+- **Brightness.** A northbound car on US-67 is typically magnitude +2.6 on low beam and can outshine Sirius near
+  233.7°. It appears in 18 separate windows of median 17 s, drifting about 0.9° per minute. Southbound tail lamps are
+  near the naked-eye limit.
+- **Known-source mask.** In the band 5 mrad (0.29°) below the skyline, catalogued sources can appear in 33% of the
+  120° fan with photographic bearings (±0.3°) and 74% with compass bearings (±3°). Weighted by traffic, 77% of the
+  band expects fewer than one ordinary light per 100 hours at photographic precision, and 36% with a compass.
 
 ## Repository layout
 

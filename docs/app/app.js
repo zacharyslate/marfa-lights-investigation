@@ -4,7 +4,8 @@
   const $ = id => document.getElementById(id);
   const D2R = Math.PI / 180, R2D = 180 / Math.PI;
   const VIEW = {lat: 30.2751108, lon: -103.8827973, h: 1495};
-  const DECL = 6.2, TZ = "America/Chicago";
+  let DECL = 6.2;                      // replaced by the value in site.json once it loads
+  const TZ = "America/Chicago";
   const norm = a => ((a % 360) + 360) % 360, angDiff = (a, b) => ((a - b + 540) % 360) - 180;
   const fmt = (v, n = 0) => { const s = Number(v).toFixed(n); return /^-0(\.0+)?$/.test(s) ? s.slice(1) : s; };
   const mrad2deg = m => Math.atan(m / 1000) * R2D;
@@ -39,16 +40,20 @@
   function sheet(title, html, actions = []) {
     $("sheet-h").textContent = title; $("sheet-b").innerHTML = html;
     $("sheet-a").innerHTML = ""; actions.forEach(([label, fn, cls]) => { const b = document.createElement("button"); b.type = "button"; b.className = cls || "btn"; b.textContent = label; b.onclick = () => { fn(); closeSheet(); }; $("sheet-a").appendChild(b); });
-    $("sheet").classList.add("open");
+    $("sheet").classList.add("open"); $("sheet-h").focus();
   }
   const closeSheet = () => $("sheet").classList.remove("open");
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && $("sheet").classList.contains("open")) closeSheet(); });
   $("sheet-x").onclick = closeSheet; $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeSheet(); });
 
   // ---------------------------------------------------------------- data
-  let S = null, ZR = null;
+  let S = null, ZR = null, MK = null;
+  const okJson = r => { if (!r.ok) throw new Error(r.status); return r.json(); };
   const ready = Promise.all([
-    fetch("../data/site.json?v=8").then(r => r.json()).then(j => { S = j; }),
-    fetch("../data/zos_rate.json?v=8").then(r => r.json()).then(j => { ZR = j; }).catch(() => {})]).catch(() => toast("Couldn't load the map data. Open the app once with a connection."));
+    fetch("../data/site.json?v=9").then(okJson).then(j => { S = j; if (S.declination) DECL = S.declination.deg; }),
+    fetch("../data/zos_rate.json?v=9").then(okJson).then(j => { ZR = j; }).catch(() => {})])
+    .then(() => { if (window.MarfaMask && ZR) MK = MarfaMask.build(ZR, null, skyAt); })
+    .catch(() => toast("Couldn't load the map data. Open the app once with a connection.", 5000));
 
   // ================================================================ TONIGHT
   const A = window.Astronomy;
@@ -101,10 +106,10 @@
     const T = TONIGHT;
     $("t-date").textContent = new Intl.DateTimeFormat("en-US", {timeZone: TZ, weekday: "long", month: "long", day: "numeric"}).format(T.sunset.date);
     const moonUpAtDark = T.samples.find(s => s.state === "moon");
-    $("t-sum").textContent = T.darkMin >= 120 ? `About ${fmt(T.darkMin / 60, 1)} hours of truly dark sky tonight${moonUpAtDark ? ", once the moon is down" : ""}.`
+    $("t-sum").textContent = T.darkMin >= 120 ? `About ${fmt(T.darkMin / 60, 1)} hours of truly dark sky tonight${moonUpAtDark ? ", while the moon is down" : ""}.`
       : T.darkMin > 0 ? `Only about ${T.darkMin} minutes of fully dark sky tonight. The moon is up for most of the night.` : "The moon is up for all of the dark hours tonight, so the sky never gets fully dark. Bright lights are still easy to see.";
     $("t-tiles").innerHTML = [
-      ["Sunset", tfmt(T.sunset), "sun below the mountains"],
+      ["Sunset", tfmt(T.sunset), "on a flat horizon; the mountains hide the sun a little earlier"],
       ["Fully dark", tfmt(T.dusk), "end of twilight"],
       ["Moon", `${fmt(T.illum * 100)}%`, `${phaseName(T.phase)} · ${T.moonTxt}`],
       ["Dark hours", `${fmt(T.darkMin / 60, 1)} h`, `dawn twilight ${tfmt(T.dawn)}`]]
@@ -160,24 +165,27 @@
     document.querySelectorAll("#i-h-seg button").forEach(x => x.setAttribute("aria-pressed", x === b)); identify(); });
 
   // phone compass (magnetic)
-  let compassOn = false, head = null;
+  let compassOn = false, head = null, shown = null, queued = false;
   function onOrient(e) { let h = null; if (typeof e.webkitCompassHeading === "number") h = e.webkitCompassHeading; else if (e.absolute && e.alpha !== null) h = norm(360 - e.alpha);
-    if (h === null) return; head = head === null ? h : norm(head + 0.25 * angDiff(h, head)); const bt = norm(head + DECL); idB.value = fmt(refMag ? norm(bt - DECL) : bt, 1); exactM = null; identify(); }
+    if (h === null) return; head = head === null ? h : norm(head + 0.25 * angDiff(h, head));
+    if (queued || (shown !== null && Math.abs(angDiff(head, shown)) < 0.1)) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; shown = head; const bt = norm(head + DECL); idB.value = fmt(refMag ? norm(bt - DECL) : bt, 1); exactM = null; identify(); }); }
   $("i-compass").onclick = async () => {
     if (compassOn) { window.removeEventListener("deviceorientationabsolute", onOrient); window.removeEventListener("deviceorientation", onOrient); compassOn = false; $("i-compass").textContent = "Use phone compass"; return; }
     try { if (typeof DeviceOrientationEvent !== "undefined" && typeof DeviceOrientationEvent.requestPermission === "function") { if (await DeviceOrientationEvent.requestPermission() !== "granted") throw 0; }
-      window.addEventListener("deviceorientationabsolute", onOrient); window.addEventListener("deviceorientation", onOrient); compassOn = true; head = null;
-      $("i-compass").textContent = "Hold reading"; $("i-cnote").textContent = "Point the top edge of the phone at the light. Phone compasses are often 5–10° off; the camera sky finder is more accurate.";
+      window.addEventListener("deviceorientationabsolute", onOrient); window.addEventListener("deviceorientation", onOrient); compassOn = true; head = null; shown = null;
+      $("i-compass").textContent = "Hold reading"; $("i-cnote").textContent = "Hold the phone flat and point its top edge at the light. Phone compasses are often 5–10° off; the camera sky finder is more accurate.";
+      setTimeout(() => { if (compassOn && head === null) $("i-cnote").textContent = "No compass readings yet. This device may not have a compass: type the bearing instead."; }, 2500);
     } catch (err) { $("i-cnote").textContent = "Compass not available. Type the bearing instead."; }
   };
 
   // noise model helpers
-  const inRing = (x, y, r) => { let c = false; for (let i = 0, j = r.length - 1; i < r.length; j = i++) { const [xi, yi] = r[i], [xj, yj] = r[j]; if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) c = !c; } return c; };
-  function rateAt(az, m) { if (!ZR) return null; let lvl = -1; [ZR.standard, ZR.inversion].forEach(Z => Z.levels.forEach((lv, i) => { let n = 0; Z.rate_polys[String(lv)].forEach(r => { if (inRing(az, m, r)) n++; }); if (n % 2 && i > lvl) lvl = i; })); return lvl; }
-  const skyAt = az => { const s = S.sky; if (az < s[0][0] || az > s[s.length - 1][0]) return null; const i = Math.min(s.length - 2, Math.max(0, Math.floor((az - s[0][0]) / 0.1))); const f = (az - s[i][0]) / 0.1; return s[i][1] + f * (s[i + 1][1] - s[i][1]); };
+  // rate and fixed-light look-ups come from ../assets/mask.js (MK), built when the data loads
+  function skyAt(az) { if (!S) return null; const s = S.sky; if (az < s[0][0] || az > s[s.length - 1][0]) return null; const i = Math.min(s.length - 2, Math.max(0, Math.floor((az - s[0][0]) / 0.1))); const f = (az - s[i][0]) / 0.1; return s[i][1] + f * (s[i + 1][1] - s[i][1]); }
   const RATE_TXT = ["about one every 10–100 hours", "0.1–1 an hour", "1–10 an hour", "10 or more an hour"];
   const HOW = {
-    car: "Moves steadily along the road, often in pairs that split and merge. It brightens when the road turns toward you and blinks out behind rises.",
+    car: "A single white point (a car's two headlamps merge at this distance) that drifts slowly along the road. It brightens when the road turns toward you and blinks out behind rises. Two cars meeting can look like one light splitting in two.",
     tail: "Cars heading away show only dim red tail lights.",
     rail: "One very bright white headlight, often with two smaller flashing ditch lights. Slow, steady movement along the track; you may hear it.",
     tower: "Red light, steady or blinking in a regular rhythm, that never moves. Use it as a reference point.",
@@ -219,8 +227,6 @@
     if (!isNaN(raw) && (raw < 0 || raw > 360)) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Check the bearing</b><span class="dim">Bearings run from 0 to 360°.</span>`; C.innerHTML = ""; drawPano(); return; }
     if (b === null || !S) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Point me at a light</b><span class="dim">Enter a bearing, use the phone compass, or tap the strip.</span>`; C.innerHTML = ""; drawPano(); return; }
     const tol = 2, sk = skyAt(b);
-    let m = exactM;
-    if (m === null && heightSel && sk !== null) m = heightSel === "above" ? sk + 4 : heightSel === "on" ? sk - 0.5 : null;
     const above = heightSel === "above" || (exactM !== null && sk !== null && exactM > sk + 1.75);
     const below = heightSel === "below" || heightSel === "on" || (exactM !== null && sk !== null && exactM <= sk + 1.75);
     let cands = candidates(b, tol);
@@ -229,16 +235,17 @@
     if (exactM !== null) cands = cands.filter(c => !c.m || (exactM >= c.m[0] - 1.5 && exactM <= c.m[1] + 1.5));
     // rate
     const DOM = (ZR && ZR.standard.params.az_domain_deg) || [150, 300], outside = b < DOM[0] || b > DOM[1];
-    let rl = null;
-    if (!above && !outside && ZR) {
-      if (exactM !== null) rl = rateAt(b, exactM);
-      else { rl = -1; for (let a = b - tol; a <= b + tol + 1e-9; a += 0.25) { const s2 = skyAt(norm(a)); if (s2 !== null) for (let mm = -15; mm <= s2; mm += 0.5) rl = Math.max(rl, rateAt(norm(a), mm)); } }
+    let rl = null, fx = null;
+    if (!above && !outside && MK) {
+      if (exactM !== null) { rl = MK.rate(b, exactM); fx = MK.fixed(b, exactM); }
+      else { const w = MK.window(b, tol); rl = w.rate; fx = w.fixed; }
     }
     const lbl = `${fmt(b, 1)}° true · ${fmt(norm(b - DECL), 1)}° compass`;
     if (above) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Above the skyline</b><span>Usually a plane, satellite, star or planet, or the radar balloon to the west-northwest. Ground lights can't appear here.</span><span class="small dim">${lbl}</span>`; }
     else if (outside) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Outside the mapped view</b><span>This guide works out traffic only toward the Chinati Mountains, from ${fmt(refMag ? norm(DOM[0] - DECL) : DOM[0])}° to ${fmt(refMag ? norm(DOM[1] - DECL) : DOM[1])}° ${refMag ? "on a compass" : "true"} (south to west-northwest). In this direction it can't tell you whether a light is unusual. US-90, the railway and the towns of Alpine and Fort Davis lie to the north and east.</span><span class="small dim">${lbl}</span>`; }
     else if (rl !== null && rl >= 1) { V.className = "verdict busy"; V.innerHTML = `<b class="big-t">Busy spot</b><span>Ordinary lights pass here ${RATE_TXT[rl]} on a clear night. Check the list below first.</span><span class="small dim">${lbl}</span>`; }
     else if (rl === 0) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Occasional traffic</b><span>Ordinary lights pass here ${RATE_TXT[0]}. It could still be one of those, so watch how it moves.</span><span class="small dim">${lbl}</span>`; }
+    else if (rl === -1 && fx) { V.className = "verdict"; V.innerHTML = `<b class="big-t">Fixed light here</b><span>Few moving lights are expected, but a tower light, town glow or the radar balloon sits in this direction. Check the list below: a fixed light stays put.</span><span class="small dim">${lbl}</span>`; }
     else if (rl === -1) { V.className = "verdict quiet"; V.innerHTML = `<b class="big-t">Quiet spot</b><span>Fewer than one known ordinary light per 100 hours here. If you see something, note the time and log it.</span><span class="small dim">${lbl}</span>`; }
     else { V.className = "verdict"; V.innerHTML = `<span class="small dim">${lbl}</span>`; }
     lastCands = cands;
@@ -293,6 +300,7 @@
 
   $("i-log").onclick = () => {
     const b = trueB(); if (b === null) { toast("Enter a bearing first."); return; }
+    if (!S) { toast("The map data hasn't loaded, so this light can't be checked. Use Quick log instead."); return; }
     const sk = skyAt(b), el = exactM !== null ? +mrad2deg(exactM).toFixed(3) : "";
     const LOG = store.get("mlfg-log", []);
     LOG.push({time: new Date().toISOString(), true_bearing: +b.toFixed(2), magnetic_bearing: +norm(b - DECL).toFixed(2), elev_deg: el, window_deg: 2, refraction_k: 0.13,
@@ -304,10 +312,12 @@
   // ================================================================ LOG
   function renderLog() {
     const LOG = store.get("mlfg-log", []);
-    $("l-list").innerHTML = LOG.length ? LOG.map((s, i) => ({s, i})).reverse().map(({s, i}) => `<li><span class="t">${new Date(s.time).toLocaleString([], {month: "short", day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit"})}</span>
+    const CT = new Intl.DateTimeFormat("en-US", {timeZone: TZ, month: "short", day: "numeric", hour: "numeric", minute: "2-digit", second: "2-digit"});
+    const esc = v => String(v).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+    $("l-list").innerHTML = LOG.length ? LOG.map((s, i) => ({s, i})).reverse().map(({s, i}) => `<li><span class="t">${CT.format(new Date(s.time))} CT</span>
       <span class="src">${s.source === "camera" ? "Camera sky finder" : s.source === "app" ? "Identifier" : s.source === "quick" ? "Quick log" : "Map"}</span>
       <div>${s.true_bearing !== "" && s.true_bearing !== undefined ? `<b>${fmt(s.true_bearing, 1)}° true</b> (${fmt(s.magnetic_bearing, 1)}° compass)` : "<b>No bearing</b>"}${s.elev_deg !== "" && s.elev_deg !== undefined ? ` · ${fmt(s.elev_deg, 2)}° up` : ""}</div>
-      ${s.top && s.top !== "none" ? `<div class="dim small">Most likely ordinary source: ${s.top}</div>` : ""}${s.note ? `<div>${String(s.note).replace(/</g, "&lt;")}</div>` : ""}
+      ${s.top && s.top !== "none" ? `<div class="dim small">Best-matching catalogued source: ${esc(s.top)}</div>` : ""}${s.note ? `<div>${esc(s.note)}</div>` : ""}
       <div class="acts"><a class="pill" href="../report.html?log=${i}">Make a report</a><button type="button" class="pill" data-del="${i}">Delete</button></div></li>`).join("")
       : `<li class="dim">Nothing yet. Use Quick log, or <b>Log this light</b> in Identify, or <b>Record</b> in the camera sky finder.</li>`;
     $("l-list").querySelectorAll("[data-del]").forEach(b => b.onclick = () => sheet("Delete this entry?", "<p class='dim'>This can't be undone.</p>", [["Delete", () => { const L = store.get("mlfg-log", []); L.splice(+b.dataset.del, 1); store.set("mlfg-log", L); renderLog(); }]]));

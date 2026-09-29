@@ -155,6 +155,25 @@ def main():
                           res=res, az=p[:, 2], kc=p[:, 5], a=p[:, 4],
                           cls=["v" if k <= K else "h" for k in p[:, 5]]))
 
+    # county roads in the view (TxDOT off-system routes; v2 lidar line of sight, 60 m samples thinned to 120 m).
+    # Only Nopal Road (CR 189-0002) has a stretch in view within the 150-300 deg fan.
+    rl2 = np.load("data/derived/los2/roads_lidar.npz", allow_pickle=True)
+    ks = json.load(open("data/derived/los2/roads_lidar.json"))["ks"]; il, ik = 1, ks.index(0.13)   # 0.66 m lamp, k = 0.13
+    COUNTY = {"CR18900002-KG": ("Nopal Road (county road)", "CR18900002")}
+    for route, (name, key) in COUNTY.items():
+        m = np.where(rl2["route"] == route)[0]
+        m = m[np.argsort(rl2["chain"][m])][::2]
+        az2, kc2 = rl2["az"][m], rl2["k_crit"][m, il]
+        keep = (az2 >= 150) & (az2 <= 300)
+        m, az2, kc2 = m[keep], az2[keep], kc2[keep]
+        if not (kc2 <= 1).any():
+            continue
+        a2 = np.tan(np.radians(rl2["app_el"][m, il, ik])) * 1000          # apparent elevation at k = 0.13, mrad
+        lat2, lon2, z2 = rl2["lat"][m], rl2["lon"][m], rl2["target_H"][m]
+        d, eps, res = evaluate(lat2, lon2, z2, z0, viewer)
+        roads.append(dict(road=name, key=key, lat=lat2, lon=lon2, z=z2, d=d, eps=eps, res=res, az=az2, kc=kc2, a=a2,
+                          cls=["v" if k <= K else "h" for k in kc2]))
+
     # ---------- summary + export
     def r2(x, n=2):
         return [None if not np.isfinite(v) else round(float(v), n) for v in x]

@@ -21,10 +21,14 @@ Photographs are the project author's own, in the public domain, or used under a 
 | `place_refugees_1914` | Refugee Army Near Marfa, Tex. (21680221520).jpg | Unknown (SMU Central University Libraries) | No known restrictions | https://commons.wikimedia.org/wiki/File:Refugee_Army_Near_Marfa,_Tex._(21680221520).jpg |
 | `place_pinto_1917` | Caterpillar tractors ... Through the Pinto Canyon, Big Bend District (War Department, NARA 165-WW-315A-19) | Holt Mfg. Co. / U.S. War Department | Public domain | https://commons.wikimedia.org/wiki/File:Motor_Vehicles_-_Tractors_-_In_Use_-_Service_of_Interior_-_Caterpillar_tractors_manufactured_by_Holt_Mfg._Co.,_Peoria,_Ill._and_Stockton,_Cal._Through_the_Pinto_Canyon._Big_Bend_Dis_-_DPLA_-_20380b1efbd0855a34ec5ede7b87d3f1.jpg |
 | `place_paisano_1993` | Paisano Hotel, Marfa, Texas LCCN2017710651.tif | John Margolies | No known restrictions (Library of Congress) | https://commons.wikimedia.org/wiki/File:Paisano_Hotel,_Marfa,_Texas_LCCN2017710651.tif |
-| `zw_*` | Photographs by the project author (night skies; sunset and car photos from the Viewing Area, 21 Nov 2018) | Zach Warren | © Zach Warren, used with permission | original files |
+| `hist_marfa_aaf_1943` | Marfaaaf-1943.jpg | U.S. Army Air Forces | Public domain | https://commons.wikimedia.org/wiki/File:Marfaaaf-1943.jpg |
+| `hist_mansfield_1922` | Mansfield Figure 1.png (map from G. R. Mansfield's 1922 Brown Mountain report, USGS Circular 646) | G. R. Mansfield, USGS | Public domain | https://commons.wikimedia.org/wiki/File:Mansfield_Figure_1.png |
+| `hist_minmin_sign` | Min-min-light-sign-boulia-outback-queensland-australia.jpg | gondwananet.com | CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0) | https://commons.wikimedia.org/wiki/File:Min-min-light-sign-boulia-outback-queensland-australia.jpg |
+| `hist_stardust_motel` | Stardust Motel sign, Marfa, Texas LCCN2017710638.tif | John Margolies | No known restrictions (Library of Congress) | https://commons.wikimedia.org/wiki/File:Stardust_Motel_sign,_Marfa,_Texas_LCCN2017710638.tif |
+| `zw_*` | Photographs by the project author (night skies; sunset and car photos from the Viewing Area, 21 Nov 2018) | Zach Warren | © Zach Warren, all rights reserved | original files |
 | `fig0*` | Figures from `publication/figures/` | this project | same licence as the repository | `analysis/pub_figures.py`, `analysis/photo_figures.py` |
 
 Library of Congress photographs by Carol M. Highsmith are from the Lyda Hill Texas Collection. The Library of Congress lists no known restrictions on publication, and Wikimedia Commons marks them public domain.
 The NPS photograph is a work of the U.S. federal government. The Shafter mine cross-section is from USGS Bulletin 928-B (1943), also a U.S. government work.
 CC BY 2.0 images (Jon Hanson; Allison Meier) may be reused with attribution: https://creativecommons.org/licenses/by/2.0/
-CC BY-SA images (Daniel Schwen; jrossz71) are resized copies and remain under their CC BY-SA licences (share-alike).
+CC BY-SA images (Daniel Schwen; jrossz71; gondwananet.com) are resized copies and remain under their CC BY-SA licences (share-alike).
