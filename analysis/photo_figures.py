@@ -143,12 +143,12 @@ def _composite(n, box, tiles, out_name, labels, stretch=False, model=True):
 def web_cars():
     L = lights("p06")
     tiles = [(l["x"], l["y"], 150) for l in L]
-    _composite("p06", (900, 5900, 1350, 2150), tiles, "zw_cars_twilight", [f"US-67, {l['road_km']:.0f} km" for l in L])
+    _composite("p06", (900, 5900, 1350, 2150), tiles, "zw_cars_twilight", [f"US-67, {l['src_km']:.0f} km away" for l in L])
 
 
 def web_streaks():
     _composite("p13", (900, 5990, 1300, 2100), [(2560, 1640, 300), (5500, 1768, 450)], "zw_car_streaks",
-               ["US-67, 32–34 km", "US-67, 25–27 km"], stretch=True, model=False)
+               ["US-67, 32–34 km away", "US-67, 25–27 km away"], stretch=True, model=False)
 
 
 def web_small():
