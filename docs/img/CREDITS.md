@@ -25,7 +25,7 @@ Photographs are the project author's own, in the public domain, or used under a 
 | `hist_mansfield_1922` | Mansfield Figure 1.png (map from G. R. Mansfield's 1922 Brown Mountain report, USGS Circular 646) | G. R. Mansfield, USGS | Public domain | https://commons.wikimedia.org/wiki/File:Mansfield_Figure_1.png |
 | `hist_minmin_sign` | Min-min-light-sign-boulia-outback-queensland-australia.jpg | gondwananet.com | CC BY-SA 3.0 (https://creativecommons.org/licenses/by-sa/3.0) | https://commons.wikimedia.org/wiki/File:Min-min-light-sign-boulia-outback-queensland-australia.jpg |
 | `hist_stardust_motel` | Stardust Motel sign, Marfa, Texas LCCN2017710638.tif | John Margolies | No known restrictions (Library of Congress) | https://commons.wikimedia.org/wiki/File:Stardust_Motel_sign,_Marfa,_Texas_LCCN2017710638.tif |
-| `zw_*` | Photographs by the project author (night skies; sunset and car photos from the Viewing Area, 21 Nov 2018) | Zach Warren | © Zach Warren, all rights reserved | original files |
+| `zw_*` | Photographs by the project author (a night sky; sunset, dusk and car photos from the Viewing Area, 21 Nov 2018; the home-page banner is frame p13 with dust specks removed from the sky) | Zach Warren | © Zach Warren, all rights reserved | original files |
 | `fig0*` | Figures from `publication/figures/` | this project | same licence as the repository | `analysis/pub_figures.py`, `analysis/photo_figures.py` |
 
 Library of Congress photographs by Carol M. Highsmith are from the Lyda Hill Texas Collection. The Library of Congress lists no known restrictions on publication, and Wikimedia Commons marks them public domain.
