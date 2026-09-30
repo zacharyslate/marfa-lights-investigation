@@ -1,5 +1,7 @@
 # Marfa Lights Investigation
 
+[![DOI](https://zenodo.org/badge/1392496709.svg)](https://doi.org/10.5281/zenodo.23046566)
+
 Digital and field investigation of the Marfa Mystery Lights (Presidio County, Texas). The first
 stage builds a quantitative model of what an observer at the Marfa Lights Viewing Area can
 physically see: the geometry of US‑67 between Shafter and Marfa, terrain occlusion with Earth
@@ -8,7 +10,7 @@ The goal is to remove known sources (false positives) before studying anything a
 
 **The paper.** *Separating the known from the unknown at Marfa, Texas* (version 1.0, 29 September 2026) is the
 citable output of this repository: https://zacharyslate.github.io/marfa-lights-investigation/paper.html. How to cite it
-is on that page and in `CITATION.cff`. Everything else here is working material. It is not field-validated and may change.
+is on that page and in `CITATION.cff`. Version 1.0 is archived on Zenodo: doi:10.5281/zenodo.23046856 (all versions: doi:10.5281/zenodo.23046566). Everything else here is working material. It is not field-validated and may change.
 
 Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub Pages, `docs/` folder)
 

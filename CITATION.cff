@@ -7,6 +7,14 @@ authors:
     affiliation: "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
 repository-code: "https://github.com/zacharyslate/marfa-lights-investigation"
 url: "https://zacharyslate.github.io/marfa-lights-investigation/"
+doi: "10.5281/zenodo.23046566"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23046566"
+    description: "All versions (resolves to the latest)"
+  - type: doi
+    value: "10.5281/zenodo.23046856"
+    description: "Version 1.0"
 license: CC-BY-4.0
 version: "1.0"
 date-released: "2026-09-29"
@@ -26,4 +34,7 @@ preferred-citation:
   year: 2026
   month: 9
   notes: "Version 1.0, self-published"
+  publisher:
+    name: Zenodo
+  doi: "10.5281/zenodo.23046856"
   url: "https://zacharyslate.github.io/marfa-lights-investigation/paper.html"

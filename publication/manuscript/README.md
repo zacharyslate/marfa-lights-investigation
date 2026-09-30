@@ -4,7 +4,7 @@
 
 The paper is framed as a screening tool. It removes false positives (headlamps, tail lamps, trains, towers, skyglow) and defines the observables that would make a light unexplained.
 
-It is published on the website at `docs/paper.html`, together with the PDFs in `docs/paper/` and the animation in `docs/media/`. The decision to self-publish rather than submit to a journal was made on 2026-09-29. Field experiments are deliberately left out; their design is in `../notes/12_experimental_design.md`.
+Version 1.0 is archived on Zenodo, doi:10.5281/zenodo.23046856; the all-versions DOI 10.5281/zenodo.23046566 always resolves to the latest version. It is published on the website at `docs/paper.html`, together with the PDFs in `docs/paper/` and the animation in `docs/media/`. The decision to self-publish rather than submit to a journal was made on 2026-09-29. Field experiments are deliberately left out; their design is in `../notes/12_experimental_design.md`.
 
 ## Files
 
