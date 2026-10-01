@@ -5,6 +5,7 @@ authors:
   - family-names: Warren
     given-names: Zach
     affiliation: "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
+orcid: https://orcid.org/0000-0002-4246-8598
 repository-code: "https://github.com/zacharyslate/marfa-lights-investigation"
 url: "https://zacharyslate.github.io/marfa-lights-investigation/"
 doi: "10.5281/zenodo.23046566"
@@ -31,6 +32,7 @@ preferred-citation:
     - family-names: Warren
       given-names: Zach
       affiliation: "Instituto de Cerámica y Vidrio (ICV), CSIC, Madrid, Spain"
+  orcid: https://orcid.org/0000-0002-4246-8598
   year: 2026
   month: 9
   notes: "Version 1.0, self-published"
