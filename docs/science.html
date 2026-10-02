@@ -182,6 +182,37 @@
     </article>
   </section>
 
+  <section class="prose" id="validation" aria-labelledby="val-h">
+    <h2 id="val-h">Testing the model against photographs</h2>
+    <p>A model of where ordinary lights can appear is only worth something if real photos agree with it. We test it three ways, from the most controlled to the least.</p>
+
+    <h3>1. Our own photographs, 21 November 2018</h3>
+    <p>Ten frames from the platform with a 210 mm lens, taken at dusk so the skyline is sharp. Each frame is lined up on the modelled skyline (residuals of about 0.01°), then every light below the skyline is measured. Eight independent lights were found. Their median distance from the modelled US-67 headlight positions is <b>0.008°</b>, against 0.28° for lights placed at random in the same band (Monte Carlo p ≈ 0.0002), and all eight fall on stretches the model says are in view (p ≈ 0.005 if the model had no predictive power). Two cars drew streaks in a 45-second exposure that run along the modelled road to within 0.016°. Details are in the <a href="paper.html">paper</a> and its supplement.</p>
+
+    <h3>2. The photo checker against the research pipeline</h3>
+    <p>The <a href="photo.html">photo checker</a> on this site is a separate program written for the browser. Given the same six frames and nothing but the files, it finds the same pointing as the research code:</p>
+    <div class="tablewrap"><table class="data">
+      <thead><tr><th>Frame</th><th>Bearing, checker</th><th>Bearing, pipeline</th><th>Tilt, checker</th><th>Tilt, pipeline</th><th>Lens difference</th></tr></thead>
+      <tbody>
+        <tr><td>p04</td><td>233.652°</td><td>233.647°</td><td>−0.247°</td><td>−0.249°</td><td>0.8 %</td></tr>
+        <tr><td>p05</td><td>233.759°</td><td>233.752°</td><td>−0.207°</td><td>−0.212°</td><td>0.5 %</td></tr>
+        <tr><td>p06</td><td>234.811°</td><td>234.809°</td><td>−0.089°</td><td>−0.095°</td><td>0.1 %</td></tr>
+        <tr><td>p08</td><td>234.817°</td><td>234.813°</td><td>−0.054°</td><td>−0.056°</td><td>0.2 %</td></tr>
+        <tr><td>p10</td><td>234.636°</td><td>234.631°</td><td>−0.059°</td><td>−0.060°</td><td>0.2 %</td></tr>
+        <tr><td>p13</td><td>234.073°</td><td>234.070°</td><td>−0.261°</td><td>−0.287°</td><td>0.2 %</td></tr>
+      </tbody>
+    </table></div>
+    <p>Bearings agree to 0.007° and tilts to 0.03°, well inside the ±0.3° photo-quality mask. The car lights land on the same spots (for example 233.778° against 233.771°). The answer is the same when the file is converted to PNG, WebP, TIFF or HEIC, including copies with the camera details stripped out, where the checker works out the lens from the skyline alone (within 0.1 % here).</p>
+
+    <h3>3. Photographs published by others</h3>
+    <p>We traced 39 published photographs said to show the lights (see the <a href="sightings.html">catalogue</a>) and ran the thirteen most promising through the checker. Two of them, a pair taken by Nicolas Henderson on 26 July 2014 and shared under a Creative Commons licence, line up on the mountains to ±0.03°. In both, the light sits on the stretch of US-67 that is in view from the platform, about 31–33 km away, and it moves 0.15° along the road between frames taken 97 seconds apart.</p>
+    <figure class="photo full"><img src="img/val_henderson_a-900.webp" srcset="img/val_henderson_a-900.webp 900w, img/val_henderson_a-1800.webp 1800w" sizes="(max-width: 1240px) 100vw, 1180px" width="1800" height="313" alt="Dusk photo of the flat with the Chinati Mountains on the horizon, a thin cyan line traced along the mountain tops, green boxes and orange dots along the base of the mountains, and a white ring around a small light that sits on the orange dots" loading="lazy" decoding="async"><figcaption><b>Henderson's first frame, lined up by the checker.</b> Cyan: the modelled skyline. Orange: where US-67 headlights can appear. Green: the known-source mask. White ring: the light in the photo. Photo: <a href="https://www.flickr.com/photos/texasbackroads/15960552076/">Nicolas Henderson</a>, 26 July 2014, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; cropped, brightened and overlaid by us.</figcaption></figure>
+    <figure class="photo full"><img src="img/val_henderson_b-900.webp" srcset="img/val_henderson_b-900.webp 900w, img/val_henderson_b-1800.webp 1800w" sizes="(max-width: 1240px) 100vw, 1180px" width="1800" height="313" alt="The second frame, 97 seconds later, framed slightly differently; the light again sits on the orange US-67 dots inside a green box" loading="lazy" decoding="async"><figcaption><b>The second frame, 97 seconds later.</b> Photo: <a href="https://www.flickr.com/photos/texasbackroads/15800588117/">Nicolas Henderson</a>, 26 July 2014, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>; cropped, brightened and overlaid by us.</figcaption></figure>
+    <p>A third, Rob Pettengill's Milky Way photo of 15 August 2015, can be pointed from the stars (six stars and Saturn fit to 3 pixels). Its "triangle of lights at the horizon" lies at about 185° true, some 30° left of the US-67 stretch, where the Texas Pacifico railway and Nopal Road are in view. Because the lens is very wide and distorts the edges, its position is only good to about ±1°, so this is a compass-quality answer. The other ten could not be placed. Seven have no usable skyline or identifiable stars, or survive only as small, heavily processed copies. One is a star-trail control, one was taken beside US-67 rather than from the platform, and one points southeast, outside the modelled sector.</p>
+    <p><b>What this shows, and what it doesn't.</b> Every published photo that could be placed precisely shows a light exactly where cars on US-67 appear. That is consistent with the field studies, but it is a small sample, and the photos people choose to publish are not a random sample of what people see. No photo here shows a light outside the known-source mask. That is not proof that such lights don't exist, only that none of these photographs records one well enough to tell.</p>
+    <p><b>How to take a photo that can be checked:</b> include the mountain skyline (dusk, moonlight, or a long exposure), keep the original file with its camera data, note the time, don't crop or zoom digitally, and, if you can, include a lit tower or a bright star in the frame.</p>
+  </section>
+
   <div class="two">
     <section class="prose">
       <h2>How you can help</h2>

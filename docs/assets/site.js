@@ -2,8 +2,8 @@
 (function () {
   const PAGES = [
     // plan and observe first, then background and science
-    ["visit.html", "Visit"], ["map.html", "Map"], ["terrain.html", "3D"], ["sky.html", "Sky finder"], ["app/", "App"],
-    ["history.html", "History"], ["place.html", "Place"], ["science.html", "Science"], ["paper.html", "Paper"], ["community.html", "Community"]
+    ["visit.html", "Visit"], ["map.html", "Map"], ["terrain.html", "3D"], ["sky.html", "Sky finder"], ["photo.html", "Photo check"], ["app/", "App"],
+    ["history.html", "History"], ["sightings.html", "Sightings"], ["place.html", "Place"], ["science.html", "Science"], ["paper.html", "Paper"], ["community.html", "Community"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];
   const LABEL = {auto: "Auto", light: "Light", dark: "Dark", night: "Night vision"};

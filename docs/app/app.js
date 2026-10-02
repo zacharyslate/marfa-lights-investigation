@@ -154,6 +154,48 @@
     } catch (e) { if (!cache) $("t-weather").innerHTML = `<h2>Weather</h2><p class="dim">No connection, so no forecast. Look for clear, calm skies: they are the best nights.</p>`; }
   }
 
+  // ---------------------------------------------------------------- refraction forecast
+  // The light from US-67 travels a few metres to a few tens of metres above the flat. How much it bends depends on
+  // the temperature gradient in that layer (Hirt et al. 2010, eq. 2): k = 503 p / T^2 (0.0343 + dT/dz), p in hPa,
+  // T in K, dT/dz in K/m. The gradient here is the forecast difference between 80 m and 2 m above the ground
+  // (Open-Meteo, CC BY 4.0). The model's per-point thresholds (site.json hwy kcrit) turn k into km of US-67 in view.
+  const kOf = (t2, t80, p) => { const T = 273.15 + (t2 + t80) / 2; return 503 * p / (T * T) * (0.0343 + (t80 - t2) / 78); };
+  const RC = ["#6b7480", "#8dbcf0", "#2f6fd0", "#e08a2a"];
+  const kClass = k => k < 0.13 ? ["normal", "Normal or weaker", RC[0]] : k < 0.5 ? ["mild", "Mild inversion", RC[1]]
+    : k < 1 ? ["strong", "Strong inversion", RC[2]] : ["duct", "Very strong: light can bend with the Earth", RC[3]];
+  async function refraction() {
+    const box = $("t-refr"), cache = store.get("mlfg-refr", null);
+    const render = async F => {
+      await ready; if (!TONIGHT || !S) return;
+      const t0 = TONIGHT.sunset.date.getTime(), t1 = TONIGHT.sunrise.date.getTime();
+      const hrs = F.time.map((t, i) => ({t: t * 1000, k: kOf(F.t2[i], F.t80[i], F.p[i]), dT: F.t80[i] - F.t2[i], w: F.w[i], c: F.c[i]})).filter(h => h.t >= t0 - 1800e3 && h.t <= t1 + 1800e3);
+      if (!hrs.length) { box.innerHTML = `<h2>Refraction tonight</h2><p class="dim">The forecast doesn't cover tonight yet.</p>`; return; }
+      const kc = S.hwy.map(h => h[5]).filter(v => v !== null), km = k => kc.filter(v => v <= k).length * 0.06;
+      const peak = hrs.reduce((a, h) => h.k > a.k ? h : a), base = km(0.13), [, ptxt] = kClass(peak.k);
+      const X = t => (t - hrs[0].t) / (hrs[hrs.length - 1].t - hrs[0].t + 3600e3) * 100, w = 100 / (hrs.length);
+      const bars = hrs.map(h => { const [, , col] = kClass(h.k); return `<i title="${tfmt(new Date(h.t))}: k = ${fmt(h.k, 2)}" style="left:${X(h.t)}%;width:${w + 0.2}%;background:${col}"></i>`; }).join("");
+      const labels = hrs.filter((h, i) => i % 3 === 0).map(h => `<span style="position:absolute;left:${X(h.t)}%">${new Intl.DateTimeFormat("en-US", {timeZone: TZ, hour: "numeric"}).format(new Date(h.t))}</span>`).join("");
+      const calm = hrs.filter(h => h.w < 10 && h.c < 30).length;
+      box.innerHTML = `<h2>Refraction tonight</h2>
+        <p><b>${ptxt}</b> at its peak, around ${tfmt(new Date(peak.t))}: the air at 80 m is forecast ${fmt(Math.abs(peak.dT), 1)} °C ${peak.dT >= 0 ? "warmer" : "cooler"} than at head height, giving a refraction coefficient of about <b>k = ${fmt(peak.k, 2)}</b> (normal is 0.13).</p>
+        <div class="bar" role="img" aria-label="Forecast refraction by hour tonight">${bars}</div>
+        <div style="position:relative;height:16px;font:12px var(--f-mono);color:var(--muted)">${labels}</div>
+        <p class="small dim"><span style="color:${RC[0]}">■</span> normal (k &lt; 0.13) &nbsp;<span style="color:${RC[1]}">■</span> mild &nbsp;<span style="color:${RC[2]}">■</span> strong (k 0.5–1) &nbsp;<span style="color:${RC[3]}">■</span> very strong (k &gt; 1)</p>
+        <p class="small">US-67 in view from the platform: <b>${fmt(base, 1)} km</b> at normal refraction${peak.k > 0.13 ? `, about <b>${fmt(km(peak.k), 1)} km</b> at tonight's peak` : ""}. Stronger refraction lifts distant lights a little, brings short extra stretches of road into view, and on the strongest nights makes far lights shimmer, stretch or split, as mirages do.</p>
+        <p class="small dim">${calm >= 3 ? "Clear, calm hours are forecast: the best conditions for a ground inversion. " : "Wind or cloud will mix the air near the ground, which weakens inversions. "}A forecast model smooths out the thin, cold layer that forms over the flat on calm nights, so the real inversion is often stronger than shown. Temperatures: Open-Meteo.com model forecast (CC BY 4.0), updated ${new Date(F.at).toLocaleString()}. Formula: Hirt et al. (2010).</p>`;
+    };
+    if (cache) render(cache);
+    try {
+      const u = "https://api.open-meteo.com/v1/forecast?latitude=30.2751&longitude=-103.8828&hourly=temperature_2m,temperature_80m,surface_pressure,wind_speed_10m,cloud_cover&wind_speed_unit=kmh&forecast_days=3&timeformat=unixtime&timezone=GMT";
+      const j = await fetch(u).then(okJson), H = j.hourly;
+      if (!H || !H.temperature_80m) throw new Error("no 80 m temperatures");
+      const F = {at: Date.now(), time: H.time, t2: H.temperature_2m, t80: H.temperature_80m, p: H.surface_pressure.map(v => v || 850), w: H.wind_speed_10m, c: H.cloud_cover};
+      const ok = F.time.map((_, i) => F.t2[i] !== null && F.t80[i] !== null);
+      ["time", "t2", "t80", "p", "w", "c"].forEach(k => { F[k] = F[k].filter((_, i) => ok[i]); });
+      store.set("mlfg-refr", F); render(F);
+    } catch (e) { if (!cache) box.innerHTML = `<h2>Refraction tonight</h2><p class="dim">No forecast right now. Clear, calm nights after a warm day give the strongest inversions.</p>`; }
+  }
+
   // ================================================================ IDENTIFY
   let refMag = true, heightSel = "", exactM = null, lastCands = [];
   const idB = $("i-b");
@@ -392,7 +434,7 @@
   started = true;
   show(location.hash.slice(1) || "tonight");
   try { computeTonight(); } catch (e) { $("t-sum").textContent = "Couldn't work out tonight's sky."; console.error(e); }
-  weather(); renderBingo();
+  weather(); refraction(); renderBingo();
   ready.then(() => { identify(); });
   window.MLAPP = {computeTonight, identify, candidates, show, get tonight() { return TONIGHT; }};
 })();

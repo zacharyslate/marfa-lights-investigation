@@ -1,0 +1,208 @@
+{
+ "analysed": "2026-10-02",
+ "tool": "docs/photo.html (photo checker) and analysis/photo_overlay.py",
+ "photos": [
+  {
+   "id": "henderson-2014-07-26-a",
+   "file": "marfa_henderson_2014-07-26a_15960552076.jpg",
+   "page_url": "https://www.flickr.com/photos/texasbackroads/15960552076/",
+   "author": "Nicolas Henderson",
+   "licence": "CC BY 2.0",
+   "taken": "2014-07-26 ~21:15 CDT (caption; the camera clock read 08:42)",
+   "lens": "Canon EOS Rebel T2i, 55 mm (88 mm equivalent), 1/6 s, ISO 3200",
+   "method": "automatic skyline fit (photo checker), lens refined to 86.8 mm equivalent",
+   "alignment": {
+    "bearing_center_true_deg": 233.427,
+    "tilt_deg": -0.587,
+    "roll_deg": 0.563,
+    "sigma_deg": 0.02,
+    "skyline_rms_px": 1.29
+   },
+   "light": {
+    "az_true_deg": 233.806,
+    "el_deg": -0.216
+   },
+   "verdict": "explained",
+   "result": "Inside the known-source mask (photo-quality): on the stretch of US-67 in view from the platform, about 31 km away.",
+   "publishable_overlay": true
+  },
+  {
+   "id": "henderson-2014-07-26-b",
+   "file": "marfa_henderson_2014-07-26b_15800588117.jpg",
+   "page_url": "https://www.flickr.com/photos/texasbackroads/15800588117/",
+   "author": "Nicolas Henderson",
+   "licence": "CC BY 2.0",
+   "taken": "2014-07-26, 97 s after frame a",
+   "lens": "Canon EOS Rebel T2i, 55 mm (88 mm equivalent), 1/4 s, ISO 3200",
+   "method": "automatic skyline fit (photo checker), lens refined to 87.0 mm equivalent",
+   "alignment": {
+    "bearing_center_true_deg": 232.841,
+    "tilt_deg": -0.878,
+    "roll_deg": 0.429,
+    "sigma_deg": 0.029,
+    "skyline_rms_px": 2.56
+   },
+   "light": {
+    "az_true_deg": 233.658,
+    "el_deg": -0.184
+   },
+   "verdict": "explained",
+   "result": "Inside the known-source mask (photo-quality): on the stretch of US-67 in view, about 32 km away; 0.15 deg from its position in frame a, as a vehicle moving along the road would be.",
+   "publishable_overlay": true
+  },
+  {
+   "id": "pettengill-2015-08-15",
+   "file": "marfa_pettengill_2015-08-15_20493851508.jpg",
+   "page_url": "https://www.flickr.com/photos/robpettengill/20493851508/",
+   "author": "Rob Pettengill",
+   "licence": "CC BY-NC-ND 2.0 (measurements only; no overlay published)",
+   "taken": "2015-08-15 22:08 CDT (camera clock on UTC)",
+   "lens": "Sony NEX-5N, lens not recorded; star fit gives about 19 mm equivalent",
+   "method": "star fit (7 stars and Saturn, residual 3.1 px); the skyline fit, made separately, disagrees by about 11 deg at the horizon because of wide-angle lens distortion",
+   "alignment": {
+    "bearing_center_true_deg": 188.601,
+    "tilt_deg": 16.422,
+    "roll_deg": -3.753,
+    "sigma_deg": 1.0,
+    "note": "pointing from stars; the horizon lies 17 deg below the image centre, where distortion is largest, so +-1 deg is assumed"
+   },
+   "light": {
+    "az_true_deg": 184.85,
+    "el_deg": -0.54
+   },
+   "verdict": "explained (compass-quality)",
+   "result": "About 185 deg true, close to the horizon: inside the compass-quality mask, where the Texas Pacifico railway (4 km) and Nopal Road (11 km) are in view. It is 30 deg left of the US-67 stretch. Ranch lights in this direction are not catalogued.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "hanson-2009-05-09",
+   "file": "marfa_hanson_2009-05-09_3525821502_o.jpg",
+   "page_url": "https://www.flickr.com/photos/exaudio/3525821502/",
+   "author": "Jon Hanson",
+   "licence": "CC BY 2.0",
+   "taken": "2009-05-09 22:35 (camera clock)",
+   "lens": "Canon EOS 40D, 17 mm (27 mm equivalent), 5 s, ISO 1600",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "The horizon is a featureless dark line, the few stars are too faint to identify reliably, and the camera faced the platform rail. The light cannot be placed to better than several degrees.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "barclay-2006-11-05",
+   "file": "marfa_barclay_2006-11-05_397050942.jpg",
+   "page_url": "https://www.flickr.com/photos/davidbarclay/397050942/",
+   "author": "David Barclay",
+   "licence": "All rights reserved (measurements only)",
+   "taken": "2006-11-05 21:08:12 CST (offset recorded)",
+   "lens": "Canon EOS 30D, 200 mm (320 mm equivalent), 30 s",
+   "method": "skyline and tower anchor tried",
+   "verdict": "can't tell",
+   "result": "Only a 1024-pixel, heavily brightened copy is public. The skyline cannot be recovered from it, so the red tower light cannot be identified among the candidates. The original file would very likely be analysable: it has the time, a long lens and a tower light.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "zilar-2007-11-22",
+   "file": "marfa_zilar_2007-11-22_2073138356.jpg",
+   "page_url": "https://www.flickr.com/photos/silencematters/2073138356/",
+   "author": "Jeremy Zilar",
+   "licence": "CC BY-NC-ND 2.0 (measurements only)",
+   "taken": "2007-11-22 20:48 (camera clock)",
+   "lens": "Nikon D80, 18 mm (27 mm equivalent), 4 s",
+   "method": "skyline fit tried",
+   "verdict": "can't tell",
+   "result": "No skyline position fits well (residual 9 px), and the poles and road in the foreground suggest it was not taken from the platform.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "klebs-2016-07-06",
+   "file": "marfa_klebs_2016-07-06_28675677560.jpg",
+   "page_url": "https://www.flickr.com/photos/klebs/28675677560/",
+   "author": "Heather Klebs",
+   "licence": "All rights reserved (measurements only)",
+   "taken": "2016-07-06 22:32 (camera clock)",
+   "lens": "Pentax K-50, 200 mm manual lens, 30 s",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "No skyline or stars, and the caption puts the light to the southeast, outside the sector where traffic is modelled.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "dbc-2005-06-04",
+   "file": "marfa_dbc_2005-06-04_295487781.jpg",
+   "page_url": "https://www.flickr.com/photos/dbcnwa/295487781/",
+   "author": "DBC (dbcnwa)",
+   "licence": "All rights reserved",
+   "taken": "2005-06-04 21:31",
+   "lens": "Canon Digital Rebel XT, 35 mm, 30 s",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "Only a 1024-pixel copy; no skyline or identifiable stars. The light trails show motion during the 30 s exposure.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "parrott-2009-11-14",
+   "file": "marfa_parrott_2009-11-14_4105146934.jpg",
+   "page_url": "https://www.flickr.com/photos/jbparrott/4105146934/",
+   "author": "Jack Parrott",
+   "licence": "CC BY-NC-ND 2.0",
+   "taken": "2009-11-14 19:18",
+   "lens": "Sony DSC-W170 compact, 1/8 s handheld",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "A single point in an otherwise black, noisy frame: nothing to align on.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "kmg-morris-2014-07-08",
+   "file": "marfa_kmg-morris_2014-07-08_14490198340_k.jpg",
+   "page_url": "https://www.flickr.com/photos/mzmo/14490198340/",
+   "author": "Adventures of KM&G-Morris",
+   "licence": "CC BY-NC-ND 2.0",
+   "taken": "2014-07-08 22:19 (camera clock)",
+   "lens": "Sony SLT-A65V",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "The original on Flickr is truncated; the 2048-pixel copy shows lights on a black field with no skyline or stars.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "yensel-2021-10-19",
+   "file": "marfa_yensel_2021-10-19_52094821344.jpg",
+   "page_url": "https://www.flickr.com/photos/johnyensel/52094821344/",
+   "author": "John Yensel",
+   "licence": "All rights reserved",
+   "taken": "2021-10-19 20:46",
+   "lens": "Nikon Coolpix P1000 at 3000 mm equivalent",
+   "method": "none possible",
+   "verdict": "can't tell",
+   "result": "An extreme close-up of one blurred light with nothing else in the frame. A wider frame from the same session would allow a position.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "jaylee-2009-07-13",
+   "file": "marfa_jaylee_2009-07-13_3716246904.jpg",
+   "page_url": "https://www.flickr.com/photos/baldheretic/3716246904/",
+   "author": "Jay Lee",
+   "licence": "All rights reserved",
+   "taken": "2009-07-13",
+   "lens": "36-minute exposure",
+   "method": "control, not a lights claim",
+   "verdict": "control",
+   "result": "Star trails over the viewing area with the light trail of traffic on US-90 in the foreground: a reminder that the nearest moving lights are on the road beside the platform.",
+   "publishable_overlay": false
+  },
+  {
+   "id": "suter-2015-03-27",
+   "file": "marfa_suter_2015-03-27_20006492631.jpg",
+   "page_url": "https://www.flickr.com/photos/pandaluvart/20006492631/",
+   "author": "Sara Suter",
+   "licence": "All rights reserved",
+   "taken": "2015-03-27 23:00",
+   "lens": "Canon EOS M, 22 mm",
+   "method": "excluded",
+   "verdict": "excluded",
+   "result": "Taken beside US-67 (title, utility poles, trees), not from the platform; the model does not apply.",
+   "publishable_overlay": false
+  }
+ ]
+}

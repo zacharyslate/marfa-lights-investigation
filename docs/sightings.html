@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Lights Sightings</title>
+<meta name="description" content="A sourced catalogue of documented Marfa Lights sightings, studies and published photographs, from the 1880s to today, with which ones can be tested against the line-of-sight model and what the photos show when re-analysed.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Marfa Lights Field Guide">
+<meta property="og:title" content="Marfa Lights Sightings">
+<meta property="og:description" content="Documented sightings, studies and published photographs of the Marfa Lights, each with its sources, and what the photos show when re-analysed.">
+<meta property="og:url" content="https://zacharyslate.github.io/marfa-lights-investigation/sightings.html">
+<meta property="og:image" content="https://zacharyslate.github.io/marfa-lights-investigation/media/social_card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dusk over the Chinati Mountains from the Marfa Lights Viewing Area, with car lights on US-67 below the skyline">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=13">
+<style>
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.filters .f{display:grid;gap:4px}
+.filters label{font:600 12px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.filters input,.filters select{font:15px var(--f-body);color:var(--ink);background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:8px 10px;min-width:min(180px,100%);max-width:100%}
+.page>*{min-width:0}
+.list{display:grid;gap:12px;min-width:0}
+.ent,.ent *{overflow-wrap:anywhere}
+.ent{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:14px 16px;display:grid;gap:7px}
+.ent h3{font-size:19px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ent h3 .d{font:600 13px var(--f-mono);color:var(--accent)}
+.ent .meta{font-size:14px;color:var(--ink-2);display:flex;gap:6px 14px;flex-wrap:wrap}
+.ent .meta b{font-weight:600;color:var(--muted);font-family:var(--f-mono);font-size:11.5px;letter-spacing:.05em;text-transform:uppercase}
+.ent p{font-size:15.5px;line-height:1.5}
+.ent .src{font-size:13.5px;color:var(--ink-2);margin:0;padding-left:18px;display:grid;gap:3px}
+.ent .src a{color:var(--link);word-break:break-word}
+.tag{font:600 11px/1 var(--f-mono);letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:3px;border:1px solid var(--rule);color:var(--ink-2);white-space:nowrap}
+.tag.yes{border-color:#2e9d5b;color:#2e9d5b}.tag.partly{border-color:var(--accent);color:var(--accent)}.tag.no{color:var(--muted)}
+.tag.ok{background:#2e9d5b;border-color:#2e9d5b;color:#fff}.tag.unk{background:var(--surface-2)}.tag.weak{border-color:#c03a3a;color:#c03a3a}
+.ent .test{font-size:14px;border-left:3px solid var(--rule);padding-left:10px;color:var(--ink-2)}
+.ent .re{font-size:14.5px;border-left:3px solid var(--accent);padding-left:10px}
+.more{font-size:14px;color:var(--muted)}
+details.ent summary{cursor:pointer;list-style:none}
+details.ent summary::-webkit-details-marker{display:none}
+details.ent[open] summary .tw{transform:rotate(90deg)}
+.tw{display:inline-block;transition:transform .15s;color:var(--muted)}
+.count{font:600 14px var(--f-mono);color:var(--muted)}
+</style>
+</head>
+<body>
+<header id="bar"></header>
+<main class="page">
+  <header class="prose">
+    <div class="eyebrow">Catalogue</div>
+    <h1>Sightings, studies and photographs</h1>
+    <p class="lede">Every documented Marfa Lights sighting, observing campaign and published photograph we could trace, each with its sources. For each one we note whether it holds enough detail (a date, a time, a direction) to test against the line-of-sight model, and, for photos we could obtain, what the photo shows when it is lined up with the land.</p>
+    <p>Standards: every entry cites where it comes from. A source marked <span class="tag">secondary</span> was read in a summary, not the original. A claim found only on a fan site or in a single uncited article is marked <span class="tag weak">weak</span>. Nothing here has been added from memory. Compiled 2 October 2026; corrections are welcome through the <a href="https://github.com/zacharyslate/marfa-lights-investigation/issues">project's issues page</a>.</p>
+  </header>
+
+  <section class="stats" id="stats" aria-label="Summary"></section>
+
+  <section class="prose">
+    <h2>What the record shows</h2>
+    <p>Most accounts cannot be tested. Of the documented sightings, only a handful give a date, a time and a direction precise enough to compare with where cars, trains and towers can appear. The well-instrumented studies (the 2004 student study, the 2008 spectroscopy campaign, the FOTOCAT re-analysis of James Bunnell's photographs) mostly found headlights, on US-67 or on ranch roads such as Nopal Road. The best-documented exception is a single very bright light recorded by automated cameras on 3 June 2005 during a thunderstorm, about 28 km from the cameras.</p>
+    <p>That is why the most useful thing a visitor can do is write down the time and direction of a light, and why the <a href="photo.html">photo checker</a> and <a href="report.html">report form</a> exist.</p>
+  </section>
+
+  <section class="prose" aria-labelledby="h-s">
+    <h2 id="h-s">Documented sightings and studies</h2>
+  </section>
+  <div class="filters" role="search">
+    <div class="f"><label for="q">Search</label><input id="q" type="search" placeholder="name, place, year…"></div>
+    <div class="f"><label for="ft">Testable against the model</label><select id="ft"><option value="">All</option><option value="yes">Yes</option><option value="partly">Partly</option><option value="no">No</option></select></div>
+    <div class="f"><label for="fe">Evidence</label><select id="fe"><option value="">All</option><option value="eyewitness">Eyewitness accounts</option><option value="photo">Photographs and video</option><option value="instrument">Instruments and campaigns</option><option value="press">Press and print</option></select></div>
+    <span class="count" id="sc"></span>
+  </div>
+  <div class="list" id="slist"></div>
+
+  <section class="prose" aria-labelledby="h-p">
+    <h2 id="h-p">Published photographs</h2>
+    <p>Photographs said to show the lights, with who took them, when, and under what licence. We downloaded the thirteen most promising (with the photographers' licences in mind) and ran them through the <a href="photo.html">photo checker</a>. The method and results are on the <a href="science.html#validation">Science page</a>. Only openly licensed photos are reproduced on this site; for the rest we publish measurements and a link.</p>
+  </section>
+  <div class="filters">
+    <div class="f"><label for="pv">Show</label><select id="pv"><option value="">All photographs</option><option value="re">Re-analysed by us</option><option value="todo">Not yet analysed</option></select></div>
+    <span class="count" id="pc"></span>
+  </div>
+  <div class="list" id="plist"></div>
+
+  <section class="prose" aria-labelledby="h-n">
+    <h2 id="h-n">Claims that don't hold up as usually told</h2>
+    <ul id="notes"></ul>
+  </section>
+</main>
+<footer id="foot"></footer>
+<script src="assets/site.js?v=13"></script>
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+  let C;
+  try { C = await fetch("data/catalogue.json?v=1").then(r => { if (!r.ok) throw 0; return r.json(); }); }
+  catch (e) { $("slist").innerHTML = "<p>Couldn't load the catalogue. Check your connection and reload.</p>"; return; }
+  const n = C.counts;
+  $("stats").innerHTML = [[n.sightings, "documented sightings and studies, 1880s to 2023"], [n.testable + n.partly, `can be compared with the model, at least partly (${n.testable} fully)`],
+    [n.photos, "published photographs traced"], [`${n.explained} of ${n.reanalysed}`, "re-analysed photos put the light on a known source; most of the others lack a skyline or stars to align on"]]
+    .map(([b, s]) => `<div class="stat"><b>${b}</b><span>${s}</span></div>`).join("");
+  const kindOf = t => /photo|video/i.test(t) ? "photo" : /instrument|campaign|measurement|triangul|spectro/i.test(t) ? "instrument" : /newspaper|magazine|TV|press|print/i.test(t) ? "press" : "eyewitness";
+  const weak = s => /single|uncited|unverified|fan|weak|hearsay|third-hand/i.test(s.status || "") ;
+  const srcs = e => `<ol class="src">${e.src.map(s => `<li>${esc(s.c)}${s.u ? ` <a href="${esc(s.u)}" rel="noopener">${esc(s.u.replace(/^https?:\/\/(www\.)?/, "").slice(0, 60))}${s.u.length > 70 ? "…" : ""}</a>` : ""}${s.o ? "" : ' <span class="tag">not opened</span>'}</li>`).join("")}</ol>`;
+  function renderS() {
+    const q = $("q").value.trim().toLowerCase(), ft = $("ft").value, fe = $("fe").value;
+    const L = C.sightings.filter(e => (!ft || e.test === ft) && (!fe || kindOf(e.type || "") === fe) && (!q || JSON.stringify(e).toLowerCase().includes(q)));
+    $("sc").textContent = `${L.length} of ${C.sightings.length}`;
+    $("slist").innerHTML = L.map(e => `<details class="ent"><summary><h3><span class="tw">▸</span><span class="d">${esc(e.date)}</span>${esc((e.who || "").split(/[;(]/)[0])}
+        <span class="tag ${e.test}">${e.test === "yes" ? "testable" : e.test === "partly" ? "partly testable" : "not testable"}</span>${weak(e) ? '<span class="tag weak">weak</span>' : /secondary/i.test(e.status || "") ? '<span class="tag">secondary</span>' : ""}</h3>
+        <p>${esc(e.what)}</p></summary>
+        <div class="meta">${e.where ? `<span><b>Where</b> ${esc(e.where)}</span>` : ""}${e.bearing ? `<span><b>Direction</b> ${esc(e.bearing)}</span>` : ""}${e.time ? `<span><b>Time</b> ${esc(e.time)}</span>` : ""}${e.cond ? `<span><b>Conditions</b> ${esc(e.cond)}</span>` : ""}</div>
+        ${e.expl ? `<p><b>Explanation offered:</b> ${esc(e.expl)}</p>` : ""}
+        <div class="meta"><span><b>Evidence</b> ${esc(e.type)}</span><span><b>Sources</b> ${esc(e.status)}</span></div>
+        ${srcs(e)}
+        ${e.testwhy ? `<div class="test"><b>Against the model:</b> ${esc(e.testwhy)}</div>` : ""}</details>`).join("") || "<p>No entries match.</p>";
+  }
+  const rank = p => !p.re ? 9 : p.re.verdict === "explained" ? 0 : /^explained/.test(p.re.verdict) ? 1 : p.re.verdict === "can't tell" ? 2 : 3;
+  const VCLS = v => /^explained/.test(v) ? "ok" : "unk";
+  function renderP() {
+    const pv = $("pv").value;
+    const L = C.photos.filter(p => !pv || (pv === "re" ? p.re : !p.re)).sort((a, b) => rank(a) - rank(b));
+    $("pc").textContent = `${L.length} of ${C.photos.length}`;
+    $("plist").innerHTML = L.map(p => `<div class="ent"><h3><span class="d">${esc(p.taken)}</span>${esc(p.title)}${p.re ? `<span class="tag ${VCLS(p.re.verdict)}">${esc(p.re.verdict)}</span>` : ""}</h3>
+        <div class="meta"><span><b>By</b> ${esc(p.by)}</span>${p.time ? `<span><b>Time</b> ${esc(p.time)}</span>` : ""}${p.cam ? `<span><b>Camera</b> ${esc(p.cam)}</span>` : ""}<span><b>Licence</b> ${esc(p.lic)}</span></div>
+        <div class="meta">${p.from ? `<span><b>Taken from</b> ${esc(p.from)}</span>` : ""}${p.dir ? `<span><b>Direction</b> ${esc(p.dir)}</span>` : ""}</div>
+        ${p.claim ? `<p><b>Claimed:</b> ${esc(p.claim)}</p>` : ""}
+        ${p.re ? `<div class="re"><b>Our re-analysis:</b> ${esc(p.re.result)}${p.re.az ? ` <span class="mono">(${p.re.az.toFixed(2)}° true, ${p.re.el.toFixed(2)}° up${p.re.sigma ? `, ±${p.re.sigma < 0.1 ? p.re.sigma.toFixed(2) : p.re.sigma.toFixed(1)}°` : ""})</span>` : ""}</div>`
+          : `<div class="test"><b>Analysability (from what is published):</b> ${esc(p.anal)}</div>`}
+        ${p.notes ? `<p class="more">${esc(p.notes)}</p>` : ""}
+        ${p.url && /^https?:/.test(p.url) ? `<p class="more"><a href="${esc(p.url)}" rel="noopener">Where it was published</a></p>` : `<p class="more">${esc(p.url)}</p>`}</div>`).join("");
+  }
+  $("notes").innerHTML = C.notes.map(t => `<li>${esc(t)}</li>`).join("");
+  ["q", "ft", "fe"].forEach(id => $(id).addEventListener("input", renderS));
+  $("pv").addEventListener("input", renderP);
+  renderS(); renderP();
+})();
+</script>
+</body>
+</html>

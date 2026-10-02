@@ -1,0 +1,1356 @@
+[
+ {
+  "id": "ellison-1883",
+  "date": "c.1883 (family tradition; no contemporary record)",
+  "time": null,
+  "observers": "Robert Reed Ellison (cowhand, age 16 per Texas Monthly 2006)",
+  "observer_location": "Paisano Pass (Handbook, Texas Monthly, Wikipedia); LiveScience 2013 says 'near Mitchell Flat' (conflict)",
+  "bearing": null,
+  "description": "Saw a flickering light while driving cattle; thought it might be an Apache campfire. Settlers reportedly found no ashes or campsite.",
+  "conditions": null,
+  "explanation_offered": "none (Handbook mentions inversion-layer refraction in general)",
+  "sources": [
+   {
+    "cite": "Smith, Julia Cauble, 'Marfa Lights', Handbook of Texas Online, TSHA (pub. 1 Apr 1995, rev. 7 Sep 2017)",
+    "url": "https://www.tshaonline.org/handbook/entries/marfa-lights",
+    "opened": true
+   },
+   {
+    "cite": "Hall, Michael, 'The Truth Is Out There', Texas Monthly, June 2006. Granddaughter Rosemary Cox: grandfather told of lights 'they couldn't explain. They thought they were Indian fires'; his 1937 memoir does not mention the lights.",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   },
+   {
+    "cite": "THC marker No. 3208 (1988): 'first recorded sighting ... by rancher Robert Ellison in 1883'",
+    "url": "https://www.hmdb.org/m.asp?m=26358",
+    "opened": true
+   },
+   {
+    "cite": "Dunning, B., Skeptoid #38, 11 Apr 2007: 'no actual record that Robert Ellison ever saw such a thing'",
+    "url": "https://skeptoid.com/episodes/38",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary/oral tradition only",
+  "evidence_type": "eyewitness account (hearsay via descendants)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No date, time or bearing; predates US-67."
+  }
+ },
+ {
+  "id": "rojas-lanterns-1883",
+  "date": "1883",
+  "time": null,
+  "observers": "unnamed Southern Pacific railroad survey engineer",
+  "observer_location": "unknown",
+  "bearing": null,
+  "description": "Engineer triangulated the lights.",
+  "conditions": null,
+  "explanation_offered": "kerosene lanterns on the ranch of Jes\u00fas Rojas",
+  "sources": [
+   {
+    "cite": "Cartwright, Gary, 'Texas Primer: The Marfa Lights', Texas Monthly, 1 Nov 1984 (no citation given in article)",
+    "url": "https://www.texasmonthly.com/being-texan/texas-primer-the-marfa-lights/",
+    "opened": true
+   }
+  ],
+  "source_status": "single secondary source, uncited",
+  "evidence_type": "claimed instrumented (triangulation)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No date, place or bearing; pre-automobile."
+  }
+ },
+ {
+  "id": "ow-williams-alsate-1880s",
+  "date": "1880s (oral)",
+  "time": null,
+  "observers": "O. W. Williams (surveyor), via grandson Clayton Williams; story traced through guide Juan Cano",
+  "observer_location": "Terlingua area (per Texas Monthly)",
+  "bearing": null,
+  "description": "Lights called 'Alsate's Ghost'. Clayton Williams: 'They're blue-white ... they go straight up, hover, straight down.' O. W. Williams did not write his observations down.",
+  "conditions": null,
+  "explanation_offered": "folklore (ghost of Apache chief Alsate)",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "third-hand oral",
+  "evidence_type": "eyewitness account (hearsay)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated and not located near the Viewing Area."
+  }
+ },
+ {
+  "id": "humphreys-1885",
+  "date": "1885",
+  "time": null,
+  "observers": "Joe and Sally Humphreys (Handbook, Explorersweb) or Joe and Anne Humphreys (Wikipedia, citing Wagers 2012). Names conflict.",
+  "observer_location": "unknown",
+  "bearing": null,
+  "description": "Reported their first sighting; no details.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Handbook of Texas (Smith)",
+    "url": "https://www.tshaonline.org/handbook/entries/marfa-lights",
+    "opened": true
+   },
+   {
+    "cite": "Wikipedia, citing Wagers, Robert, Mysteries of the Marfa Lights Revealed, R&J Books Unique, 2012, pp. 75\u201379, ISBN 978-0988827127 (book not opened)",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary",
+  "evidence_type": "eyewitness account (reported)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No details."
+  }
+ },
+ {
+  "id": "stillwell-1916",
+  "date": "1916 (claimed)",
+  "time": null,
+  "observers": "Hallie Stillwell (age 18) with companions",
+  "observer_location": "driving, Chinati Mountains area (claimed)",
+  "bearing": null,
+  "description": "Lights whose movement was inconsistent with campfires.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Unsolved Mysteries fan wiki (summary of segment aired 25 Oct 1989)",
+    "url": "https://unsolvedmysteries.fandom.com/wiki/Marfa_Lights",
+    "opened": true
+   },
+   {
+    "cite": "Handbook of Texas biography of Stillwell does NOT mention the lights (checked)",
+    "url": "https://www.tshaonline.org/handbook/entries/stillwell-hallie-crawford",
+    "opened": true
+   }
+  ],
+  "source_status": "UNVERIFIED: fan wiki only",
+  "evidence_type": "eyewitness account (unverified)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Unverified; no date detail."
+  }
+ },
+ {
+  "id": "cowboys-1919",
+  "date": "summer 1919",
+  "time": null,
+  "observers": "unnamed cowboys herding cattle",
+  "observer_location": "unknown",
+  "bearing": null,
+  "description": "Rode over the mountains looking for the source and found nothing.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Handbook of Texas (Smith)",
+    "url": "https://www.tshaonline.org/handbook/entries/marfa-lights",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary, uncited",
+  "evidence_type": "eyewitness account (reported)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No location or bearing."
+  }
+ },
+ {
+  "id": "wwii-pilots-1940s",
+  "date": "c.1942\u201345",
+  "time": null,
+  "observers": "unnamed WWII training pilots",
+  "observer_location": "airborne near Marfa",
+  "bearing": null,
+  "description": "Searched for the source from the air without success.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Handbook of Texas (Smith). Says 'Midland Army Air Field', apparently an error for Marfa AAF.",
+    "url": "https://www.tshaonline.org/handbook/entries/marfa-lights",
+    "opened": true
+   },
+   {
+    "cite": "LiveScience, Lallanilla, 19 Jun 2013 (repeats Midland)",
+    "url": "https://www.livescience.com/37579-what-are-marfa-lights-texas.html",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary, uncited",
+  "evidence_type": "eyewitness account (reported)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated, no location."
+  }
+ },
+ {
+  "id": "kahl-1943-1947",
+  "date": "1943 (fan wiki: sighting as an airman) / 1947 (qsl.net: airplane chase). Dates conflict.",
+  "time": null,
+  "observers": "Chauncey M. 'Fritz' Kahl (pilot, war veteran, later Marfa mayor)",
+  "observer_location": "near Marfa Army Air Field / airborne",
+  "bearing": null,
+  "description": "Fan wiki: saw distant lights with a colleague at a time when fuel rationing made vehicle lights uncommon. qsl.net: 'In 1947, Fritz Kahl ... chased the Lights in an airplane, but came up empty.'",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Unsolved Mysteries fan wiki",
+    "url": "https://unsolvedmysteries.fandom.com/wiki/Marfa_Lights",
+    "opened": true
+   },
+   {
+    "cite": "Anonymous web page 'The Marfa Lights', qsl.net/w5www",
+    "url": "https://www.qsl.net/w5www/marfa.html",
+    "opened": true
+   }
+  ],
+  "source_status": "UNVERIFIED: weak secondary web sources that conflict with each other",
+  "evidence_type": "eyewitness account / aerial search (reported)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No date, time or bearing."
+  }
+ },
+ {
+  "id": "san-angelo-times-1945",
+  "date": "February 1945 (publication)",
+  "time": null,
+  "observers": "unknown (newspaper story)",
+  "observer_location": "Marfa area",
+  "bearing": null,
+  "description": "Story titled 'Ghost Light Appears in Marfa Area', called the earliest known story.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006 (cites the San Angelo Times article; original not found online)",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary (primary not accessed)",
+  "evidence_type": "newspaper report",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Contents not accessed."
+  }
+ },
+ {
+  "id": "coronet-1957",
+  "date": "July 1957 (publication)",
+  "time": null,
+  "observers": "author Paul Moran (per Wikipedia)",
+  "observer_location": "unknown",
+  "bearing": null,
+  "description": "'A mysterious light gleams out of the night like a weird Cyclopean eye' (quoted by Texas Monthly). Single 'ghost light'.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Wikipedia: Moran, Paul, 'The Mystery of the Texas Ghost Light', Coronet 42(3), July 1957",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   },
+   {
+    "cite": "Hall, Texas Monthly 2006 (quote; found at Marfa Public Library)",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary (original not accessed)",
+  "evidence_type": "magazine account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Contents not accessed."
+  }
+ },
+ {
+  "id": "kenney-wright-1973",
+  "date": "1973",
+  "time": "night",
+  "observers": "Pat Kenney and Elwood Wright (geologists)",
+  "observer_location": "Nopal Road, Mitchell Flat",
+  "bearing": "lights came 'out of the southwest'",
+  "description": "'Two cantaloupe-size balls of light' approached at about 200 mph. One sped toward the old Marfa air base; the other slowed and hovered about 200 ft away. Said to 'possess intelligence'.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   },
+   {
+    "cite": "Unsolved Mysteries fan wiki (same story)",
+    "url": "https://unsolvedmysteries.fandom.com/wiki/Marfa_Lights",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's retelling",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Year only; observers on the Flat, not at the platform."
+  }
+ },
+ {
+  "id": "witt-1974",
+  "date": "January 1974",
+  "time": "night",
+  "observers": "Donald Witt (Sul Ross State University physicist) and an assistant",
+  "observer_location": "returning to Alpine (exact place not given)",
+  "bearing": "near horizon",
+  "description": "'Two bright yellow lights oscillating near the horizon'. Witt: 'I can't explain what we saw that night.'",
+  "conditions": null,
+  "explanation_offered": "Considered locomotive lights on the Ojinaga\u2013Topolobampo line, about 80 miles away",
+  "sources": [
+   {
+    "cite": "Cartwright, Texas Monthly, 1 Nov 1984",
+    "url": "https://www.texasmonthly.com/being-texan/texas-primer-the-marfa-lights/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's retelling",
+  "evidence_type": "eyewitness account (scientist)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Month only; observer location unknown."
+  }
+ },
+ {
+  "id": "ghost-light-hunt-1975",
+  "date": "1975",
+  "time": "night",
+  "observers": "Fritz Kahl and team; 'more than a hundred carloads' of observers",
+  "observer_location": "two observation points: Paisano Pass and entrance to the old Presidio County Airport",
+  "bearing": null,
+  "description": "'Marfa Ghost Light Hunt' using aircraft, survey instruments, multi-band radio and about six search teams, with observers in Jeeps and planes. Unsuccessful.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Anonymous page qsl.net/w5www, attributing details to the Sul Ross 'Skyline' student newspaper (original not accessed)",
+    "url": "https://www.qsl.net/w5www/marfa.html",
+    "opened": true
+   }
+  ],
+  "source_status": "weak secondary",
+  "evidence_type": "observing campaign (attempted triangulation)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No results or times reported."
+  }
+ },
+ {
+  "id": "miles-1976-rancher-photo",
+  "date": "before 1976",
+  "time": null,
+  "observers": "unnamed rancher (photographer)",
+  "observer_location": "unknown",
+  "bearing": null,
+  "description": "Elton Miles's chapter 'The Marfa Lights' collects 19th-century stories and reproduces a rancher's photograph (per Wikipedia).",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Miles, Elton, Tales of the Big Bend, Texas A&M University Press, 1976, ISBN 0890963606, ch. 11 pp. 149\u2013168 (Google Books metadata; Wikipedia gives pp. 149\u2013167). Text not accessed.",
+    "url": "https://books.google.com/books/about/Tales_of_the_Big_Bend.html?id=a91GtiaRNCYC",
+    "opened": true
+   },
+   {
+    "cite": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary; book not read",
+  "evidence_type": "photograph + folklore collection",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Not accessed."
+  }
+ },
+ {
+  "id": "writers-aug-1983",
+  "date": "August 1983",
+  "time": "night",
+  "observers": "group of writers and poets, including San Antonio poet Naomi Nye",
+  "observer_location": "US-90 halfway between Marfa and Alpine (i.e., the roadside viewing spot), looking south toward the old air base and the Chinatis",
+  "bearing": "south",
+  "description": "Multiple points of light appearing one after another, 'about the intensity of second-magnitude stars', moving diagonally and horizontally for 10\u201315 s, vanishing and reappearing elsewhere. Distance unknown ('1\u201330 miles').",
+  "conditions": null,
+  "explanation_offered": "none in article",
+  "sources": [
+   {
+    "cite": "Cartwright, Texas Monthly, 1 Nov 1984",
+    "url": "https://www.texasmonthly.com/being-texan/texas-primer-the-marfa-lights/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist (apparently a participant)",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Month and roadside platform known; 10\u201315 s appearances, magnitude ~2 and diagonal motion are testable against the US-67 windows; no exact night or bearing."
+  }
+ },
+ {
+  "id": "frizzell-1985-1987",
+  "date": "Oct 1985; Oct 1986; fall 1987",
+  "time": "night",
+  "observers": "M. A. Frizzell, George Walls, Gloria Denick; James Crocker (1986); Alan McCann (1987)",
+  "observer_location": "Mitchell Flat(s)",
+  "bearing": null,
+  "description": "1985: cameras, infrared viewers, video and a magnetometer, but 'the lights evaded us'. Oct 1986: Crocker photograph, called 'among the most revealing images of so-called ghostlights'. 1987: 'distant, anomalous lights which were un-photographable due to their brevity' (dew fogged the lenses).",
+  "conditions": "1987: high dew point",
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Frizzell, M. A., 'The Marfa Lights' (web page, \u00a92000), UMBC",
+    "url": "https://userpages.umbc.edu/~frizzell/marfa.html",
+    "opened": true
+   }
+  ],
+  "source_status": "participant's web account; photo not reproduced or described",
+  "evidence_type": "observing campaign; photograph (not seen)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Month only; no bearings."
+  }
+ },
+ {
+  "id": "japanese-team-1989",
+  "date": "1989",
+  "time": "one week",
+  "observers": "team of Japanese scientists (unnamed leader), with a Buddhist priest",
+  "observer_location": "Mitchell Flat",
+  "bearing": null,
+  "description": "Week-long expedition with walkie-talkies, an RV, monitoring equipment and balloons. No sightings.",
+  "conditions": null,
+  "explanation_offered": "Leader speculated 'natural phenomenon'",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's retelling",
+  "evidence_type": "observing campaign (null result)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Null result, no dates."
+  }
+ },
+ {
+  "id": "marker-light-jul-1989",
+  "date": "July 1989",
+  "time": "midnight",
+  "observers": "unnamed investigators (quoted from theoutlaws.com)",
+  "observer_location": "viewing site; a technician stationed at a 'marker light' out on the Flat",
+  "bearing": "'past the right marker light' in the middle of Mitchell Flats (Welker: southeast of the observation point)",
+  "description": "'An unknown light appeared past the right marker light ... Contacting the technician at the marker by radio indicated there was no traffic on Highway 67.' Globe appeared, disappeared and faded.",
+  "conditions": null,
+  "explanation_offered": "Welker: vehicle lights on dirt roads, hidden at times by terrain or brush",
+  "sources": [
+   {
+    "cite": "Welker, William J., 'Observations on the Marfa Lights \u2013 Votum Separatum', welweb.org (orig. 2004, updated 2020), quoting theoutlaws.com (not accessed)",
+    "url": "https://welweb.org/marfa/Observations.html",
+    "opened": true
+   }
+  ],
+  "source_status": "third-hand",
+  "evidence_type": "instrumented campaign (marker lights, radio)",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Month and time given, with an explicit 'no US-67 traffic' check; no exact date or bearing."
+  }
+ },
+ {
+  "id": "unsolved-mysteries-1989",
+  "date": "broadcast 25 Oct 1989",
+  "time": null,
+  "observers": "Grace Everman, Lee Bennett, Sheri Eppenauer (residents), plus the Ellison, Williams, Stillwell, Kahl and Kenney/Wright stories",
+  "observer_location": "various",
+  "bearing": null,
+  "description": "Residents report multiple sightings; Bennett says only some people in a group could see the lights.",
+  "conditions": null,
+  "explanation_offered": null,
+  "sources": [
+   {
+    "cite": "Unsolved Mysteries fan wiki",
+    "url": "https://unsolvedmysteries.fandom.com/wiki/Marfa_Lights",
+    "opened": true
+   }
+  ],
+  "source_status": "fan summary of a TV segment",
+  "evidence_type": "eyewitness accounts (TV)",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "hendricks-1991",
+  "date": "1991",
+  "time": "evening",
+  "observers": "Edson Hendricks (electrical engineer)",
+  "observer_location": "Viewing area on US-90",
+  "bearing": null,
+  "description": "Hour-long display of bright yellow lights 'stopping, reversing direction, getting brighter, splitting in two ... speeding up, fading, and finally disappearing'. Later returned with electromagnetic radiation detectors.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's retelling",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "From the platform, and the behaviour resembles headlight sequences; but year only, no bearing."
+  }
+ },
+ {
+  "id": "allen-c1991",
+  "date": "c.1991 ('15 years' before 2006)",
+  "time": "night",
+  "observers": "Charlotte Allen (Apache Trading Post owner)",
+  "observer_location": "near Nopal Road",
+  "bearing": "overhead",
+  "description": "'Five lights hovering over us ... after a few seconds, they went out one by one ... and this shaft of energy was left.'",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Lights overhead, so not in the US-67 sector; approximate year only."
+  }
+ },
+ {
+  "id": "hast-1992",
+  "date": "three successive nights (published Summer/Sep\u2013Oct 1992)",
+  "time": "night",
+  "observers": "Houston Association for Scientific Thinking (HAST); report by Herbert Lindee",
+  "observer_location": "US-90 about 9 miles east of Marfa (viewing area)",
+  "bearing": null,
+  "description": "Lights seen were identified as headlights of cars travelling north from Presidio to Marfa. Erratic movers were attributed to low-flying aircraft near the Chinati Mountains, about 40 miles away.",
+  "conditions": null,
+  "explanation_offered": "car headlights on US-67; aircraft",
+  "sources": [
+   {
+    "cite": "Lindee, Herbert, 'Ghost Lights of Texas', Skeptical Inquirer 16(4):400\u2013406, 1992 (not accessed; Wikipedia prints 'Vol. 166', apparently a typo)",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   },
+   {
+    "cite": "Science Frontiers #83 summary",
+    "url": "https://www.science-frontiers.com/sf083/sf083g11.htm",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary summary",
+  "evidence_type": "observing campaign",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Platform and identification given; exact nights not in the summary."
+  }
+ },
+ {
+  "id": "pena-lancaster-1993",
+  "date": "1993",
+  "time": "night",
+  "observers": "Belle Pe\u00f1a-Lancaster (then an 8th-grader) and her basketball team",
+  "observer_location": "team bus returning from a tournament (road not stated)",
+  "bearing": null,
+  "description": "Pastel lights (blue, green, yellow, pink or reddish) 'playing with each other'. One 'came all the way to the window, lit up the bus, then shot out the other side'.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Bures, Frank, 'The Marfa Mystery Lights', Texas Journey, Jan/Feb 2019",
+    "url": "https://frankbures.com/wp-content/uploads/2020/10/0119_tex_marfa-lights-1.pdf",
+    "opened": true
+   },
+   {
+    "cite": "web version",
+    "url": "https://frankbures.com/2020/10/21/the-marfa-mystery-lights/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Year only; moving vehicle; close-range claim."
+  }
+ },
+ {
+  "id": "sutter-1994",
+  "date": "1994",
+  "time": "cold night",
+  "observers": "Alton Sutter (minister), his wife, two sons, and another minister",
+  "observer_location": "Nopal Road area",
+  "bearing": "all around",
+  "description": "Small lights like 'fluorescent balloons floating, going all around us'. One landed, 'the head of a pin' in size; Sutter touched it with a gloved finger and it went out.",
+  "conditions": "cold",
+  "explanation_offered": "none; Rosemary Cox doubts it",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's retelling",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Close-range, on the Flat; year only."
+  }
+ },
+ {
+  "id": "mayo-podcast-witnesses",
+  "date": "late 1990s (Mayo's own sightings); others undated (podcast July 2012)",
+  "time": "night / early morning",
+  "observers": "C. M. Mayo; Charlie Angell; an unnamed Fort Leaton ranger; Diana Burbach; Berta S\u00e1nchez; Paul Graybeal",
+  "observer_location": "Mitchell Flat viewing area; Marfa\u2013Alpine highway; Marfa\u2013Presidio school-bus route; Nopal Road; Mexico",
+  "bearing": null,
+  "description": "Mayo: green, blue and yellow lights dancing at the viewing area; also a line of white orbs moving at 60+ mph beside the highway without lighting the pavement. Angell: a light hovering over a dirt road that kept its distance when pursued. Ranger: an orb followed a school bus on the Marfa\u2013Presidio route. Graybeal: a bright, streetlight-like object on Nopal Road that cast no shadows, and a separate elongated blue 'gaseous' light.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Mayo, C. M., Marfa Mondays podcast #7, 'We Have Seen the Lights', July 2012",
+    "url": "https://madam-mayo.com/podcasts/c-m-mayos-marfa-mondays-podcasting-project-listen-now/marfa-mondays-podcast-7-we-have-seen-the-lights-the-marfa-ghost-lights-phenomenon/",
+    "opened": true
+   }
+  ],
+  "source_status": "interviews (podcast page summary)",
+  "evidence_type": "eyewitness accounts",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "hall-pre2006-visits",
+  "date": "c.1996\u20132005 (several visits; wedding eve c.2000; one summer night with night-vision)",
+  "time": "dusk to midnight",
+  "observers": "Michael Hall, tourists, his wedding party",
+  "observer_location": "Viewing area",
+  "bearing": null,
+  "description": "'Yellowish-white lights that glowed, faded, disappeared, and returned in different places ... sometimes they split apart.' Through night-vision glasses, 'two or three' visible lights became 'seven or eight more crawling dimly'.",
+  "conditions": null,
+  "explanation_offered": "(later resolved as headlights; see hall-feb-2006)",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's first-hand account",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "bunnell-first-2000",
+  "date": "February 2000",
+  "time": "night",
+  "observers": "James Bunnell and his wife",
+  "observer_location": "Marfa area (the Texanist says viewing platform; not explicit)",
+  "bearing": null,
+  "description": "Vivid lights 'glowing in brush'. 'These were definitely not car lights ... I was blown away.' This prompted his monitoring programme.",
+  "conditions": null,
+  "explanation_offered": "Bunnell: unexplained natural phenomenon (plasma)",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   },
+   {
+    "cite": "Courtney, David, 'The Texanist: Are the Marfa Lights Overrated?', Texas Monthly, Nov 2019 issue",
+    "url": "https://www.texasmonthly.com/being-texan/the-texanist-marfa-lights-overrated/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalists quoting the witness",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Month only; no bearing."
+  }
+ },
+ {
+  "id": "bunnell-2003-02-19",
+  "date": "2003-02-19",
+  "time": "20:20 CST",
+  "observers": "James Bunnell",
+  "observer_location": "Marfa Lights Viewing Center (SW plaque)",
+  "bearing": "174.0\u00b0\u2013186.0\u00b0 magnetic",
+  "description": "Yellow/orange ball moving horizontally westward at ground level; three photos show flashes along a linear track. Bunnell: less than 1 km away, flying east to west 3\u20135 m up, no sound or taillights, 'combustion-like'.",
+  "conditions": null,
+  "explanation_offered": "Borraz & Ballester Olmos: possibly a vehicle on Nopal Road about 10 km away. Bunnell: natural combustive phenomenon.",
+  "sources": [
+   {
+    "cite": "Borraz Aymerich, M. & Ballester Olmos, V.-J., 'The Marfa Lights: Examining the Photographic Evidence (2003\u20132007)', FOTOCAT Report #8, 2020, 174 pp. (source images: Bunnell, Strange Lights in West Texas, 2015, figs. 19\u201321)",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   },
+   {
+    "cite": "Bunnell, J., In Defense of the Marfa Lights, Lacey Publishing, 2021, ISBN 978-1-09837-144-9",
+    "url": "https://www.academia.edu/47949056/In_Defense_of_the_Marfa_Lights",
+    "opened": true
+   }
+  ],
+  "source_status": "primary analyses opened (via academia.edu text extraction)",
+  "evidence_type": "photograph",
+  "los_comparable": {
+   "rating": "yes",
+   "reason": "Time and bearing given, but the bearing is south, outside the US-67 sector (~215\u2013285\u00b0); test against Nopal Road and ranch roads instead."
+  }
+ },
+ {
+  "id": "bunnell-2003-05-07",
+  "date": "2003-05-07 (FOTOCAT); Bunnell 2021 dates the 'ML2b' event May 8, 2003. Conflict.",
+  "time": "21:55:34, 21:58:50 and 22:02:30 CDT, then about 8 min of tracking",
+  "observers": "James Bunnell (camera at MLVC), plus the 'Roofus' station camera",
+  "observer_location": "Viewing Center",
+  "bearing": "148.7\u00b0 mag (156\u00b0 true per authors); 150.0\u00b0 mag (~161.0\u00b0 true); 151.5\u00b0 mag (~162.2\u00b0 true); ML1b vanished at ~192\u00b0",
+  "description": "Bright white-yellow light with an orange-red surround moving west. A second frame shows vertical 'spiral' variation; then two diverging short tracks (ML2a/b) that Bunnell read as ejected material. Triangulated tracks: ML1b about 18 km away, 8 min 33 s, 124 km/h; ML2b about 14 km away, 7 min 57 s, 116 km/h, curving north-west. Bunnell: zig-zag path, crossed Nopal Road, 'climbing trajectory' to 80\u201390 m, 'explosive ending'.",
+  "conditions": null,
+  "explanation_offered": "FOTOCAT: two vehicles on dirt roads and Nopal Road; Bunnell's magnetic bearings are off by 2.4\u20134.3\u00b0; star positions show durations were underestimated (about 55 km/h). Bunnell: natural phenomenon that crossed terrain no vehicle could.",
+  "sources": [
+   {
+    "cite": "FOTOCAT Report #8 (Bunnell 2015 figs. 23\u201325, Map 6)",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   },
+   {
+    "cite": "Bunnell 2021, In Defense of the Marfa Lights",
+    "url": "https://www.academia.edu/47949056/In_Defense_of_the_Marfa_Lights",
+    "opened": true
+   }
+  ],
+  "source_status": "primary analyses opened",
+  "evidence_type": "photograph + automated video (triangulated)",
+  "los_comparable": {
+   "rating": "yes",
+   "reason": "Times to the second and triangulated positions; south-south-east sector, so it tests the ranch-road and Nopal Road model rather than US-67. Check whether the date is May 7 or May 8."
+  }
+ },
+ {
+  "id": "bunnell-2003-05-08",
+  "date": "2003-05-08",
+  "time": "22:15:55 and 22:19:38 CDT",
+  "observers": "James Bunnell",
+  "observer_location": "Viewing Center",
+  "bearing": "not clearly stated",
+  "description": "Bright light photographed with a 70\u2013300 mm lens (about 24 km by triangulation), then a second light 3 min 43 s later (35\u201380 mm lens).",
+  "conditions": null,
+  "explanation_offered": "FOTOCAT: vehicle headlights; no station triangulation available",
+  "sources": [
+   {
+    "cite": "FOTOCAT Report #8 (Bunnell 2015 figs. 28\u201330)",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   }
+  ],
+  "source_status": "primary analysis opened",
+  "evidence_type": "photograph",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Exact times; bearing not given in the extract."
+  }
+ },
+ {
+  "id": "rense-2003-11-30",
+  "date": "2003-11-30",
+  "time": "19:41",
+  "observers": "unnamed commuter (email posted on rense.com)",
+  "observer_location": "'Highway 67, east of Marfa' (ambiguous: US-67 and US-90 share the road east of Marfa)",
+  "bearing": null,
+  "description": "'A strange cluster of lights in the sky', bright orange, in formation; photographed with a camera's night mode.",
+  "conditions": null,
+  "explanation_offered": "Welker: probably military helicopters in formation",
+  "sources": [
+   {
+    "cite": "Welker, 'Observations on the Marfa Lights \u2013 Votum Separatum'",
+    "url": "https://welweb.org/marfa/Observations.html",
+    "opened": true
+   }
+  ],
+  "source_status": "third-hand (rense.com post not opened)",
+  "evidence_type": "photograph",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Exact time; no bearing; in the sky, so probably aircraft."
+  }
+ },
+ {
+  "id": "sps-utd-2004",
+  "date": "May 2004 (Wikipedia, Texas Monthly) vs 11\u201313 May 2005 (Slashdot, 18 Dec 2005). Conflict.",
+  "time": "four nights",
+  "observers": "UT Dallas Society of Physics Students: Alexander Stolyarov, Jeff Klenzing, Patrick Roddy, R. A. Heelis (Texas Monthly: Klenzing 'and eleven others')",
+  "observer_location": "Viewing area; equipment south-west of the viewing park; chase cars on US-67",
+  "bearing": "south-west",
+  "description": "Traffic counters, video, binoculars, lasers, walkie-talkies and chase cars. Light frequency correlated with US-67 traffic; motion matched the road's trajectory; a parked car flashing its headlights was visible from the viewing area; one car passing another looked like 'one Marfa light passing another'.",
+  "conditions": null,
+  "explanation_offered": "all lights observed were car headlights on US-67",
+  "sources": [
+   {
+    "cite": "Stolyarov, A., Klenzing, J., Roddy, P., Heelis, R. A., 'An Experimental Analysis of the Marfa Lights', SPS at UT Dallas (2004). PDF archived at web.archive.org/web/20070620170535/http://www.spsnational.org/wormhole/utd_sps_report.pdf. NOT opened (blocked).",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   },
+   {
+    "cite": "Hall, Texas Monthly 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   },
+   {
+    "cite": "Skeptoid #38",
+    "url": "https://skeptoid.com/episodes/38",
+    "opened": true
+   },
+   {
+    "cite": "Slashdot, 18 Dec 2005",
+    "url": "https://science.slashdot.org/story/05/12/18/0252216/marfa-lights-explained",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary only; primary report not opened",
+  "evidence_type": "instrumented campaign (traffic counts, video, chase car)",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Directly relevant to US-67 visibility, but the exact dates conflict and the per-light data were not accessed."
+  }
+ },
+ {
+  "id": "bunnell-2004-05-08",
+  "date": "2004-05-08",
+  "time": "21:04:31 CDT",
+  "observers": "James Bunnell",
+  "observer_location": "Viewing Center",
+  "bearing": "~155\u00b0 magnetic (approx.)",
+  "description": "Bright light photographed through a 1250 mm spotting scope, unusually detailed. Bunnell: light positioned against a mesa bluff.",
+  "conditions": null,
+  "explanation_offered": "FOTOCAT: inconclusive, vehicle possible. Bunnell: natural phenomenon.",
+  "sources": [
+   {
+    "cite": "FOTOCAT Report #8 (Bunnell 2015 fig. 31)",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   },
+   {
+    "cite": "Bunnell 2021",
+    "url": "https://www.academia.edu/47949056/In_Defense_of_the_Marfa_Lights",
+    "opened": true
+   }
+  ],
+  "source_status": "primary analyses opened",
+  "evidence_type": "photograph (telescopic)",
+  "los_comparable": {
+   "rating": "yes",
+   "reason": "Exact time and approximate bearing (south-south-east, outside the US-67 sector)."
+  }
+ },
+ {
+  "id": "eblo-2005-06-03",
+  "date": "2005-06-03 (night of 2\u20133 June, CDT)",
+  "time": "appeared about 05:30 UTC; emitted for more than 3 h",
+  "observers": "Bunnell's automated stations 'Roofus' and 'Snoopy' (Watec 120N low-light cameras); analysis by K. D. Stephan, J. Bunnell, J. Klier, L. Komala-Noor",
+  "observer_location": "stations north-west of Mitchell Flat, aimed south-east",
+  "bearing": "south-east of the stations; triangulated",
+  "description": "'Extremely bright luminous object' on the ground about 28 km from the farthest station. Peak visible power about 10 kW; brighter than a mercury-vapour streetlamp at half the distance; lit low clouds. Brightened over 20 s after a lightning stroke; moved about 150 m south in its last hour.",
+  "conditions": "intense thunderstorms; more than 8000 cloud-to-ground strokes in the region between 02:00 and 11:00 UTC; windy",
+  "explanation_offered": "Power-line arcs, burning vegetation and gas flares ruled out; correlated with nearby lightning; suggests pyrophoric chemicals or vortex breakdown",
+  "sources": [
+   {
+    "cite": "Stephan, K. D., Bunnell, J., Klier, J., Komala-Noor, L., 'Quantitative intensity and location measurements of an intense long-duration luminous object near Marfa, Texas', J. Atmos. Sol.-Terr. Phys. 73(13):1953\u20131958 (2011), doi:10.1016/j.jastp.2011.06.002",
+    "url": "https://www.sciencedirect.com/science/article/abs/pii/S1364682611001672",
+    "opened": true
+   },
+   {
+    "cite": "full text summary",
+    "url": "https://www.academia.edu/116282981/Quantitative_intensity_and_location_measurements_of_an_intense_long_duration_luminous_object_near_Marfa_Texas",
+    "opened": true
+   }
+  ],
+  "source_status": "primary peer-reviewed paper opened",
+  "evidence_type": "instrumented measurement (triangulation, radiometry)",
+  "los_comparable": {
+   "rating": "yes",
+   "reason": "Best-documented anomaly: time, triangulated ground position and intensity. Not on US-67, so it is the benchmark for a 'residual' light."
+  }
+ },
+ {
+  "id": "hall-feb-2006-viewing-area",
+  "date": "February 2006 (night 1)",
+  "time": "half an hour before sunset into darkness",
+  "observers": "Michael Hall",
+  "observer_location": "Viewing area",
+  "bearing": "Lights appear above-left of a red radio-tower light ('eleven o'clock'), move right, and descend along a straight line toward the area under Chinati Peak",
+  "description": "Through tripod binoculars Hall could see US-67 itself. Lights came on, twinkled, dimmed and went out, returned 8 s later, then went out again over the red light and returned 15 s later at 'two o'clock', all along one descending line. 'There wasn't much mystery about them.'",
+  "conditions": "clear",
+  "explanation_offered": "headlights on US-67 (Presidio\u2013Marfa)",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's first-hand account",
+  "evidence_type": "eyewitness account with binoculars",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Month and site known; the 8 s and 15 s gaps and the descending track toward Chinati Peak are directly testable against the model's visible windows. No exact date."
+  }
+ },
+ {
+  "id": "hall-feb-2006-nopal",
+  "date": "February 2006 (night 2)",
+  "time": "about 1 hour",
+  "observers": "Michael Hall",
+  "observer_location": "Nopal Road, Mitchell Flat",
+  "bearing": null,
+  "description": "Without reference points the lights seemed 'capricious, magical' at first, then consistent with vehicle headlights. His own car's lights would have looked like 'mystery lights' from the viewing area.",
+  "conditions": "clear, cold",
+  "explanation_offered": "headlights",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "first-hand",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Not from the platform."
+  }
+ },
+ {
+  "id": "armstrong-venus-feb-2006",
+  "date": "February 2006 (about three weeks of mornings; Hall present on the final morning)",
+  "time": "about 05:20",
+  "observers": "Linda Armstrong (vineyard owner); Michael Hall",
+  "observer_location": "Armstrong's vineyard on a hill above Mitchell Flat",
+  "bearing": "eastern sky, north of Cathedral Mountain, on the horizon",
+  "description": "'Large, superbright yellow light ... a glowing, bulbous teardrop of light, full of what looked like writhing snakes of fire ... hovering.' Armstrong: 'They accelerate ... whoosh! ... then float back.'",
+  "conditions": "one morning overcast",
+  "explanation_offered": "Venus (the morning star)",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "first-hand",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "yes",
+   "reason": "Identified as Venus; useful as an astronomical false positive, not a US-67 case."
+  }
+ },
+ {
+  "id": "jackson-undated",
+  "date": "undated",
+  "time": "about 05:00\u201305:30",
+  "observers": "Joaquin Jackson (retired Texas Ranger)",
+  "observer_location": "Mitchell Flat near the lookout between Alpine and Marfa",
+  "bearing": "south, 'maybe a mile away'",
+  "description": "Three lights that brightened and dimmed, then before going out shot 'across the horizon to the right in the blink of an eye', at different heights; happened three or four times. 'It damn sure wasn't headlights.'",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "kerr-mitchell-undated",
+  "date": "undated (two sightings)",
+  "time": null,
+  "observers": "Kerr Mitchell (rancher, southern Mitchell Flat)",
+  "observer_location": "southern Mitchell Flat",
+  "bearing": "second sighting moving south",
+  "description": "1: 'This massive, enormous white light.' 2: 'Five or six in a series, headed south at a pretty good clip, not very high up.'",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Hall, Texas Monthly, June 2006",
+    "url": "https://www.texasmonthly.com/articles/the-truth-is-out-there/",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "bunnell-2006-08-11",
+  "date": "2006-08-11",
+  "time": "evening",
+  "observers": "James Bunnell",
+  "observer_location": "Viewing Center / monitoring network",
+  "bearing": null,
+  "description": "Photographed event (DSLR) reviewed in FOTOCAT Appendix 3; details not retrieved.",
+  "conditions": null,
+  "explanation_offered": "FOTOCAT overall: vehicle headlights plus refraction (case details not retrieved)",
+  "sources": [
+   {
+    "cite": "FOTOCAT Report #8, Appendix 3, p. 151",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   }
+  ],
+  "source_status": "primary opened, but appendix text not extracted",
+  "evidence_type": "photograph",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Date known; time and bearing are in the report but were not extracted."
+  }
+ },
+ {
+  "id": "bunnell-2006-10-19",
+  "date": "2006-10-19",
+  "time": null,
+  "observers": "James Bunnell; Sandra Dees (wife; refractor telescope)",
+  "observer_location": "not stated in extract (Bunnell's observing site)",
+  "bearing": "light moved north-west along the Walnut Creek fault line (Bunnell)",
+  "description": "Infrared-modified camera showed 'heated air ... red matter trailing behind' and detaching 'legs'. Dees: 'The center of the ML looked like a ball of active flames' (orange-red, flame-like).",
+  "conditions": null,
+  "explanation_offered": "Bunnell: natural combustive or plasma phenomenon. FOTOCAT: the IR features are a lens defect.",
+  "sources": [
+   {
+    "cite": "Bunnell 2021, In Defense of the Marfa Lights",
+    "url": "https://www.academia.edu/47949056/In_Defense_of_the_Marfa_Lights",
+    "opened": true
+   },
+   {
+    "cite": "FOTOCAT Report #8, Appendix 3, p. 154",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   }
+  ],
+  "source_status": "primary opened",
+  "evidence_type": "photograph (IR-modified) + telescopic eyewitness",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Date known; time and bearing not extracted."
+  }
+ },
+ {
+  "id": "bunnell-2007-07-23",
+  "date": "2007-07-23",
+  "time": null,
+  "observers": "James Bunnell",
+  "observer_location": "monitoring network / Viewing Center",
+  "bearing": null,
+  "description": "Photographed event reviewed in FOTOCAT Appendix 3; details not retrieved.",
+  "conditions": null,
+  "explanation_offered": "see FOTOCAT",
+  "sources": [
+   {
+    "cite": "FOTOCAT Report #8, Appendix 3, p. 160",
+    "url": "https://www.academia.edu/43589341",
+    "opened": true
+   }
+  ],
+  "source_status": "primary opened, appendix not extracted",
+  "evidence_type": "photograph",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Date known; other details not extracted."
+  }
+ },
+ {
+  "id": "stephan-txstate-2008",
+  "date": "May 2008, 20 nights (per Wikipedia)",
+  "time": "nightly",
+  "observers": "Karl D. Stephan, Sagar Ghimire, William A. Stapleton, James Bunnell (Texas State University)",
+  "observer_location": "Marfa Lights viewing station",
+  "bearing": "azimuths logged (per project manuscript summary)",
+  "description": "Spectroscopy with video and azimuth logging. Recorded lights 'could have been mistaken for lights of unknown origin', but their movements and spectra were 'easily explained as automobile headlights or small fires' (Wikipedia quoting the paper). Oxygen-absorption band used for distance.",
+  "conditions": null,
+  "explanation_offered": "headlights, distant streetlamps, fires; genuine lights are rare",
+  "sources": [
+   {
+    "cite": "Stephan, K. D., Ghimire, S., Stapleton, W. A., Bunnell, J., 'Spectroscopy applied to observations of terrestrial light sources of uncertain origin', Am. J. Phys. 77(8):697 (Aug 2009). NOT opened (403).",
+    "url": "https://pubs.aip.org/aapt/ajp/article-abstract/77/8/697/310879/Spectroscopy-applied-to-observations-of?redirectedFrom=fulltext",
+    "opened": false
+   },
+   {
+    "cite": "Wikipedia summary",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   }
+  ],
+  "source_status": "secondary only",
+  "evidence_type": "instrumented measurement (spectroscopy)",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Probably the best quantitative dataset for US-67 headlights, but per-night data were not accessed. Get the PDF."
+  }
+ },
+ {
+  "id": "blocker-garcia-2009",
+  "date": "2009",
+  "time": "night",
+  "observers": "Mona Blocker Garcia (about 300\u2013400 people reportedly present)",
+  "observer_location": "Viewing Center",
+  "bearing": "desert floor",
+  "description": "'Glow on the desert floor ... became a ball of light, started spiraling ... broke into a million white lights, like sparklers.'",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Bures, Texas Journey, Jan/Feb 2019",
+    "url": "https://frankbures.com/wp-content/uploads/2020/10/0119_tex_marfa-lights-1.pdf",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Year only."
+  }
+ },
+ {
+  "id": "bunnell-network-2000-2009",
+  "date": "Nov 2000 / 2001 \u2013 2009 (campaign)",
+  "time": "nightly",
+  "observers": "James Bunnell; up to three stations with nine cameras (Foreword Reviews)",
+  "observer_location": "stations around Mitchell Flat (Roofus, Snoopy, etc.), aimed away from the Chinatis and US-67 (Texas Monthly 2006)",
+  "bearing": null,
+  "description": "Bunnell: 'Over ten years (2000\u20132009), I was able to document only fifty-four mysterious lights.' Wikipedia, citing Hunting Marfa Lights pp. 14\u201315: an average of 9.5 MLs on 5.25 nights a year, with the stations catching about half. Texanist: 97% of reported 'Marfa Lights' are explainable.",
+  "conditions": null,
+  "explanation_offered": "Bunnell: plasma or piezoelectric hypotheses; about 3% unexplained",
+  "sources": [
+   {
+    "cite": "Bunnell 2021",
+    "url": "https://www.academia.edu/47949056/In_Defense_of_the_Marfa_Lights",
+    "opened": true
+   },
+   {
+    "cite": "Foreword Reviews: Hunting Marfa Lights, Lacey Publishing, Sept 2009, 320 pp., ISBN 978-0-9709249-4-0",
+    "url": "https://www.forewordreviews.com/reviews/hunting-marfa-lights/",
+    "opened": true
+   },
+   {
+    "cite": "Wikipedia",
+    "url": "https://en.wikipedia.org/wiki/Marfa_lights",
+    "opened": true
+   }
+  ],
+  "source_status": "author's own summary plus secondary",
+  "evidence_type": "instrumented campaign (automated video)",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "An event list exists in Bunnell's books; it is the key dataset to obtain."
+  }
+ },
+ {
+  "id": "missert-pre2018",
+  "date": "'several years' before July 2018",
+  "time": "night",
+  "observers": "David Missert (visitor from Oregon)",
+  "observer_location": "Viewing area, US-90",
+  "bearing": "'way off in the distance'",
+  "description": "'White lights, and some green lights, and some red lights.'",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Marfa Public Radio, West Texas Wonders, 25 Jul 2018",
+    "url": "https://www.marfapublicradio.org/podcast/wonders/2018-07-25/the-marfa-lights-underground-lightning-wandering-ghosts-or-something-else",
+    "opened": true
+   }
+  ],
+  "source_status": "radio interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated. Red and white colours are consistent with tail lamps, headlamps or tower lights, but that cannot be tested."
+  }
+ },
+ {
+  "id": "thornsburg-undated",
+  "date": "undated (witness aged 14)",
+  "time": null,
+  "observers": "Kim (William K.) Thornsburg, pilot and tour guide",
+  "observer_location": "east of Marfa",
+  "bearing": null,
+  "description": "'One of those lights came up maybe 50 yards away ... bigger than our courthouse ... smaller ones came out, many colored ... flew all around.' Calls them 'intelligent'.",
+  "conditions": null,
+  "explanation_offered": "none",
+  "sources": [
+   {
+    "cite": "Bures, Texas Journey 2019",
+    "url": "https://frankbures.com/2020/10/21/the-marfa-mystery-lights/",
+    "opened": true
+   },
+   {
+    "cite": "Thornsburg, Marfa Lights and the Marfa Army Airfield (memoir, 2016, 54 pp.; not read)",
+    "url": "https://www.goodreads.com/book/show/215571940-marfa-lights-and-the-marfa-army-airfield",
+    "opened": true
+   }
+  ],
+  "source_status": "interview",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "Undated."
+  }
+ },
+ {
+  "id": "bures-c2018",
+  "date": "a Labor Day weekend (year not given; before Jan 2019)",
+  "time": "night",
+  "observers": "Frank Bures, with Kim Thornsburg and Mike Shurley",
+  "observer_location": "Viewing Center; Mike Shurley's ranch (~20 mi south of Marfa on US-67, per Marfa Public Radio 2019)",
+  "bearing": null,
+  "description": "'Tiny prick of light that shone and vanished'; at the ranch a 'flicker, like a sparkler 300 or 400 yards away'.",
+  "conditions": null,
+  "explanation_offered": "uncertain",
+  "sources": [
+   {
+    "cite": "Bures, Texas Journey, Jan/Feb 2019",
+    "url": "https://frankbures.com/wp-content/uploads/2020/10/0119_tex_marfa-lights-1.pdf",
+    "opened": true
+   },
+   {
+    "cite": "Marfa Public Radio, 12 Aug 2019 (Shurley Ranch location)",
+    "url": "https://www.marfapublicradio.org/podcast/wonders/2019-08-12/a-curiosity-tour-come-search-for-the-marfa-lights-with-west-texas-wonders",
+    "opened": true
+   }
+  ],
+  "source_status": "journalist's first-hand account",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No date or bearing."
+  }
+ },
+ {
+  "id": "trout-2019",
+  "date": "2019 ('recent trip' in a reader letter)",
+  "time": "night",
+  "observers": "Jeffrey Trout (El Paso)",
+  "observer_location": "a private ranch in West Texas",
+  "bearing": null,
+  "description": "'Two little pinpoints of illumination off in the distance that maybe moved around a bit.'",
+  "conditions": null,
+  "explanation_offered": "Bunnell (via the Texanist): probably US-67 headlights",
+  "sources": [
+   {
+    "cite": "Courtney, 'The Texanist: Are the Marfa Lights Overrated?', Texas Monthly, Nov 2019",
+    "url": "https://www.texasmonthly.com/being-texan/the-texanist-marfa-lights-overrated/",
+    "opened": true
+   }
+  ],
+  "source_status": "reader letter",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "no",
+   "reason": "No date or location."
+  }
+ },
+ {
+  "id": "fein-fall-2019",
+  "date": "autumn 2019 (the year before the Sept 2020 article)",
+  "time": "after sunset, more than 1 h",
+  "observers": "Judith Fein and 12 other people",
+  "observer_location": "Marfa Lights Viewing Area, US-90",
+  "bearing": null,
+  "description": "'Dozens' of orbs, white, yellow and red, 'bouncing around like pingpong balls ... changing from white to yellow to red to white again'.",
+  "conditions": "clear, very dark",
+  "explanation_offered": "author calls them unexplained",
+  "sources": [
+   {
+    "cite": "Fein, Judith, 'My Favorite Texas Trip: Witnessing the Mysterious Marfa Lights', Texas Highways, Sept 2020",
+    "url": "https://texashighways.com/travel-news/my-favorite-texas-trip-witnessing-the-mysterious-marfa-lights/",
+    "opened": true
+   }
+  ],
+  "source_status": "first-hand",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Platform and season known; colour changes and bouncing are typical of scintillating distant lamps, but there is no date or bearing."
+  }
+ },
+ {
+  "id": "shahin-2023",
+  "date": "late summer 2023 (second of three nights)",
+  "time": "night",
+  "observers": "Alexandra Kennon Shahin",
+  "observer_location": "Marfa Lights Viewing Area",
+  "bearing": null,
+  "description": "Multiple orbs; the first 'abruptly changed its course, zipping back in the opposite direction, then up, then back down'.",
+  "conditions": "clear (the previous night was cloudy)",
+  "explanation_offered": "author rejects headlights",
+  "sources": [
+   {
+    "cite": "Shahin, A. K., 'Marfa, Marfa, Marfa', Country Roads Magazine, 25 Sep 2023",
+    "url": "https://countryroadsmagazine.com/travel/further-afield/marfa-marfa-marfa/",
+    "opened": true
+   }
+  ],
+  "source_status": "first-hand",
+  "evidence_type": "eyewitness account",
+  "los_comparable": {
+   "rating": "partly",
+   "reason": "Platform and approximate dates known; no bearing or time."
+  }
+ }
+]

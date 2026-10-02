@@ -30,5 +30,6 @@ Photographs are the project author's own, in the public domain, or used under a 
 
 Library of Congress photographs by Carol M. Highsmith are from the Lyda Hill Texas Collection. The Library of Congress lists no known restrictions on publication, and Wikimedia Commons marks them public domain.
 The NPS photograph is a work of the U.S. federal government. The Shafter mine cross-section is from USGS Bulletin 928-B (1943), also a U.S. government work.
-CC BY 2.0 images (Jon Hanson; Allison Meier) may be reused with attribution: https://creativecommons.org/licenses/by/2.0/
+CC BY 2.0 images (Jon Hanson; Allison Meier; Nicolas Henderson) may be reused with attribution: https://creativecommons.org/licenses/by/2.0/
+val_henderson_a / val_henderson_b: Nicolas Henderson, "Marfa Lights 1" and "Marfa Lights 2", 26 July 2014, https://www.flickr.com/photos/texasbackroads/15960552076/ and /15800588117/, CC BY 2.0; cropped, contrast-stretched and overlaid with the model by this project.
 CC BY-SA images (Daniel Schwen; jrossz71; gondwananet.com) are resized copies and remain under their CC BY-SA licences (share-alike).

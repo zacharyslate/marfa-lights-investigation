@@ -8,7 +8,7 @@ import hashlib, json, pathlib
 
 DOCS = pathlib.Path(__file__).resolve().parents[1] / "docs"
 EXCLUDE_SUFFIX = {".md", ".txt", ".yml", ".pdf", ".mp4", ".webm"}   # large downloads are fetched on demand, not precached
-EXCLUDE_PREFIX = ("data/terrain/", "assets/vendor/three/")        # the 3D terrain page (about 4 MB) needs a connection anyway
+EXCLUDE_PREFIX = ("data/terrain/", "assets/vendor/three/", "assets/vendor/libheif/", "img/val_")   # 3D terrain, HEIC decoder and validation figures load on demand
 
 
 def files():
