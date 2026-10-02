@@ -17,6 +17,7 @@ Website: **https://zacharyslate.github.io/marfa-lights-investigation/** (GitHub 
 | Page | What it is |
 |---|---|
 | `docs/map.html` | Interactive map (USGS imagery) with every layer, a light identifier (bearing → candidate sources, true/magnetic, phone compass, panorama tap), a refraction slider, and a field log that exports CSV |
+| `docs/terrain.html` | 3D terrain from the platform to the Chinati Mountains (USGS 3DEP 1 m lidar + 1/3 arc-second DEM at 20 m; relief exaggeration 1–10×; computed creeks, roads, rail, power lines, lit towers, visible US-67, sight lines over the curved Earth, contours; tap for height, distance and bearing). Built by `analysis/terrain3d.py`; three.js r170 (MIT) |
 | `docs/history.html`, `science.html`, `place.html`, `visit.html` | Background pages with numbered, linked sources |
 | `docs/sightlines.html` | The technical sight-line report |
 | `docs/community.html` | Purpose, the dark-sky region, Marfa, good-neighbour guidance, local institutions |

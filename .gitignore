@@ -14,3 +14,5 @@ data/dem/obstruction/*.npz
 data/derived/los2/*.npz
 !data/derived/los2/us67_lidar.npz
 !data/derived/los2/us67_lidar_obs_dense.npz
+data/dem/terrain20.npz
+data/dem/terrain20_area.npy

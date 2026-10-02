@@ -1,0 +1,32 @@
+{
+ "crs": "EPSG:26913 (UTM 13N, NAD83); heights NAVD88 metres",
+ "x0": 540000,
+ "x1": 616000,
+ "y0": 3294000,
+ "y1": 3364000,
+ "tex_res_m": 20,
+ "tex_w": 3800,
+ "tex_h": 3500,
+ "nx": 634,
+ "ny": 584,
+ "mesh_m": 120,
+ "z0": 807.0,
+ "zscale": 0.1,
+ "zmin": 807.2,
+ "zmax": 2354.5,
+ "lidar_fraction": 0.473,
+ "creek_min_km2": 1.5,
+ "sources": [
+  "USGS 3DEP 1 m lidar DEM, project TX_WestTexas_2018_D19 (block-averaged to 20 m)",
+  "USGS 3DEP 1/3 arc-second DEM (outside the lidar tiles)"
+ ],
+ "notes": "Creeks are computed drainage lines (D8 flow accumulation), not NHD. Flat map: Earth curvature not applied.",
+ "chinati_check": {
+  "dem_max_xy": [
+   550370.0,
+   3313710.0
+  ],
+  "dem_max_z": 2354.5,
+  "gnis_z": 2354
+ }
+}

@@ -8,6 +8,7 @@ import hashlib, json, pathlib
 
 DOCS = pathlib.Path(__file__).resolve().parents[1] / "docs"
 EXCLUDE_SUFFIX = {".md", ".txt", ".yml", ".pdf", ".mp4", ".webm"}   # large downloads are fetched on demand, not precached
+EXCLUDE_PREFIX = ("data/terrain/", "assets/vendor/three/")        # the 3D terrain page (about 4 MB) needs a connection anyway
 
 
 def files():
@@ -16,7 +17,7 @@ def files():
         if not p.is_file() or p.name == "sw.js" or p.suffix in EXCLUDE_SUFFIX:
             continue
         rel = p.relative_to(DOCS).as_posix()
-        if rel.startswith(".") or "/." in rel:
+        if rel.startswith(".") or "/." in rel or rel.startswith(EXCLUDE_PREFIX):
             continue
         out.append(rel)
     # large photos: keep the phone-sized version of each image (the smallest one if none is phone-sized)

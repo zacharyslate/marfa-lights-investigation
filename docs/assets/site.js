@@ -2,7 +2,7 @@
 (function () {
   const PAGES = [
     // plan and observe first, then background and science
-    ["visit.html", "Visit"], ["map.html", "Map"], ["sky.html", "Sky finder"], ["app/", "App"],
+    ["visit.html", "Visit"], ["map.html", "Map"], ["terrain.html", "3D"], ["sky.html", "Sky finder"], ["app/", "App"],
     ["history.html", "History"], ["place.html", "Place"], ["science.html", "Science"], ["paper.html", "Paper"], ["community.html", "Community"]
   ];
   const THEMES = ["auto", "light", "dark", "night"];

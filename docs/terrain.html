@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Marfa Terrain in 3D</title>
+<meta name="description" content="Fly over the land between the Marfa Lights Viewing Area and the Chinati Mountains in 3D: USGS lidar terrain with exaggerated relief, creeks, roads, lit towers, and the stretch of US-67 visible from the platform.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Marfa Lights Field Guide">
+<meta property="og:title" content="Marfa Terrain in 3D">
+<meta property="og:description" content="Fly over the land between the Marfa Lights Viewing Area and the Chinati Mountains: lidar terrain, creeks, roads, towers and the visible stretch of US-67.">
+<meta property="og:url" content="https://zacharyslate.github.io/marfa-lights-investigation/terrain.html">
+<meta property="og:image" content="https://zacharyslate.github.io/marfa-lights-investigation/media/social_card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Dusk over the Chinati Mountains from the Marfa Lights Viewing Area, with car lights on US-67 below the skyline">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=13">
+<style>
+body{overflow:hidden;height:100dvh;display:flex;flex-direction:column}
+.t3d{position:relative;flex:1;min-height:0;background:var(--surface-2)}
+#gl{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;filter:var(--map-filter)}
+#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.lab3{position:absolute;left:0;top:0;white-space:nowrap;pointer-events:none;
+  font:600 12.5px/1.15 var(--f-disp);letter-spacing:.05em;text-transform:uppercase;color:#fff;
+  text-shadow:0 0 3px #000,0 0 6px rgba(0,0,0,.8);padding-bottom:6px}
+.lab3.town{font-size:15px;font-weight:700}
+.lab3.viewer{color:#ffd27a;font-size:15px;font-weight:700}
+.lab3.peak{font-size:14px}
+.lab3.road{font:600 11px/1 var(--f-mono);letter-spacing:.02em;text-transform:none;color:#fff;background:rgba(40,40,40,.62);
+  padding:3px 5px;border-radius:3px;text-shadow:none}
+.lab3.road.vis{background:rgba(160,80,0,.85)}
+.lab3 small{display:block;font:500 10.5px/1.2 var(--f-mono);letter-spacing:0;text-transform:none;opacity:.85}
+:root[data-theme="night"] .lab3{color:var(--ink)}
+:root[data-theme="night"] .lab3.road{background:#200402;color:var(--ink)}
+
+.tpanel{position:absolute;top:12px;left:12px;width:330px;max-height:calc(100% - 24px);overflow-y:auto;
+  background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow);padding:14px 14px 16px;display:grid;gap:14px}
+.tpanel h1{font-size:28px}
+.tpanel .hint{font-size:14px;color:var(--muted);line-height:1.45}
+.lab{font:600 12px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.sbtn{font:600 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;padding:9px 11px;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink);cursor:pointer}
+.sbtn[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.sbtn:hover{border-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.exag{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center}
+.exag output{font:600 15px var(--f-mono);font-variant-numeric:tabular-nums;min-width:3.2em;text-align:right}
+.layers{display:grid;gap:5px}
+.layers label{display:flex;align-items:center;gap:9px;font-size:15px;cursor:pointer;line-height:1.25}
+.layers input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.sw{display:inline-block;width:22px;height:4px;border-radius:2px;flex:none}
+.swd{display:inline-block;width:9px;height:9px;border-radius:50%;flex:none;margin-inline:6.5px}
+.layers .lnote{font-size:12.5px;color:var(--muted);margin:-2px 0 2px 27px}
+#readout{font-size:14.5px;line-height:1.45;border-left:3px solid var(--accent);padding:4px 0 4px 10px}
+#readout b{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:600}
+.fine{font-size:12.5px;color:var(--muted);line-height:1.45}
+.fine a{color:var(--link)}
+#toggle{display:none}
+#compass{position:absolute;right:14px;top:14px;width:52px;height:52px;border-radius:50%;
+  background:color-mix(in srgb,var(--bg) 85%,transparent);border:1px solid var(--rule);box-shadow:var(--shadow);cursor:pointer;padding:0}
+#compass svg{display:block;width:100%;height:100%}
+#status{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);font:600 15px var(--f-mono);color:var(--ink-2);
+  background:var(--bg);border:1px solid var(--rule);border-radius:6px;padding:12px 16px;max-width:min(90vw,460px);text-align:center;line-height:1.45}
+#helpTip{position:absolute;right:14px;bottom:14px;font-size:12.5px;color:var(--ink-2);background:color-mix(in srgb,var(--bg) 85%,transparent);
+  border:1px solid var(--rule);border-radius:6px;padding:6px 9px;pointer-events:none}
+@media (max-width:760px){
+  .tpanel{top:auto;bottom:0;left:0;right:0;width:auto;max-height:58%;border-radius:12px 12px 0 0;border-bottom:0;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+  .tpanel.closed{max-height:none}
+  .tpanel.closed>:not(.head){display:none!important}
+  .tpanel.closed .head h1{display:none}
+  #toggle{display:inline-block}
+  .tpanel h1{font-size:23px}
+  #helpTip{display:none}
+  #compass{top:10px;right:10px;width:46px;height:46px}
+}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+</style>
+<script type="importmap">{"imports":{"three":"./assets/vendor/three/three.module.min.js"}}</script>
+</head>
+<body>
+<header id="bar"></header>
+<main class="t3d">
+  <canvas id="gl" aria-label="3D terrain view. Drag to rotate, scroll or pinch to zoom, right-drag or two-finger drag to pan."></canvas>
+  <div id="labels" aria-hidden="true"></div>
+  <button id="compass" type="button" title="Turn so north is up" aria-label="Turn the view so north is up">
+    <svg viewBox="-26 -26 52 52" aria-hidden="true"><g id="needle"><path d="M0-20 L6.5 0 L-6.5 0Z" fill="#d6372a"/><path d="M0 20 L6.5 0 L-6.5 0Z" fill="var(--muted)"/><circle r="2.2" fill="var(--bg)"/></g></svg>
+  </button>
+  <div id="status" role="status">Loading terrain (about 3 MB)…</div>
+  <div id="helpTip">Drag to rotate · scroll to zoom · right-drag to pan · tap the ground for its height</div>
+
+  <section class="tpanel" id="panel" aria-label="Map controls">
+    <div class="head">
+      <div style="display:grid;gap:6px">
+        <span class="eyebrow">Terrain in 3D</span>
+        <h1>The land between the platform and the Chinatis</h1>
+      </div>
+      <button class="sbtn" id="toggle" type="button" aria-expanded="true" aria-controls="panel">Hide</button>
+    </div>
+    <p class="hint">USGS lidar terrain from Marfa to the Chinati Mountains, 76 × 70 km, with the relief stretched so the hills, valleys and creeks stand out. Tap anywhere on the ground for its height and its distance from the viewing area.</p>
+
+    <div style="display:grid;gap:7px">
+      <span class="lab" id="exagLab">Height exaggeration</span>
+      <div class="exag"><input type="range" id="exag" min="1" max="10" step="0.5" value="4" aria-labelledby="exagLab"><output id="exagOut" for="exag">4×</output></div>
+    </div>
+
+    <div style="display:grid;gap:7px">
+      <span class="lab">Views</span>
+      <div class="row">
+        <button class="sbtn" data-view="overview" type="button">Overview</button>
+        <button class="sbtn" data-view="platform" type="button">Above the platform</button>
+        <button class="sbtn" data-view="us67" type="button">Over US-67</button>
+        <button class="sbtn" data-view="top" type="button">Map view</button>
+      </div>
+      <p class="fine" id="viewNote" hidden></p>
+    </div>
+
+    <div style="display:grid;gap:7px">
+      <span class="lab">Layers</span>
+      <div class="layers">
+        <label><input type="checkbox" data-layer="creeks" checked><span class="sw" style="background:#3480d2"></span>Creeks and dry washes</label>
+        <label><input type="checkbox" data-layer="roads" checked><span class="sw" style="background:#f4f1ea;box-shadow:0 0 0 1px #555"></span>Highways and roads</label>
+        <label><input type="checkbox" data-layer="us67" checked><span class="sw" style="background:#ff8a00"></span>US-67 where cars can be seen from the platform</label>
+        <label><input type="checkbox" data-layer="sight"><span class="sw" style="background:#ffd27a"></span>Sight lines from the platform</label>
+        <p class="lnote">Drawn over the curved Earth with normal refraction, which switches on with them.</p>
+        <label><input type="checkbox" data-layer="rail" checked><span class="sw" style="background:#9b6fd0"></span>Railroads</label>
+        <label><input type="checkbox" data-layer="power"><span class="sw" style="background:#e0c04a"></span>Power lines</label>
+        <label><input type="checkbox" data-layer="towers" checked><span class="swd" style="background:#ff2a1a"></span>Towers (red dot = lit at night)</label>
+        <label><input type="checkbox" data-layer="contours"><span class="sw" style="background:#6b4a2a"></span>Contour lines (every 100 m)</label>
+        <label><input type="checkbox" data-layer="labels" checked><span class="sw" style="background:transparent;font:700 11px/4px var(--f-disp)">Aa</span>Place names</label>
+        <label><input type="checkbox" data-layer="curve"><span class="sw" style="background:linear-gradient(90deg,#888,#ccc,#888);height:3px;border-radius:3px 3px 0 0"></span>Earth curvature, as seen from the platform</label>
+      </div>
+    </div>
+
+    <div id="readout" hidden></div>
+
+    <p class="fine">Heights: USGS 3DEP 1 m lidar (2018) averaged to 20 m, and the USGS 1/3 arc-second DEM where there is no lidar; the two agree to about 1 m. Shading, colour and creeks are computed from those heights. The creeks are where water would run, not official stream lines, and most are dry most of the year. Towers are scaled with the terrain. Roads: TxDOT; towers: FCC; rail: FRA. Method: <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/analysis/terrain3d.py">terrain3d.py</a>. For the line-of-sight model itself, see the <a href="map.html">Map</a>.</p>
+  </section>
+</main>
+<script src="assets/site.js?v=13"></script>
+<script type="module" src="assets/terrain.js?v=1"></script>
+</body>
+</html>
