@@ -34,3 +34,8 @@ Lights: p04 233.778/-0.218 (PY 233.771/-0.221); p08 234.347/-0.253 (PY 234.343/-
 
 ## Sightings catalogue (docs/sightings.html)
 - 51 documented sightings/campaigns (data/inputs/sightings_research.json), each with sources, 'opened' flags and a model-testability rating (5 yes, 15 partly, 31 no). Spot-checked: Texas Monthly 2006 (Hall's tower-light description, San Angelo Times 1945); Stephan et al. 2011 JASTP 73(13):1953-1958.
+
+## Nopal Road from the platform (3 Oct 2026; analysis/terrain3d.py --overlays)
+- Same visibility classes as the 3D map's US-67 layer (k = 0.13, 120 m sampling): Nopal Road ~5.3 km in view in 4 runs, 178-213 deg true, 6.9-13 km. RM 2810 13.1 km; US-90 2.6 km; US-67/90 near the Viewing Area 2.4 km.
+- Relevance: Pettengill 2015 horizon lights (~185 deg, tier B) and Bunnell's 19 Feb 2003 photos (attributed to Nopal Road by the later re-analysis) fall in this sector. Nopal Road is much closer than US-67 (7-13 vs 24-40 km), so its lights would appear brighter and lower; a field check of traffic on Nopal Road at night is needed before any light in this sector is called unexplained.
+- Caveat: coarser sampling than the US-67 Monte Carlo classes; no grass/shrub uncertainty run yet for Nopal Road.
