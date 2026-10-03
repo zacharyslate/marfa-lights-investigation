@@ -3,18 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
+<link rel="stylesheet" href="assets/site.css?v=14">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>US-67 Sight Lines</title>
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Marfa Lights Field Guide">
-<meta property="og:title" content="US-67 Sight Lines">
-<meta property="og:description" content="A field guide to the Marfa Lights.">
-<meta property="og:url" content="https://zacharyslate.github.io/marfa-lights-investigation/sightlines.html">
-<meta property="og:image" content="https://zacharyslate.github.io/marfa-lights-investigation/media/social_card.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Dusk over the Chinati Mountains from the Marfa Lights Viewing Area, with car lights on US-67 below the skyline">
-<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
@@ -83,23 +75,24 @@ details summary:focus-visible,input:focus-visible{outline:2px solid var(--focus)
 .src a{color:var(--ink-2);text-decoration-color:var(--vis)}
 code{font-family:var(--f-mono);font-size:.92em}
 </style>
+<style>body{padding:0}.wrap{padding:28px 20px 56px}th{text-transform:none;letter-spacing:0}#bar,#foot{--f-disp:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;--f-body:"Source Sans 3",system-ui,sans-serif;--f-mono:"JetBrains Mono",ui-monospace,monospace;font-family:var(--f-body)}header#bar{display:block}#bar svg,#foot svg{display:inline-block;width:auto}#bar p,#foot p{max-width:none}#foot{font-size:14px}</style>
 </head>
 <body>
+<header id="bar"></header>
 
 
 <main class="wrap">
 <header>
-  <div class="eyebrow"><a href="index.html" style="color:inherit">← Marfa Lights Field Guide</a> · digital line-of-sight study</div>
+  <div class="eyebrow"><a href="science.html" style="color:inherit">Science</a> · digital line-of-sight study</div>
   <h1>Where US‑67 can be seen from the Viewing Area</h1>
   <p class="lede">A 0.66 m headlamp on US‑67 between Shafter and Marfa, tested for terrain occlusion from an eye 1.6 m above the viewing platform. Earth curvature (exact, on the WGS84 ellipsoid) and atmospheric refraction are included. Terrain is USGS 1-metre lidar, with shrubs and structures from the lidar point cloud.</p>
-  <p class="sub">This is the detailed technical report on one question. For a plain-language summary see <a href="science.html">The Science</a>; for the full method and every source of light, see <a href="paper.html">the paper</a>.</p>
   <div class="figs" id="figs"></div>
 </header>
 
 <div class="panel">
   <div class="eyebrow">Study area</div>
   <h2>The 120° viewing fan</h2>
-  <figure style="margin:0;display:grid;gap:6px"><img src="img/fig01_study_area-900.webp" srcset="img/fig01_study_area-900.webp 900w, img/fig01_study_area-1600.webp 1600w" sizes="(max-width: 1000px) 100vw, 900px" width="1600" height="1401" alt="Map of the 120 degree viewing fan from the Viewing Area over a shaded-relief terrain map, with roads coloured by visibility, railroads, lit towers and towns" loading="lazy" style="width:100%;height:auto;border-radius:6px;background:#fff">
+  <figure style="margin:0;display:grid;gap:6px"><img src="img/fig01_study_area-900.webp" srcset="img/fig01_study_area-900.webp 900w, img/fig01_study_area-1600.webp 1600w" sizes="(max-width: 1000px) 100vw, 900px" width="1600" height="1440" alt="Map of the 120 degree viewing fan from the Viewing Area over a shaded-relief terrain map, with roads coloured by visibility, railroads, lit towers and towns" loading="lazy" style="width:100%;height:auto;border-radius:6px;background:#fff">
   <figcaption class="sub">Rays every 0.5° from the Viewing Area over USGS 3DEP shaded relief. Roads are coloured by whether a headlight is in view at k = 0.13. Figure: this project; full-size PDF in <a href="https://github.com/zacharyslate/marfa-lights-investigation/tree/main/publication/figures">publication/figures</a>.</figcaption></figure>
 </div>
 
@@ -110,7 +103,7 @@ code{font-family:var(--f-mono);font-size:.92em}
     <p class="sub">The textbook refraction state. Each 60 m of road is classed by whether a headlight clears the terrain in between.</p>
     <svg id="map1" viewBox="0 0 520 620" role="img" aria-label="Plan view map of US-67 coloured by visibility at standard refraction"></svg>
     <ul class="legend">
-      <li><span class="sw" style="background:var(--vis);height:5px"></span>Visible: in view in at least 95% of terrain-error draws, even with 0.25 m of grass (margins are under 1 m)</li>
+      <li><span class="sw" style="background:var(--vis);height:5px"></span>Visible, clears distant terrain by more than 5 m</li>
       <li><span class="sw" style="background:var(--marg);height:4px"></span>Marginal, depends on sub-metre detail (grass, eye height)</li>
       <li><span class="sw" style="background:var(--hid);height:2px"></span>Hidden by terrain</li>
       <li><span class="sw" style="background:repeating-linear-gradient(90deg,var(--rail) 0 5px,transparent 5px 8px);height:2px"></span>Texas Pacifico railroad</li>
@@ -134,7 +127,7 @@ code{font-family:var(--f-mono);font-size:.92em}
 <div class="panel">
   <div class="eyebrow">Perspective</div>
   <h2>What the platform sees, looking southwest to west</h2>
-  <p class="sub">Apparent elevation angle against true azimuth, at standard refraction. The shaded ground ends at the modelled skyline, which along most of this arc is the Chinati Mountains and their foothills, 40–70 km away. Visible road points sit below that skyline, so their headlights appear against dark mountainside rather than open sky. Hidden points are drawn faintly where they would appear if the nearer ground were not in the way. The same frame is used to register photographs (Science page, Figure 8). 1 mrad ≈ 0.057°, about a car length seen from 4.5 km.</p>
+  <p class="sub">Apparent elevation angle against true azimuth, at standard refraction. The shaded ground ends at the modelled skyline, which along most of this arc is the Chinati Mountains 60–70 km away. Visible road points sit below that skyline, so their headlights appear against dark mountainside rather than open sky. Hidden points are drawn faintly where they would appear if the nearer ground were not in the way. This frame is built for overlaying on calibrated photos later. 1 mrad ≈ 0.057°, about a car length at 80 m.</p>
   <div class="scroll" tabindex="0" role="region" aria-label="Panorama, scrolls sideways"><svg id="pano" viewBox="0 0 1080 360" style="min-width:720px" role="img" aria-label="Panorama of skyline and highway positions as seen from the viewing area"></svg></div>
   <ul class="legend">
     <li><span class="sw" style="background:var(--vis);height:8px;width:8px;border-radius:50%"></span>Visible</li>
@@ -147,14 +140,13 @@ code{font-family:var(--f-mono);font-size:.92em}
 <div class="panel">
   <div class="eyebrow">Cross-sections</div>
   <h2>Three sight lines, drawn with curvature</h2>
-  <p class="sub">Terrain height relative to the observer's eye, after the curvature-and-refraction drop. A straight line from the eye to the car is the line of sight. Solid is standard refraction. Dashed is a moderate-to-strong inversion (k = 0.5), which lowers distant terrain less, so the Earth looks flatter.</p>
+  <p class="sub">Terrain height relative to the observer's eye, after the curvature-and-refraction drop. A straight line from the eye to the car is the line of sight. Solid is standard refraction. Dashed is a strong inversion (k = 0.5), which lifts distant terrain less and flattens the Earth optically.</p>
   <div class="profiles" id="profiles"></div>
 </div>
 
 <div class="panel">
   <details>
     <summary>Visible stretches at standard refraction, as a table</summary>
-    <p class="sub">Counted with the strict "visible" class at 60 m spacing. The paper's 18 windows for one northbound car use P<sub>vis</sub> ≥ 0.5 instead, and the refraction slider uses the single-number test without the Monte Carlo, so the three counts differ slightly.</p>
     <div class="scroll" style="margin-top:12px" tabindex="0" role="region" aria-label="Table of visible stretches"><table id="runs"><thead><tr><th scope="col">Stretch</th><th scope="col">Chainage km</th><th scope="col">Azimuth °</th><th scope="col">Distance km</th><th scope="col">Road elev m</th><th scope="col">Apparent elev mrad</th><th scope="col">Length m</th></tr></thead><tbody></tbody></table></div>
   </details>
 </div>
@@ -165,7 +157,7 @@ code{font-family:var(--f-mono);font-size:.92em}
     <ul>
       <li>US‑67 is the TxDOT centreline, resampled every 60 m, with 1,075 points from Shafter (km 0) to the US-90 junction in Marfa (km 64.4). (The author's Google Earth trace agrees with it to 2 m, median.)</li>
       <li>For each point, terrain is sampled along the WGS84 geodesic from the viewer, every 2 m within 3 km of either end and every 5 m in between, from the 1 m lidar DEM (1/3″ and 1″ DEMs beyond it). Eye, lamp and ground are placed in Earth-centred coordinates, with heights converted by the GEOID12B geoid model.</li>
-      <li>Refraction bends the ray into an arc above the straight eye–lamp chord. The visibility threshold <i>k</i><sub>crit</sub> is solved in closed form and tested against brute force; 45 automated tests cover the engine, 15 of them re-deriving the paper's equations independently.</li>
+      <li>Refraction bends the ray into an arc above the straight eye–lamp chord. The visibility threshold <i>k</i><sub>crit</sub> is solved in closed form and tested against brute force; 22 unit tests cover the engine.</li>
       <li>Only the first 5 m (the observer) and the last 3 m (the car itself) are skipped: the lidar resolves the road bed. Classes come from a Monte Carlo over lidar error and eye height: <b>visible</b> means seen in at least 95% of draws and still seen under 0.25 m of grass; <b>hidden</b> means seen in at most 5%.</li>
     </ul>
   </section>
@@ -174,8 +166,8 @@ code{font-family:var(--f-mono);font-size:.92em}
     <ul>
       <li><b>Constant <i>k</i>.</b> Near-ground gradients vary strongly with height. Hirt et al. measured k from about −4 by day to +16 near sunset at 1.8 m. Ray tracing through assumed night-time temperature layers adds at most about 1.5 km of visible road and lifts lights by up to 0.12°; the real profile still has to be measured.</li>
       <li><b>Humidity barely bends visible light.</b> The water-vapour term in the optical refractive index is small (Ciddor 1996). Humidity matters here mainly through haze and extinction, which dims lights. It does not change what is occluded.</li>
-      <li><b>Grass.</b> The lidar resolves shrubs and structures but not grass shorter than about 0.3 m; allowing 0.25 m of grass everywhere removes about 0.6 km of visible road.</li>
-      <li><b>Headlights are directional.</b> This page shows geometric visibility only. Beam direction, road grade and brightness are modelled in the <a href="paper.html">paper</a> and on the <a href="science.html#fig3">Science page</a>.</li>
+      <li><b>Grass.</b> The lidar resolves shrubs and structures but not grass shorter than about 0.3 m; allowing 0.25 m of grass everywhere removes about 0.5 km of visible road.</li>
+      <li><b>Headlights are directional.</b> This model says where a lamp is geometrically visible, not whether it points at you. Road heading is the next layer.</li>
     </ul>
   </section>
 </div>
@@ -203,14 +195,13 @@ const BIN = Object.fromEntries(D.bins.map(b => [b[2], b[3]]));
 
 // ---------- headline figures
 const vis = P.filter(p => p.cls === "vis");
-const main = vis.filter(p => p.az < 245), stray = vis.filter(p => p.az >= 245);   // one isolated 60 m point sits at 251.9°
-const visAz = [Math.min(...main.map(p => p.az)), Math.max(...main.map(p => p.az))];
+const visAz = [Math.min(...vis.map(p => p.az)), Math.max(...vis.map(p => p.az))];
 const visD = [Math.min(...vis.map(p => p.d)), Math.max(...vis.map(p => p.d))];
 document.getElementById("figs").innerHTML = [
   [`${fmt(km(p => p.cls === "vis"))} km`, `<span class="sw" style="background:var(--vis)"></span>clearly visible at standard refraction`],
   [`${fmt(km(p => p.cls === "marg"))} km`, `<span class="sw" style="background:var(--marg)"></span>marginal, depends on sub-metre detail`],
   [`${fmt(km(p => p.cls === "hid"))} km`, `<span class="sw" style="background:var(--hid)"></span>hidden by terrain, of ${fmt(P[P.length-1].ch)} km modelled`],
-  [`${fmt(visAz[0])}°–${fmt(visAz[1])}°`, `visible band${stray.length ? ` (plus ${stray.length === 1 ? "one 60 m spot" : stray.length + " 60 m spots"} at ${fmt(stray[0].az, 0)}°)` : ""}, ${fmt(visD[0],0)}–${fmt(visD[1],0)} km away, west of the fan's centre`]
+  [`${fmt(visAz[0])}°–${fmt(visAz[1])}°`, `visible band, ${fmt(visD[0],0)}–${fmt(visD[1],0)} km away, south of the fan's centre`]
 ].map(([b, s]) => `<div class="fig"><b>${b}</b><span>${s}</span></div>`).join("");
 
 // ---------- tooltip
@@ -361,7 +352,7 @@ ks.addEventListener("input", applyK); applyK();
     el("circle", {cx:X(0), cy:Y(0), r:3.5, fill:"var(--ink)"}, svg);
     box.appendChild(svg);
     const note = document.createElement("p"); note.className = "sub";
-    note.textContent = pr.kc <= 0.13 ? `Visible: the headlight stays in view down to k = ${fmt(pr.kc,2)}.` : `Hidden: seeing this headlight needs k ≥ ${pr.kc > 50 ? "50" : fmt(pr.kc,1)}, far beyond even strong inversions (path-averaged k up to about 2.8 in our ray tracing).`;
+    note.textContent = pr.kc <= 0.13 ? `Visible: the headlight stays in view down to k = ${fmt(pr.kc,2)}.` : `Hidden: seeing this headlight needs k ≥ ${pr.kc > 50 ? "50" : fmt(pr.kc,1)}, far beyond a normal night.`;
     box.appendChild(note);
     host.appendChild(box);
   }
@@ -376,5 +367,7 @@ ks.addEventListener("input", applyK); applyK();
 })();
 </script>
 
+<footer id="foot"></footer>
+<script src="assets/site.js?v=14"></script>
 </body>
 </html>

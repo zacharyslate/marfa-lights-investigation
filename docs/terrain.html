@@ -17,7 +17,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=13">
+<link rel="stylesheet" href="assets/site.css?v=14">
 <style>
 body{overflow:hidden;height:100dvh;display:flex;flex-direction:column}
 .t3d{position:relative;flex:1;min-height:0;background:var(--surface-2)}
@@ -32,6 +32,8 @@ body{overflow:hidden;height:100dvh;display:flex;flex-direction:column}
 .lab3.road{font:600 11px/1 var(--f-mono);letter-spacing:.02em;text-transform:none;color:#fff;background:rgba(40,40,40,.62);
   padding:3px 5px;border-radius:3px;text-shadow:none}
 .lab3.road.vis{background:rgba(160,80,0,.85)}
+.lab3.road.vis.nopal{background:rgba(170,20,95,.88)}
+.lnote2{font-size:12.5px;color:var(--muted)}
 .lab3 small{display:block;font:500 10.5px/1.2 var(--f-mono);letter-spacing:0;text-transform:none;opacity:.85}
 :root[data-theme="night"] .lab3{color:var(--ink)}
 :root[data-theme="night"] .lab3.road{background:#200402;color:var(--ink)}
@@ -113,6 +115,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         <button class="sbtn" data-view="overview" type="button">Overview</button>
         <button class="sbtn" data-view="platform" type="button">Above the platform</button>
         <button class="sbtn" data-view="us67" type="button">Over US-67</button>
+        <button class="sbtn" data-view="nopal" type="button">Over Nopal Road</button>
         <button class="sbtn" data-view="top" type="button">Map view</button>
       </div>
       <p class="fine" id="viewNote" hidden></p>
@@ -124,8 +127,9 @@ input[type=range]{width:100%;accent-color:var(--accent)}
         <label><input type="checkbox" data-layer="creeks" checked><span class="sw" style="background:#3480d2"></span>Creeks and dry washes</label>
         <label><input type="checkbox" data-layer="roads" checked><span class="sw" style="background:#f4f1ea;box-shadow:0 0 0 1px #555"></span>Highways and roads</label>
         <label><input type="checkbox" data-layer="us67" checked><span class="sw" style="background:#ff8a00"></span>US-67 where cars can be seen from the platform</label>
+        <label><input type="checkbox" data-layer="nopal" checked><span class="sw" style="background:#e8318a"></span>Nopal Road where cars can be seen <span class="lnote2">(pink: RM 2810 and US-90)</span></label>
         <label><input type="checkbox" data-layer="sight"><span class="sw" style="background:#ffd27a"></span>Sight lines from the platform</label>
-        <p class="lnote">Drawn over the curved Earth with normal refraction, which switches on with them.</p>
+        <p class="lnote">Gold to US-67, magenta to Nopal Road. Drawn over the curved Earth with normal refraction, which switches on with them.</p>
         <label><input type="checkbox" data-layer="rail" checked><span class="sw" style="background:#9b6fd0"></span>Railroads</label>
         <label><input type="checkbox" data-layer="power"><span class="sw" style="background:#e0c04a"></span>Power lines</label>
         <label><input type="checkbox" data-layer="towers" checked><span class="swd" style="background:#ff2a1a"></span>Towers (red dot = lit at night)</label>
@@ -140,7 +144,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}
     <p class="fine">Heights: USGS 3DEP 1 m lidar (2018) averaged to 20 m, and the USGS 1/3 arc-second DEM where there is no lidar; the two agree to about 1 m. Shading, colour and creeks are computed from those heights. The creeks are where water would run, not official stream lines, and most are dry most of the year. Towers are scaled with the terrain. Roads: TxDOT; towers: FCC; rail: FRA. Method: <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/analysis/terrain3d.py">terrain3d.py</a>. For the line-of-sight model itself, see the <a href="map.html">Map</a>.</p>
   </section>
 </main>
-<script src="assets/site.js?v=13"></script>
+<script src="assets/site.js?v=14"></script>
 <script type="module" src="assets/terrain.js?v=1"></script>
 </body>
 </html>

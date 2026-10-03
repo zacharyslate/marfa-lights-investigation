@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Marfa Lights App</title>
-<meta name="description" content="Pocket guide for the Marfa Lights Viewing Area: tonight's darkness, moon and planets, a light identifier, the camera sky finder, your sighting log and light bingo. Works without signal.">
+<meta name="description" content="Pocket guide for the Marfa Lights Viewing Area: tonight's darkness, moon and planets, weather and refraction, a light identifier, the website's tools, your sighting log and light bingo. Works without signal.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Marfa Lights Field Guide">
 <meta property="og:title" content="Marfa Lights App">
-<meta property="og:description" content="Pocket guide for the Marfa Lights Viewing Area: tonight's darkness, moon and planets, a light identifier, the camera sky finder, your sighting log and light bingo. Works without signal.">
+<meta property="og:description" content="Pocket guide for the Marfa Lights Viewing Area: tonight's darkness, moon and planets, weather and refraction, a light identifier, the website's tools, your sighting log and light bingo. Works without signal.">
 <meta property="og:url" content="https://zacharyslate.github.io/marfa-lights-investigation/app/">
 <meta property="og:image" content="https://zacharyslate.github.io/marfa-lights-investigation/media/social_card.jpg">
 <meta property="og:image:width" content="1200">
@@ -24,7 +24,7 @@
 <link rel="icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="app.css?v=4">
+<link rel="stylesheet" href="app.css?v=5">
 </head>
 <body>
 <header class="top">
@@ -47,8 +47,11 @@
     <div class="tiles" id="t-tiles"></div>
     <div class="card" id="t-dark"></div>
     <div class="card" id="t-planets"></div>
-    <div class="card" id="t-weather"><h2>Weather</h2><p class="dim">Loading the National Weather Service forecast…</p></div>
-    <div class="card" id="t-refr"><h2>Refraction tonight</h2><p class="dim">Loading the temperature forecast near the ground…</p></div>
+    <div class="card cond" id="t-cond">
+      <h2>Conditions tonight</h2>
+      <div class="sub" id="t-weather"><h3>Weather</h3><p class="dim">Loading the National Weather Service forecast…</p></div>
+      <div class="sub" id="t-refr"><h3>Refraction</h3><p class="dim">Loading the temperature forecast near the ground…</p></div>
+    </div>
     <div class="actions3">
       <button type="button" class="big" data-go="identify"><span class="ic">◎</span>What's that light?</button>
       <a class="big" href="../sky.html?from=app"><span class="ic">⌖</span>Camera sky finder</a>
@@ -103,32 +106,44 @@
     <ul class="log" id="l-list"></ul>
   </section>
 
-  <!-- ============================== BINGO -->
-  <section class="view" id="v-bingo" hidden aria-labelledby="b-h">
-    <h1 id="b-h">Light bingo</h1>
-    <p class="dim">Most lights over the flat are ordinary. Spot each kind and tick it off. Knowing them is how you spot the one that isn't. Tap a square to learn how to recognise it.</p>
-    <div class="bingo" id="b-grid"></div>
-    <p class="score" id="b-score"></p>
-    <button type="button" class="pill" id="b-reset">Start a new night</button>
+  <!-- ============================== TOOLS -->
+  <section class="view" id="v-tools" hidden aria-labelledby="tt-h">
+    <h1 id="tt-h">Tools</h1>
+    <p class="dim">The full tools from the website. The camera sky finder and the identifier work offline; the maps need a connection.</p>
+    <div class="tools">
+      <a href="../sky.html?from=app"><span class="ic">⌖</span><b>Camera sky finder</b><span>Point your phone at the view: skyline, roads, towers and stars over the camera. Records a calibrated bearing.</span></a>
+      <a href="../map.html"><span class="ic">⌗</span><b>Map and identifier</b><span>Satellite map with every known light source along a bearing, and the refraction slider.</span></a>
+      <a href="../photo.html"><span class="ic">▣</span><b>Photo checker</b><span>Line up a photo from the platform and check where each light sits. Runs on your phone.</span></a>
+      <a href="../terrain.html"><span class="ic">◭</span><b>3D terrain</b><span>Fly over the land: the stretches of US-67 and Nopal Road the platform can see. Best on a larger screen.</span></a>
+      <a href="../report.html"><span class="ic">✉</span><b>Report a sighting</b><span>A guided form that checks your light against every known source.</span></a>
+    </div>
   </section>
 
   <!-- ============================== MORE -->
   <section class="view" id="v-more" hidden aria-labelledby="m-h">
     <h1 id="m-h">More</h1>
+    <!-- light bingo (inside More) -->
+    <section class="card" id="v-bingo" aria-labelledby="b-h">
+      <h2 id="b-h">Light bingo</h2>
+      <p class="dim">Most lights over the flat are ordinary. Spot each kind and tick it off. Knowing them is how you spot the one that isn't. Tap a square to learn how to recognise it.</p>
+      <div class="bingo" id="b-grid"></div>
+      <p class="score" id="b-score"></p>
+      <button type="button" class="pill" id="b-reset">Start a new night</button>
+    </section>
+    <h2>Read</h2>
     <div class="links">
-      <a href="../map.html"><b>Full map and identifier</b><span>Satellite map, every layer, refraction slider</span></a>
-      <a href="../sky.html?from=app"><b>Camera sky finder</b><span>Calibrated bearings with your phone camera</span></a>
-      <a href="../report.html"><b>Full sighting report</b><span>Guided form with an automatic noise check</span></a>
-      <a href="../visit.html"><b>How to observe</b><span>Timing, what to record, what to rule out</span></a>
-      <a href="../history.html"><b>History and folklore</b><span>The lights in history, legend and science</span></a>
+      <a href="../visit.html"><b>Plan a night</b><span>Timing, what to record, what to rule out</span></a>
+      <a href="../history.html"><b>History and folklore</b><span>The lights in history and legend</span></a>
+      <a href="../sightings.html"><b>Sightings catalogue</b><span>Documented sightings and photographs, with sources</span></a>
       <a href="../science.html"><b>The science</b><span>What studies found and what the model shows</span></a>
       <a href="../place.html"><b>The place</b><span>Mountains, climate and the dark sky</span></a>
       <a href="../community.html"><b>Community and dark skies</b><span>Being a good neighbour, local knowledge</span></a>
+      <a href="../index.html"><b>The full website</b><span>Everything, including the paper</span></a>
     </div>
     <div class="card">
       <h2>Works without signal</h2>
       <p class="dim" id="m-offline">Checking…</p>
-      <p class="dim small">After you open the app once with a connection, it keeps working offline, including the identifier, the sky finder and your log. The satellite map and the weather need a connection.</p>
+      <p class="dim small">After you open the app once with a connection, it keeps working offline, including the identifier, the sky finder and your log. The satellite map, the 3D terrain and the forecasts need a connection.</p>
     </div>
     <div class="card"><h2>Add it to your home screen</h2><p class="dim" id="m-install"></p></div>
   </section>
@@ -137,9 +152,8 @@
 <nav class="tabs" aria-label="App sections">
   <button type="button" data-tab="tonight" aria-current="page"><span class="ic">☾</span>Tonight</button>
   <button type="button" data-tab="identify"><span class="ic">◎</span>Identify</button>
-  <a href="../sky.html?from=app"><span class="ic">⌖</span>Camera</a>
   <button type="button" data-tab="log"><span class="ic">✎</span>Log</button>
-  <button type="button" data-tab="bingo"><span class="ic">▦</span>Bingo</button>
+  <button type="button" data-tab="tools"><span class="ic">⌖</span>Tools</button>
   <button type="button" data-tab="more"><span class="ic">≡</span>More</button>
 </nav>
 
@@ -148,6 +162,6 @@
 
 <script src="../assets/vendor/astronomy.browser.min.js"></script>
 <script src="../assets/mask.js?v=1"></script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

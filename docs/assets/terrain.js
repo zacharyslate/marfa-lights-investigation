@@ -138,6 +138,10 @@ function init([meta, ov, hbuf, relief, creeks]) {
       stroke(roadsBy(["US", "SH", "IH", "BU", "SL"]), "#fffaf0", 3.0, null, "rgba(40,30,20,.6)");
     }
     if (st.layers.us67) stroke(ov.us67_visible, "#ff8a00", 5.0, null, "rgba(60,25,0,.7)");
+    if (st.layers.nopal && ov.roads_visible) {
+      ov.roads_visible.filter(r => !/Nopal/.test(r.n)).forEach(r => stroke(r.runs, "#f39ac7", 3.6, null, "rgba(60,10,35,.6)"));
+      ov.roads_visible.filter(r => /Nopal/.test(r.n)).forEach(r => stroke(r.runs, "#e8318a", 5.0, null, "rgba(60,10,35,.75)"));
+    }
     tex.needsUpdate = true;
   }
 
@@ -226,6 +230,10 @@ function init([meta, ov, hbuf, relief, creeks]) {
   const sightMat = new THREE.LineBasicMaterial({color: 0xffd27a, transparent: true, opacity: 0.55});
   const sight = new THREE.LineSegments(new THREE.BufferGeometry(), sightMat); markers.add(sight);
   const sightPts = ov.us67_visible.flatMap(run => run.filter((_, i) => i % 2 === 0 || run.length < 3));
+  const NOPAL = (ov.roads_visible || []).find(r => /Nopal/.test(r.n));
+  const sightMat2 = new THREE.LineBasicMaterial({color: 0xff5fb0, transparent: true, opacity: 0.6});
+  const sight2 = new THREE.LineSegments(new THREE.BufferGeometry(), sightMat2); markers.add(sight2);
+  const sightPts2 = NOPAL ? NOPAL.runs.flat() : [];
 
   function eyeZ() { return Math.max(viewer.z, elevAt(viewer.p[0], viewer.p[1])) + EYE; }
   function updateMarkers() {
@@ -244,8 +252,12 @@ function init([meta, ov, hbuf, relief, creeks]) {
       const e = V3(viewer.p[0], viewer.p[1], eyeZ()), arr = [];
       sightPts.forEach(p => { const b = V3(p[0], p[1], elevAt(p[0], p[1]) + 0.66); arr.push(e.x, e.y, e.z, b.x, b.y, b.z); });
       sight.geometry.setAttribute("position", new THREE.Float32BufferAttribute(arr, 3)); sight.geometry.computeBoundingSphere();
+      const arr2 = [];
+      sightPts2.forEach(p => { const b = V3(p[0], p[1], elevAt(p[0], p[1]) + 0.66); arr2.push(e.x, e.y, e.z, b.x, b.y, b.z); });
+      sight2.geometry.setAttribute("position", new THREE.Float32BufferAttribute(arr2, 3)); sight2.geometry.computeBoundingSphere();
     }
-    sight.visible = st.layers.sight;
+    sight.visible = st.layers.sight && st.layers.us67;
+    sight2.visible = st.layers.sight && st.layers.nopal;
     labels.forEach(L => { L.pos = V3(L.x, L.y, elevAt(L.x, L.y) + (L.lift || 0)); if (L.k === "viewer") L.pos.copy(top); });
   }
 
@@ -275,9 +287,11 @@ function init([meta, ov, hbuf, relief, creeks]) {
   });
   { const run = ov.us67_visible.reduce((a, b) => (b.length > a.length ? b : a)); const p = run[Math.floor(run.length / 2)];
     addLabel("US-67 visible from the platform", p[0], p[1], "road vis"); }
+  if (NOPAL) { const run = NOPAL.runs.reduce((a, b) => (b.length > a.length ? b : a)); const p = run[Math.floor(run.length / 2)];
+    addLabel("Nopal Road visible from the platform", p[0], p[1], "road vis nopal"); }
 
   // labels: projected every frame; lower-priority labels give way where they would overlap
-  const PRI = {viewer: 0, peak: 1, town: 2, "road vis": 3, road: 4};
+  const PRI = {viewer: 0, peak: 1, town: 2, "road vis": 3, "road vis nopal": 3, road: 4};
   labels.sort((A, B) => PRI[A.k] - PRI[B.k]);
   const v = new THREE.Vector3();
   function placeLabels() {
@@ -286,7 +300,8 @@ function init([meta, ov, hbuf, relief, creeks]) {
     const camPos = camera.position, taken = [];
     labels.forEach(L => {
       const road = L.k.startsWith("road"), vis = L.k.includes("vis");
-      let ok = !(road && !vis && !st.layers.roads) && !(vis && !st.layers.us67);
+      const nop = L.k.includes("nopal");
+      let ok = !(road && !vis && !st.layers.roads) && !(vis && !nop && !st.layers.us67) && !(nop && !st.layers.nopal);
       if (ok) {
         v.copy(L.pos).project(camera);
         ok = v.z < 1 && Math.abs(v.x) < 1.05 && Math.abs(v.y) < 1.05 && !(road && camPos.distanceTo(L.pos) > 90);
@@ -321,6 +336,10 @@ function init([meta, ov, hbuf, relief, creeks]) {
       const [x, y] = [37658, 29314];                       // US-67 high point
       return {pos: pt(x + 10000, y + 8000, 5.5), tgt: pt(x - 1500, y - 1500, 0)};
     },
+    nopal() {
+      const [x, y] = viewer.p, a = 196 * Math.PI / 180, ux = Math.sin(a), uy = Math.cos(a);   // toward the visible stretch of Nopal Road
+      return {pos: pt(x - ux * 3500, y - uy * 3500, 1.4), tgt: pt(x + ux * 10000, y + uy * 10000, 0)};
+    },
     top() {
       const panelOpen = !panel.classList.contains("closed") && wide() > 1.1;
       const h = Math.min(250, 1.15 * Math.max(76 / wide(), 70) / (2 * Math.tan(22.5 * Math.PI / 180)));
@@ -330,12 +349,20 @@ function init([meta, ov, hbuf, relief, creeks]) {
   };
   const NOTES = {
     platform: "About 1.5 km above and 5 km behind the viewing area, looking southwest along the sight lines to the stretch of US-67 that can be seen from the platform. Relief doubled; curved Earth with normal refraction, as the line-of-sight model uses.",
+    nopal: "Nopal Road, the county road south of the platform. Magenta marks the stretches, about 5 km in all at 7 to 13 km, where a car's lights can reach the platform. They lie between about 178° and 213° true, well left of US-67: the direction of the lights in Rob Pettengill's 2015 photo and in James Bunnell's photos of 19 February 2003, which a later re-analysis attributed to cars on this road. Relief tripled; sight lines over the curved Earth.",
     us67: "US-67 climbing out of the flat toward its high point. Orange is the stretch whose headlights reach the platform; the white road in between is hidden behind low rises.",
   };
   let mode = "overview";
   function setView(name, instant) {
     mode = name;
     document.querySelectorAll("[data-view]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === name)));
+    if (name === "nopal") {
+      if (st.exag !== 3) setExag(3);
+      if (!st.curve) setCurve(true);
+      if (!st.layers.sight) { st.layers.sight = true; document.querySelector('[data-layer="sight"]').checked = true; }
+      if (!st.layers.nopal) { st.layers.nopal = true; document.querySelector('[data-layer="nopal"]').checked = true; compose(); }
+      updateHeights(); updateMarkers();
+    }
     if (name === "platform") {
       if (st.exag !== 2) setExag(2);
       if (!st.curve) setCurve(true);
@@ -378,6 +405,7 @@ function init([meta, ov, hbuf, relief, creeks]) {
   document.querySelectorAll("[data-layer]").forEach(inp => inp.addEventListener("change", () => {
     const k = inp.dataset.layer; st.layers[k] = inp.checked;
     if (k === "curve") { setCurve(inp.checked); if (!inp.checked && st.layers.sight) { st.layers.sight = false; document.querySelector('[data-layer="sight"]').checked = false; updateMarkers(); } return; }
+    if (k === "nopal" || k === "us67") { compose(); updateMarkers(); return; }
     if (k === "sight") { if (inp.checked && !st.curve) setCurve(true); else updateMarkers(); return; }
     if (k === "contours") { uni.uContour.value = inp.checked ? 100 : 0; return; }
     if (k === "towers") { updateMarkers(); return; }

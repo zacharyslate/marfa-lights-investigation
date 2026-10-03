@@ -54,28 +54,50 @@ p{margin:0}
 .bar-in{max-width:1240px;margin:0 auto;padding-inline:16px;display:flex;align-items:center;gap:14px;min-height:54px}
 .brand{font:700 20px/1 var(--f-disp);letter-spacing:.02em;color:var(--ink);text-decoration:none;white-space:nowrap;display:flex;align-items:center;gap:8px}
 .brand svg{flex:none}
-.nav{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:2px;margin-left:auto}
-.nav::-webkit-scrollbar{display:none}
-.nav a{font:600 15px/1 var(--f-disp);letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2);text-decoration:none;padding:10px 8px;border-radius:4px;white-space:nowrap}
-.nav a[aria-current="page"]{color:var(--accent)}
-.nav a:hover{background:var(--surface-2)}
+.brand{min-width:0}.brand>span{overflow:hidden;text-overflow:ellipsis}
+/* four grouped menus; the current page's group is marked */
+.nav{display:flex;gap:2px;margin-left:auto;align-items:center}
+.ng{position:relative}
+.ng-b{font:600 15px/1 var(--f-disp);letter-spacing:.03em;text-transform:uppercase;color:var(--ink-2);background:none;border:0;padding:10px 10px;border-radius:4px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.ng-b:hover,.ng-b[aria-expanded="true"]{background:var(--surface-2);color:var(--ink)}
+.ng.cur .ng-b{color:var(--accent)}
+.ng-b .caret{transition:transform .15s}
+.ng-b[aria-expanded="true"] .caret{transform:rotate(180deg)}
+.ng-p{position:absolute;top:calc(100% + 6px);left:-8px;min-width:290px;background:var(--surface);border:1px solid var(--rule);border-radius:8px;box-shadow:var(--shadow);padding:6px;display:grid;gap:2px;z-index:1100}
+.ng:last-child .ng-p{left:auto;right:-8px}
+.ng-p a,.msheet a{display:grid;gap:2px;text-decoration:none;color:var(--ink);padding:9px 10px;border-radius:5px}
+.ng-p a b,.msheet a b{font:600 16px/1.2 var(--f-body)}
+.ng-p a span,.msheet a span{font-size:13.5px;color:var(--muted);line-height:1.3}
+.ng-p a:hover,.ng-p a:focus-visible,.msheet a:hover{background:var(--surface-2)}
+.ng-p a[aria-current="page"] b,.msheet a[aria-current="page"] b{color:var(--accent)}
+.app-btn{flex:none;font:700 14px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--accent-ink);background:var(--accent);border-radius:99px;padding:10px 14px}
+.menu-btn{display:none;flex:none;font:700 14px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:99px;height:34px;padding:0 13px;cursor:pointer}
 .theme-btn{flex:none;border:1px solid var(--rule);background:var(--surface);color:var(--ink);border-radius:99px;height:34px;padding:0 12px;
   font:600 13px/1 var(--f-disp);letter-spacing:.06em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:6px}
 .theme-btn .dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
-@media (max-width:760px){
-  .bar-in{flex-wrap:wrap;gap:0 10px;padding-block:6px}
-  /* phones: one scrolling row, faded at the right edge so it is clear that more pages follow */
-  .nav{order:3;width:100%;margin-left:-10px;flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;
-    -webkit-mask-image:linear-gradient(to right,#000 88%,transparent);mask-image:linear-gradient(to right,#000 88%,transparent)}
-  .nav a{padding:9px 10px;font-size:14px}
-  .theme-btn{margin-left:auto}
+.msheet{border-top:1px solid var(--rule);background:var(--bg);max-height:calc(100dvh - 60px);overflow-y:auto;padding:8px 16px 20px;display:grid;gap:14px}
+.mg{display:grid;gap:2px}
+.mg-t{font:600 12px/1.2 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:6px 10px 2px}
+.fmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px 24px;padding-bottom:10px;margin-bottom:6px;border-bottom:1px solid var(--rule)}
+.fmap div{display:grid;gap:4px;align-content:start}
+.fmap .mg-t{padding:0 0 4px}
+.fmap a{color:var(--ink-2);text-decoration:none;font-size:14.5px}
+.fmap a:hover{color:var(--link);text-decoration:underline}
+@media (min-width:861px){ .msheet{display:none!important} }
+@media (max-width:860px){
+  .nav{display:none}
+  .menu-btn{display:block}
+  .app-btn{padding:9px 12px;font-size:13px;margin-left:auto}
+  .bar-in{gap:8px}
 }
+@media (max-width:600px){ .brand .bx{display:none} }
 @media (max-width:430px){
-  /* small phones: keep the title and the theme switch on one line; the theme name stays available to screen readers */
-  .brand{font-size:18px}
+  /* small phones: keep the title and the buttons on one line; the theme name stays available to screen readers */
+  .brand{font-size:17px}
   .theme-btn{padding:0 10px}
   .theme-btn span:last-child{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 }
+@media (max-width:340px){ .brand>span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)} }
 
 /* ---------- page layout */
 .page{max-width:1240px;margin:0 auto;padding-inline:16px;padding-block:32px 72px;display:grid;gap:48px}

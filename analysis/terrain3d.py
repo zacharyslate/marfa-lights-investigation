@@ -24,6 +24,7 @@ The mesh the browser draws is the same grid averaged to 120 m (height.bin, uint1
 import glob
 import json
 import os
+import sys
 
 import numpy as np
 import rasterio
@@ -161,6 +162,20 @@ def overlays(z0):
             vis.append(run); run = []
     if run:
         vis.append(run)
+    # other roads where headlights can be seen from the platform (Nopal Road, RM 2810, US-90), as runs per road
+    roads_vis = []
+    for r in S["roads"]:
+        runs, cur = [], []
+        for q in r["p"]:
+            if q[6] == "v":
+                cur.append(xy(q[0], q[1]))
+            elif cur:
+                runs.append(cur); cur = []
+        if cur:
+            runs.append(cur)
+        if runs:
+            roads_vis.append({"n": r["n"], "k": r["k"], "runs": runs,
+                              "km": round(sum(1 for q in r["p"] if q[6] == "v") * 0.12, 1)})
     rail = [{"o": r["o"], "c": simplify([xy(a, b) for a, b in r["c"]])} for r in S["rail"]]
     rail = [r for r in rail if any(inside(p, 0) for p in r["c"])]
     tl = [{"kv": r["kv"], "c": simplify([xy(a, b) for a, b in r["c"]])} for r in S["tl"]]
@@ -177,7 +192,7 @@ def overlays(z0):
     places += [{"n": "Chinati Peak", "k": "peak", "p": xy(29.9532235, -104.4776936), "z": 2354, "src": "GNIS"},
                {"n": "US-67 high point", "k": "ref", "p": xy(30.0384, -104.19452)}]
     places += [{"n": f["n"], "k": "field", "p": xy(f["lat"], f["lon"])} for f in S["fields"] if inside(xy(f["lat"], f["lon"]), 0)]
-    out = {"roads": roads, "us67_visible": vis, "rail": rail, "power": tl, "towers": towers, "places": places,
+    out = {"roads": roads, "us67_visible": vis, "roads_visible": roads_vis, "rail": rail, "power": tl, "towers": towers, "places": places,
            "grid_convergence_deg": round(float(__import__("pyproj").Proj("EPSG:26913").get_factors(v["lon"], v["lat"]).meridian_convergence), 3)}
     open(os.path.join(OUT, "overlays.json"), "w").write(json.dumps(out, separators=(",", ":")))
     print("overlays", len(roads), "roads,", len(vis), "visible US-67 runs,", len(towers), "towers,", len(places), "places",
@@ -262,4 +277,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if "--overlays" in sys.argv:                               # quick rebuild of overlays.json only
+        overlays(json.load(open(os.path.join(OUT, "meta.json")))["z0"])
+    else:
+        main()

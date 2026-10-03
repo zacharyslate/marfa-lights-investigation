@@ -17,12 +17,16 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&display=swap">
-<link rel="stylesheet" href="assets/site.css?v=13">
+<link rel="stylesheet" href="assets/site.css?v=14">
 <style>
 .hero{display:grid;gap:20px;padding-block:28px 8px}
 .hero h1{max-width:16ch}
 .hero .row{display:flex;gap:12px;flex-wrap:wrap}
-.cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))}
+.cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+.group{display:grid;gap:14px;padding-top:10px;scroll-margin-top:70px}
+.ghead{display:grid;gap:2px;border-top:2px solid var(--ink);padding-top:12px}
+.ghead h2{margin:0}
+.ghead p{margin:0;color:var(--ink-2);max-width:62ch}
 .horizon{width:100%;height:auto;display:block;border-radius:var(--radius);background:var(--surface-2)}
 </style>
 </head>
@@ -44,8 +48,8 @@
     <div>
       <div class="eyebrow">For your phone</div>
       <h2 id="app-h">Take the guide to the Viewing Area</h2>
-      <p>The pocket app tells you when it gets dark tonight, where the moon and planets will be, and what a light in a given direction is likely to be. It also has the camera sky finder, a one-tap sighting log and a game of light bingo. Add it to your home screen and it works with no signal.</p>
-      <ul class="app-feats"><li>Tonight's dark hours, moon and planets</li><li>"What's that light?" in two taps</li><li>Red night-vision screen</li><li>Everything stays on your phone</li></ul>
+      <p>The pocket app tells you when it gets dark tonight, where the moon and planets will be, and what a light in a given direction is likely to be. It also forecasts tonight's weather and refraction, opens every tool on this site, and keeps a one-tap sighting log. Add it to your home screen and it works with no signal.</p>
+      <ul class="app-feats"><li>Tonight's dark hours, moon, planets and conditions</li><li>"What's that light?" in two taps</li><li>Red night-vision screen</li><li>Everything stays on your phone</li></ul>
       <a class="btn" href="app/">Open the app</a>
     </div>
   </section>
@@ -54,6 +58,7 @@
     <div class="stat"><b>9.5 km</b><span>of the 64.5 km of US-67 south of Marfa is in clear view from the Viewing Area under normal conditions. Terrain hides most of the rest.</span></div>
     <div class="stat"><b>229°–238°</b><span>true bearing of that visible stretch, 24–40 km away, below the Chinati Mountains skyline</span></div>
     <div class="stat"><b>13 km</b><span>of a second distant road, RM 2810, is also in view at 253°–259° true, climbing into the Chinati foothills just below the skyline</span></div>
+    <div class="stat"><b>~5 km</b><span>of Nopal Road, 7–13 km away at 178°–213° true (south-southwest), is also in view from the platform, in four short stretches</span></div>
     <div class="stat"><b>6.2° E</b><span>magnetic declination at the Viewing Area. Add it to a compass reading to get true bearing.</span></div>
   </section>
 
@@ -62,19 +67,42 @@
     <figure class="photo wide"><img src="img/viewing_area-800.webp" srcset="img/viewing_area-800.webp 800w, img/viewing_area-1400.webp 1400w" sizes="(max-width: 700px) 100vw, 600px" width="1400" height="1040" alt="The round adobe-style Marfa Lights Viewing Area building and stone wall under a blue sky" loading="lazy" decoding="async"><figcaption><b>The Viewing Area on US-90 by day.</b> Photo: Allison Meier, 2021, via <a href="https://commons.wikimedia.org/wiki/File:Marfa_Lights_Viewing_Area_(52010763011).jpg">Wikimedia Commons</a>, <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>.</figcaption></figure>
   </div>
 
-  <section class="cards" aria-label="Sections">
-    <a class="card" href="map.html"><div class="eyebrow">Tool</div><h3>Map and light identifier</h3><p>Satellite map of the viewing direction, with every known light source. Enter or point a bearing and see what lies along it.</p><span class="go">Open map →</span></a>
-    <a class="card" href="sky.html"><div class="eyebrow">Tool</div><h3>Camera sky finder</h3><p>Point your phone at the view: skyline, roads, towers and stars drawn over the camera. Calibrate on a known light, then record a precise bearing.</p><span class="go">Open →</span></a>
-    <a class="card" href="terrain.html"><div class="eyebrow">Tool</div><h3>The terrain in 3D</h3><p>Fly over the land from the platform to the Chinati Mountains: lidar relief, creeks, roads, lit towers, and the stretch of US-67 the platform can see.</p><span class="go">Open →</span></a>
-    <a class="card" href="photo.html"><div class="eyebrow">Tool</div><h3>Photo checker</h3><p>Line up your photo from the platform with the mountains, tower lights or stars, and see whether each light sits where a car, train or tower can appear. Runs on your device.</p><span class="go">Check a photo →</span></a>
-    <a class="card" href="sightings.html"><div class="eyebrow">Catalogue</div><h3>Sightings and photographs</h3><p>Every documented sighting, study and published photo we could trace, with sources, and what the photos show when re-analysed.</p><span class="go">Browse →</span></a>
-    <a class="card" href="history.html"><div class="eyebrow">Stories</div><h3>History and folklore</h3><p>From an 1883 cowhand's campfire to wartime pilots, ranch families and ghost stories.</p><span class="go">Read →</span></a>
-    <a class="card" href="science.html"><div class="eyebrow">Evidence</div><h3>The science</h3><p>What field studies found, what mirages can and can't do, and what our terrain model shows.</p><span class="go">Read →</span></a>
-    <a class="card" href="place.html"><div class="eyebrow">Setting</div><h3>The place</h3><p>A high desert basin ringed by old volcanoes, one of the darkest night skies in North America.</p><span class="go">Read →</span></a>
-    <a class="card" href="visit.html"><div class="eyebrow">Field guide</div><h3>Visiting and observing</h3><p>How to observe like a scientist: bearings, timing, notes, and staying on public ground.</p><span class="go">Read →</span></a>
-    <a class="card" href="community.html"><div class="eyebrow">Community</div><h3>Community and dark skies</h3><p>Why this project exists, the dark-sky reserve around Marfa, being a good neighbour at the Viewing Area, and how to share what you see.</p><span class="go">Read →</span></a>
-    <a class="card" href="report.html"><div class="eyebrow">Contribute</div><h3>Report a sighting</h3><p>A guided form that checks your light against every known source. It stays on your device until you choose to send it.</p><span class="go">Report →</span></a>
-    <a class="card" href="sightlines.html"><div class="eyebrow">Technical</div><h3>Sight-line report</h3><p>The full occlusion analysis: two maps, refraction range, cross-sections and methods.</p><span class="go">Read →</span></a>
+  <section class="group" id="visit" aria-labelledby="g-visit">
+    <div class="ghead"><h2 id="g-visit">Visit</h2><p>Going out to the Viewing Area: plan the night, take the app, and report what you see.</p></div>
+    <div class="cards">
+      <a class="card" href="visit.html"><div class="eyebrow">Field guide</div><h3>Plan a night</h3><p>When it gets dark, what to bring, and how to observe like a scientist: bearings, timing, notes, and staying on public ground.</p><span class="go">Read →</span></a>
+      <a class="card" href="app/"><div class="eyebrow">For your phone</div><h3>Pocket app</h3><p>Tonight's dark hours, moon, planets, weather and refraction; "what's that light?" in two taps; a sighting log. Works with no signal.</p><span class="go">Open →</span></a>
+      <a class="card" href="report.html"><div class="eyebrow">Contribute</div><h3>Report a sighting</h3><p>A guided form that checks your light against every known source. It stays on your device until you choose to send it.</p><span class="go">Report →</span></a>
+    </div>
+  </section>
+
+  <section class="group" id="tools" aria-labelledby="g-tools">
+    <div class="ghead"><h2 id="g-tools">Tools</h2><p>Work out what a light is: by bearing, by camera, from a photo, or on the land itself.</p></div>
+    <div class="cards">
+      <a class="card" href="map.html"><div class="eyebrow">Tool</div><h3>Map and light identifier</h3><p>Satellite map of the viewing direction, with every known light source. Enter or point a bearing and see what lies along it.</p><span class="go">Open map →</span></a>
+      <a class="card" href="sky.html"><div class="eyebrow">Tool</div><h3>Camera sky finder</h3><p>Point your phone at the view: skyline, roads, towers and stars drawn over the camera. Calibrate on a known light, then record a precise bearing.</p><span class="go">Open →</span></a>
+      <a class="card" href="photo.html"><div class="eyebrow">Tool</div><h3>Photo checker</h3><p>Line up your photo from the platform with the mountains, tower lights or stars, and see whether each light sits where a car, train or tower can appear. Runs on your device.</p><span class="go">Check a photo →</span></a>
+      <a class="card" href="terrain.html"><div class="eyebrow">Tool</div><h3>The terrain in 3D</h3><p>Fly over the land from the platform to the Chinati Mountains: lidar relief, creeks, lit towers, and the stretches of US-67 and Nopal Road the platform can see.</p><span class="go">Open →</span></a>
+    </div>
+  </section>
+
+  <section class="group" id="learn" aria-labelledby="g-learn">
+    <div class="ghead"><h2 id="g-learn">Learn</h2><p>The stories, the record and the land behind the lights.</p></div>
+    <div class="cards">
+      <a class="card" href="history.html"><div class="eyebrow">Stories</div><h3>History and folklore</h3><p>From an 1883 cowhand's campfire to wartime pilots, ranch families and ghost stories.</p><span class="go">Read →</span></a>
+      <a class="card" href="sightings.html"><div class="eyebrow">Catalogue</div><h3>Sightings and photographs</h3><p>Every documented sighting, study and published photo we could trace, with sources, and what the photos show when re-analysed.</p><span class="go">Browse →</span></a>
+      <a class="card" href="place.html"><div class="eyebrow">Setting</div><h3>The place</h3><p>A high desert basin ringed by old volcanoes, one of the darkest night skies in North America.</p><span class="go">Read →</span></a>
+      <a class="card" href="community.html"><div class="eyebrow">Community</div><h3>Community and dark skies</h3><p>Why this project exists, the dark-sky reserve around Marfa, being a good neighbour at the Viewing Area, and how to share what you see.</p><span class="go">Read →</span></a>
+    </div>
+  </section>
+
+  <section class="group" id="science" aria-labelledby="g-science">
+    <div class="ghead"><h2 id="g-science">Science</h2><p>What the evidence shows, how we tested it, and the full paper.</p></div>
+    <div class="cards">
+      <a class="card" href="science.html"><div class="eyebrow">Evidence</div><h3>The science</h3><p>What field studies found, what mirages can and can't do, what our terrain model shows, and how we tested it on photographs.</p><span class="go">Read →</span></a>
+      <a class="card" href="paper.html"><div class="eyebrow">Paper</div><h3>The paper</h3><p>The full study, with its data, code and how to cite it.</p><span class="go">Read →</span></a>
+      <a class="card" href="sightlines.html"><div class="eyebrow">Technical</div><h3>Sight-line report</h3><p>The full occlusion analysis: two maps, refraction range, cross-sections and methods.</p><span class="go">Read →</span></a>
+    </div>
   </section>
 
   <section class="note">
@@ -82,7 +110,7 @@
   </section>
 </main>
 <footer id="foot"></footer>
-<script src="assets/site.js?v=13"></script>
+<script src="assets/site.js?v=14"></script>
 <script>
 (async () => {
   const S = await fetch("data/site.json?v=8").then(r => r.json());

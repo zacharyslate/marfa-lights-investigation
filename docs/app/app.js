@@ -22,13 +22,14 @@
   setNight(store.get("mlfg-app-night", false));
 
   // ---------------------------------------------------------------- tabs
-  const TABS = ["tonight", "identify", "log", "bingo", "more"];
+  const TABS = ["tonight", "identify", "log", "tools", "more"];
   function show(tab) {
+    const bingo = tab === "bingo"; if (bingo) tab = "more";  // light bingo now sits inside More; old #bingo links still land on it
     if (!TABS.includes(tab)) tab = "tonight";
     TABS.forEach(t => { $("v-" + t).hidden = t !== tab; });
     document.querySelectorAll(".tabs [data-tab]").forEach(b => { if (b.dataset.tab === tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
     if (location.hash !== "#" + tab) history.replaceState(null, "", "#" + tab);
-    window.scrollTo(0, 0);
+    if (bingo) requestAnimationFrame(() => $("v-bingo").scrollIntoView({block: "start"})); else window.scrollTo(0, 0);
     if (tab === "identify") requestAnimationFrame(drawPano);
     if (tab === "log") renderLog();
   }
@@ -143,7 +144,7 @@
 
   async function weather() {
     const cache = store.get("mlfg-wx", null);
-    const render = w => { const p = w.period; $("t-weather").innerHTML = `<h2>Weather: ${p.name}</h2><p><b>${p.shortForecast}</b>. ${p.temperature}°${p.temperatureUnit}, wind ${p.windSpeed} ${p.windDirection}.</p>
+    const render = w => { const p = w.period; $("t-weather").innerHTML = `<h3>Weather: ${p.name}</h3><p><b>${p.shortForecast}</b>. ${p.temperature}°${p.temperatureUnit}, wind ${p.windSpeed} ${p.windDirection}.</p>
       <p class="small dim">${p.detailedForecast || ""}</p><p class="small dim">National Weather Service forecast for Marfa, updated ${new Date(w.t).toLocaleString()}.</p>`; };
     if (cache) render(cache);
     try {
@@ -151,7 +152,7 @@
       const fc = await fetch(pt.properties.forecast, {headers: {Accept: "application/geo+json"}}).then(r => r.json());
       const period = fc.properties.periods.find(p => !p.isDaytime) || fc.properties.periods[0];
       const w = {t: Date.now(), period}; store.set("mlfg-wx", w); render(w);
-    } catch (e) { if (!cache) $("t-weather").innerHTML = `<h2>Weather</h2><p class="dim">No connection, so no forecast. Look for clear, calm skies: they are the best nights.</p>`; }
+    } catch (e) { if (!cache) $("t-weather").innerHTML = `<h3>Weather</h3><p class="dim">No connection, so no forecast. Look for clear, calm skies: they are the best nights.</p>`; }
   }
 
   // ---------------------------------------------------------------- refraction forecast
@@ -169,14 +170,14 @@
       await ready; if (!TONIGHT || !S) return;
       const t0 = TONIGHT.sunset.date.getTime(), t1 = TONIGHT.sunrise.date.getTime();
       const hrs = F.time.map((t, i) => ({t: t * 1000, k: kOf(F.t2[i], F.t80[i], F.p[i]), dT: F.t80[i] - F.t2[i], w: F.w[i], c: F.c[i]})).filter(h => h.t >= t0 - 1800e3 && h.t <= t1 + 1800e3);
-      if (!hrs.length) { box.innerHTML = `<h2>Refraction tonight</h2><p class="dim">The forecast doesn't cover tonight yet.</p>`; return; }
+      if (!hrs.length) { box.innerHTML = `<h3>Refraction</h3><p class="dim">The forecast doesn't cover tonight yet.</p>`; return; }
       const kc = S.hwy.map(h => h[5]).filter(v => v !== null), km = k => kc.filter(v => v <= k).length * 0.06;
       const peak = hrs.reduce((a, h) => h.k > a.k ? h : a), base = km(0.13), [, ptxt] = kClass(peak.k);
       const X = t => (t - hrs[0].t) / (hrs[hrs.length - 1].t - hrs[0].t + 3600e3) * 100, w = 100 / (hrs.length);
       const bars = hrs.map(h => { const [, , col] = kClass(h.k); return `<i title="${tfmt(new Date(h.t))}: k = ${fmt(h.k, 2)}" style="left:${X(h.t)}%;width:${w + 0.2}%;background:${col}"></i>`; }).join("");
       const labels = hrs.filter((h, i) => i % 3 === 0).map(h => `<span style="position:absolute;left:${X(h.t)}%">${new Intl.DateTimeFormat("en-US", {timeZone: TZ, hour: "numeric"}).format(new Date(h.t))}</span>`).join("");
       const calm = hrs.filter(h => h.w < 10 && h.c < 30).length;
-      box.innerHTML = `<h2>Refraction tonight</h2>
+      box.innerHTML = `<h3>Refraction</h3>
         <p><b>${ptxt}</b> at its peak, around ${tfmt(new Date(peak.t))}: the air at 80 m is forecast ${fmt(Math.abs(peak.dT), 1)} °C ${peak.dT >= 0 ? "warmer" : "cooler"} than at head height, giving a refraction coefficient of about <b>k = ${fmt(peak.k, 2)}</b> (normal is 0.13).</p>
         <div class="bar" role="img" aria-label="Forecast refraction by hour tonight">${bars}</div>
         <div style="position:relative;height:16px;font:12px var(--f-mono);color:var(--muted)">${labels}</div>
@@ -193,7 +194,7 @@
       const ok = F.time.map((_, i) => F.t2[i] !== null && F.t80[i] !== null);
       ["time", "t2", "t80", "p", "w", "c"].forEach(k => { F[k] = F[k].filter((_, i) => ok[i]); });
       store.set("mlfg-refr", F); render(F);
-    } catch (e) { if (!cache) box.innerHTML = `<h2>Refraction tonight</h2><p class="dim">No forecast right now. Clear, calm nights after a warm day give the strongest inversions.</p>`; }
+    } catch (e) { if (!cache) box.innerHTML = `<h3>Refraction</h3><p class="dim">No forecast right now. Clear, calm nights after a warm day give the strongest inversions.</p>`; }
   }
 
   // ================================================================ IDENTIFY
