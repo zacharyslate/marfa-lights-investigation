@@ -21,6 +21,6 @@ shell = ('<style>body{padding:0}.wrap{padding:28px 20px 56px}th{text-transform:n
 split = template.index("</style>") + len("</style>")
 page = (head + template[:split] + "\n" + shell + "</head>\n<body>\n<header id=\"bar\"></header>\n"
         + template[split:].replace("__DATA__", data)
-        + '\n<footer id="foot"></footer>\n<script src="assets/site.js?v=15"></script>\n</body>\n</html>\n')
+        + '\n<footer id="foot"></footer>\n<script src="assets/site.js?v=16"></script>\n</body>\n</html>\n')
 open("docs/sightlines.html", "w", encoding="utf-8").write(page)
 print(f"docs/sightlines.html written ({len(page)/1024:.0f} KB)")

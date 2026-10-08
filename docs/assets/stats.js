@@ -1,7 +1,7 @@
 /* Anonymous visit counting with GoatCounter (https://www.goatcounter.com): no cookies, no personal data stored.
    It is off until GC holds the site's GoatCounter code. Elements with a data-stat attribute show the totals. */
 (function () {
-  const GC = "";   // the GoatCounter site code, e.g. "marfalights" for https://marfalights.goatcounter.com
+  const GC = "zacharyslate";   // the GoatCounter site code, e.g. "marfalights" for https://marfalights.goatcounter.com
   if (!GC || !/^https:$/.test(location.protocol)) return;
   const base = `https://${GC}.goatcounter.com`;
 

@@ -89,5 +89,5 @@
       <p>Text, figures and data: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code: MIT. Photographs by Zach Warren: all rights reserved. Other images: as credited. <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/LICENSING.md">Licensing details</a>.</p></div>`;
   }
   // anonymous visit counter (assets/stats.js; off until a GoatCounter code is set there)
-  if (me) { const st = document.createElement("script"); st.src = new URL("stats.js?v=1", me.src).href; document.body.appendChild(st); }
+  if (me) { const st = document.createElement("script"); st.src = new URL("stats.js?v=2", me.src).href; document.body.appendChild(st); }
 })();
