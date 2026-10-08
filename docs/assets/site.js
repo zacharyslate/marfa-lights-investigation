@@ -1,5 +1,6 @@
 /* Marfa Lights Field Guide — shared header (four grouped menus), footer site map and theme switch. */
 (function () {
+  const me = document.currentScript;
   // the whole site in four groups; the same list drives the header menus, the phone menu and the footer
   const GROUPS = [
     {id: "visit", t: "Visit", items: [
@@ -83,7 +84,10 @@
     foot.innerHTML = `<div class="page">
       <nav class="fmap" aria-label="Site map">${GROUPS.map(g => `<div><div class="mg-t">${g.t}</div>${g.items.map(([h, t]) => `<a href="${h}">${t}</a>`).join("")}</div>`).join("")}</nav>
       <p>An independent research project by Zach Warren. Analysis, data and code: <a href="https://github.com/zacharyslate/marfa-lights-investigation">github.com/zacharyslate/marfa-lights-investigation</a>. Paper: <a href="https://doi.org/10.5281/zenodo.23046566">doi:10.5281/zenodo.23046566</a>.</p>
+      <p data-stat hidden></p>
       <p>Results are preliminary and not yet field-validated. Map data: USGS The National Map, OpenStreetMap contributors, USDOT BTS, FAA, FRA, FCC, EIA, OurAirports.</p>
       <p>Text, figures and data: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Code: MIT. Photographs by Zach Warren: all rights reserved. Other images: as credited. <a href="https://github.com/zacharyslate/marfa-lights-investigation/blob/main/LICENSING.md">Licensing details</a>.</p></div>`;
   }
+  // anonymous visit counter (assets/stats.js; off until a GoatCounter code is set there)
+  if (me) { const st = document.createElement("script"); st.src = new URL("stats.js?v=1", me.src).href; document.body.appendChild(st); }
 })();
